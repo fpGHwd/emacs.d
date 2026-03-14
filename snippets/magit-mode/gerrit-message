@@ -1,0 +1,13 @@
+# -*- mode: snippet -*-
+# name: gerrit message template
+# uuid:
+# key: gmt
+# condition: t
+# --
+
+[JIRA ${1:IAM-1171}]: ${2:summary description within 50 characters}
+
+[Type]: ${3:feature/bugfix/others}
+[Tested]: ${4:OK/NotOK/NA}
+[Details]: ${5:I have some details to say.}
+  1) ${6:I will follow the commit template rule.}

@@ -1,0 +1,14 @@
+# key: jct
+# name: java with class
+# --
+
+#+headers: :imports java.util.ArrayList
+#+begin_src java :results output :dir /tmp/emacs-babel-java
+
+  public class Main {
+      public static void main(String[] args) {
+          System.out.print("hello, world");
+      }
+  }
+
+#+end_src

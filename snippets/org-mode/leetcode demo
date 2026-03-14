@@ -1,0 +1,45 @@
+# -*- mode: snippet -*-
+# name: leetcode demo
+# key: ld
+# --
+#+srcname: redundant connection
+#+headers: :namespaces std
+#+headers: :includes <vector> <iostream> <deque> <cstring>
+#+begin_src C++ :results output
+// happy coding, wd - C++ ♥ you!
+
+class Solution {
+public:
+
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
+
+        int s = edges.size();
+        int id[s+1];
+
+        for(int i = 0; i < s+1; i++)id[i] = i;
+
+        for(auto edge:edges){
+            int u = edge[0],v = edge[1];
+            int m = id[u], n = id[v];
+            if(m == n)return edge;  // 如果是联通的，那么返回这条边，其实这也是形成了环。
+            for(int i = 0; i < s+1; i++){
+                if(id[i] == m){
+                    id[i] = n;
+                }
+            }
+        }
+
+        return {-1,-1};
+    }
+
+
+};
+
+vector<vector<int>> edges =  {{1,2},{1,3},{2,3}};
+
+auto solution = new Solution();
+auto result = solution->findRedundantConnection(edges);
+cout << result[0] << endl;
+cout << result[1] << endl;
+
+#+end_src

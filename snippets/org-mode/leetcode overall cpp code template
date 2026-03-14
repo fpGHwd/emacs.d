@@ -1,0 +1,35 @@
+# key: locct
+# name: leetcode overall cpp code template
+# --
+#+srcname: $1
+#+headers: :namespaces std
+#+headers: :includes <vector> <iostream> <deque> <cstring>
+#+headers: :var k=2
+#+headers: :var nums='(1 -1 -2 4 -7 3)
+#+begin_src C++ :results output
+// Happy coding, wd - C++ ♥ you!
+
+class Solution {
+public:
+  int maxResult(vector<int>& nums, int k) {
+    const int n = nums.size();
+    vector<int> dp(n);
+    deque<int> q{{0}};
+    dp[0] = nums[0];
+    for (int i = 1; i < n; ++i) {
+      dp[i] = nums[i] + dp[q.front()];
+      while (!q.empty() && dp[i] >= dp[q.back()]) q.pop_back();
+      while (!q.empty() && i - q.front() >= k) q.pop_front();
+      q.push_back(i);
+    }
+    return dp[n - 1];
+  }
+};
+
+vector<int> nums_vec;
+for(int i = 0; i < 6; i++)nums_vec.push_back(nums[i]);
+
+auto solution = new Solution();
+cout << solution->maxResult(nums_vec,k) << endl;
+
+#+end_src

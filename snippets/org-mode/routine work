@@ -1,0 +1,14 @@
+# -*- mode: snippet -*-
+# name: routine for work
+# uuid:
+# key: 
+# condition: t
+# --
+
+* 今日
+1. main/routine
+   1. convergent
+   2. replay
+      1. [ ] diary
+2. normal
+3. misc

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: plant uml
+# key: pu
+# --
+#+begin_src plantuml :file /tmp/org-plantuml/my-diagram.png
+title Authentication Sequence
+
+Alice->Bob: Authentication Request
+note right of Bob: Bob thinks about it
+Bob->Alice: Authentication Response
+#+end_src

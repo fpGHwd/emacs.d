@@ -1,0 +1,16 @@
+# -*- mode: snippet -*-
+# name: saicos new module
+# key: snm
+# --
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := dropbear_dss_host_key-override
+LOCAL_MODULE_CLASS := ETC
+LOCAL_SRC_FILES := /etc/dropbear/dropbear_dss_host_key
+LOCAL_MODULE_STEM := dropbear_dss_host_key
+LOCAL_MODULE_PATH :=  $(PRODUCT_OUT)/sa515m-sysfs/etc/dropbear
+# LOCAL_OVERRIDES_MODULE := dropbear_dss_host_key
+
+include $(BUILD_PREBUILT)
+################################################################################

@@ -1,0 +1,18 @@
+# -*- mode: snippet -*-
+# name: routine for life
+# uuid:
+# key: 
+# condition: t
+# --
+
+* 今日
+1. important
+  1. [ ] $1
+2. routine
+3. misc
+4. convergent
+5. replay
+  1. [ ] diary
+6. habit
+7. talking
+8. meditation

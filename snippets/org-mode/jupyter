@@ -1,0 +1,10 @@
+# key: jupyter
+# name: jupyter
+# --
+
+#+SRCNAME: $1
+#+begin_src jupyter-python :results output :session one cache: yes
+
+$2
+
+#+end_src

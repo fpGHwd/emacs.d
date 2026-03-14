@@ -1,0 +1,20 @@
+# -*- mode: snippet -*-
+# name: c/c++ freopen redirect to stdio
+# key:  cfrts
+# --
+
+#include <iostream>    //cin、cout
+#include <string>      //string
+#include <stdio.h>     //freopen
+using namespace std;
+int main()
+{
+    string name, url;
+    //将标准输入流重定向到 in.txt 文件
+    freopen("in.txt", "r", stdin);
+    cin >> name >> url;
+    //将标准输出重定向到 out.txt文件
+    freopen("out.txt", "w", stdout);
+    cout << name << "\n" << url;
+    return 0;
+}

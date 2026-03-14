@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: clojure source code block
+# key: cljscb
+# --
+#+srcname: test
+#+begin_src clojure :results output
+  (+ 1 4)
+#+end_src

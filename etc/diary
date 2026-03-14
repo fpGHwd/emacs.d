@@ -1,0 +1,6 @@
+;; Sunrise & sunset
+%%(diary-sunrise)
+%%(diary-sunset)
+
+;; Lunar Phases
+%%(diary-lunar-phases)

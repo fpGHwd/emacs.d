@@ -1,0 +1,10 @@
+# -*- mode: snippet -*-
+# name: cmakelist
+# key: cmltf
+# --
+cmake_minimum_required(VERSION 3.0.0)
+project(${0:project_name} VERSION 0.1.0)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+
+add_executable(${1:target_name} ${2:*.c})

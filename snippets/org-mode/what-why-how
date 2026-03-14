@@ -1,0 +1,38 @@
+# -*- mode: snippet -*-
+# name: what-why-how method
+# key: wwhm
+# --
+
+#+begin_src html
+
+我将在以下分隔符内提供以下是一个通用的 ChatGPT 提示框架，请使用如下框架 What、Why 和 How 的方式来回答问题或解释概念：
+
+-------------------------------------------------------------------------
+ChatGPT Prompt 模板：
+"Can you help explain [某个概念或问题] using the 'What, Why, How' method?"
+
+示例 1：解释概念
+
+"Can you explain [某个概念] using the 'What, Why, How' method?"
+
+    What: 这个概念是什么？它的基本定义是什么？
+    Why: 为什么它很重要？它的背景或目的是什么？
+    How: 它是如何工作的？可以举个例子说明吗？
+
+
+示例 2：回答问题
+
+"Can you answer the question '[某个问题]' using the 'What, Why, How' method?"
+
+    What: 问题的核心是什么？这涉及什么内容？
+    Why: 为什么这个问题重要？解决这个问题的价值是什么？
+    How: 可以怎么解决？有哪些可行的步骤或方法？
+
+这种 What - Why - How 的方法适合用来解构复杂概念和问题，帮助更深入地理解关键点。
+-------------------------------------------------------------------------
+
+请使用以上框架解释概念或回答问题：
+${1: 问题或概念}
+
+
+#+end_src

@@ -1,0 +1,11 @@
+# -*- mode: snippet -*-
+# name: emacs lisp config source block
+# key: elcsb
+# --
+
+#+srcname: $1
+#+begin_src emacs-lisp
+
+$2
+
+#+end_src

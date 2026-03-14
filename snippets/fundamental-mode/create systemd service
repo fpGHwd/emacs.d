@@ -1,0 +1,31 @@
+# -*- mode: snippet -*-
+# name: create systemd service
+# key: css
+# --
+[Unit]
+Description=Doom Emacs Service
+Documentation=info:emacs man:emacs(1) https://gnu.org/software/emacs/
+After=network.target
+
+[Service]
+Type=simple
+Environment=EMACS=/snap/bin/emacs
+Environment=EMACSDIR=/home/wd/.config/emacs
+Environment=DOOMDIR=/home/wd/.config/doom
+Environment=PATH=/home/wd/.local/bin:/usr/bin:/usr/local/bin:/bin:/sbin:/snap/bin
+Environment=DOOMGITCONFIG="/home/wd/.gitconfig"
+Environment=SSH_AUTH_SOCK="/run/user/1000/gnupg/S.gpg-agent.ssh"
+ExecStart=/home/wd/.local/bin/doom run
+
+# Emacs will exit with status 15 after having received SIGTERM, which
+# is the default "KillSignal" value systemd uses to stop services.
+#SuccessExitStatus=15
+
+# The location of the SSH auth socket varies by distribution, and some
+# set it from PAM, so don't override by default.
+# Environment=SSH_AUTH_SOCK=%t/keyring/ssh
+Restart=on-failure
+RestartSec=60
+
+[Install]
+WantedBy=default.target

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*_
+# key: pseudo code
+# name: pseudo code
+# --
+#+begin_src pseudo-code
+$2
+#+end_src

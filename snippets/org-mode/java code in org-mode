@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: java code in org-mode
+# key: jcio
+# --
+
+#+headers: :imports java.util.ArrayList
+#+headers: :dir /tmp/emacs-babel-java
+#+headers: :results output
+#+begin_src java
+
+public class Main {
+    public static void main(String[] args) {
+        System.out.print("hello, world");
+    }
+}
+
+#+end_src

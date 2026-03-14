@@ -1,0 +1,15 @@
+# -*- mode: snippet -*-
+# name: leetcode source block
+# key: lsb
+# --
+
+#+srcname: $1
+#+headers: :namespaces std
+#+headers: :includes <vector> <iostream>
+#+begin_src C++ :results output
+
+// start you code here
+$2
+cout << "hello world" << endl;
+
+#+end_src

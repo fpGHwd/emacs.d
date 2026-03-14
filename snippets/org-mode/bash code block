@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: bash code block
+# key: bcb
+# --
+#+begin_src bash
+$1
+#+end_src

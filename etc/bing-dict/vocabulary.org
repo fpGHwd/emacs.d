@@ -1,0 +1,3590 @@
+* Vocabulary
+** quantification [ˌkwɒntɪfɪ'keɪʃ(ə)n]
+n. 定量；【逻】附量 | 网络 量化；数量化；定量化
+** 心流
+网络 flow; Mind Flow; Flow experience
+** daughter [ˈdɔtər]
+n. 女儿；（某地、某国等的）妇女 | adj. 女儿(般)的；【生】第一代的 | 网络 专指女儿；产物；子体
+** 试用期 [shì yòng qī] 
+n. probation period | 网络 probationary period; trial period; Trial
+** 实习 [shí xí] 
+na. practice; internship; fieldwork | 网络 Practical Training; practise; practicum
+** Jimbo 
+网络 神保电器；金堡；杰博
+** Melt [melt]
+v. 融化；（使）软化 | 网络 熔化；溶化；溶解
+** Singh [siŋ]
+n. 【姓氏】辛格 | 网络 辛哈；印度；总理辛吉
+** 治愈 [zhì yù] 
+na. cure; healing; mend; recurred | 网络 bring through; cured; cure of
+** trunk [trʌŋk]
+n. 树干；躯干；后备箱；大旅行箱 | 网络 主干；大衣箱；行李箱
+** video [ˈvɪdioʊ]
+n. 视频；录影；录像带；盒式录像带 | v. 录电视节目；给…录像 | adj. 电视(用)的 | 网络 影像；影片；视讯
+** milestone [ˈmaɪlˌstoʊn]
+n. 里程碑；转折点；重要事件；重要阶段 | 网络 重大事件；里程碑金；里程标
+** Vanilla [vəˈnɪlə]
+adj. 有香子兰香味的；香草味的；普通的；寻常的 | n. 香草醛 | 网络 香草精；香草兰；香草冰淇淋
+** mindfulness 
+网络 正念；内观；静观
+** pitch [pɪtʃ]
+n. 沥青；球场；柏油；（体育比赛的）场地 | v. 投；推销；抛；颠簸 | 网络 音高；间距；节距
+** Mathematica 
+网络 数学软件；软件及其模块；之附加程序
+** Mathematics [ˌmæθəˈmætɪks]
+n. 数学；运算；计算 | 网络 数学系；数学专业；数学类
+** regex 
+网络 正则表达式；使用正则表达式；正则表达式校验器
+** REGEXP 
+网络 正则表达式；正则表达式对象；创建正则表达式对象
+** representation [ˌreprɪzenˈteɪʃ(ə)n]
+n. 表现；代表；描述；陈述 | 网络 再现；表征；表示
+** frame [freɪm]
+n. 帧；支架；骨架；画面 | v. 给…做框；给…镶边；作伪证陷害；制订 | adj. 〈美〉木造的 | 网络 框架；车架；边框
+** Connection [kəˈnekʃ(ə)n]
+n. 连接；关联；联结；接通 | 网络 关系；联系；连结
+** Preparation [ˌprepəˈreɪʃ(ə)n]
+n. 准备；制剂；预备；准备工作 | 网络 制备；准备阶段；准备期
+** selenium [səˈliniəm]
+n. 硒（化学元素，用于制造电气设备和有色玻璃，人体缺此元素可致抑郁等病） | 网络 硒质；含硒；硒元素
+** cooking [ˈkʊkɪŋ]
+n. 烹饪；烹调；饭菜 | adj. 适于烹饪的（不宜于生吃或直接饮用的） | v. “cook”的现在分词 | 网络 做饭；厨艺；蒸煮
+** 冰箱 [bīng xiāng] 
+na. refrigerator; fridge; freezer | 网络 icebox; Refrigerators; COOLER
+** Fridge [frɪdʒ]
+n. 冰箱 | 网络 电冰箱；雪柜；冷冻机
+** complementary [ˌkɑmpləˈment(ə)ri]
+adj. 互补的；补充的；相互补足的 | 网络 互补性；补色；互余
+** 心理学 [xīn lǐ xué] 
+na. psychology; psychics; pneumatology | 网络 Psychology; Psychology,General; psychological
+** free speech 
+na. 言论自由 | 网络 自由言论；自由讲演；自由演讲
+** bedrock [ˈbedˌrɑk]
+n. 牢固基础；基本事实；基本原则；基岩（松软的沙、土层下的岩石） | 网络 岩床；基石；基层岩
+** 放松 [fàng sōng] 
+na. relax; loosen; slacken; uncage | 网络 relaxation; take it easy; release
+** 自证预言 
+网络 Self-fulfilling prophecies; self-fulfilling prophecy; self-fulfillment prophecy
+** Self-fullfiling prophecy 
+网络 自我实现的预言
+** 投资 [tóu zī] 
+n. investment | v. invest; put money in | 网络 investing; Investments; invest in
+** Lambda Calculus 
+n. λ演算 | 网络 微积分
+** portable [ˈpɔrtəb(ə)l]
+adj. 便携式的；手提的；轻便的 | n. 便携机；（尤指）手提电脑 | 网络 手提式的；可携带的；便携的
+** clothe [kloʊð]
+v. 给…穿衣；为（某人）提供衣服 | 网络 覆盖；给…衣服；穿衣服
+** clothes [kloʊðz]
+n. 衣服；服装 | v. “clothe”的第三人称单数 | 网络 服饰；衣物；各种衣物
+** principle [ˈprɪnsəp(ə)l]
+n. 原理；原则；工作原理；法则 | 网络 主义；信条；准则
+** inspect [ɪnˈspekt]
+v. 检查；视察；查看；审视 | 网络 检验；检阅；审查
+** 见闻  [jiàn wén] 
+na. information | 网络 knowledge; what one sees and hears; Travelogue
+** catalyst [ˈkæt(ə)lɪst]
+n. 催化剂；促使变化的人；引发变化的因素 | 网络 触媒；接触剂；催化剂触媒
+** Imprinting ['ɪmˌprɪntɪŋ]
+n. 【心】铭记 | v. “imprint”的现在分词 | 网络 印记；铭印；印刻
+** ascension [əˈsenʃən]
+n. 上升；耶稣升天；升高；登上 | 网络 阿森松；阿森松岛；暗杀神
+** eradicate [ɪˈrædɪˌkeɪt]
+v. 根除 | 网络 消灭；扑灭；根绝
+** 勃起 [bó qǐ] 
+na. have an erection | 网络 priapism; erectile; get it up
+** 读后感 [dú hòu gǎn] 
+na. reaction to [impression of] a book or an article | 网络 Book; Reading; impressions of a book or an essay
+** 化妆品 [huà zhuāng pǐn] 
+na. maquillage; cosmetics | 网络 Cosmetics; makeup; toiletries
+** medicine [ˈmedɪsɪn]
+n. 医学；药；（尤指）药水 | v. 下药 | 网络 医药；药品；药物
+** open_secret [常用于否定句]
+na. 公开的秘密 | 网络 大家都知道的秘密；公开秘密；打开神秘
+** 易耗品 
+网络 Consumables; Expendables; fragile or inadequate packing
+** collection [kəˈlekʃ(ə)n]
+n. 聚集；募集；（常指同类的）收集物；一批物品 | 网络 集合；托收；收藏
+** spawning [spɔn]
+n. (鱼等的)卵；(裂殖菌类植物的)丝；小鬼；结果 | v. (使)产卵；〈蔑〉生(子)；引起；用菌砖栽 | 网络 大量生成；产卵子；产生
+** temporarily [ˈtɛmpəˌrɛrəlɪ]
+adv. 暂时 | 网络 暂时地；临时地；暂时的
+** innate [ˈɪˌneɪt]
+adj. 天生的；内在的；心里的 | 网络 先天的；固有的；生来的
+** inborn [ɪnˈbɔrn]
+adj. 天生的；先天的 | 网络 天赋的；生来的；与生俱来
+** autopilot [ˈɔtoʊˌpaɪlət]
+n. 【航】自动驾驶仪；〈口〉放任自流不顾后果 | 网络 自动舵；自动导航；自动操舵仪
+** 冗余 [rǒng yú] 
+na. redundancy; redundance | 网络 Redundant; TMR; redundant backup
+** 愿景 
+网络 Vision; Our Vision; visioning
+** 远景 [yuǎn jǐng] 
+na. prospect; future; distant view | 网络 Vision; perspective; long shot
+** 实施 [shí shī] 
+n. implementation; practice | v. implement; enforce; conduct; execute | 网络 Implementation; carry out; enforcement
+** 备忘录 [bèi wàng lù] 
+na. memorandum; aide-m&#233;moire; memorial | 网络 MOU; Notes; Memento
+** memorandum [ˌmeməˈrændəm]
+n. 协议备忘录；建议书；报告 | 网络 便笺；章程大纲；便函
+** 域 [yù] 
+n. region | 网络 domain; field; Domains
+** Tacit [ˈtæsɪt]
+adj. 心照不宣的；不言而喻的；默示的 | 网络 默许的；隐性；缄默的
+** 战术 [zhàn shù] 
+na. tactics | 网络 Tactical; Strategy; Tactician
+** 抽象 [chōu xiàng] 
+na. abstract | 网络 abstraction; abstractions; Abstracting
+** bare [ber]
+adj. 裸体的；裸露的；（树木）光秃秃的；（土地）荒芜的 | v. 揭开；脱（衣服） | 网络 赤裸的；光秃的；空的
+** 替换 [tì huàn]
+na. replace; displace; substitute for | 网络 replacement; substitution; shift
+** substitution [ˌsʌbstɪˈtuʃ(ə)n]
+n. 置换；【化】取代；【数】代换；代入 | 网络 替代；替换；代替
+** retrival 
+网络 曲伸的急性刺激
+** retrieval [rɪˈtriv(ə)l]
+n. 取回；索回；数据检索 | 网络 恢复；提取；补偿
+** 知性 
+网络 understanding; intellectual; intellectuality
+** 三年的 
+网络 triennial
+** 年度的 
+adj. annual | 网络 yearly; AN Annual; the year
+** 气质 [qì zhì] 
+na. temperament; qualities | 网络 disposition; ethos; mettle
+** Quarter [ˈkwɔtər]
+n. 季度；一刻钟；宿舍；四等份之一 | v. 把…切成（或分成）四部分；给…提供食宿 | 网络 四分之一；宽大；宽恕
+** Daily [ˈdeɪli]
+adv. 每天；每日 | adj. 每日的；日常的；每个工作日的；按日的 | n. （除星期日外每日发行的）日报；（不寄宿的）仆人 | 网络 每天的；天天
+** Week [wik]
+n. 周；星期；礼拜；一周 | 网络 周次；一星期；第几周
+** Quarterly [ˈkwɔrtərli]
+n. 季刊 | adv. 按季；【纹章】(盾面)纵横四分地 | adj. 季度的；每季的 | 网络 每季度；按季度；每季一次的
+** Monthly [ˈmʌnθli]
+adj. 每月的；每月一次的；按月结算的；有效期为一个月的 | adv. 每个月；每月一次 | n. 月刊 | 网络 月报
+** Anual 
+网络 阿耨罗
+** Annual [ˈænjuəl]
+n. 年报；年鉴；年刊；一年生植物 | adj. 每年的；一年一次的；年度的；一年的 | 网络 一年一度的
+** Triennial [traɪˈeniəl]
+adj. 每三年一次的；每三年的 | n. 每三年举行一次的纪念节(等)；【植】三年生植物 | 网络 三年生的；三年期；三年展
+** Weekly [ˈwikli]
+n. 周报；周刊 | adj. 每周的 | adv. 每周 | 网络 每周一次的；每星期的
+** writting 
+网络 书面；写操作
+** Quartely 
+网络 季度
+** comint [ˈkɒmˌɪnt]
+n. 通信情报(系统) | 网络 通信情报(communicationsintelligence)；通信情报感测器；情报信息
+** 财务自由 
+网络 Financial Freedom; FFA; financial independence
+** prediction [prɪˈdɪkʃ(ə)n]
+n. 预测；预言；预告 | 网络 预报；预测型知识；预测将要发生的事
+** domicile [ˈdɑmɪs(ə)l]
+n. 住所 | v. 使定居；指定(期票的)支付场所；安家 | 网络 户籍；本籍；住处
+** 移情 [yí qíng] 
+na. empathize | 网络 empathy; transference; exchange feelings
+** 心理危机 
+网络 psychological crisis; mental crisis; songxueqi
+** 转折点 [zhuǎn zhé diǎn] 
+n. turning point; breakthrough | 网络 crisis; The Turning Point; inflection point
+** habit [ˈhæbɪt]
+n. 习惯；习性；惯常行为；（吸毒、喝酒、抽烟的）瘾 | v. 装扮；〈古〉住在 | 网络 脾性；嗜好；个人习惯
+** Tilde [ˈtɪldə]
+n. 腭化符号（~）（置于某些语言的字母和国际音标中某些元音符号之上，表示发音方法） | 网络 波浪符；波浪号；取代符号
+** quotes [kwoʊt]
+n. 引号；报价；引用句 | v. 报价；引用；引述；引用(他人文章) | 网络 引言；名言；行情
+** words [wɜrd]
+n. 单词；话；歌词；诺言 | v. 说 | 网络 字；言语；词汇
+** priapism ['praɪəpɪzəm]
+n. 阴茎异常勃起 | 网络 阴茎持续勃起症；阴茎勃起；阴茎反常勃起
+** parterner 
+网络 搭档；合作伙伴
+** Mate [meɪt]
+n. 伙伴，同事；老兄，老弟（工人、水手间的亲密称呼）；配偶（男女任何一方） | v. (使)交配；(使)紧密配合；【象棋】逼将，将军 | 网络 伴侣；马黛茶；助手
+** calculation [ˌkælkjəˈleɪʃ(ə)n]
+n. 计算；预测；估计；算计 | 网络 计算结果；运算；推算
+** technique [tekˈnik]
+n. 技术；工艺；技巧；技能 | 网络 方法；手法
+** 秩序 [zhì xù] 
+na. order; sequence | 网络 cosmos; economy; orderliness
+** halitosis [ˌhælɪˈtoʊsɪs]
+n. 口臭 | 网络 口臭问题；美口臭；口臭的英文
+** Instincts [ˈɪnstɪŋkt]
+n. 本能；天性 | adj. 充满的 | 网络 直觉；本能的；直觉与本能
+** evolution [ˌevəˈluʃ(ə)n]
+n. 演变；进化；发展；渐进 | 网络 演化；进化论；演进
+** investment [ɪnˈvestmənt]
+n. 投资；投资额；投资物；值得买的东西 | 网络 投入；投资学；投资理财
+** suprise 
+网络 令某人惊奇的；贰壹贰；壹壹陆
+** pressure [ˈpreʃər]
+n. 压力；压强；挤压；大气压 | v. 逼迫；使迫不得已 | 网络 压迫；强制；电压
+** Osmanthus [ɒz'mænθəs]
+n. 木犀属；木犀属植物 | 网络 桂花；木樨属；桂花精油
+** nostalgia [nɑˈstældʒə]
+n. 怀旧；念旧 | 网络 乡愁；思乡；思乡曲
+** Lightning [ˈlaɪtniŋ]
+n. 闪电；雷电 | adj. 闪电般的；迅速的 | 网络 闪电术；闪电效果；闪电模式
+** Lighting [ˈlaɪtɪŋ]
+n. 照明；灯光；布光 | v. “light”的现在分词 | 网络 照明设备；灯具；光源
+** Event Driven System 
+网络 事件驱动系统
+** Tendency [ˈtendənsi]
+n. 趋势；倾向；趋向；偏好 | 网络 倾向性；癖好；势头
+** MONOCLE [ˈmɑnək(ə)l]
+n. 单片眼镜 | 网络 单眼镜；单片镜；单眼绷带
+** 精进  
+网络 Vīrya; viriya; Niyamas
+** paginate [ˈpædʒəˌneɪt]
+v. 给（书等）标页码 | 网络 分页；在编页；分页数目
+** spooky [ˈspuki]
+adj. 怪异吓人的；阴森可怖的 | 网络 幽灵；幽灵般的；鬼魅
+** Pantheon [ˈpænθiˌɑn]
+n. （一国或一个民族信仰的）众神；名流；万神庙；先贤祠 | 网络 万神殿；罗马万神殿；罗马万神庙
+** athena [əˈθinə]
+n. 【希神】雅典娜；【女名】女子名 | 网络 朱茵；阿西娜；麻宫雅典娜
+** 指数函数 [zhǐ shù hán shù] 
+n. exponential function | 网络 Exponential Functions; Exponent function; POWER
+** libido [lɪˈbidoʊ]
+n. 力比多；性欲；性冲动 | 网络 利比多；慾力；性本能
+** 运动 [yùn dòng] 
+na. movement; exercise; sports; campaign | 网络 Sports; motion; game
+** 影印版 [yǐng yìn bǎn] 
+n. photoengraving | 网络 The art of UNIX programming; Intermediate Perl; NET FRAMEWORK PROGRAMMING
+** Thriving [ˈθraɪvɪŋ]
+v. “thrive”的现在分词 | 网络 欣欣向荣；兴旺的；兴盛
+** Pondering [ˈpɒndər]
+v. 〈正式〉深思；仔细考虑 | 网络 思索；默想；沉思
+** comedy [ˈkɑmədi]
+n. 喜剧；喜剧片；滑稽；幽默 | 网络 喜剧场面；喜剧性事件；喜剧类
+** 区分 [qū fēn]
+n. type–token distinction | 网络 distinguish; differentiate; division
+** 模块化 
+n. modularization; modularity | 网络 Module; modularize; Modulization
+** servers [ˈsɜrvər]
+n. 服务者；工作者；侍候者；服役者 | 网络 服务器；服务器群；服务器上
+** flicker [ˈflɪkər]
+v. 闪烁；摇曳；颤动；闪现 | n. 闪烁；（身体部位的）小而快的动作；一闪而过 | 网络 闪变；闪光；电压闪烁
+** Strategy [ˈstrætədʒi]
+n. 策略；战略；策划；战略部署 | 网络 策略模式；谋略；计谋
+** Tactics [ˈtæktɪk]
+n. 策略；战术 | 网络 抓鬼天狗帮；捉鬼天狗帮；手段
+** 增长率 [zēng zhǎng lǜ] 
+na. growth rate; rate of rise | 网络 rate of growth; Growth; Growth Rates
+** Wealth [welθ]
+n. 财富；财产；富裕；丰富 | 网络 大量；财富篇；资源
+** 增大 [zēng dà] 
+v. increase; grow; enlarge; heighten | n. enlargement; increment | 网络 augment; swell; augmentation
+** monotonic [mɒnəˈtɒnɪk]
+adj. 没有变化的；【数】单调 | 网络 单调性；单调的；单音
+** 画家 [huà jiā] 
+na. painter; artist | 网络 The Painter; drawer; Painters
+** 雕刻家 [diāo kè jiā] 
+n. statuary | 网络 sculptor; engraver; The Sculptor
+** 可变的 
+adj. variate; changeable; alterable | 网络 variable; mutable; varying
+** inject [ɪnˈdʒekt]
+v. （给…）注射（药物等）；（给…）注射（液体）；增加（某品质） | 网络 注入；喷射；注满
+** 复现 [fù xiàn] 
+na. recurrent; extrusion; emersion | 网络 reiteration; reproduction; recurrence
+** vision [ˈvɪʒ(ə)n]
+n. 视野；视力；异象；想象 | v. 在梦(幻)中看见；想像 | 网络 愿景；视觉；远见
+** Append [əˈpend]
+v. 增补 | 网络 附加；追加；添加
+** thaw [θɔ]
+v. 融化；天气暖和得使冰雪融化（或解冻）；（使冷冻食品）化冻；变暖 | n. 解冻时期；融化季节；（敌对国家之间）关系缓和 | 网络 融解；溶化；融雪
+** Preamble [priˈæmb(ə)l]
+n. 序言；前言；绪论；导言 | v. 作序言[绪论] | 网络 前导码；前文；前同步码
+** PARTICULAR [pərˈtɪkjələr]
+adj. 讲究；挑剔；专指的；不寻常的 | n. （正式记下的）细节；详细资料；详细介绍材料 | 网络 特殊的；特别的；特定的
+** PURPOSE [ˈpɜrpəs]
+n. 目的；用途；目标；意图 | v. 想；决心(做) | 网络 宗旨；效果；意义
+** details [ˈdiˌteɪl]
+n. 详情；详细；细目；琐事 | v. 详述；选派 (for to do)；画详图 | 网络 细节；详细资料；详细信息
+** License [ˈlaɪs(ə)ns]
+v. 许可；批准 | 网络 许可证；执照；授权
+** eyelyn 
+网络 章鱼妹
+** tainted [ˈteɪntəd]
+v. “taint”的过去分词和过去式 | 网络 污染的；被污染的；污点
+** takeaways [ˈteɪkəˌweɪ]
+n. 外卖餐馆；外卖的饭菜；外卖食物 | 网络 新西兰人喜爱到外卖快餐店；外卖店；新西兰人对外卖快餐店
+** impending [ɪmˈpendɪŋ]
+adj. 即将发生的；迫在眉睫的 | 网络 迫近的；逼近的；行将发生的
+** 事件驱动系统 
+网络 event-driven system; event driven systems; dynamic secondary cooling
+** Thesaurus [θəˈsɔrəs]
+n. 同义词词典；类义词典；义类词典 | 网络 索引典；辞典；叙词表
+** 星号 [xīng hào] 
+na. asterisk () | 网络 star; asterisks; star number
+** Asterisk [ˈæstərɪsk]
+n. 星号（置于词语旁以引起注意或另有注释） | v. 给…注上星号 | 网络 星标；星状物；通配符
+** projection [prəˈdʒekʃ(ə)n]
+n. 投影；投射；预测；放映 | 网络 发射；投射作用；射影
+** enable [ɪnˈeɪb(ə)l]
+v. 使能够；使有机会；使成为可能；使可行 | 网络 启用；启动；允许
+** 期货 [qī huò] 
+na. 【经】futures; forward | 网络 Futures; Futures Contract; Forward
+** compartments [kəmˈpɑrtmənt]
+n. 舱；间隔；隔室；(火车的)分格车室 | 网络 隔间；车厢；舱室数据
+** inspection [ɪnˈspekʃ(ə)n]
+n. 检查；视察；查看；审视 | 网络 检验；审查；检测
+** troff 
+网络 解除跟踪；并趾
+** caveat [ˈkeɪviˌæt]
+n. 警告；告诫 | 网络 防止误解的说明；知会备忘；附加说明
+** 数学建模 
+网络 Mathematical Modeling; Mathematical Modelling; Mathematics Modeling
+** Mathematical [ˌmæθəˈmætɪk(ə)l]
+adj. 数学(上)的；严正的 | 网络 数学的；数学上的；精确的
+** 汽车电子 
+网络 Car Electronics; Automotive Electronics; Auto Electronics
+** diminutive [dɪˈmɪnjətɪv]
+adj. 极小的；特小的；微小的 | n. 指小词缀（如 piglet 小猪，kitchenette 小厨房） | 网络 小型的；爱称；小巧可爱的
+** Smiley [ˈsmaɪli]
+n. 【计】笑容符（用电脑键盘上的圆括号、短线和冒号等拼打出的一个圆形笑脸图像，例如:-)） | 网络 法国笑脸；表情；表情符号
+** 汽车 [qì chē] 
+na. automobile; car; motor vehicle | 网络 Cars; Automotive; Automobiles
+** Yuck [jʌk]
+int. （表示憎厌）讨厌 | 网络 呸；恶心；真恶心
+** workshop [ˈwɜrkˌʃɑp]
+n. 车间；研讨会；讲习班；工场 | v. 学习 | 网络 工作坊；工作室；专题讨论会
+** Ponzi scheme ['pɒnzi ski:m]
+n. 庞氏骗局 | 网络 庞兹骗局；庞式骗局；旁氏骗局
+** Humanistic Psychology
+un. 〔哲〕人本主义心理学 | 网络 人本心理学；人文心理学；人本主义学派
+** jekyll [ˈdʒi:kil]
+n. 杰基尔 | 网络 变身怪医；哲基尔医生；双面怪医
+** gentel 
+adj. 温柔的 | 网络 爵度；温和班；我不记得任何人曾经用温和
+** 闲暇 [xián xiá] 
+na. leisure | 网络 Time Out; free time; spare time
+** planting ['plɑ:ntɪŋ]
+n. 种植；栽种；栽种物 | v. “plant”的现在分词 | 网络 种植花木；栽培；绿化
+** 文案 [wén àn] 
+n. official documents and letters | 网络 Copywriter; COPY; copywriting
+** 评判 [píng pàn] 
+na. judge; pass judgment on; decide | 网络 Judging; evaluation; judgement
+** judgement ['dʒʌdʒmənt]
+n. 评价；判决；判断力；意见 | 网络 审判；裁判；看法
+** 园艺 [yuán yì] 
+na. gardening; horticulture | 网络 Gardening; GARDEN; horticultural
+** stray [streɪ]
+v. 迷路；偏离；走失；偏离正题 | adj. 走失的；无主的；零星的；孤立的 | n. 走失的宠物（或家畜）；无主的宠物（或家畜）；离群者；走散者 | 网络 迷路的；离群的；杂散
+** backend ['bækˌbend]
+na. 核废料回收部分；后端 | 网络 后台；后段；后端处理
+** implementation [ˌɪmpləmənˈteɪʃ(ə)n]
+n. 执行；落实 | 网络 实现；实施；实作
+** Suppressing [səˈpres]
+v. 压制；扑灭(火等)；止住；隐瞒(证据等) | 网络 压抑；抑制；镇压
+** statement [ˈsteɪtmənt]
+n. 声明；陈述；报表；报告 | v. 对儿童进行特殊教育评估认定 | 网络 语句；叙述；说明
+** location [loʊˈkeɪʃ(ə)n]
+n. 位置；定位；地点；地方 | 网络 地理位置；工作地点；场所
+** referencing [ˈref(ə)rəns]
+n. 参考；基准；参考书；附注 | v. 加注；给(书等)列出参考书目[注明资料来源] | 网络 引用；参考探测器；引用标注
+** occasionally [əˈkeɪʒən(ə)li]
+adv. 偶尔；有时候；偶然 | 网络 偶尔地；间或；偶而
+** 圣经 [shèng jīng] 
+na. the Holy Bible; the Bible | 网络 The Bible; scripture; The Holy Bible
+** incantation [ˌɪnkænˈteɪʃ(ə)n]
+n. 咒语；符咒；念咒语 | 网络 咒文；天使倾情；咒语乐队
+** wieldy ['wiːldɪ]
+adj. 易使用的；易于处理的 | 网络 适合的；易掌握的；威尔帝
+** Incidentally [ˌɪnsɪˈdent(ə)li]
+adv. 偶然；（引出新话题、附加信息或临时想到的问题）顺便提一句；附带地 | 网络 顺便提及；偶然地；顺便说及地
+** instrument [ˈɪnstrəmənt]
+n. 仪器；仪表；工具；器械 | v. 用仪器装备；为管弦乐队编(曲)；向…提交法律文件 | 网络 乐器；器具；手段
+** arrowhead [ˈæroʊhed]
+n. 箭头；箭镞 | 网络 慈菇；茨菇；慈姑
+** grained [ɡreɪnd]
+adj. 有纹理的；质地…的 | 网络 粒状的；有木纹的；粒度
+** concurrency [kən'kʌrənsɪ]
+n. 〔计〕并发性 | 网络 并行；并行性；并发的
+** fine-grained 
+adj. (木材,皮革等)纹理细密的 | 网络 细粒度；细粒度的；细粒的
+** cooperative [koʊˈɑp(ə)rətɪv]
+adj. 合作的；协作的；同心协力的；协助的 | n. 合作企业；合作社组织 | 网络 有合作精神的；合作性
+** unwinding [ʌnˈwaɪnd]
+v. 解开；放松；伸直 | 网络 解旋；展开；退绕
+** rewinding [ˌriˈwaɪnd]
+n. 重卷物 | v. 重新卷绕 | 网络 重绕；回卷；倒筒
+** behavior [bɪˈheɪvjər]
+n. 行为；性能；表现；(生物的)习性 | 网络 举止；态度；行动
+** thread-specific 
+网络 线程特定；线程专属；特定线程的
+** propagated [ˈprɑpəˌɡeɪt]
+v. 传播；繁殖；宣传；蔓延 | 网络 增殖；传送；扩散
+** attempts [əˈtempt]
+v. 企图；意欲夺取；袭击；〈古〉诱惑 | n. 企图；【法】未遂(罪)；袭击 | 网络 尝试；出手次数；尝试次数
+** acquire [əˈkwaɪr]
+v. 获得；（通过努力、能力、行为表现）获得；购得；得到 | 网络 取得；学到；获取
+** atomicity [ˌætəm'ɪsɪti]
+n. 化合价 | 网络 原子性；原子数；原子价
+** robustness [rəʊˈbʌstnɪs]
+n. 强健 | 网络 鲁棒性；健壮性；稳健性
+** spurious [ˈspjʊriəs]
+adj. 虚假的；伪造的；建立在错误的观念（或思想方法）之上的；谬误的 | 网络 杂散；杂波；私生的
+** notifications [ˌnoʊtɪfɪˈkeɪʃ(ə)n]
+n. 通知；通知单；报告书 | 网络 通知功能；通告；通知中心
+** subprocesses 
+网络 查看子流程；子进程；子历程
+** 交易系统 
+网络 Trading System; RTS; EA
+** EA [i'e]
+abbr. (=enemy aircraft)敌机 | 网络 美国艺电(Electronic Arts)；美商艺电；电子艺界
+** trading system 
+网络 交易系统；贸易电脑系统；电子贸易系统
+** RTS 
+n. 英国皇家电视学会 | 网络 即时战略(Real-time Strategy)；即时战略游戏；请求发送(Request To Send)
+** 详细的 
+adj. detailed; photographic; minute | 网络 in detail; particular; specific
+** shaky [ˈʃeɪki]
+adj. 颤抖的；颤巍巍的；不稳固的；不牢靠的 | 网络 摇晃的；不可靠的；动摇
+** Asynchronous [eɪˈsɪŋkrənəs]
+adj. 不同时存在（或发生）的；非共时的 | 网络 异步；非同步；异步的
+** 金融工程 
+网络 Financial Engineering; MFE; Finance Engineering
+** deferred [dɪˈfɜr]
+v. 迁延；服从；扣存；【军】使延期入伍 | 网络 延期的；延迟的；推迟
+** synchronous [ˈsɪŋkrənəs]
+adj. 同时发生（或存在）的；同步的；共时的 | 网络 同时的；同期的；同时发生的
+** 注意力 [zhù yì lì]
+na. attention | 网络 Attention; attention span; focus
+** deduce [dɪˈdus]
+v. 推断；演绎；推论 | 网络 演绎出；推导；推理
+** 可推导的 
+网络 inferrable; always derivable
+** deducible [dɪ'djuːsəbl]
+adj. 可推断的 | 网络 可推论的；可推知的；可以推断的
+** virtuous cycle 
+n. 良性循环 | 网络 良性发展；良性轮回；有效的循环
+** Wellbeing 
+na. 幸福 | 网络 福利；健康；幸福感
+** athelet 
+网络 运动员
+** maquillage [ˌmækɪ'jɑʒ]
+n. 〈外〉化妆品 | 网络 心机彩妆；资生堂；心机美人
+** Modulization
+网络 模块化；模组化；模块化设计
+** subordinate [səˈbɔrdɪnət]
+n. 下级；部属 | adj. 隶属的；从属的；下级的；次要的 | v. 把…置于次要地位；使从属于 | 网络 下属；附属的；辅助的
+** reentrant [rɪ'entrənt]
+adj. 【建】凹角(的)；再进去(的) | 网络 可重入；可再入的；可重入的
+** onroll 
+网络 滚滚向前；安瑞尔
+** unroll [ʌnˈroʊl]
+v. 铺开；相继出现；连续发生 | 网络 展开；解开；打开
+** skull [skʌl]
+n. 颅骨；脑袋；头（盖）骨；脑子 | 网络 头骨；头盖骨；骷髅
+** thereof [ðerˈɔv]
+adv. 在其中；由此 | 网络 它的；因此；将它
+** pitfalls [ˈpɪtˌfɔl]
+n. 陷阱；诱惑；圈套；隐藏的危险 | 网络 缺陷；易犯的错误；这方式有陷阱
+** prevail [prɪˈveɪl]
+v. 流行；盛行；战胜；压倒 | 网络 获胜；占优势；胜过
+** intimidating [ɪnˈtɪmɪˌdeɪtɪŋ]
+adj. 吓人的；令人胆怯的 | v. “intimidate”的现在分词 | 网络 威吓；胁迫；令人生畏的
+** lineage [ˈlɪniɪdʒ]
+n. 世系；血统；宗系；家系 | 网络 天堂；宗族；谱系
+** rudimentary [ˌrudəˈment(ə)ri]
+adj. 基础的；基本的；未充分发展的；原始的 | 网络 初步的；未发展的；初级的
+** achievement [əˈtʃivmənt]
+n. 成就；成绩；功绩；完成 | 网络 达到；成就感；成果
+** grateful [ˈɡreɪtfəl]
+adj. 感激的；表示感谢的；请 | 网络 感恩的；可喜的
+** announce [əˈnaʊns]
+v. 宣布；宣称；（尤指通过广播）通知；声称 | 网络 宣告；通告；发表
+** ignore [ɪɡˈnɔr]
+v. 忽视；对…不予理会；佯装未见；不予理睬 | 网络 忽略；不顾；不理
+** transform [trænsˈfɔrm]
+v. 使改变形态；使改变外观（或性质）；使改观 | n. 【数】变换式；【化】反式 | 网络 转换；转化；转变，变革
+** 传递 [chuán dì] 
+na. transfer; delivery; transmission | 网络 pass; pass on; transmit
+** gratuitous [ɡrəˈtuɪtəs]
+adj. 无正当理由（或目的）的；无谓的 | 网络 免费的；无缘无故的；无理由的
+** dump [dʌmp]
+v. 倾倒；抛售；抛弃；转存 | n. 垃圾场；转储；转存；废物堆 | 网络 倾销；倾卸；垃圾堆
+** promiscous 
+网络 滥交
+** promiscuous [prəˈmɪskjuəs]
+adj. 淫乱的；滥交的；大杂烩的；杂乱的 | 网络 混杂模式；混杂的；乱搞
+** settings [ˈsetɪŋ]
+v. 设置；放；树立；安排 | n. 集；集合；一套；电视机 | adj. 位于（或处于）…的；安排好的；确定的；固定的 | abbr. (=safe electronic transaction)安全电子交易 | 网络 设定；系统设置；开机设定
+** 补充 [bǔ chōng]
+na. supplementary; additional | 网络 complement; replenish; make up
+** subdivide [ˌsʌbdɪˈvaɪd]
+v. 再分 | 网络 细分；超级细分；把…再分
+** 确认 [què rèn] 
+na. confirm; identification | 网络 confirmation; validation; ACK
+** comfirmation 
+网络 确实
+** 跟踪 [gēn zōng] 
+na. tracking; following; trail | 网络 trace; Tracking; Eye in the Sky
+** trak 
+网络 胎痕；小道
+** track [træk]
+v. 跟踪；追踪；（尤指用特殊电子设备）跟踪；跟踪（进展情况） | n. 轨道；车辙；小径；路线 | 网络 磁道；轨迹；跑道
+** piggyback [ˈpɪɡiˌbæk]
+n. 背着；肩驮 | adv. 同“pickaback” | 网络 捎带；捎带请求；骑在肩上
+** Longevity [lɑnˈdʒevəti]
+n. 长寿；长命；持久 | 网络 寿命；资历；寿比南山
+** light-years 
+na. 【天】光年
+** intricacies [ˈɪntrɪkəsi]
+n. 复杂；错综复杂的事物 | 网络 原指错综复杂；这里指树枝盘结交错；难点
+** malleability [ˌmælɪə'bɪlətɪ]
+n. (金属的)可锻性；柔顺性 | 网络 展性；可塑性；延展性
+** entranced [ɪnˈtrænst]
+v. “entrance”的过去分词和过去式 | 网络 出神的；着迷；极乐
+** outshines [aʊtˈʃaɪn]
+v. 比…亮；胜过；使相形见绌 | 网络 奥特山；优于；要求比…更好
+** Stephenson [4]
+n. 斯蒂芬森；George Stephenson 史蒂芬生 | 网络 史蒂芬逊；史蒂芬森；斯蒂文森
+** utilities [juˈtɪləti]
+n. 效用；实用程序；公用事业；有用 | adj. 多用途的；多效用的；多功能的 | 网络 工具；实用工具；水电费
+** Method [ˈmeθəd]
+n. 方法；办法；措施；条理 | 网络 方式；研究方法；技术
+** maintaining [meɪnˈteɪn]
+v. 维护；保持；坚持；维持…关系 | 网络 保养；维持因素；维修
+** ascribed [əˈskraɪb]
+v. 把…归因于；认为…归于；把…归于；说是(某人)所… | 网络 赋性；归咎于；先赋性
+** hyperlinks [ˈhaɪpərˌlɪŋk]
+n. 超链接；超级链接 | v. 把…做超级链接；把…做超链接 | 网络 支持超链接；超连接；超联结
+** Fleeting [ˈflitɪŋ]
+adj. 短暂的；闪现的 | 网络 飞逝的；转瞬即逝的；疾驰的
+** 支持 [zhī chí] 
+v. support; back; sustain; bolster up | n. support; assistance; favour | 网络 back up; in favor of; stand by
+** 平台化
+网络 Platform; platformization; Structure
+** accordingly [əˈkɔrdɪŋli]
+adv. 因此；所以；照着；相应地 | 网络 于是；照着办，按照
+** offload [ˈɔfˌloʊd]
+v. 卸货；从…卸下货物；发泄(忧伤,苦闷等)；解除(苦闷,负担等) | 网络 卸载；处理器卸载；卸货卸载
+** Cognition [kɑɡˈnɪʃ(ə)n]
+n. 认知；认识；感知 | 网络 认识力；认知能力；认知功能
+** Churchil 
+网络 车吉
+** Churchill [ˈtʃɚˌtʃɪl]
+n. 邱吉尔 | 网络 丘吉尔；丘吉尔河；邱吉尔镇
+** Autumn [ˈɔtəm]
+n. 秋季；秋天 | 网络 成熟期；渐衰期
+** Cognition [kɑɡˈnɪʃ(ə)n]
+n. 认知；认识；感知 | 网络 认识力；认知能力；认知功能
+** Carpe diem [ˌkɑ:peɪ 'di:em]
+int. 抓住机遇；把握时机 | 网络 及时行乐；把握今天；抓住今天
+** 情色 
+网络 Smut; Erotica; white
+** writing [ˈraɪtɪŋ]
+n. 写作；书写；作品；文章 | v. “write”的现在分词 | 网络 作文；笔迹；文字
+** Economics [ˌekəˈnɑmɪks]
+n. 经济学；经济情况；经济因素；经济意义 | 网络 经济学专业；经济学研究所；经济系
+** Economy [ɪˈkɑnəmi]
+n. 经济；节约；经济制度；节省 | 网络 经济性；经济型；经济学
+** premium [ˈprimiəm]
+n. 保险费；额外费用；奖金；津贴 | adj. 优质的；昂贵的；价格更高的 | 网络 溢价；升水；保费
+** adorable [əˈdɔrəb(ə)l]
+adj. 可爱的；讨人喜欢的 | 网络 可爱极了；值得崇拜的；值得敬慕的
+** intercourse [ˈɪntərˌkɔrs]
+n. 交际 | 网络 交流；交往；性交
+** Defensiveness [dɪ'fensɪvnəs]
+n. 守势 | 网络 防卫；防御；防御性
+** Unrealistic [ˌʌnriəˈlɪstɪk]
+adj. 不切实际的；不实事求是的 | 网络 不真实的；不现实的；不实际
+** perfectionism [pə'fekʃənɪzəm]
+n. 至善论；完全论；过度追求尽善尽美 | 网络 完美主义；追求完美；十全十美主义
+** Awareness [əˈwernəs]
+n. 意识；认识；了解；觉察 | 网络 觉知；认知；察觉
+** conquer [ˈkɑŋkər]
+v. 征服；克服；战胜；攻克 | 网络 占领；命令与征服；破除
+** rhymes [raɪm]
+n. 韵；诗；同韵语 | v. 押韵；作韵文；(和某字)叠韵；用韵文写 | 网络 歌谣；儿歌；韵脚
+** sexual [ˈsekʃuəl]
+adj. 性行为的；性的；生殖的；有性繁殖的 | 网络 性别的；性感；两性的
+** Cellulite [ˈseljəˌlaɪt]
+n. 皮下脂肪团 | 网络 橘皮组织；蜂窝组织；橙皮脂肪
+** 洒脱 [sǎ tuō] 
+na. free and easy | 网络 Free and easy; big-hearted; unrestrained
+** acceptance [əkˈseptəns]
+n. 验收；接受；认可；承认 | 网络 承兑；接纳；承诺
+** venture [ˈventʃər]
+v. 敢于去（危险或令人不快的地方）；小心地说 | n. （尤指有风险的）企业 | 网络 冒险；投机；风险投资
+** gardening [ˈɡɑrd(ə)nɪŋ]
+n. 园艺(学) | v. “garden”的现在分词 | 网络 造园；园艺学；造园术
+** illusions [ɪˈluʒ(ə)n]
+n. 幻想；错觉；幻觉；幻影 | 网络 幻象；幻术；舞台幻术
+** Human Sexuality 
+网络 人类性学；人类性行为；人类的性
+** opposition [ˌɑpəˈzɪʃ(ə)n]
+n. 反对党；对立；在野党；对抗 | 网络 异议；敌对；冲
+** Pretext [ˈpriˌtekst]
+n. 借口；托辞 | v. 借口 | 网络 托词；藉口；挡箭牌
+** Optimism [ˈɑptɪˌmɪzəm]
+n. 乐观；乐观主义 | 网络 乐观向上；乐观精神；乐观感
+** Netherlands [ˈneðələndz]
+n. 荷兰；【国】尼德兰；主要位于欧洲西北部 | 网络 荷兰队；荷兰王国；荷蘭
+** Dutch [dʌtʃ]
+n. 荷兰人；荷兰语；德国人；〈古〉(语言史上的)德国语 | adj. 荷兰的；荷兰人的；荷兰语的 | 网络 荷兰文；荷兰兔；荷兰风格
+** intelligent [ɪnˈtelɪdʒənt]
+adj. 有才智的；悟性强的；聪明的；有智力的 | 网络 理解力强的；智能；智慧的
+** Futures [ˈfjutʃər]
+n. 未来；前途；【商】期货；未婚妻 | adj. 未来的；【语】将来时的 | 网络 期货交易；期货契约；希望赛
+** 创业 [chuàng yè] 
+na. start [found] an undertaking [a business; a project] | 网络 entrepreneurship; Startup; venture
+** Parternership 
+网络 合伙企业；公私协力关系
+** hardworking ['hɑrd'wɜrkɪŋ]
+adj. 努力工作的 | 网络 勤奋的；勤劳的；努力的
+** expertise [ˌekspərˈtiz]
+n. 专长；专门知识；专门技能 | 网络 专业知识；专门技术；专家的意见
+** Rosa chinensis 
+网络 月季；月季花；中国月季
+** underling [ˈʌndərlɪŋ]
+n. 下属；走卒；喽啰；手下 | 网络 部下；下僚；下手
+** underlying rate 
+网络 通胀率；正股率；基础利率
+** 未定 [wèi dìng] 
+na. uncertain; undecided; undefined | 网络 abeyance; undetermined; Indeterminate
+** contingent [kənˈtɪndʒənt]
+n. 代表团；（军队的）分遣队 | adj. 依情况而定的；临时工；临时工作 | 网络 可能发生的；队伍；小分队
+** 文字 [wén zì] 
+n. literal | 网络 Text; letter; txt
+** 写作 [xiě zuò] 
+na. writing; pencraft; pen and ink | 网络 Writing; write; composition
+** 连通性 [lián tōng xìng]
+n. connectivity; pixel connectivity | 网络 connectedness; Continuity; connexity
+** Writing [ˈraɪtɪŋ]
+n. 写作；书写；作品；文章 | v. “write”的现在分词 | 网络 作文；笔迹；文字
+**  y [waɪ]
+na. 英语字母表第二十五个字母；Y字形物；【数】第二个未知数 | 网络 纵坐标；三通；导纳
+** quantity [ˈkwɑntəti]
+n. 量；数量；大量；数额 | 网络 分量；订购数量；包装及数量
+** 量化 [liàng huà] 
+n. quantification | v. quantify; quantitate | 网络 Quantization; quantitative; quantizing
+** wings [wɪŋ]
+n. 翅膀；鸟；鸟群；飞翔 | v. 放(箭等)；飞过；空运；使飞 | 网络 翼；铁翼雄风；机翼
+** requisite [ˈrekwɪzɪt]
+adj. 必需的；必备的；必不可少的 | n. 必需的事物 | 网络 必需品；必要的；需要的
+** Traveling [ˈtræv(ə)l]
+v. 旅游；旅行；传播；运行 | n. 旅游；旅行；游历 | 网络 走步；无限漫游；移动
+** Quantizing 
+v. 【数】用基本数的倍数表示；【物】使量子化 | 网络 量化；量化技巧；等量化
+** 量化投资 
+网络 Quantitative Investment; Quantative Investing; Quantitative investmen
+** Quantative 
+网络 查所蒐集到的为量化；相近词
+** Quant [kwænt]
+n. 〈口〉股市分析员；(英国平底船用的)平顶篙 | v. 用平顶篙撑(船) | 网络 宽客；金融工程师；计量金融师
+** Gardening [ˈɡɑrd(ə)nɪŋ]
+n. 园艺(学) | v. “garden”的现在分词 | 网络 造园；园艺学；造园术
+** Quantitation 
+n. 定量 | 网络 定量画面；定量化；定量限度
+** Quantitate ['kwɒntəteɪt]
+v. 测定[估计]…的数量；用数量表示 | 网络 测定的数量；定量；测定数量
+** plover [ˈplʌvər]
+n. 鸻；千鸟 | 网络 啄木鸟；珩鸟；香港啄木鸟
+** grapple [ˈɡræp(ə)l]
+n. 格斗；紧握；抓机；同“grapnel” | v. 扭打；搏斗；努力设法解决 | 网络 抓住；抓钩；抓斗
+** decrement ['dekrɪmənt]
+n. 递减；减缩量；减幅；减缩率 | 网络 减量；减1指令；消耗
+** 一部 
+na. a volume | 网络 instalment; installment; A
+** 异步 [yì bù] 
+na. asynchronous; asynchronization | 网络 Asynchronous; asynchronism; asynchronously
+** reproducible 
+adj. 能再生产的；能复制的；能繁殖的 | 网络 可再生的；可重现；可重复性
+** compendium [kəmˈpendiəm]
+n. （尤指书中某题材事实、图画及照片的）汇编 | 网络 概略；纲要；概要
+** outliner 
+网络 大纲视图；大纲编辑器；大纲窗口
+** inadvertently [ˌɪnədˈvɜrt(ə)ntli]
+adv. 无意地；不经意地 | 网络 不注意地；非故意地；不慎地
+** Demote [diˈmoʊt]
+v. 使降职 | 网络 降级；使降级；贬
+** Promote [prəˈmoʊt]
+v. 促进；推动；提升；推销 | 网络 提拔；晋升；推广
+** 期权 
+网络 option; options; put option
+** 企划 
+网络 Planning; Planner; project
+** shrunk [ʃrʌŋk]
+adj. 不会再缩的(毛织品) | v. “shrink”的过去式和过去分词 | 网络 不缩水；收缩的
+** below [bɪˈloʊ]
+n. 下面 | prep. 在（或到）…下面；（数量）少于；（标准）低于；（级别、重要性）低于 | adv. 下级；在（或到）下面；零度以下 | 网络 在…下面；在…下方；在…之下
+** taxonomy [tækˈsɑnəmi]
+n. 分类学；分类法；分类系统 | 网络 分类学地位；生物分类学；分类体系
+** Asynchronism [eɪ'sɪŋkrənɪzəm]
+n. 【电】异步；非同时性 | 网络 异步性；不同时性；音画分立
+** 被覆盖 
+网络 be covered with; overridden; overwritten
+** disjoint [dɪs'dʒɔɪnt]
+v. 分离；使关节脱位；拆散(机械等)；打乱(次序等) | 网络 不相交的；脱节；使分裂
+** double hyphen [计]
+un. 双驼峰波；双连字符 | 网络 这个双连字符；双画
+** Sieve [sɪv]
+v. 筛；滤；过筛 | n. 筛子；滤器；笊篱；漏勺 | 网络 滤网；筛网；过滤
+** disconcerting [ˌdɪskənˈsɜrtɪŋ]
+v. “disconcert”的现在分词 | 网络 令人不安的；令人担忧的；使人心慌的
+** 专业知识 [zhuān yè zhī shi] 
+n. expert knowledge | 网络 expertise; professional knowledge; Knowledge
+** 保持一样 
+网络 stay the same
+** corresponding [ˌkɔrəˈspɑndɪŋ]
+adj. 符合的；相应的；相关的 | v. “correspond”的现在分词 | 网络 相当的；对应的；一致的
+** coarse [kɔrs]
+adj. 粗糙的；粗织的；粗的；大颗粒的 | 网络 粗劣的；粗俗的；粗调
+** withdraw [wɪðˈdrɔ]
+v. 撤回；提；撤离；停止提供 | 网络 收回；撤退；撤销
+** reinstate [ˌriɪnˈsteɪt]
+v. 使恢复原职；使重返岗位；把…放回原处；使恢复原状 | 网络 使复原；使复职；复原恢复
+** preemptive multitasking 
+网络 先占式多工；抢先多任务处理；先占式多工作业
+** fervid [ˈfɜrvɪd]
+adj. 情感异常强烈的；激昂的；充满激情的 | 网络 热情的；热烈的；炽热的
+** cruncher 
+网络 咬嚼者；处理器；单块效果器
+** Lax [læks]
+adj. 不严格的；不严厉的；马虎的；松弛的 | n. 【动】(挪威、瑞典的)鲑；泻肚 | 网络 洛杉矶国际机场；洛杉矶机场；松懈的
+** configuring [kənˈfɪɡər]
+v. 使成形 | 网络 配置；组态；配置态
+** succession [səkˈseʃ(ə)n]
+n. 继承；继任；一连串；一系列 | 网络 连续；演替；接连发生
+** descending [dɪˈsendɪŋ]
+adj. 下降的；递降的 | v. “descend”的现在分词 | 网络 降序；下行；递减
+** e [iː]
+na. 同“Ecstasy”；英文字母表第五字母；【乐】E调；E字形 | 网络 电子；东；差
+** fledged [fledʒd]
+adj. 能飞翔的；羽翼已丰的 | 网络 成熟的；羽毛丰满的；羽翼丰满的
+** transpose [trænsˈpoʊz]
+v. 调换；颠倒；置换；改换位置 | n. 〔遗〕转位；换位；转置矩阵 | 网络 移调；转调；移项
+** periods [ˈpɪrɪəd]
+n. 时期；阶段；句点；时代 | int. 不用再说了；就是这样；就这么定了；用于强调已经没有讨论的必要 | adj. 当时的；当年的；具有特定历史时期特点的 | 网络 句号；周期；月经
+** period [ˈpɪrɪəd]
+n. 时期；阶段；时代；句点 | int. 不用再说了；就是这样；就这么定了；用于强调已经没有讨论的必要 | adj. 当时的；当年的；那个年代的 | adv. （用于句末，强调不再多说）到此为止 | 网络 周期；句号；期间
+** generation [ˌdʒenəˈreɪʃ(ə)n]
+n. 代；（统称）一代人；（家史中的）一代；一批
+** 生成 [shēng chéng] 
+na. generate; produce; create
+** succeeded [səkˈsid]
+v. 成功；继承；继…之后；接着…发生
+** autotelic
+adj. 自有其目的的；为其本身的
+** 重复 [chóng fù] 
+na. repeat; duplicate; repetition
+** repetition [ˌrepəˈtɪʃ(ə)n]
+n. 重复；重做；重说；重做的事
+** Las Vegas 
+n. 拉斯维加斯；【旅】拉斯维加斯
+** implicitly [ɪm'plɪsɪtlɪ]
+adv. 暗中；暗含；含蓄地；蕴涵
+** considerate [kənˈsɪdərət]
+adj. 考虑周到的；为（他人）着想的；体谅的；体贴的
+** insightful [ɪnˈsaɪtfəl]
+adj. 有深刻了解的；富有洞察力的
+** metaphor [ˈmetəˌfɔr]
+n. 隐喻；暗喻
+** analog [ˈænlˌɑɡ]
+n. 同“analogue”
+** analogue ['ænə.lɔɡ]
+adj. 模拟的；指针式的 | n. 相似物；类似事情
+** 类比 [lèi bǐ] 
+na. 【逻】analogy
+** 称心如意 [chèn xīn rú yì] 
+na. have sth. as one wishes
+** instruments [ˈɪnstrəmənt]
+n. 仪器；工具；乐器；【法】证件 | v. 用仪器装备；为管弦乐队编(曲)；向…提交法律文件
+** tweaking [twik]
+n. 扭；力扯；妙计 | v. 抓住拉；用力拉；(吸毒者发毒瘾时)神经质地抽搐
+** constituent [kənˈstɪtʃuənt]
+n. 成分；构成要素；（选区的）选民 | adj. 组成的；构成的
+** Delving [delv]
+v. 探讨；掘 | n. 凹；凹地；井；沟槽
+** thrift [θrɪft]
+n. 节俭；节约；海石竹（海边野生植物，花鲜艳，呈粉红色）
+** hello [heˈləʊ]
+int. 你好；喂；您好；哈喽
+** computer [kəmˈpjutər]
+n. 计算机；计算器；计算者
+** message [ˈmesɪdʒ]
+n. 消息；教训；电邮信息；（手机）短信息 | v. 向某人传送（电子信息）
+** astronomical [ˌæstrəˈnɑmɪk(ə)l]
+adj. 天文学的；天文的；极其巨大的
+** clash [klæʃ]
+n. 冲突；交锋；比赛；差别 | v. 冲突；比赛；抵触；相矛盾
+** residual [rɪˈzɪdjuəl]
+n. 残余；余差；【数】残数；渣滓 | adj. 剩余的；残留的
+** Insidious [ɪnˈsɪdiəs]
+adj. 潜伏的；隐袭的；隐伏的
+** anniversaries [ˌænɪˈvɜrs(ə)ri]
+adj. 周年的；周年纪念的；每年的 | n. 周年纪念(日)
+** frustrating [ˈfrʌˌstreɪtɪnɡ]
+adj. 令人懊恼的；令人沮丧的 | v. “frustrate”的现在分词
+** exercise [ˈeksərˌsaɪz]
+n. 运动；练习；行使；演习 | v. 锻炼；行使；训练；运用
+** Programming [ˈprəʊˌɡræm]
+n. 节目；方案；【计】程序；课程(表) | v. 【计】给…编写程序；为…制定计划；使…按安排进行
+** randomly ['rændəmli]
+adv. 随机；随意；未加计划地
+** informant [ɪnˈfɔrmənt]
+n. 线人；提供消息者；告密者；报告人
+** insight [ˈɪnˌsaɪt]
+n. 洞察力；了解；洞悉；领悟
+** volume [ˈvɑlˌjum]
+n. 体积；量；卷；容积
+** 声音 [shēng yīn] 
+na. voice; sound
+** agnostic [æɡˈnɑstɪk]
+adj. 【哲】不可知论的 | n. 【哲】不可知论者
+** interoperability ['ɪntərɒpərə'bɪlətɪ]
+n. 〔计〕互用性
+** Babel [ˈbæb(ə)l]
+n. 嘈杂声（尤指讲多种语言）
+** narratives [ˈnerətɪv]
+n. 叙述；记叙文；记叙体；叙述手法 | adj. 叙述的；故事体的；善于叙述的
+** 形式主义 [xíng shì zhǔ yì] 
+na. formism; formalism
+** mistakenly [mɪˈstɛkənlɪ]
+adv. 错误地
+** illustrated [ˈɪləˌstreɪt]
+v. (用例子,图解等)说明；举例证明；加上插图[图解]
+** mobile [ˈmoʊb(ə)l]
+n. 手机；汽车；移动电话；可动物体 | adj. 活跃的；可动的；流动的；可移动的 | 网络 莫比尔；活动的
+** directory [daɪˈrektəri]
+n. 名录；电话号码簿；公司名录；（计算机文件或程序的）目录 | adj. 管理的 | 网络 姓名地址录；指南；董事会
+** manifest [ˈmænɪˌfest]
+v. 表明；显现；使人注意到 | adj. 明显的；显而易见的 | n. 旅客名单 | 网络 清单；舱单；显示
+** reconciled [ˈrekənˌsaɪl]
+v. 使和解；调停；使顺从；使一致 | 网络 和好；和好咗；重归于好
+** deferable ['dɪfɜrəbl]
+adj. 能延期的；能缓役的 | n. 〈美〉有缓役资格者 | 网络 缓征者
+** consumable [kənˈsuməb(ə)l]
+adj. 可消耗的；会用尽的 | n. 消耗品 | 网络 消费品；可消费的；耗材
+** Giselle [dʒɪˈzɛl]
+n. 【女名】女子名
+** redundant [rɪˈdʌndənt]
+adj. 被裁减的；多余的；不需要的 | 网络 冗余；过剩的；过多的
+** analysing [ˈæn(ə)lˌaɪz]
+v. 分析；解析；分解 | 网络 分析问题的能力；一一分析型
+** 摸鱼 
+网络 Goof Off; to be slack; Goldbricking
+** loaf [loʊf]
+n. (一)条；一条面包（通常重 1、2、4磅）；面包形糖块；混日子 | v. 游荡；混日子；闲混；磨洋工 | 网络 一个面包；大块面包
+** wheather
+网络 后面那一个空不填
+** compartment [kəmˈpɑrtmənt]
+n. （铁路客车车厢分隔成的）隔间；（家具或设备等的）分隔间 | 网络 间隔；隔室；舱
+** everywhere [ˈevriˌwer]
+adv. 到处；处处；各个地方；所有地方 | 网络 各处；每个地方；无处不在
+** scary [ˈskeri]
+adj. 恐怖的；吓人的 | 网络 可怕的；引起惊慌的；引起恐慌的
+** 不一致 
+na. atypism; inconformity; disaccord | 网络 disagree; disagreement; discrepancy
+** inconsistency [ˌɪnkənˈsɪstənsi]
+na. “inconsistence”的变体 | 网络 矛盾；不一致；不一致性
+** avoiding [əˈvɔɪd]
+v. 避免；防止；【法】使无效；撤销 | 网络 回避；逃避；如何避免表扫描
+** introduction [ˌɪntrəˈdʌkʃ(ə)n]
+n. 引进；导论；引言；采用 | 网络 介绍；简介；前言
+** variable [ˈveriəb(ə)l]
+n. 变量；可变因素；可变情况 | adj. 多变的；易变的；变化无常的；可更改的 | 网络 变数；可变的；变项
+** constancy [ˈkɑnstənsi]
+n. 恒定；坚贞；〈正式〉稳定性；不变性 | 网络 节操；恒常性；不屈不挠
+** buffer [ˈbʌfər]
+v. 缓存；保护；减缓（伤害）；使不受…的侵害 | n. 缓冲器；缓冲物；起缓冲作用的人；缓存区 | 网络 缓冲区；缓冲剂；缓冲液
+** pertains [pərˈteɪn]
+v. 有关；适合；附属 | 网络 属于；关于；相关
+** parlance [ˈpɑrləns]
+n. 说法；术语；用语 | 网络 腔调；语法；语调
+** affiliated [əˈfɪliət]
+v. 来自；把…收作会员；使隶属于；使加入 | n. 会员；分会 | adj. 隶属的 | 网络 附属的；有关连的；联合
+** dedicated [ˈdedɪˌkeɪtəd]
+adj. 专注的；专用的 | v. dedicate的过去式和过去分词形式 | 网络 有奉献精神的；献身的；专用型
+** suffice [səˈfaɪs]
+v. 足够；足以 | 网络 有能力；使满足；使足够
+** rectangles [ˈrekˌtæŋɡ(ə)l]
+n. 【数】矩形 | 网络 长方形；矩形马赛克；创建矩形
+** twinkling [ˈtwɪŋk(ə)l]
+n. 闪烁；闪耀；闪光；(眼睛的)光芒 | v. 闪烁；闪耀；(眼睛)发光；发亮 | 网络 闪烁的；瞬间；闪亮的
+** Caveats [ˈkeɪviˌæt]
+n. 警告；【法】中止诉讼的申请；〈美〉保护发明特许权的请求书 | 网络 注意事项；禁令；警告说明
+** counterintuitive [ˌkaʊntərɪnˈtuɪtɪv]
+adj. 反常的 | 网络 违反直觉的；反直觉式；与直觉相反的
+** mutable [ˈmjutəb(ə)l]
+adj. 可变的；会变的 | 网络 易变的；性情不定的；变动
+** rounding [raʊnd]
+v. 绕过；拐过；使成圆形；把…四舍五入 | prep. 绕过；在…周围；始终 | adj. 圆的；球形的；肥胖的；弧形的 | adv. 附近；向四面；指循环往复的；指朝反方向 | n. 圆形物；球状物；弧形物；(会议的)一轮 | 网络 舍入；数值修约规则；倒角
+** collation [kəˈleɪʃ(ə)n]
+n. 整理；校对；小吃；(端日的)夜点 | 网络 排序规则；排序方式；定序
+** lexicographic order 
+网络 字典序；字典顺序；词典顺序
+** semi-obsolete 
+网络 过时了
+** grave
+     accents [ɡrɑv]
+adj. 〈外〉【乐】沉重；极慢；认真的；庄重的 | n. 坟墓；墓穴；墓碑；墓石 | v. 对(船底)作清洗并涂上沥青等涂料；刻；铭记 (in, on)；雕刻
+** apostrophes [əˈpɑstrəfi]
+n. 撇号；【语】顿呼法；所有格符号；复数符号 | 网络 表示省略的撇号；省略符号；表示省略或所有格
+** impractical [ɪmˈpræktɪk(ə)l]
+adj. 不明智的；不现实的；手不灵巧的；不善于规划（或组织）的 | 网络 不切实际的；不实际的；不能实行的
+** CANONICALIZE 
+网络 规范化转换；化请请
+** EQUIVALENCES [ɪˈkwɪvələns]
+n. 等值；【化】等价；当量；等量 | 网络 等效性；类语
+** UPCASE 
+网络 将字符转换为大写；大写文件；转大写
+** backbone [ˈbækˌboʊn]
+n. 骨干；支柱；脊柱；骨气 | 网络 脊骨；主干；脊椎
+** birch [bɜrtʃ]
+n. 白桦；【植】桦树；【植】桦木；桦条 | v. 用桦条打 | 网络 白桦树；伯奇；西南桦木
+** grail [greɪl]
+n. 圣杯（据信为耶稣离世前所用）；渴望但永远得不到的东西 | 网络 格瑞；圣杯号；重力回溯及内部结构实验室(Gravity Recovery And Interior Laboratory)
+** 动态的
+adj. dynamic; kinetic | 网络 dynamically; Kinematic; DHCP
+** DYNAMIC [daɪˈnæmɪk]
+n. 动力；动力学；推动变化的力量 | adj. 充满活力的；活跃的；精力充沛的；不断变化的 | 网络 动态；动态的；动力的
+** grungy [ˈɡrʌndʒi]
+adj. 邋遢的；脏的；龌龊的 | 网络 脏乱失修的；蹩脚的；低劣的
+** 觉醒 [jué xǐng] 
+na. awake; awaken; 【心】arousal | 网络 awakening; The Awakening; Wake up
+** awakening [əˈweɪkənɪŋ]
+n. 觉醒；醒悟；认识；感到 | adj. 唤醒的；惊醒的 | v. “awaken”的现在分词 | 网络 苏醒；梦醒时分；海望
+** settable
+网络 可设置的；和可设置的；可自行设定
+** arity 
+网络 元数；属性元数；图形化计算器
+** proportional [prəˈpɔrʃən(ə)l]
+adj. 相称的；成比例的；均衡的 | n. 【数】比例项 | 网络 按比例
+** nonempty [ˌnɒn'emptɪ]
+adj. 〔数〕非空 | 网络 推理规则
+** explicitly [ɪk'splɪsɪtli]
+adv. 明确；显然；清楚地；直接地 | 网络 明确地；明白地；显式
+** indirection [ˌɪndə'rekʃən]
+n. 间接；欺骗 | 网络 间接性；间接取值；间接层
+** idiosyncratic [ˌɪdiəsɪŋˈkrætɪk]
+adj. 特质；特殊物质的；特异体质的；特异反应的 | 网络 特质的；特殊的；异质的
+** exchange [ɪksˈtʃeɪndʒ]
+n. 交换；交流；交易所；兑换 | v. 交换；交流；交易；兑换 | 网络 调换；互换
+** negated [nəˈɡeɪt]
+v. 否定；取消；抹杀；使作废 | 网络 抵消；否定中；否定的
+** Reformulation 
+n. 重新阐述；再形成 | 网络 重新配方；重述技能；形式改写
+** unwind [ʌnˈwaɪnd]
+v. 放松；解开；轻松 | 网络 放松发条；展开；伸直
+** amenable [əˈminəb(ə)l]
+adj. 顺从的；顺服的；可用某种方式处理的 | 网络 应服从的；经得起检验的；有义务的
+** unwieldy [ʌnˈwildi]
+adj. 笨重的；笨拙的；不灵巧的；难控制（或操纵、管理）的 | 网络 不实用的；难处理的；大而无当
+** resilient [rɪˈzɪljənt]
+adj. 可迅速恢复的；有适应力的；有弹性（或弹力）的；能复原的 | 网络 有弹性的；弹回的；有弹力的
+** two-fold [ˈtuˌfoʊld]
+adj. 两件事的；两重的 | adv. 成两个部分；成两倍 | 网络 双重；两倍关系；二重
+** unsuitable [ʌnˈsutəb(ə)l]
+adj. 不适当的；不适宜的；不合适的 | 网络 不适合的；不相称的；不当
+** superseded [ˌsupərˈsid]
+v. 代替；废除；接替；更替 | 网络 取代；替代；作废
+** Internally [ɪn'tɜːnəli]
+adv. 内部的；体内的 | 网络 在内部；内部地；从内部
+** indefinite [ɪnˈdef(ə)nɪt]
+adj. 无限期的；期限不定的；模糊不清的；不明确的 | 网络 不确定的；模糊的；无限的
+** Ego [ˈiɡoʊ]
+n. 自我；自我价值感 | abbr. (=eccentric geophysical observatory)偏心轨道地球物理观测卫星 | 网络 小我；自负；我执
+** anymore [ˌeniˈmɔr]
+adv. 再也(不) | 网络 不再；再也不；不会再
+** 铺展 [pū zhǎn] 
+na. spread out; sprawl | 网络 spreading; spreading c; spreading t
+** analogous [əˈnæləɡəs]
+adj. 相似的；类似的 | 网络 模拟的；类比设计；同功的
+** phase out 
+na. 使逐步结束；使逐步撤出；逐步淘汰；逐部停止(活动等) | 网络 使逐步淘汰；逐渐停止；逐步取消
+** 推导 [tuī dǎo] 
+na. derivation; deduce; infer; reduction | 网络 deduction; derive; Derived
+** Generic Functions 
+网络 泛型函数；通用函数；通用功能
+** whatsoever [ˌhwɑtsoʊˈevər]
+pron. 同“whatever” | 网络 任何；无论什么；无论什麽
+** y [waɪ]
+na. 英语字母表第二十五个字母；Y字形物；【数】第二个未知数 | 网络 纵坐标；三通；导纳
+** 认可 [rèn kě] 
+na. approve; accept; ratification | 网络 approval; Recognition; recognize
+** 精心的 
+网络 elaborate; intensive; painstaking
+** customizable [ˈkʌstəmaɪˈzəbl]
+adj. 可定制的 | 网络 可定制化；客户自定义；可客制化的
+** pertain [pərˈteɪn]
+v. 存在；适用 | 网络 属于；关于；附属
+** Whilst [hwaɪlst]
+conj. 〈英〉同“while” | n. 〈古〉同“the while” | 网络 同时；同…同时；当…的时候
+** anomalous [əˈnɑmələs]
+adj. 异常的；反常的 | 网络 不规则的；破格的；异常色散
+** wrinkles [ˈriŋk(ə)l]
+n. 皱纹；褶皱；小问题；妙计 | v. 皱起…；(把织物,纸张等)弄皱 | 网络 起皱；皱褶；欢乐皱纹
+** verbatim [vɜrˈbeɪtɪm]
+adj. 一字不差的（地）；逐字的（地） | adv. 逐字(的) | n. 逐字报告 | 网络 威宝；威宝公司；逐字地
+** following [ˈfɑloʊɪŋ]
+n. 如下；下列；下述；追随者 | adj. （时间上）接着的；下述的；下列的 | prep. 在（某事）以后；由于 | v. “follow”的现在分词 | 网络 以下的；跟踪；跟随
+** concatenate [kɑnˈkæt(ə)ˌneɪt]
+adj. 连锁状的 | v. 使(成串地)连结[衔接]起来 | 网络 连接；串联；多联体
+** daemon [ˈdimən]
+n. （古希腊神话中的）半神半人的精灵 | 网络 守护进程；守护程序；虚拟光驱
+** 思维模型 
+网络 mental model; thinking model; thinking pattern
+** 启发式 [qǐ fā shì] 
+na. elicitation method (of teaching) | 网络 heuristic; heuristics; Meta-heuristic
+** 渐进式 
+网络 incremental; progressive; Gradualism
+** progressive [prəˈɡresɪv]
+adj. 进步的；先进的；开明的；稳步的 | n. 进步人士；开明人士；改革派 | 网络 前进的；渐进；逐行扫描
+** problematic [ˌprɑbləˈmætɪk]
+adj. 造成困难的；产生问题的 | 网络 有问题的；问题意识；有疑问的
+** mindset [ˈmaɪn(d)ˌset]
+n. 观念模式；思维倾向 | 网络 心态；思维模式；思维方式
+** 指数 [zhǐ shù] 
+n. exponent; characteristic | 网络 index; CPI; exponential
+** derived [dɪˈraɪv]
+v. 导出；追寻起源；推论；由来 | 网络 派生；衍生；衍生的
+** idempotent [aɪ'dempətənt]
+adj. 幂等的 | 网络 等幂；全幂等的；等幂的
+** legitimate [ləˈdʒɪtəmət]
+adj. 正当合理的；合情合理的；合法的；法律认可的 | v. 使合法；认为正当；认为正统；承认(庶子)为嫡出 | 网络 正当的；正统的；正当性
+** Tabulated [ˈtæbjəˌleɪt]
+v. 制…的一览表；使成平面 | adj. 板状的【动物；动物学】有横隔板的 | 网络 列表；制成表格；制表
+** implement [ˈɪmpləmənt]
+v. 实施；执行；贯彻；使生效 | n. 工具 | 网络 实现；完成；履行
+** planetary [ˈplænəˌteri]
+adj. 行星的 | 网络 行星齿轮的；有轨道的；行星式
+** thay 
+网络 拖雷；塞尔；特伊
+** introductory [ˌɪntrəˈdʌkt(ə)ri]
+adj. 序言的；引导的；介绍的；入门的 | 网络 介绍性的；导言的；入门级
+** architecture [ˈɑrkɪˌtektʃər]
+n. 体系结构；建筑学；建筑设计；建筑风格 | 网络 架构；建筑物
+** confirmation [ˌkɑnfərˈmeɪʃ(ə)n]
+n. 证实；确认书；证明书；坚振 | 网络 批准；确定；坚信礼
+** 柳叶刀 [liǔ yè dāo] 
+n. lancet | 网络 Lancet; The Lancet; Lancets
+** marshaling [ˈmɑrʃ(ə)l]
+v. 整理；使排列；〈比喻〉安排；【纹章】配列(纹章在盾等上)；结集；收集；安排；控制人群 | n. 空军元帅；司仪；典礼官；（美国法院的）执行官；(法国等的)陆军元帅；马歇尔；〈英〉空军元帅；(英国宫廷的)典礼官 | 网络 封送处理；调度；编组
+** convolute ['kɒnvəˌluːt]
+v. 卷绕；盘旋；旋绕 | adj. 旋绕的；【动,植】包卷形的；【医学】迂曲的 | 网络 回旋；回旋状的；旋转
+** Masterbation
+网络 便携自慰；透过手淫
+** 调教 [tiáo jiào] 
+na. guide; teach; look after and tame | 网络 Set Up; pedagogical formation; Train
+** Vehicle [ˈviɪk(ə)l]
+n. 车辆；工具；交通工具 | 网络 媒介物；载体；运载工具
+** warship [ˈwɔrˌʃɪp]
+n. 舰艇；军舰 | 网络 战舰；战船；军舰战船
+** brevity [ˈbrevəti]
+n. 简洁；简练；短暂 | 网络 简短；简洁明了；简短明了
+** Automation [ˌɔtəˈmeɪʃ(ə)n]
+n. 自动化 | 网络 自动操作；自动控制；自动化技术
+** stuffs [stʌf]
+n. 材料；〈美〉【戏】脚本；现金；优良特征 | v. 填充；塞入填料；装满；塞住 | adj. 毛织品做的 | 网络 东西；原料；菜肴食品
+** thy [ðaɪ]
+adv. （用作第二人称单数所有格形式）你的 | pron. 古英语 | 网络 土耳其航空；T&#252;rk Hava Yollar；肉食者行事的底蕴
+** meanwhile [ˈminˌhwaɪl]
+adv. 与此同时；其间；（比较两方面）对比之下 | 网络 其时；在此期间；在此同时
+** program [ˈprəʊˌɡræm]
+n. 节目；计划；【计】程序；课程(表) | v. 编写程序；为…制定计划；使…按安排进行 | 网络 程式；项目；编程
+** spike [spaɪk]
+n. 穗；穗状花序；猛增；尖状物 | v. 用尖物刺入（或扎破）；在…中偷偷掺入（烈酒、毒药或毒品） | 网络 长钉；斯派克；刺突
+** outdated [aʊtˈdeɪtəd]
+adj. 过时的 | 网络 旧式的；陈旧的；已陈旧
+** analogy [əˈnælədʒi]
+n. 类比；类推；比拟；相似之处 | 网络 类似；比喻；模拟
+** 唤醒 [huàn xǐng] 
+na. awaken; rouse; wake up | 网络 arouse; Awakening; WOL
+** lousy [ˈlaʊzi]
+adj. 非常糟的；极坏的；恶劣的 | 网络 差劲；糟糕的；差劲的
+** sledgehammer [ˈsledʒˌhæmər]
+adj. 用大锤猛击的；猛烈的 | v. 用大锤连续猛击；用大锤猛击 | n. （有长柄的）大锤 | 网络 长柄大锤；重大的；长柄锤
+** Regular [ˈreɡjələr]
+n. 常客；老主顾；主力（或正式）队员；（电视节目的）老主持人 | adj. 规则的；有规律的；间隙均匀的；定时的 | adv. 经常地；完全 | 网络 定期的；经常的；常规
+** 退货 [tuì huò] 
+na. return of goods | 网络 Return; Returns; refund
+** 过渡 [guò dù] 
+na. transition | 网络 transitions; transitional; interim
+** enzymes [ˈenˌzaɪm]
+n. 【化】酶 | 网络 酵素；酶类；酶制剂
+** Gening 
+网络 天才；神鹰航空
+** CRP 
+n. 共反射点 | 网络 C反应蛋白(C-reactive protein)；能力需求计划(capacity requirements planning)；共反射点(common reflection point)
+** CPR [ˌsi pi ˈɑr]
+abbr. (=cardiopulmonary resuscitation)心肺复苏术 | n. 心肺复苏（全写为 cardiopulmonary resuscitation，包括进行人工呼吸和体外心脏按压） | 网络 心肺复苏术(Cardio Pulmonary Resuscitation)；心肺复苏法；每回应成本(Cost per response)
+** hedge [hedʒ]
+n. 树篱；防止损失（尤指金钱）的手段 | v. 避免正面回答；不直接许诺；拐弯抹角；在（田地等周围）植树篱 | adj. 树篱的；名声不好的；低劣的 | 网络 对冲；套期保值；篱笆
+** hustle [ˈhʌs(ə)l]
+v. 推搡；猛推；催促（某人作决定）；（常指非法地）兜售 | n. 忙碌喧嚣 | 网络 飞天大盗；斗智天王；强夺
+** affair [əˈfer]
+n. 事件；事情；风流韵事；公共事务 | 网络 绯闻；私通；恋爱事件
+** 完善 [wán shàn] 
+na. perfect; improve and perfect | 网络 perfection; consummate; integrity
+** 高潮 [gāo cháo] 
+na. climax; upsurge; high tide | 网络 Orgasm; high water; crescendo
+** splayed [spleɪ]
+v. 伸展开；张开(手掌等)；【建】(使)斜削；(把桶等)造成喇叭状 | n. 展开；【建】斜削；斜面(度)；(枪眼等的)喇叭口 | adj. 宽扁的；笨重的 | 网络 八字形
+** slop [slɑp]
+v. 晃荡；溅出；倒出；使泼出 | n. 泔水；（倒掉的）剩饭菜；污水；脏水 | 网络 斜率；溢出；废油
+** etymology [ˌetɪˈmɑlədʒi]
+n. 词源学 | 网络 语源学；语源学说；辞源
+** Nitride ['naɪtraɪd]
+n. 【化】氮化物 | 网络 氮化矽；渗氮；氮化物渗氮
+** Gallium ['gæliəm]
+n. 镓 | 网络 金属镓；镓金属；镓元素
+** conundrum [kəˈnʌndrəm]
+n. 令人迷惑的难题；复杂难解的问题；谜语 | 网络 谜题；复杂难题；谜团
+** cranky [ˈkræŋki]
+adj. 古怪的；怪异的；脾气坏的 | 网络 脾气暴躁；暴躁的；任性的
+** fire up 
+na. 发动(机器)；生火；突然发怒 | 网络 生气；发火；勃然大怒
+** sans [sænz]
+prep. 无；没有 | 网络 阴性症状量表(Scale for assessment of negative symptoms)；阴性症状评定量表；存储区域网络
+** uniquify 
+网络 实例唯一化；使组唯一；网表
+** function [ˈfʌŋkʃ(ə)n]
+n. 功能；函数；作用；职能 | v. 运转；起作用；正常工作 | 网络 函式；机能；函数名
+** methodology [ˌmeθəˈdɑlədʒi]
+n. （从事某一活动的）方法 | 网络 方法论；研究方法；方法学
+** hodgepodge [ˈhɑdʒˌpɑdʒ]
+n. 同“hotch-potch” | 网络 大杂烩；混杂物；混淆
+** 方向感 
+网络 sense of direction; a sense of direction; Direction
+** traning 
+网络 自测验；套装；遮改纹身
+** tranning 
+网络 物理吸收
+** training [ˈtreɪnɪŋ]
+n. 训练；培训；锻炼 | v. “train”的现在分词 | 网络 培养；教育训练；训练模式
+** 数理逻辑 [shù lǐ luó jí] 
+na. mathematical logic | 网络 Mathematical Logic; symbolic logic; logical-mathematical
+** 工作 [gōng zuò] 
+n. work; job; operation; employment | v. work; function; operate | 网络 task; Jobs; working
+** wildcards
+网络 通配符；万用字元；通配符查找详解
+** piecemeal [ˈpisˌmil]
+adj. 逐渐做成（或发生）的；零敲碎打的；零散的 | adv. 一件一件 | n. 断片 | 网络 零碎的；零碎地；一件一件的
+** Outliers [aʊt'laɪəz]
+n. 门外汉；局外人；不住在工作地点的人；离开本体的东西 | 网络 异常值；离群值；极端值
+** glitch [ɡlɪtʃ]
+n. 小故障；小毛病；小差错 | 网络 毛刺；假信号；电子脉冲
+** Characteristics [ˌkerəktəˈrɪstɪk]
+n. 特征 | adj. 有特性的；…特有的 | 网络 特点；产品特点；特色
+** Treasure [ˈtreʒər]
+n. 财富；珍宝；宝物；珍品 | v. 珍藏；珍视；珍爱；珍重 | 网络 财宝；珍惜；宝藏
+** Relation [rɪˈleɪʃ(ə)n]
+n. 关联；联系；亲戚；亲属 | 网络 关系；关系式；关连
+** Relating [rɪˈleɪt]
+v. 关联；讲；把…与…关联起来；显示…与…的关系 | 网络 有关；联系；有关的
+** Energetic [ˌenərˈdʒetɪk]
+adj. 精力充沛的；充满活力的；需要能量的；积极的 | 网络 精力旺盛的；有力的；有活力的
+** outage [ˈaʊtɪdʒ]
+n. 停电（等）期间 | 网络 断电；中断；电力中断
+** Arranging [əˈreɪndʒ]
+v. 安排；整理；布置；准备 | 网络 编曲；排列；重新安排
+** 安排 [ān pái] 
+na. arrange; plan; timing; settle | 网络 arrangement; schedule; layout
+** 理想主义 [lǐ xiǎng zhǔ yì]
+n. idealism | 网络 idealistic; Rationalism; realism
+** 理想主义者 
+网络 idealist; NF; idealists
+** Intuition [ˌɪntuˈɪʃ(ə)n]
+n. 直觉力；（一种）直觉 | 网络 直观；直觉的知识；直觉型
+** 异步的 
+adj. asynchronous; anisochronous | 网络 non-synchronous; asynchronously; heterochronous
+** Management [ˈmænɪdʒmənt]
+n. 管理；经营；资方；管理部门 | 网络 管理学；处理；经营管理
+** 杂念 [zá niàn]
+na. distracting thoughts | 网络 Thoughts; DISTRACTIONS; Mental Chatter
+** shallow [ˈʃæloʊ]
+n. 浅滩；浅处 | adj. 浅的；肤浅的；浅薄的；（呼吸）浅的 | v. (使)变浅；(使)变浅薄 | 网络 表面的；浅层
+** achieve [əˈtʃiv]
+v. 完成；（凭长期努力）达到（某目标、地位、标准）；成功 | 网络 实现；获得；取得
+** discrepancy [dɪˈskrepənsi]
+n. 差异；不符合；不一致 | 网络 矛盾；相差；不同
+** futile [ˈfjut(ə)l]
+adj. 徒然的；徒劳的；无效的 | 网络 无用的；无益的；轻浮的
+** undesirable [ˌʌndɪˈzaɪrəb(ə)l]
+adj. 不想要的；不得人心的；易惹麻烦的 | n. 不受欢迎的人；不良分子 | 网络 讨厌的；不合需要的；不良的
+** constructed [ˈkɑnˌstrʌkt]
+v. 建造；创立；【语】造(句)；【数】作(图) | n. 结构(物)；【语】结构(体)；思维产物；构想 | 网络 建构；构造；建构的
+** specifically [spəˈsɪfɪkli]
+adv. 具体来说；明确地；具体地；特意 | 网络 特别地；特定地；明确的
+** locus [ˈloʊkəs]
+n. （某事发生的）确切地点；（被视为某物的）中心 | 网络 轨迹；基因座；位点
+** Abbrev 
+网络 缩写(abbreviation)；简写；机构简称
+** Lancet [ˈlænsət]
+n. 小刀 | 网络 柳叶刀；刺胳针；刺血针
+** 问题域 
+网络 problem domain; Domain; problem area
+** 逻辑编程 [luó jí biān chéng] 
+n. programming in logic | 网络 Logic Programming; Programming in Logic; ILP
+** 资产定价 
+网络 asset pricing; CAPM; Asset Valuation
+** investigation [ɪnˌvestɪˈɡeɪʃ(ə)n]
+n. 侦查；科学研究；学术研究 | 网络 调查；调查研究；审查
+** 调查 [diào chá] 
+na. investigation; survey; research | 网络 investigate; look into; inquiry
+** At your service 
+na. 敬候差遣 | 网络 乐意为您效劳；为您服务；愿为你效劳
+** Rinse [rɪns]
+n. 冲洗；漂洗；漱口液；洗刷 | v. 清洗；漂洗；（用清水）冲洗；冲掉…的皂液 | 网络 水洗；退浆保色洗；润丝
+** essence [ˈesəns]
+n. 本质；实质；精髓；香精 | 网络 精华液；要素；精华素
+** furthering [ˈfɜrðər]
+v. 促进 | adj. “far”的比较级；更远的；更进一步的；此外的 | adv. 更远；而且 | 网络 推动；消极地促进
+** 分叉 
+na. bifurcation; branching; forking | 网络 bifurcate; diverge; ramify
+** ramify ['ræmɪfaɪ]
+v. 使分叉；分派；使交错；生枝 | 网络 分枝；分支；使分枝
+** 情绪 [qíng xù] 
+na. mood; feeling; sentiments | 网络 emotion; emotions; emotional
+** typo [ˈtaɪpoʊ]
+n. 打字（或排印）文稿的小错误 | 网络 打字错误；错字；排印错误
+** Plasma [ˈplæzmə]
+n. 血浆；等离子体 | 网络 电浆；原生质；等离子电视
+** guts [ɡʌts]
+n. 肠道；直觉；消化道；勇气 | adj. 以感情为基础的；非理性的；本能的 | v. 损毁（建筑物或房屋的）内部；取出…的内脏（以便烹饪） | 网络 胆量；是肠子；胆子
+** entail [ɪnˈteɪl]
+v. 需要；牵涉；使必要 | n. 限定继承权；预定继承人的顺序 | 网络 使蒙受；引起；使承担
+** descry [dɪ'skraɪ]
+v. 突然看到；突然发现 | 网络 望见；看见；看出
+** Paeonia Suffruticosa
+网络 牡丹；牡丹皮；如牡丹
+** Fermentation [ˌfɜrmɛnˈteɪʃən]
+n. 发酵；〔微〕发酵过程；〔化〕发酵；激动 | 网络 发酵作用；醱酵；醱酵作用
+** Lactobacillus [ˌlæktəʊbə'sɪləs]
+n. 乳杆菌 | 网络 乳酸菌；乳杆菌属；乳酸杆菌
+** flattering [ˈflætərɪŋ]
+adj. 使人显得更漂亮的；奉承的；阿谀的；讨好的 | v. “flatter”的现在分词 | 网络 谄媚的；讨人欢喜的；讨人喜欢的
+** patient [ˈpeɪʃ(ə)nt]
+n. 病人 | adj. 有耐性的；不慌不忙 | 网络 耐心的；患者；有耐心的
+** zarathustra 
+网络 查拉图斯特拉；琐罗亚斯德；查拉图士特拉
+** blink [bliŋk]
+v. 眨眼；忽视；(灯光等)闪烁；望着 | n. 眨眼 | 网络 眨眼睛；闪亮；闪烁文字
+** 有责任感 
+网络 Responsibility; Responsible; Sense of responsibility
+** fallible [ˈfæləb(ə)l]
+adj. 会犯错误的 | 网络 易错的；易犯错误的；易犯错的
+** Makeup [ˈmeɪkˌʌp]
+n. 化妆品；组成；性格；体格 | 网络 粉底；最佳化妆；彩妆
+** 星期三 [xīng qī sān] 
+n. Wednesday (Wed. ) | 网络 Wednesdays; A Wednesday; Thursday
+** Wednesday [ˈwenzˌdeɪ]
+n. 星期三 | 网络 周三；日星期三；礼拜三
+** futile [ˈfjut(ə)l]
+adj. 徒然的；徒劳的；无效的 | 网络 无用的；无益的；轻浮的
+** May I have a word with you 
+网络 能和你说句话吗；可以和你谈谈吗；我可以和你说句话吗
+** Hanmilton 
+网络 印度事务大臣汉密尔顿
+** 泡脚 
+网络 foot soak; foot bath; Foot Soaking
+** 感恩 [gǎn ēn] 
+n. gratitude; gratefulness | v. feel grateful; be thankful | 网络 thanksgiving; Appreciation; Thankful
+** Brind 
+网络 布林德；品牌
+** brand [brænd]
+n. 品牌；类型；烙印（尤指农场牲畜身上表示所属的印记） | v. 败坏（某人）名声；给（牲畜）打烙印 | 网络 商标；牌子；名牌志
+** boilerplate [ˈbɔɪlərˌpleɪt]
+n. （可供模仿的）样板文件 | 网络 构建样板；创建样板；飞行器的试验样品
+** depopulate [diˈpɑpjəˌleɪt]
+adj. 〈古〉人口减少的 | v. 使人口减少 | 网络 减少人口；削减人口；将该
+** incur [ɪnˈkɜr]
+v. 招致；遭受；引起；引致 | 网络 惹起；承担；招惹
+** publishment 
+网络 发行；部队政治部
+** portions [ˈpɔrʃ(ə)n]
+n. 一部分；妆奁；命运；一般 | v. 把…分成份额；分配；给…嫁妆；命运注定 | 网络 份量；分量；圆周罗差
+** Excursion [ɪkˈskɜrʒ(ə)n]
+n. 短途旅行；涉猎 | 网络 远足；游览；离题
+** designated [ˈdezɪɡˌneɪtəd]
+adj. 派定的 | v. “designate”的过去式和过去分词 | 网络 指定的；指定的，特指的；插组指定
+** Novice [ˈnɑvɪs]
+n. 新手；初学者；初学修士（或修女）；（修会等的）初学生 | 网络 生手；新信徒；初心者
+** syntactic [sɪnˈtæktɪk]
+adj. 句法的 | 网络 语法；语法的；句法类
+** services [ˈsɜrvɪs]
+n. 服务；业务；服务业；事务 | v. 维修；检修；为…做后勤[第二线,辅助性]服务工作；满足(顾客)需要 | adj. 服务性的；为提供后勤[资料等]服务的；武装部队的；服现役用的 | 网络 服务项目；服务范围；专业服务
+** kernel architecture 
+网络 内核系统结构
+** vicinity [vɪˈsɪnəti]
+n. 附近；周围地区；邻近地区 | 网络 接近；附近地区；近邻
+** tweak [twik]
+n. 拧；扭；扯；（对机器、系统等的）轻微调整 | v. 拧；扭；扯；稍稍调整（机器、系统等） | 网络 捏；特威克；用力拉
+** 课题 [kè tí] 
+na. task; problem | 网络 project; topic; Topics
+** 变化率
+n. rate-of-change; rate of mutation | 网络 rate of change; gradient; change rate
+** 目录 [mù lù]
+n. xml catalog | 网络 Contents; Directory; Table of Contents
+** 虚拟化 
+网络 Virtualization; paravirtualization; Hyper-V
+** hypervision 
+网络 舞光十色
+** portion [ˈpɔrʃ(ə)n]
+n. 部分；（食物的）一份；分享的部分；分担的责任 | v. 把…分成若干份（或部分） | 网络 一部分；分配；客
+** sentinel [ˈsentɪn(ə)l]
+n. 哨兵 | v. 守卫；在…设岗哨 | 网络 卫兵；传送器；哨卫
+** 杀手级应用
+网络 Killer Application; killer app; Killer Apps
+** 哀悼 [āi dào]
+na. grieve [mourn] over sb.'s death | 网络 lament; mourning; condolence
+** Sentinels [ˈsentɪn(ə)l]
+n. 哨兵；步哨；看守人 | v. 守卫；在…设岗哨 | 网络 杀死哨兵；哨兵器；魔力岗哨
+** o [oʊ]
+int. 哦 | prep. 代替 of 的非正式说法 | 网络 啊；好；行
+** interwoven [ˌɪntərˈwiv]
+v. 交织；织进；使交错编织；使紧密结合 | 网络 交织的；护相编织；互相编织
+** amalgamate [əˈmælɡəˌmeɪt]
+v. 合并；融合；混合；联合 | 网络 汞齐化；由部分合成整体；使汞齐化
+** dawn [dɔn]
+n. 黎明；曙光；拂晓；破晓 | v. 开始；变得明朗；开始清楚 | 网络 道恩；晨曦；开端
+** daunting [ˈdɔntɪŋ]
+v. 威吓 | 网络 使人畏缩的；吓人的；令人畏惧的
+** ingressive [ɪn'gresɪv]
+adj. 与进入有关的；【语】动作[情况]的开始的 | 网络 进得去的；吸气音；进入的
+** convenient [kənˈviniənt]
+adj. 实用的；便利的；方便的；省事的 | 网络 便捷；近便的；便利性
+** 边际效益 
+网络 marginal benefit; marginal utility; Marginal Profit
+** synchronously 
+网络 同步；同步地；同步写
+** slated [sleɪt]
+n. (建筑用)板石；石板瓦；板岩；(书写用)石板 | v. 〈口〉(在报刊上)抨击；责骂(部下等)；鞭打；用石板瓦盖(屋顶) | adj. 盖石板瓦的 | 网络 预定；卷帘型；被提名的
+** transient [ˈtrænziənt]
+adj. 短暂的；转瞬即逝的；倏忽的；暂住的 | n. 暂住某地的人；过往旅客；临时工 | 网络 瞬态；瞬时；暂态
+** compile [kəmˈpaɪl]
+v. 编译；编写（书、列表、报告等）；编纂 | 网络 编辑；汇编；编制
+** dictionary [ˈdɪkʃəˌneri]
+n. 词典；字典；辞书；专业术语大全 | 网络 辞典；字典中管理；字典对象
+** OSS 
+abbr. 〈美(=Office of Strategic Services)战略情报局 | 网络 运营支撑系统(Operation Support System)；战略情报局(Office of Strategic Services)；开源软件(Open Source Software)
+** ALSA 
+网络 使用声卡者必选(Advanced Linux Sound Architecture)；万能声卡驱动
+** Pin Grid Array
+网络 针脚栅格阵列封装；插针网格阵列；针栅阵列
+** marginal [ˈmɑrdʒɪn(ə)l]
+adj. 小的；微不足道的；不重要的；非主体的 | n. （议会或地方委员会的）边缘席位 | 网络 边缘的；记在页边的；边际的
+** familiar [fəˈmɪljər]
+adj. 熟悉；通晓；熟悉的；常见到的 | n. 同…亲近起来；亲友；常客；高级官吏的家属 | 网络 常见的；通晓的；熟知的
+** 审美 [shěn měi]
+na. appreciation of the beauty | 网络 aesthetic; Aesthetics; aesthetic appreciation
+** 慈悲心 
+网络 compassion; compassionate; humane feelings
+** miley 
+网络 米莉；麦利；麦丽
+** irreversibly 
+网络 不可逆地；不可挽回地；不可逆转地
+** reversibly 
+网络 可逆地
+** storyboard [ˈstɔriˌbɔrd]
+n. （电影等的）剧情梗概系列图片 | 网络 故事板；分镜脚本；图板
+** essense 
+网络 精华导入；精华质
+** 品味 [pǐn wèi] 
+na. taste; savour | 网络 savor; relish; Savoring
+** canonicalization 
+网络 规范化；标准化；标准连结元素
+** 套娃 
+网络 Matryoshka doll; Matrioska; Nesting Dolls
+** 递归的 
+网络 recursive; recurrent; stricttail-recursive
+** 时序 [shí xù] 
+na. sequential; time sequence | 网络 Timing; time series; timing sequence
+** masquerade [ˌmæskəˈreɪd]
+n. 伪装；化装舞会；假面舞会 | v. 冒充 | 网络 化妆舞会；双面君王；避世
+** erratic [ɪˈrætɪk]
+adj. 不规则的；不确定的；不稳定的；不可靠的 | n. 漂砾；漂石 | 网络 古怪的；反复无常的；飘忽不定的
+** twiddling [ˈtwɪd(ə)l]
+v. 玩弄；捻弄；花式弹奏；〈英方〉忙于琐事 | n. 捻；波状线 | 网络 倒板
+** involuntary [ɪnˈvɑlənˌteri]
+adj. 无意识的；不自觉的；非自愿的；非本意的 | 网络 不随意的；自然而然的；不由自主
+** demultiplexing [dɪmʌltɪp'leksɪŋ]
+n. 多路分解；分成多路处理；多路化 | 网络 去多路复接；反多路复用；解多工
+** delicacy [ˈdelɪkəsi]
+n. 微妙；棘手；佳肴；柔软（性） | 网络 精致；精美；美味
+** substantial [səbˈstænʃ(ə)l]
+adj. 大量的；价值巨大的；重大的；大而坚固的 | 网络 实质的；牢固的；可观的
+** dribble [ˈdrɪb(ə)l]
+n. 带球；口水；【篮,足】运球 | v. 流口水；流涎；滴落；【篮,足】运(球) | 网络 盘带；滴下；盘球
+** summed [sʌm]
+n. 和；总和；金额；总数 | v. 总结；合计；总计(into, to) | abbr. (=surface-to-underwater missile)舰对水下导弹[飞弹] | 网络 数据包的校验策略；综合优势比
+** automatically [ˌɔtəˈmætɪkli]
+adv. 自动地；自然地；无意识地；不自觉地 | 网络 机械地；自动的；自然而然
+** genre [ˈʒɑnrə]
+n. 类型 | 网络 流派；体裁；文类
+** swig [swɪɡ]
+n. 痛饮 | v. 大口喝（酒等） | 网络 简化封装和接口生成器(Simplified Wrapper and Interface Generator)；一大口；豪饮
+** installable
+网络 可安装；可安装的；嵌入授权
+** incarnation [ˌɪnkɑrˈneɪʃ(ə)n]
+n. 化身；（某一段时间内的）化身；代表某种品质的人 | 网络 道成肉身；转世；体现
+** executable [ˈeksəˌkjutəb(ə)l]
+adj. 可执行的 | 网络 可执行文件；可执行档；可执行程序
+** addictive [əˈdɪktɪv]
+adj. 使人上瘾的；使人入迷的 | 网络 使成瘾的；当心上瘾；沉迷的
+** modulize 
+网络 模块化；模组化；王克明的软体的模组化
+** creer
+网络 电子研究中心；事业篇；历程
+** career [kəˈrɪr]
+n. 职业；事业；生涯；经历 | adj. 〈美〉职业性质的 | v. 飞奔 | 网络 职业生涯；工作；专业
+** openess 
+网络 敞开；坦诚；敞开胸襟
+** Transposition [ˌtrænspə'zɪʃ(ə)n]
+n. 换位；【数】移项；【语】词序改变；【乐】变调(曲) | 网络 转座；移调；转位
+** ciphers [ˈsaɪfər]
+n. 密码；零〔即0〕；数码；密码索引 | v. 计算；〔美口〕算出；运算；用密码书写 | 网络 密码算法；密码组合；算法数
+** 边际效益递增 
+网络 increasing return
+** 爱好 [ài hào] 
+n. interest, hobby, love, liking, appetite, cup of tea | v. like | 网络 Hobbies; be fond of; go in for
+** updown 
+un. 有起伏的球路 | 网络 上下按钮；上下翻码控件；上下移动処理
+** topdown 
+un. 组织 | 网络 自顶向下；自上而下；自上而下的过程
+** top-down 
+adj. 从总体到具体的；自上而下的；先总后分的；（组织或机构中）自上而下的 | n. 自顶向下的 | 网络 由上而下；从上而下；从上到下
+** bottom-up 
+adj. 自下而上的；从点到面的 | n. 倒置 | 网络 由下而上；自底向上；由下至上
+** margin [ˈmɑrdʒɪn]
+n. 边缘；差额；余地；界限 | v. 给…镶边；在…加旁注；【股】为…付保险金 | 网络 保证金；边距；外边距
+** testify [ˈtestɪˌfaɪ]
+v. 证明；证实；（尤指出庭）作证；见证（上帝的存在） | 网络 表明；声明；做证
+** 着装习惯 
+网络 Kleiderordnung
+** 扁平化 
+网络 Delayering; flatten; flattening
+** refined [rɪˈfaɪnd]
+adj. 精炼的；提纯的；精制的；有礼貌的 | v. “refine”的过去式和过去分词 | 网络 高雅；优雅的；文雅的
+** striped [straɪpt]
+adj. 有条纹的 | 网络 有斑纹的；带条纹的；显示条纹
+** processes [prəˈses]
+n. 过程；工序；方法；作用 | v. 处理；加工；〈口〉排队走；初步分类 | adj. 经过特殊加工的；(用化学方法等)处理过的；照相制版的；三色版的 | 网络 进程；流程；程序
+** 瓜分 [guā fēn] 
+na. partition; carve up; divide up | 网络 dismember; dismemberment; divvy
+** 指标 [zhǐ biāo] 
+na. index; target; quota; norm | 网络 indicator; KPI; indicators
+** 占用 [zhàn yòng] 
+na. occupation; occupy; employ | 网络 take up; occupancy; appropriate
+** 监控 [jiān kòng] 
+na. monitor; control | 网络 Monitor; Monitoring; SCADA
+** 实时的 
+n. real-time | 网络 in real-time; just-in-time; Real Mode
+** consumption [kənˈsʌmpʃ(ə)n]
+n. 消费；消耗量；肺结核；肺病 | 网络 消费量；功耗；结核病
+** varieble 
+网络 冰河行星
+** 变量 [biàn liàng] 
+na. 【数】variable; variable quantity | 网络 variables; variant; variate
+** 任意的 
+adj. optional; facultative | 网络 arbitrary; random; haphazard
+** anniversary [ˌænɪˈvɜrs(ə)ri]
+n. 周年纪念日 | adj. 周年的；周年纪念的；每年的 | 网络 周年庆；周年庆典
+** Goethe [ˈɡɚtə]
+na. Johann Wolfgang von. 约翰沃尔夫冈歌德 | 网络 哥德；诗人哥德；文学家哥德
+** condolence [kənˈdoʊləns]
+n. 吊唁；慰唁 | 网络 哀悼；慰问；哀悼之情
+** 血清素 [xuè qīng sù] 
+n. serotonin; thrombotonin | 网络 SSRI; enteramine; serotonergic
+** serotonin [ˌsɪrəˈtoʊnɪn]
+n. 5- 羟色胺 | 网络 血清素；血清促进素；血清张力素
+** snacks [snæk]
+n. 小吃；点心；快餐；一口 | v. 吃快餐[小吃,点心] | 网络 零食；零嘴；小食
+** floor [flɔr]
+n. 地板；地面；楼层；底价 | v. 使惊奇；使困惑；（尤指体育运动中）击倒；给…安装地板 | 网络 楼面；下限
+** dressing [ˈdresɪŋ]
+n. 打扮；穿着；沙拉酱；调味汁 | v. 穿着；装饰；dress的现在分词 | 网络 敷料；修整；穿衣
+** relaxation [ˌrilækˈseɪʃ(ə)n]
+n. 放松；消遣；休息；用于放松消遣的时间 | 网络 松弛；娱乐；缓和
+** resume [ˈrezuˌmeɪ]
+n. 简历 | v. 继续；重返 | 网络 个人简历；恢复；重新开始
+** 洗澡 [xǐ zǎo] 
+na. bathe; wash; have a bath | 网络 take a bath; take a shower; Shower
+** 日记 [rì jì] 
+na. diary | 网络 journal; Diaries; log
+** timeless [ˈtaɪmləs]
+adj. 不受时间影响的；无时间性的；永不过时的；永存的 | 网络 永恒；永恒的；张力尹
+** reconciling [ˈrekənˌsaɪl]
+v. 使和解；调停；使安心；使一致 | 网络 调和；协调；和好
+** 提出问题 
+v. challenge | 网络 Raise question; raise a question; ask a question
+** expression [ɪkˈspreʃ(ə)n]
+n. 表达；表情；说法；压榨 | 网络 表达式；表现；运算式
+** 午休 [wǔ xiū] 
+na. noon break; midday rest | 网络 Lunch Break; Siesta; Nap Time
+** 时令  [shí lìng] 
+na. season | 网络 in season; seasonal changes; seasonal regulations
+** bangor [ˈbæŋɡɔr]
+网络 威尔士班戈大学；班戈市；班戈大学学院
+** compatriot [kəmˈpeɪtriət]
+n. 同胞；同国人 | adj. 同国的 | 网络 同胞的；同国人或队友；港澳台同胞及海外侨胞
+** 时令菜 
+网络 Sensonal dishes
+** 麦片 [mài piàn] 
+na. oatmeal | 网络 cereal; porridge; rolled oats
+** oatmeal [ˈoʊtˌmil]
+n. 燕麦片；燕麦粉；浅棕色；淡棕色 | 网络 燕麦粥；麦片粥；燕麦色
+** reconcile [ˈrekənˌsaɪl]
+v. 调和；使和谐一致；使配合；使和解 | 网络 使和好；调停；调解
+** paycheck [ˈpeɪˌtʃek]
+na. 工资；薪金；工资支票；〈美〉播音演出的主办人 | 网络 记忆裂痕；薪水；付薪水的支票
+** payback [ˈpeɪˌbæk]
+n. 回报；本金返还；还本；投资的回收期 | v. 偿还；补偿 | 网络 危险人物；报复；报应
+** parameters [pəˈræmɪtər]
+n. 【数】参数；参词；参项；【物】参量 | 网络 参数面板；声明的语法；主要参数
+** format [ˈfɔrˌmæt]
+n. 总体安排；计划；设计；开本 | v. 格式化；安排…的版式 | 网络 形式；格式化磁盘；规格
+** element [ˈelɪmənt]
+n. 要素；原理；【数】元；【军】小队 | 网络 元素；元件；成分
+** endianness 
+网络 字节序；字节顺序；字节次序
+** invert [ɪnˈvɜrt]
+v. 倒置；反转；〈正式〉倒转；翻转 | n. 颠倒的事物；翻转 | 网络 反相；反色；反选
+** emulate [ˈemjəˌleɪt]
+v. 仿真；模仿；努力赶上；向…看齐 | 网络 仿效；模拟；效仿
+** 时令蔬菜
+网络 Seasonal Vegetable; Vegetables; Poached Seasonal Vegetable
+** 洗漱 [xǐ shù] 
+na. wash one's face and rinse one's mouth | 网络 Washing; ablutions; to wash the face and rinse the mouth
+** bootstrap ['buːtstræp]
+adj. 依靠自己力量的；自己做的 | n. 拔靴带 | 网络 自举；引导；引导程序
+** Multiplexing [ˈmʌltɪˌpleks]
+n. 多路；多厅影院 | adj. 多部的；【电讯】多路传输的；多路复用的；多元的 | v. 多路复用；多重发讯 | 网络 多工；多路复用技术；多路技术
+** codec ['koʊ]
+n. 〔计〕编码译码器 | 网络 编解码器；编码解码器；解码程式
+** minimise ['mɪnɪmaɪz]
+v. 使减少到最低限度；降低；贬低；使显得不重要 | 网络 把&#183;&#183;&#183;减到最少；使减至最小限度；把…减至最低数量
+** prominent [ˈprɑmɪnənt]
+adj. 重要的；著名的；杰出的；显眼的 | 网络 突出的；显著的；卓越的
+** deliverables [dɪˈlɪv(ə)rəb(ə)l]
+n. 应交付的产品 | 网络 可交付成果；交付物；可交付物
+** 外设 
+网络 Peripheral; Peripherals; USB
+** generative [ˈdʒen(ə)rətɪv]
+adj. 有生产力的；能生产的；有生殖力的 | 网络 成式；生成性；生成的
+** 发财树
+网络 Pachira macrocarpa; Money Tree; Crassula argentea
+** Delve [delv]
+v. 钻研；掘 | n. 坑；凹地；井；沟槽 | 网络 探究；深入探究；穴
+** 人口 [rén kǒu] 
+n. population | 网络 in; human population; the population
+** refactor 
+网络 重构；重构你的代码；代码重构
+** series [ˈsɪriz]
+n. 串联；一系列；连续；接连 | 网络 级数；丛书；序列
+** 打 [dá] [dǎ] [da]
+v. hit; beat; fight; strike | qua. dozen | 网络 play; bat; knock
+** Munches [mʌntʃ]
+v. 用力[大声]地咀嚼；贪馋地咀嚼 | 网络 大快朵颐
+** surplus [ˈsɜrpləs]
+n. 盈余；顺差；剩余；过剩 | adj. 过剩的；剩余的；多余的 | 网络 结余
+** revert [rɪˈvɜrt]
+v. 回复 | n. 归属；恢复原来信仰的人 | 网络 还原；恢复原状；返回
+** stale [steɪl]
+v. 走味；使陈旧；使没有味道；用坏 | adj. 不新鲜的；（空气）污浊的；（烟味）难闻的；陈腐的 | n. 囮子；笑柄；受人愚弄成为笑谈的人；畜尿 | 网络 陈旧的；走了气的；走味的
+** devoid [dɪˈvɔɪd]
+adj. 完全没有；缺乏 | 网络 缺乏的；空的；全无的
+** logarithmically ['lɒɡərɪðmɪklɪ]
+adv. 对数 | 网络 对数地；用对数；对数方式
+** 神经科学 [shén jīng kē xué]
+un. neuroscience | 网络 Neuroscience; NEUROSCIENCES; Neurology
+** systematic [ˌsɪstəˈmætɪk]
+adj. 成体系的；系统的；有条理的；有计划有步骤的 | 网络 有系统的；系统化；系统性
+** mitigation [ˌmɪtɪˈɡeɪʃ(ə)n]
+n. 缓解；减轻 | 网络 减缓；缓和；减灾
+** ethernet ['iθər.net]
+na. 【计】以太网(局域网) | 网络 乙太网路；以太网络；工业以太网
+** unexpected [ˌʌnɪkˈspektəd]
+adj. 出乎意料的；始料不及的 | 网络 意外的；想不到的；突然的
+** glyphs 
+n. 【建】束腰竖沟；雕像；表达信息的符号 | 网络 字形；雕文；雕纹
+** systemize ['sɪstəmˌaɪz]
+v. 组织化；系统化 | 网络 整理；使有系统；组织起来
+** 平静 [píng jìng] 
+na. calm; quiet; tranquil | 网络 peace; serenity; tranquility
+** tranquility [ˈtræŋkwɪlətɪ]
+n. 宁静 | 网络 安宁；平静；安静
+** canceled [ˈkæns(ə)l]
+v. 取消；注销；撤消；抵消 | n. 取消；删略；【数】(相)约；盖销 | 网络 已取消；取消的；取消生产
+** 伴侣 [bàn lǚ] 
+na. partner; companion; mate | 网络 company; partners; companionship
+** 神经 [shén jīng] 
+na. nerve; nervus | 网络 Nerves; neuro; neural
+** 蒲公英 [pú gōng yīng]
+na. dandelion | 网络 Dandelion; Taraxacum officinale; Taraxacum mongolicum
+** intact [ɪnˈtækt]
+adj. 完整；完好无损 | 网络 完整的；完整无缺的；未经触动的
+** albeit [ɔlˈbiɪt]
+conj. 尽管；虽然 | 网络 即使；纵令
+** programing [i]
+n. 计划；节目；节目单；【计】程序 | v. 【计】给…编写程序；为…制定计划；使…按安排进行 | 网络 编程方法；程序编排；数控程序设计
+** 分辨率 [fēn biàn lǜ] 
+na. resolution ratio | 网络 Resolution; dpi; resolving power
+** Brokerage [ˈbroʊkərɪdʒ]
+n. 经纪业务；经纪人佣金（或回扣） | 网络 经纪费；经纪佣金；经纪公司
+** emphasis [ˈemfəsɪs]
+n. 强调；重视；重要性；（对某个词或短语的）强调 | 网络 重点；加重；加强
+** delimit [diˈlɪmɪt]
+v. 界定；定…的界限；限定 | 网络 定界；划定界限；划界
+** running [ˈrʌnɪŋ]
+n. 跑；管理；操作；操纵 | adj. （置于数字和 year、day 或 time 等名词后，表示同样的事一再重复）连续 | v. “run”的现在分词 | 网络 运行；跑步；奔跑
+** economist [ɪˈkɑnəmɪst]
+n. 经济学家；经济专家 | 网络 经济学人；经济师；经济学人杂志
+** investing [ɪnˈvest]
+v. 投资；授与；【军】包围；使穿 | 网络 商业与投资；投资法；投资理财
+** 共振 [gòng zhèn] 
+na. resonance; resonance vibration | 网络 resonate; SPR; sympathetic vibration
+** phandle  
+网络 指向一个句柄的指针；我得到的进程句柄；指向一个控制码的指标
+** rethrows
+网络 重新抛出
+** garbled [ˈɡɑrb(ə)ld]
+adj. 混乱不清的 | n. 药材 | 网络 乱码；篡改的；引起误解的
+** slant [slænt]
+n. 倾斜；斜面；歪斜；斜线 | v. 歪斜；有倾向性地陈述；有偏向地报道 | adj. 歪斜的 | 网络 倾斜度；使倾斜；倾斜的
+** 不可靠 
+na. unreliable; unsoundness; uncertain | 网络 uncertainty; unreliability; Fly by night
+** triplet [ˈtrɪplət]
+n. 三胞胎中的一个；三连音 | 网络 三重态；三联体；三个一组
+** monochrome [ˈmɑnəˌkroʊm]
+adj. 黑白的；单色的 | n. 【摄】单色(图片)；单色画[照片] | 网络 单色照片；单色调；灰度化
+** voluminous [vəˈlumɪnəs]
+adj. 肥大的；宽松的；用布料多的；浩繁的 | 网络 长篇的；大量的；卷数多的
+** bidirectional [ˌbaɪdaɪˈrekʃ(ə)nəl]
+adj. 双向的 | n. 双指向性 | 网络 双向性的；双向关联；双向型
+** nuisance [ˈnusəns]
+n. 麻烦事；讨厌的人（或东西）；妨害行为 | 网络 损害；讨厌的东西；令人讨厌的东西
+** trailing [ˈtreɪlɪŋ]
+v. “trail”的现在分词 | 网络 结尾；拖尾；尾随的
+** glyph [glɪf]
+n. 石雕符号；象形文字 | 网络 字形；图像；标志符号
+** hyphen [ˈhaɪfən]
+n. 连字符 | 网络 连字号；连接号；连字符号
+** laxity ['læksəti]
+n. 松弛；轻泻(性)；(纺织品等的)疏松；粗心 | 网络 放纵；松弛度；关节松弛
+** schedule [ˈskedʒəl]
+v. 安排；预定；为…安排时间；将…列入 | n. 日程安排；明细表；工作计划；（电视或广播）节目表 | 网络 时间表；日程表；调度
+** dormant [ˈdɔrmənt]
+adj. 休眠的；蛰伏的；暂停活动的 | 网络 静止的；冬眠的；睡眠状态的
+** Strew [stru]
+v. 把…布满（或散布在）；在…上布满（或散播）；撒满；散播在…上 | 网络 点缀；撒布；乱放
+** Stew [stu]
+v. 炖；自作自受；烦恼 | n. 炖；炖肉 | 网络 炖菜；焖；烩
+** Response [rɪˈspɑns]
+n. 响应；反应；答复；（礼拜仪式中的）答唱咏 | 网络 回应；回答；应答
+** seen [sin]
+adj. 熟悉的；精通的；看得见；〈古〉懂得 | v. see(看见)的过去分词 | 网络 看到；舜；见过
+** hourglass [ˈaʊrˌɡlæs]
+adj. （女人身材）丰乳肥臀的 | n. 沙漏（玻璃容器上部的沙子经一小孔漏到下部，全部漏完正好一小时） | 网络 沙漏型身材；砂漏；滴漏
+** legibility [ˌlɛdʒə'bɪlətɪ]
+n. 易读性 | 网络 可识别性；可读性；清晰度
+** Dired 
+网络 里B；目录编辑器；直接干预
+** overshoot [ˌoʊvərˈʃut]
+v. 超过；超过（原计划）；突破（预计费用） | n. 【自】过调量 | 网络 过冲；超调量；超射
+** 周六 [zhōu liù] 
+n. Saturday | 网络 pm; Sunday; Saturdays
+** Transposing [trænsˈpoʊz]
+v. 调换；【数】移项；【语】改变词序；【乐】变调 | 网络 置换；转置；移调
+** 阻碍 [zǔ ài] 
+na. hinder; block; impede; impediment | 网络 hamper; set back; obstacle
+** snugly 
+adv. 逍遥自在地；舒适地 | 网络 紧紧地；贴身地；紧密地
+** 直觉 [zhí jué] 
+na. 【心】intuition | 网络 instinct; intuitive; hunch
+** disparate [dɪˈsperət]
+adj. 由不同的人（或事物）组成的；迥然不同的；无法比较的；不相干的 | n. 无法比较的东西 | 网络 全异的；异类的；根本不同的
+** uniformity [ˌjunɪˈfɔrməti]
+n. 均匀；一致；无变化 | 网络 一致性；均匀度；均匀性
+** nutshell [ˈnʌtˌʃel]
+n. 坚果的外壳；极小的容器；窄小的房屋；没有价值的东西 | adj. 扼要的 | 网络 坚果壳；坚果外壳；果壳铃
+** autonomous [ɔˈtɑnəməs]
+adj. 自治的；有自治权的；自主的；有自主权的 | 网络 自主性；自发的；自治性
+** Transition Bus Drivers 
+网络 转换到总线驱动
+** libata 
+网络 李拜天
+** tedious [ˈtidiəs]
+adj. 冗长的；啰嗦的；单调乏味的；令人厌烦的 | 网络 冗长乏味的；单调的；沉闷的
+** solaire
+网络 太阳；索拉尔；索莱蕾
+** asure 
+网络 八宝粥；阿舒瑞；亚资
+** Hooray [huˈreɪ]
+int. 万岁；好哇 | n. 万岁 | 网络 欢呼；齐欢呼；欢呼声
+** 报告  [bào gào] 
+na. report; talk; lecture; speech | 网络 Reports; Reporting; notify
+** clobber [ˈklɑbər]
+v. 狠击；狠揍；猛打；极大地打击 | n. 衣服；随身物品 | 网络 鞋匠；食宴棋；彻底打垮
+** emerge [ɪˈmɜrdʒ]
+v. 浮现；显现；暴露；露出真相 | 网络 出现；形成；显露
+** hunk [hʌŋk]
+n. （尤指食物切下或掰下的）大块；魁梧性感的男子；猛男 | adj. 同“hunky” | 网络 汉克；大个儿，大块头；厚块
+** replay [ˈriˌpleɪ]
+n. 重播；（由于未决出胜负而进行的）重赛；重演的事物；重复出现的事物 | v. （因胜负未决）重赛；重新播放（录像、录音等） | 网络 重放；回放；姐姐你太美了
+** subfiles 
+网络 子文件；子库；子类
+** trient
+网络 特兰托市；特伦托；特里恩
+** identifying [aɪˈdentɪˌfaɪ]
+v. 识别；【生】确定…在分类学上的位置；使成为一致 | 网络 标识；辨认；鉴别型
+** inventory [ˈɪnvənˌtɔri]
+n. 库存；财产清单；（建筑物里的物品、家具等的）清单 | v. 开列清单 | 网络 存货；详细目录；存货清单
+** vocabulary [voʊˈkæbjəˌleri]
+n. 词汇量；（某一语言的）词汇；（某学科中所使用的）词汇 | 网络 词汇表；字汇；单字
+** subscription [səbˈskrɪpʃ(ə)n]
+n. 订阅；（向慈善机构的）定期捐款；（俱乐部的）会员费 | 网络 预订；认购；预约
+** canonical [kəˈnɑnɪk(ə)l]
+adj. 被收入真经篇目的；经典的；按照基督教教会法规的 | n. (布道时应穿的)法衣 | 网络 标准；规范的；典型
+** install [ɪnˈstɔl]
+v. 安装；设置；安置；建立（程序） | 网络 开始安装；进行安装；装置
+** ditch [dɪtʃ]
+n. 沟；渠 | v. 抛弃；摆脱；丢弃；使（飞机）在海上紧急降落 | 网络 沟渠；水沟；壕沟
+** agile [ˈæˌdʒəl]
+adj. 敏捷的；灵活的；(思维)敏捷的；机智的 | 网络 轻快的；敏捷开发；敏捷式
+** sage [seɪdʒ]
+n. 圣人；智者；鼠尾草 | adj. 贤明的；明智的 | 网络 贤者；洋苏草；基因表达系列分析(serial analysis of gene expression)
+** dexterity [dekˈsterəti]
+n. 熟练；灵活 | 网络 敏捷；灵巧；敏捷度
+** 空闲的时间 
+网络 leisure; spare time; free time
+** horizontally [ˌhɑrɪˈzɑntəlɪ]
+adv. 水平地 | 网络 水平置中；水平的；水平居中
+** conform [kənˈfɔrm]
+v. 遵守；相一致；顺从；相符合 | 网络 使一致；遵从；适应
+** offloaded [ˈɔfˌloʊd]
+v. 卸货；从…卸下货物；发泄(忧伤,苦闷等)；解除(苦闷,负担等) | 网络 卸载；拉货；延绳钓渔获卸货
+** grails 
+n. 同“gradual psalms”；鹅卵石；杯；盘 | 网络 圣杯；框架；开发命令
+** 保留 [bǎo liú] 
+na. retain; reserve; persist | 网络 Reserved; reservation; retention
+** 摘要 [zhāi yào] 
+na. summary; abstract; digest; synopsis | 网络 Abstract; brief; Abstracts
+** precede [prɪˈsid]
+v. 先于；在…之前发生（或出现）；走在…前面 | 网络 领先；领先于；优于
+** precedes [prɪˈsid]
+v. 在…之先；在…之上；优于；比…重要 | 网络 领先；领先于；先於
+** 领先于 
+网络 precede; ahead of; precedes
+** building [ˈbɪldɪŋ]
+n. 建筑；建筑物；楼房；房子 | v. “build”的现在分词 | 网络 大楼；房屋；大厦
+** placeholder ['pleɪshəʊldə(r)]
+n. （替代缺失部分的）占位符 | 网络 占位控件；位置标志符；占位符号
+** extensibility [ɪkˌstensə'bɪlətɪ]
+n. 延伸性 | 网络 可扩展性；延展性；扩充性
+** 季度 [jì dù] 
+na. quarter (of a year) | 网络 Season; Quarterly; Calendar Quarter
+** diverted [daɪˈvɜrt]
+v. 使转移 (from； to)；挪用(资金等)；使(工作等)改行 | 网络 转向；911心灵航程；使转向
+** perusal [推荐]
+n. 精读；仔细察看；〈古〉研讨 | 网络 熟读；细读；目测
+** happens [ˈhæpən]
+v. 发生；〈口〉出现；偶然… | 网络 碰巧；发生过的；若发生某事，假如
+** physical [ˈfɪzɪk(ə)l]
+n. 体检；体格检查 | adj. 身体的；肉体的；躯体的；客观存在的 | 网络 物理的；物质的；物理层
+** rather [ˈræðər]
+adv. 而是；稍微；（常用于表示轻微的批评、失望或惊讶）相当；更准确地说 | int. 表示同意某人的提议 | 网络 宁可；宁愿；颇
+** Encounter [ɪnˈkaʊntər]
+v. 遭遇；偶然碰到；意外地遇见；与…邂逅 | n. 遭遇；交锋；警察击毙嫌疑犯事件 | 网络 遇到；相遇；遭到
+** bud [bʌd]
+n. 芽；萌芽；花蕊；〔生〕芽体 | v. 萌芽；抽芽；开始发育[发展,成长]；处于未成熟状态 | 网络 花蕾；蓓蕾；发芽
+** 情绪价值 
+网络 emotional value
+** tilted [tɪlt]
+n. 坡度；遮阳；车盖；倾侧 | v. 翘起；用帐篷遮盖；倾斜(侧)；(在马上)拿枪扎 | 网络 倾斜的；不正，歪斜；倾斜平面或光楔
+** tomography [tə'mɒgrəfi]
+n. 层析成像 | 网络 体层摄影；断层摄影；断层摄影术
+** hose  [hoʊz]
+n. 塑料管；（旧时的）男式紧身裤 | v. 用软管输水冲洗（或浇水） | 网络 水管；水龙带；长筒袜
+** decipher [dɪˈsaɪfər]
+v. 破译 | n. 密电(或密信)的译文 | 网络 译解；解释；解码
+** terminals [ˈtɜrmɪn(ə)l]
+n. 端子；(电池的)端；线端；末端 | adj. 期终的；末期的；【动,解】末梢的；端的 | 网络 终端；接线端子；终端头
+** recur [rɪˈkɜr]
+v. 再发生；反复出现 | 网络 重现；复发；重演
+** financial [faɪˈnænʃ(ə)l]
+adj. 财政的；财务的；金融的；有钱的 | 网络 金融业；财政的金融的
+** authoring [ˈɔθərɪŋ]
+n. 著作 | v. “author”的现在分词 | 网络 创作；编辑；多媒体制作
+** extraneous [ɪkˈstreɪniəs]
+adj. 没有直接联系的；无关的 | 网络 外来的；无关系的；外部的
+** standby [ˈstændˌbaɪ]
+n. 后备人员；备用物品 | adj. （机票、音乐会门票等）最后时刻出售的 | 网络 待机；待命；等待
+** infix operators 
+网络 中缀操作符；中置运算元
+** documentation [ˌdɑkjumənˈteɪʃ(ə)n]
+n. 证明文件；归档；必备资料；文件记载 | 网络 文档；文件编制；文档化
+** flickering ['flɪkərɪŋ]
+adj. 扑动的；忽隐忽现的 | v. “flicker”的现在分词 | 网络 闪烁；闪烁的；摇曳的
+** choke [tʃoʊk]
+n. 窒息；哽噎；（车辆发动机的）进气门；哽噎声 | v. 阻塞；哽噎；使窒息；（尤指感情激动而）说不出话来 | 网络 扼流圈；阻风门；噎住
+** mailing list 
+n. 邮寄名单；邮寄名址录；（计算机中存储的）电邮发送清单 | 网络 邮件列表；邮寄清单；邮件清单
+** 分化 [fēn huà] 
+na. 【生】differentiation; split up | 网络 differentiate; transdifferentiation; differentiated
+** synthesize [ˈsɪnθəˌsaɪz]
+v. 综合；（通过化学手段或生物过程）合成；（音响）合成 | 网络 综合优化；使合成；人工合成
+** provide [prəˈvaɪd]
+v. 提供；供应；给予；规定 | 网络 供给；准备；为某人提供某物
+** chinese [ˌtʃaɪˈniz]
+n. 中国人；华人；汉语；〈非正式〉中国餐馆 | adj. 中国的；中华民族的；中文的 | 网络 语文；中文名称
+** Composite [kəmˈpɑzɪt]
+n. 复合材料；混合物；合成物 | adj. 合成的；混成的；复合的 | 网络 组合；合成模式；复合视频
+** snoop [snʊp]
+v. 窥探；窥视 | n. 窥视；打听别人秘密的人 | 网络 探听；史努比；史奴比
+** bonneville
+网络 博纳维尔；邦纳维尔；老敞篷车之旅
+** decamp [dɪˈkæmp]
+v. 逃亡；潜逃 | 网络 撤营；逃走；开小差
+** screw [skru]
+n. 螺丝；螺丝钉；（对螺丝的）旋拧；性交 | v. 用螺丝固定（或拧牢）；旋紧；拧紧；拧上去 | 网络 螺钉；螺旋；螺栓
+** Hewlett Packard 
+网络 惠普；惠普公司；惠普电脑
+** wrangle [ˈræŋɡ(ə)l]
+n. 争吵 | v. （通常为长时间地）争吵 | 网络 口角；争论；吵架
+** tycoon [taɪˈkuːn]
+n. 大亨；企业巨头 | 网络 大款；将军；巨富
+** drudgery [ˈdrʌdʒəri]
+n. 单调乏味的苦差事；繁重无聊的工作 | 网络 苦工；单调乏味的工作；单调沉闷的工作
+** trail off 
+na. (声音)逐渐消失；“trail away”的变体 | 网络 逐渐变弱；减弱；变小
+** reminisce [ˌremɪˈnɪs]
+v. 回忆 | 网络 追忆；追忆往事；话旧
+** roulette [ruˈlet]
+n. 轮盘赌 | 网络 俄罗斯轮盘；转盘；旋轮线
+** stance [stæns]
+n. 立场；（尤指体育运动中的）站立姿势 | 网络 站姿；姿态；站位
+** predominantly [prɪˈdɑmɪnəntli]
+adv. 主要地；占主导地位地；压倒性地 | 网络 占优势地；主要的；突出
+** wayward [ˈweɪwərd]
+adj. 难以控制的；任性的；倔强的 | 网络 反复无常的；刚愎的；刚愎自用的
+** devilishly ['devəlɪʃli]
+adv. 极其；非常 | 网络 过分地；非常地；极端地
+** magic wand 
+网络 魔术棒；魔杖；魔棒
+** flagrant [ˈfleɪɡrənt]
+adj. 骇人听闻的；公然的；罪恶昭彰的 | 网络 恶名昭彰的；明目张胆的；恶名昭著的
+** circumventing [ˈsɜrkəmˌvent]
+v. 用计防止；避免；围困；用计超过[胜过,包围] | 网络 失灵
+** seduce [sɪˈdus]
+v. 诱奸；诱骗；唆使 | 网络 引诱；勾引；诱惑
+** 调用 [diào yòng] 
+na. call | 网络 invoke; invocation; calls
+** prune [prun]
+v. 精简；修剪(树木的枝叶)；修枝；删去 | n. 【食】梅干；西梅脯 | 网络 李子；剪除；剪枝
+** 自举 
+n. bootstrap | 网络 Bootstrap; bootstrapping; bootstrapped
+** custom [ˈkʌstəm]
+n. 习俗；风俗；光顾；（个人的）习惯 | adj. 〈美〉(衣服等)定做的 | 网络 自定义；定制；海关
+** undefined [ˌʌndɪˈfaɪnd]
+adj. 未阐明的；未限定的 | 网络 未定义；未定义的；无定义
+** description [dɪˈskrɪpʃ(ə)n]
+n. 说明；形容；描写（文字）；类型 | 网络 描述；商品描述；产品描述
+** control [kənˈtroʊl]
+n. 控制权；控制（或操纵）能力；限制；限定 | v. 指挥；控制；掌管；支配 | 网络 控件；控制器；对照
+** sprang [sprɪŋ]
+v. 跳；出身；发生；发芽 | n. 春季；弹簧；(汽车的)钢板；弹力 | 网络 跳跃；的过去式；窜出
+** scheduled [ˈskedʒəld]
+v. “schedule”的过去分词和过去式 | 网络 预定；预定的；已排程
+** cranium [ˈkreɪniəm]
+n. 颅；颅骨；头盖骨 | 网络 头骨；颅腔；头颅
+** hindrance [ˈhɪndrəns]
+n. 妨碍；造成妨碍的人（或事物）；阻挠 | 网络 障碍；阻碍；妨害
+** doled [doʊl]
+n. 多尔；悲叹；〈英口〉失业救济；赈济品 | v. 少量分发 | 网络 都乐；失业救济金；悲哀
+** chronical [ˈkrɑnɪk]
+adj. 慢性的；长期的；积习成癖的；(天气等)恶劣的 | n. 慢性病人 | 网络 纪事；纪事报；延续很长的
+** giddily ['ɡɪdɪlɪ]
+adv. 滔滔地；眼花地 | 网络 头晕地；感到头晕
+** stature [ˈstætʃər]
+n. 身高；个子；声望；名望 | 网络 身材；身长；高度
+** manhole [ˈmænˌhoʊl]
+n. 检查井 | 网络 人孔；沙井；检修孔
+** amply ['æmpli]
+adv. 广大地；充足地；详细地 | 网络 足够地；充足的；充分地
+** radical [ˈrædɪk(ə)l]
+n. 自由基；激进分子；游离基 | adj. 根本的；彻底的；完全的；全新的 | 网络 激进的；基本的；基进
+** concede [kənˈsid]
+v. 让步；允许；承认（某事属实、合乎逻辑等）；承认（比赛、选举等失败） | 网络 认输；让与；承认失败
+** fared [fer]
+n. 车费；乘客；伙食；(渔船的)捕获量 | v. 旅行；(事)进行得(好,坏)；进食；过日子 | 网络 法依笛；正宇奈米科技
+** subversive [səbˈvɜrsɪv]
+adj. 颠覆性的；暗中起破坏作用的 | n. 颠覆分子 | 网络 破坏性的；颠覆的；破坏的
+** libidinous [lɪˈbid(ə)nəs]
+adj. 性欲强的；好色的；淫荡的 | 网络 挑逗的；欲望十足的
+** illicit sex 
+网络 不正当性行为；违法的
+** flair [fler]
+n. 天赋；天资；天分；才华 | 网络 才能；本领；液体衰减反转恢复(fluid attenuated inversion recovery)
+** duvet [ˈduˌveɪ]
+n. 羽绒被 | 网络 鸭绒垫子；被子；棉被
+** prodigy [ˈprɑdədʒi]
+n. 奇才；壮举 | 网络 天才；神童；奇迹
+** pinnacle [ˈpɪnək(ə)l]
+n. 顶峰；顶点；鼎盛时期；（建筑物）尖顶 | v. 使成小尖塔形；把…放在高处 | 网络 品尼高；顶尖；尖峰
+** 完成 [wán chéng] 
+na. complete; finish; accomplish; fulfil | 网络 achieve; Done; achievement
+** 流程 [liú chéng]
+na. flow; procedure; circuit | 网络 Process; Processes; Procedure
+** quirk [kwɜrk]
+n. 怪癖；怪异的性格（或行为）；（尤指偶发的）怪事 | v. 突然扭曲（嘴或眉毛）；撇嘴；扬眉；皱眉 | 网络 夸克；奇事；古怪行为
+** 博弈 [bó yì]
+n. game | 网络 Game; game theory; games
+** 主线 [zhǔ xiàn] 
+n. main thread; cardinal line | 网络 mainline; Main; Principal Line
+** mainline [ˈmeɪnˌlaɪn]
+adj. 传统的；主流的 | v. 静脉注射（毒品） | 网络 主线；干线；主管道
+** patent [ˈpæt(ə)nt]
+n. 专利；专利权；专利证 | adj. 专利(的)；显然；明摆着的 | v. 取得专利权 | 网络 专利的；专利品；专利证书
+** t [ti]
+na. 中世纪罗马数字的160；英语字母表第二十个字母；T字形物 | 网络 温度；吨；使
+** successfully [səkˈsɛsfəlɪ]
+adv. 顺利地 | 网络 成功地；成功的；有成绩地
+** Synaptic [sɪ'næptɪk]
+adj. 突触的；接合的；联合的；联会的 | 网络 新立得；新立得软件管理器；新立得软件包管理器
+** 对账
+网络 reconciliation; checking; account checking
+** reconciliation [ˌrekənsɪliˈeɪʃ(ə)n]
+n. 和解；协调；调解；和谐一致 | 网络 调和；和好；对帐
+** account [əˈkaʊnt]
+n. 账户；说明；账号；叙述 | v. 认为是；视为 | 网络 帐户；帐号；帐目
+** referring [rɪˈfɜr]
+v. 引用；提到；将…归因于…；把…提交 | 网络 谈及；参考；指
+** consecutive [kənˈsekjətɪv]
+adj. 连续不断的 | 网络 连续的；连贯的；始终一贯的
+** 合意 [hé yì] 
+na. consensus; suit | 网络 mutual assent; desirable; consent
+** throttle [ˈθrɑt(ə)l]
+n. 节流阀；风门；节流杆；风门杆 | v. 勒死；掐死；使窒息 | 网络 油门；节气门；扼杀
+** unthrottle 
+网络 无节流阀
+** oldstate 
+网络 旧状态
+** port [pɔrt]
+n. 港口；〈英〉门；舱门；机场 | v. 【计】移植；持(枪)；转(舵)向左；转舵向左 | 网络 端口；埠；端口号
+** prescaler 
+网络 预分频器；预定标器；前置分频器
+** maintainance 
+网络 维护；保养；保养使用篇
+** netlink 
+网络 光纤收发器；莱特灵；金网联
+** despondent [dɪˈspɑndənt]
+adj. 苦恼的；沮丧的；泄气的；失望的 | 网络 意志消沉的；懊丧；抑郁
+** minutiae [məˈn(j)uʃ(i)ə]
+n. 细节 | 网络 琐事；细节点；指纹的细节特征点
+** dodgy [ˈdɑdʒi]
+adj. 狡猾的；狡诈的；可疑的；有毛病的 | 网络 躲闪的；危险的；善于骗人的
+** succinctly [sək'sɪŋktli]
+adv. 简洁地；简明地 | 网络 简洁的；简练
+** grips [ɡrɪp]
+n. 手柄；把手；紧握；了解；【摄】手柄；同“grippe”；〈英〉小阳沟；吸引力 | v. 把握；牢牢抓住；吸住(注意力)；煞住；紧握；紧抓；使感兴趣；使激动 | 网络 把套；夹点；握把
+** metallurgical [ˌmɛtəˈlɜrdʒikəl]
+adj. 金相的 | 网络 冶金的；冶金学的；冶金工业
+** ordnance [ˈɔrdnəns]
+n. （可移动）大炮；军备物资；军需品；军用器材 | 网络 军械；军火；军械所
+** subdued [səbˈdud]
+adj. 闷闷不乐的；抑郁的；默不作声的；柔和的 | v. “subdue”的过去分词和过去式 | 网络 屈服的；被抑制的；减弱的
+** gregarious [ɡrəˈɡeriəs]
+adj. 交际的；合群的；群居的 | 网络 社交的；爱社交的；喜社交的
+** flabbergasted [ˈflæbərˌɡæstəd]
+adj. 大吃一惊的；目瞪口呆的 | v. flabbergast的过去式和过去分词形式 | 网络 目瞪口呆地；吃惊的；哑然失色
+** intervene [ˌɪntərˈvin]
+v. 介入；干扰；出面；插嘴 | 网络 干涉；干预；插入
+** whiny 
+adj. 哭哭啼啼的声音／语气；哭哭啼啼的小孩／小子 | 网络 烦躁的；爱抱怨的；牢骚不断的
+** entitlement [ɪnˈtaɪt(ə)lmənt]
+n. （拥有某物或做某事的）权利；有权得到的东西；应得的数额 | 网络 应得的权利；权益；权利资格
+** connotations [ˌkɑnəˈteɪʃ(ə)n]
+n. 【逻】内涵；言外之意；(词的)涵义 | 网络 内涵意；有很多方面的含义；字里行间
+** deodorant [diˈoʊdərənt]
+n. 除臭剂 | adj. 除臭的 | 网络 体香剂；香体露；防臭剂
+** bump [bʌmp]
+v. 撞；（尤指身体部位）碰上；颠簸行进 | n. 凸块；隆起；碰撞（声）；撞击（声） | adv. 突然地；扑通一声 | 网络 凹凸贴图；肿块
+** genial [ˈdʒiniəl]
+adj. 友好的；亲切的；欢快的 | 网络 和蔼的；愉快的；和煦
+** percentile [pərˈsenˌtaɪl]
+adj. 百分比的 | n. 百分位数 | 网络 百分成绩；百分比成绩；百分点
+** incivility [ˌɪnsɪˈvɪləti]
+n. 粗鲁的举动；无礼的语言；不文明 | 网络 粗野；无礼貌；非礼
+** painstakingly [ˈpeɪnsˌtekɪŋlɪ]
+adj. 极力的 | 网络 煞费苦心地；费力地；艰苦地
+** rehearsal [rɪˈhɜrs(ə)l]
+n. 排练；预演；排演；复述 | 网络 彩排；演习；练习
+** infuse [ɪnˈfjuz]
+v. 泡；沏；使具有；全面影响 | 网络 灌输；注入；鼓舞
+** groom [ɡrum]
+v. 培养；（给动物）擦洗；（给自己或其他动物）理毛；使做好准备 | n. 马夫；马倌；马匹饲养员 | 网络 新郎；培训；格鲁姆
+** dreading [dred]
+v. 担心；害怕；〔古语〕敬畏；预感到 | n. 担心；〔古语〕敬畏；畏惧的事物；提心吊胆 | 网络 恐怖；恐惧；忧虑
+** podium [ˈpoʊdiəm]
+n. 讲台；讲坛；（乐队的）指挥台 | 网络 颁奖台；裙楼；领奖台
+** startled [ˈstɑrt(ə)ld]
+v. “startle”的过去分词和过去式 | 网络 震惊；吓一跳；吓了一跳
+** lectern [ˈlektərn]
+n. （教堂中的）诵经台；（演讲的）讲台 | 网络 教堂里的读经台；讲桌；斜面讲台
+** bleakness ['bliknɪs]
+n. 晦暗 | 网络 阴郁；无望；冷血
+** termites [ˈtɜrˌmaɪt]
+n. 【虫】白蚁 | 网络 白蚁类；白蚁防治；白蚁公司
+** squandered  [ˈskwɑndər]
+v. 浪费；挥霍；四散；乱用(时间,金钱等) | n. 浪费 | 网络 挥霍掉；挥霍一空；白白浪费
+** linebacker [ˈlaɪnˌbækər]
+n. 中后卫 | 网络 线卫；后卫球员；橄榄球底线后卫
+** bicep 
+网络 二头肌；二头肌训练机；臂围
+** aviator-style 
+网络 航空式短茄克衫
+** prestigious [preˈstidʒəs]
+adj. 有威望的；声誉高的 | 网络 有声望的；有名望的；有威信的
+** Jamaican [dʒə'meɪkən]
+adj. 牙买加的 | n. 牙买加人 | 网络 牙买加裔；牙买加人与浦那妮；牙买加语
+** Paddies [ˈpædi]
+n. 水稻；谷；水稻田 | 网络 稻谷；帕迪；培迪
+** Harlan ['hɑ:lən]
+n. 【男名】男子名 | 网络 哈伦；哈兰；哈兰大法官
+** Joe Flom 
+网络 弗罗姆；洛姆
+** obituary [əˈbɪtʃuˌeri]
+n. 讣告；讣闻 | adj. 有关死亡[死者]的 | 网络 生死簿；死亡讣告；讣文
+** benigh 
+网络 在附近的；良性肿瘤
+** benign [bəˈnaɪn]
+adj. 善良的；和善的；慈祥的；良性的 | 网络 仁慈的；和蔼的；良好的
+** outsmart [aʊtˈsmɑrt]
+v. 比…精明；智胜 | 网络 比…更聪明；打败；瞒过
+** barrier [ˈberiər]
+n. 屏障；障碍；障碍物；关口 | v. 用栅围住 | 网络 栅栏；壁垒；屏障式
+** instantiation 
+网络 实例化；例示；具现化
+** spe 
+n. 软件性能工程；收缩压升高 | 网络 固相萃取(solid phase extraction)；石油工程师学会(Society of Petroleum Engineers)；美国石油工程师协会
+** 统一的 
+adj. unitized; monolithic | 网络 uniform; unified; united
+** 兼容的 
+网络 compatible; inclusive; backward-compatible
+** freed [fri]
+v. 释放；解救 | adj. 自动的；任意的；不客气的；【化】单体的 | adv. 自由地；免费地；一帆风顺地 | 网络 游离；释放的；被释放
+** 正则表达式 
+n. regular expression | 网络 Regular Expression; Regular Expressions; RegExp
+** beforehand [bɪˈfɔrˌhænd]
+adv. 预先；事先 | 网络 提前；事前；事先地
+** intermixed [ˌɪntərˈmɪks]
+v. (使)混杂；(使)相互混合；拌合 | 网络 相混合
+** nontrivial ['nɒn'trɪvɪəl]
+adj. 非平凡；不容易的；〔数〕非零的；非无效的 | 网络 非平凡的；不平凡；非细琐
+** scrambles [ˈskræmb(ə)l]
+n. 争取；(互相)争夺；攀登；攀缘 | v. 爬；攀缘 (about； up； down； through) | 网络 越野机车大赛
+** cryptanalyze 
+网络 用密码分析法破译
+** monoalphabetic substitution cipher. 
+网络 替换密码；单码代换密码；替代式密码法
+** Overline ['oʊvəlaɪn]
+n. 在句子上划线符号；过界；眉题 | adj. 跨线路的；嘴线的 | v. 在…上面；躺在…上 | 网络 下划线；加顶线；顶划线
+** quantor 
+网络 生物晶片；算子
+** 复利 [fù lì] 
+na. 【经】compound interest | 网络 compounded interest; compounding; compound rate
+** plausible [ˈplɔzəb(ə)l]
+adj. 有道理的；可信的；巧言令色的；花言巧语的 | 网络 似是而非的；似乎可信的；似乎合理的
+** Compliant [kəmˈplaɪənt]
+adj. 顺从的；百依百顺的；俯首帖耳的；（与一系列规则）符合的 | 网络 服从的；兼容；依从的
+** tampered [ˈtæmpər]
+v. 干扰；窜改(遗嘱,稿件等)；贿赂 | n. 夯；(爆破孔)填塞人；捣固者；(中子)反射器 | 网络 篡改
+** 传播 [chuán bō] 
+na. spread; transmission; transmitting | 网络 communication; propagation; propagate
+** Usenet [ˈjuzˌnet]
+n. 友思网（志趣相投的用户用以互发电邮） | 网络 新闻组；网络新闻组；新闻论坛
+** 表达自己的感受
+网络 Express yourself; Saying How You Feel; Experience Your Feelings
+** ember [ˈembər]
+adj. 【宗】四季大斋日的 | n. 余火未尽的木块（或煤块） | 网络 灰烬；余烬；馀烬
+** cove [koʊv]
+n. 小湾；(河)湾；小海湾；山谷 | v. (使)成拱形；(使)内凹；使成穹形 | 网络 山凹；凹口；科夫
+** juniper [ˈdʒunɪpər]
+n. 桧柏（有些种的果可供药用和杜松子酒调味之用） | 网络 瞻博；瞻博网络；圆柏
+** parody [ˈperədi]
+n. 滑稽模仿作品（文章、音乐作品或表演等的滑稽模仿）；拙劣的模仿 | v. 滑稽地模仿；夸张地演绎 | 网络 仿拟；戏仿；谐拟
+** Trauma [ˈtrɔmə]
+n. 外伤；损伤；精神创伤；痛苦经历 | 网络 急救小组；心灵创伤；心理创伤
+** 营销 [yíng xiāo]
+n. marketing | 网络 Marketing; sales; Marketing &amp; Sales
+** marketing [ˈmɑrkətɪŋ]
+n. 营销；促销；销售活动 | v. “market”的现在分词 | 网络 市场营销；行销；市场学
+** Bough [baʊ]
+n. 大树枝 | 网络 主枝；大或者粗的树枝；大枝
+** 素材 [sù cái]
+na. source material (of literature and art) | 网络 Material; Footage; materials
+** fictitious [fɪkˈtɪʃəs]
+adj. 虚构的；虚假的 | 网络 假想的；虚拟；编造的
+** retract [rɪˈtrækt]
+v. 撤回；缩回；撤销；拉回 | 网络 收回；缩进；取消
+** dieting [ˈdaɪət]
+n. 饮食；规定的饮食；国会；日常做的事情 | v. 给与(病人)规定的饮食；忌口 | 网络 节食；节食减肥；节食计画
+** expressing [ɪkˈspres]
+v. 表达；用快邮寄出；〈美〉快运；榨出 | n. 快车；快汇；快递(业务)；〈英〉专差 | adj. 明白表示的；明确的；快速的；快递的 | adv. 乘快车；用快递方式 | 网络 表达着；表达感激；表示或表达某事物
+** questioning [ˈkwestʃənɪŋ]
+n. 提问；询问；盘问 | adj. 询问的；表示怀疑的 | v. “question”的现在分词 | 网络 质问；质疑；发问
+** 商业 [shāng yè] 
+na. business; commerce; trade | 网络 Business; Commercial; biz
+** keystroke [ˈkiˌstroʊk]
+n. 击键；按键 | 网络 键击；按键动作；按键输入
+** shutdown [ˈʃʌtˌdaʊn]
+n. 关闭；停工；停业；倒闭 | 网络 关机；关闭系统；关闭数据库
+** single [ˈsɪŋɡ(ə)l]
+v. 选拔；【棒】作一垒手；(马)单步行进 | adj. 仅有一个的；单一的；单个的；特指某人或事物 | n. 单程票；单曲（常指流行音乐）；单曲激光唱片；（旅馆等的）单人房间 | 网络 单身；未婚；单身的
+** orgnize
+网络 组织章程；成立；国际组织
+** preface [ˈprefəs]
+n. 序言 | v. 为…写序言；以…为开端；作…的开场白 | 网络 前言；序文；卷首语
+** 生命力 [shēng mìng lì] 
+na. vitality; life; bionergy; entelechy | 网络 Life; vital force; Life Force
+** 同步 [tóng bù] 
+na. synchronization; synchronism | 网络 Synchronous; Synchronize; synchronized
+** synchronism ['sɪŋkrəˌnɪzəm]
+n. 【物】同步(性)；【电】同期；(历史事件的)同时处理 | 网络 同步性；同时性；同时发生
+** in advance 
+na. 预先；在先头 | 网络 事先；提前；事前
+** mechanism [ˈmekəˌnɪzəm]
+n. 机制；机械装置；方法；机件 | 网络 机构；机理；机械论
+** surrogate [ˈsʌrəɡət]
+v. 代理；【法】代替 | n. 代理人；代替；〈英〉(宗教法庭上)主教代表；【心】代用人物 | adj. 替代的；代用的 | 网络 代用品；代理区；替代品
+** compatibility [kəmˌpætəˈbɪləti]
+n. 相容性；和睦相处；并存 | 网络 兼容；数位显示相容；互换性
+** saga [ˈsɑɡə]
+n. 长篇小说 | 网络 撒加；传奇；佐贺
+** enquire [ɪn'kwaɪə(r)]
+v. 询问；调查；打听 | 网络 询问计划；询问信息；探询
+** trepidation [ˌtrepɪˈdeɪʃ(ə)n]
+n. 惊恐；恐惧；惊惶；不安 | 网络 颤抖；惶恐；战栗
+** 过期的 
+adj. outdated; overdue; expired | 网络 out of date; past-due; stale
+** timing [ˈtaɪmɪŋ]
+n. 定时；时间的选择；（事情发生或计划安排的）特定时间；时机的掌握 | v. “time”的现在分词 | 网络 时序；计时；时间选择
+** Pruned [prun]
+v. 削减；修剪(树木的枝叶)；修枝；精简 | n. 【食】梅干；西梅脯 | 网络 被修剪；剪枝状态；切断的
+** 转捩点 [zhuǎn liè diǎn]
+na. turning point | 网络 The Turning Point; tipping point; Inflection Point
+** Geranium [dʒəˈreɪniəm]
+n. 【植】天竺葵；原色红 | 网络 老鹳草属；天竺葵精油；大竺葵
+** priciple 
+网络 主要的；设计原则
+** interactively 
+网络 交互；交互模式；互动地
+** sporadic [spəˈrædɪk]
+adj. 偶尔发生的；间或出现的；阵发性的；断断续续的 | 网络 零星的；散发；散发性
+** analysis [əˈnæləsɪs]
+n. 分析结果；（对物质成分的）分析 | 网络 分解；解析；分析报告
+** filtering [ˈfɪltər]
+v. 过滤；渗入；〈英〉(车辆在十字路口)开入另一车道 | n. 滤器；【无线】滤波器；【物】滤光镜 | 网络 筛选；过滤器；滤过
+** accurately ['ækjərətlɪ]
+adv. 精确；正确 | 网络 准确地；精确地；正确地
+** chasing [tʃeɪs]
+v. 追逐；追赶；跟踪；追寻 | n. 追求；追赶；追猎；蔡斯 | 网络 追逐战；行风之歌；雕镂
+** improperly [im'prɔpəli]
+adv. 不正确地 | 网络 失当；不适当地；不合适地
+** indicates [ˈɪndɪˌkeɪt]
+v. 指示；指出；【医】表明(症状、原因)，需要(治疗方法等)；象征，暗示，预示；简单陈述 | 网络 显示；表示
+** 示意图 [shì yì tú] 
+na. sketch map; schematic diagram | 网络 schematic drawing; diagrammatic sketch; abridged general view
+** hunker down 
+网络 蹲下；盘坐；蹲下休息
+** entropy [ˈentrəpi]
+n. 无序状态测量法；熵（物资系统的不能用来做功的能量的度量） | 网络 熵值；信息熵；平均信息量
+** good enough software 
+网络 恰到好处的软件
+** your knowledge portfolio 
+网络 知识资产
+** communicate [kəˈmjunɪˌkeɪt]
+v. 沟通；传达；传播；传染 | 网络 交流；交际；通信
+** tracer bullets 
+网络 曳光弹；追踪子弹
+** orthogonality [ɔrθɒgə'nælɪtɪ]
+n. 正交；垂直 | 网络 正交性；正交特性；直交性
+** reversibility [rɪˌvɜːsə'bɪləti]
+n. 可逆(性)；(命令,判决等)可撤销性 | 网络 可逆性；逆转性；可逆达
+** paranoia [ˌperəˈnɔɪə]
+n. 妄想症；偏执狂；（对别人的）无端恐惧 | 网络 妄想狂；多疑症；妄想狂量表
+** pragmatic [præɡˈmætɪk]
+n. 爱管闲事的人；专断的人；国事诏书；实际家 | adj. 实用的；讲求实效的；务实的 | 网络 实际的；实用主义的；语用
+** lizard [ˈlɪzə(r)d]
+n. 【动】蜥蜴 | 网络 蜥蜴皮；蜥蜴人；蜥蝪
+** temporal [ˈtemp(ə)rəl]
+n. 颞骨[肌,动脉等]；太阳穴；世俗的权力；一时的事物 | adj. 世间的；世俗的；现世的；时间的 | 网络 暂时的；暂存的；颞的
+** compilation [ˌkɑmpɪˈleɪʃ(ə)n]
+n. 编写；编纂；选编；选辑 | 网络 编译；编辑；汇编
+** softened [ˈsɔf(ə)n]
+v. 减轻；使软化；使(心)变温和；使柔弱 | 网络 软化的；变软；室温软化
+** revise [rɪˈvaɪz]
+v. 修改；复习；改变；温习 | n. 校订；【印】再校样 | 网络 修订；修正；校正
+** retentiveness [rɪ'tentɪvnɪs]
+n. 真剩磁；顽磁；保留 | 网络 保持力；顽磁力；好记性
+** condemned [kənˈdemd]
+adj. 已被定罪的；被认为不当的；受谴责的；被认为不适用的 | v. “condemn”的过去式和过去分词 | 网络 死刑犯；宣判死刑；被判死刑的
+** halcyon [ˈhælsiən]
+n. 【动】翠鸟；传说中的太平鸟 | adj. 平安幸福的 | 网络 平静的；愉快的；宁静的
+** viable [ˈvaɪəb(ə)l]
+adj. 可实施的；切实可行的；可生存的；能独立发展的 | 网络 能养活的；能生存的；能活的
+** spill [spɪl]
+v. 溢出；涌出；蜂拥而出 | n. 跌落；洒出（量）；泼出（量）；溢出（量） | 网络 溅出；倒出；溅出，倒出
+** tut [tʌt]
+int. （作书面语或口语，表示不赞成的咂嘴声）啧啧 | n. 【矿】计件制(工作) | v. ‘啧 | 网络 嘘；坦佩雷理工大学(Tampere University of Technology)；太原理工大学(Taiyuan University of Technology)
+** frown [fraʊn]
+n. 皱眉；蹙眉头 | v. 皱眉 | 网络 蹙额；皱眉头；愁眉苦脸
+** fateful [ˈfeɪtfəl]
+adj. 紧要的；命中注定的；不祥的 | 网络 决定性的；重大的；致命的
+** intuitive [ɪnˈtuɪtɪv]
+adj. 直觉的；直观的 | 网络 直觉式；直觉型；有直觉力的
+** regrettably [rɪˈɡretəbli]
+adv. 抱歉地 | 网络 遗憾地；令人遗憾地；令人遗憾的是
+** bogeyman [ˈbʊɡiˌmæn]
+n. （用以吓唬小孩的）鬼怪 | 网络 魔鬼；怪物玩具；妖怪
+** elusive [ɪˈlusɪv]
+adj. 难找的；难以解释的；难以达到的 | 网络 难懂的；难捉摸的；难以捉摸的
+** apathy [ˈæpəθi]
+n. 冷漠；淡漠 | 网络 冷淡；情感淡漠；漠不关心
+** lame excuse 
+网络 漏洞百出的借口；理由不足的辩解；牵强的借口
+** cathartic [kəˈθɑrtɪk]
+adj. 宣泄感情的；【医】通便的 | n. 【医】泻药 | 网络 泻剂；情感宣泄；导泻的
+** neuron [ˈnʊˌrɑn]
+n. 神经元 | 网络 神经细胞；神经原；神经单位
+** myopia [maɪˈoʊpɪər]
+n. 【医】近视；〈正式〉目光短浅；缺乏远见 | 网络 近视眼；短视；近视者
+** binary chop 
+网络 二分检索折半查找；二进制速查；二进位速查
+** drill down 
+网络 向下钻取；向下挖掘；向下展开
+** verbalize [ˈvɜrb(ə)lˌaɪz]
+v. 用言语（或文字）表达 | 网络 清楚地以语言表达；描述；说清楚
+** hoof [huf]
+v. 猛踢（球）；把（球）踢出很远 | n. （马等动物的）蹄 | 网络 蹄子；马蹄；步行
+** susceptible [səˈseptəb(ə)l]
+adj. 敏感；易受影响（或伤害等）；过敏；好动感情的 | 网络 易受影响的；敏感的；易受感染的
+** finesse [fɪˈnes]
+n. 手段；手腕；策略 | v. 用策略对付某事；巧妙地做；派头十足地做 | 网络 技巧；飞牌；偷牌
+** subtlety [ˈsʌt(ə)lti]
+n. 微妙；敏锐；细微；狡猾 | 网络 巧妙；精细；精妙
+** snoopy [ISO]
+adj. 爱探听的；爱管闲事的 | n. 史奴比 | 网络 史努比；史诺比；史奴比包包
+** Rake [reɪk]
+v. 耙；梳理；扫视；掠过 | n. 耙子；耙状工具；浪荡的男人；花花公子 | adj. 放荡的 | 网络 倾斜；斜度；浪子
+** inclusion [ɪnˈkluʒ(ə)n]
+n. 包含；被包括的人（或事物） | 网络 内含物；夹杂物；杂质
+** bugzilla 
+网络 缺陷管理；跟踪系统；错误追踪系统
+** seduction [sɪˈdʌkʃən]
+n. 诱奸；诱惑力；魅力；吸引力 | 网络 引诱；勾引；性诱惑
+** complacency [kəmˈpleɪs(ə)nsi]
+n. 自满；自得；自鸣得意 | 网络 满足；自满情结；自满情绪
+** southward [ˈsaʊθwərd]
+adv. 向南方(的) | n. 向南方向 | 网络 向南的；向南地；朝南
+** apocalyptic [əˌpɑkəˈlɪptɪk]
+adj. 描述（历史）大动乱的；预示（未来）大灾变的；似末世的；像世界末日的 | 网络 启示的；天启的；启示录的
+** gutted [ˈɡʌtəd]
+adj. 十分伤心；极度失望；非常沮丧 | v. “gut”的过去分词和过去式 | 网络 内脏；烧毁；容易消化的
+** aloof [əˈluf]
+adj. 冷淡；冷漠 | adv. 离开；【航】向上风方向 | 网络 冷淡的；冷漠的；疏远的
+** imminent [ˈɪmɪnənt]
+adj. 即将发生的；临近的 | 网络 逼近的；即将来临的；迫近的
+** asymmetric [ˌeɪsɪˈmetrɪk]
+adj. 不对称的；不对等的 | 网络 非对称；非对称的；非对称式
+** ubiquitous [juˈbɪkwɪtəs]
+adj. 似乎无所不在的；十分普遍的 | 网络 无处不在；普遍存在的；无处不在的
+** gyrations 
+n. 回旋；【动】螺层 | 网络 狡诈和妖艳体态之回旋挑逗
+** extrapolate [ɪkˈstræpəˌleɪt]
+v. 推断；推知；判定；推测 | 网络 外推；推论；预测
+** surge [sɜrdʒ]
+v. 浪涌；激增；汹涌；涌动 | n. 激增；（强烈感情的）突发；大量；一大批 | 网络 大浪；喘振；突波
+** crept [krip]
+n. 爬行；徐行；蠕动；【印,纺】蠕变 | v. 爬行；(病人,老者)衰弱迟缓地前进；蠕动；【印,纺】蠕变 | abbr. (=Committee for the Reelection of the President)(美国)支持总统连任委员会 | 网络 蔓延；蹑手蹑脚地；动词过去分词
+** bonanza [bəˈnænzə]
+n. 发财（或成功）的机遇；兴盛；繁荣 | 网络 宝艺；富矿带；大淘金
+** credence [ˈkrid(ə)ns]
+n. 信任；可信性；真实性；信念 | 网络 相信；信用；凭证
+** amid [əˈmɪd]
+prep. 在…过程中；在…中；四周是 | 网络 在...中；在…当中；被…围绕
+** astute [əˈstut]
+adj. 精明的；狡猾的 | 网络 机敏的；敏锐的；敏锐级
+** stimulation 
+n. 激励；兴奋(作用) | 网络 刺激；鼓舞；鼓励
+** hustling [ˈhʌs(ə)l]
+v. 挤进；硬逼；〈口〉使匆匆做成；强夺 | n. 努力；挤；推；设骗局 | 网络 拉客；漂浪；忙忙碌碌
+** mileage [ˈmaɪlɪdʒ]
+n. 好处；英里里程；（车辆使用某定量燃料可行驶的）英里数；利益 | 网络 里程数；哩数；哩程
+** dumbfound [dʌm'faʊnd]
+v. 使惊呆 | 网络 使发愣；使人哑然失声；愣住
+** obliterated [əˈblɪtəˌreɪt]
+v. 涂去；消灭…的痕迹；使消失；除去 | 网络 阻塞；闭塞的；废除的
+** tangible [ˈtændʒəb(ə)l]
+adj. 有形的；实际的；真实的；可触摸的 | 网络 切实的；可触知的；实实在在的
+** inflicted [ɪnˈflɪkt]
+v. 加以(打击等)；使受(痛苦,损失等)；处以刑罚 | 网络 使遭受；造成；他历经
+** narrative [ˈnerətɪv]
+n. 叙述；讲故事；叙事技巧 | adj. 叙述的；故事体的；善于叙述的 | 网络 记叙文；叙述性的；叙事的
+** vicious [ˈvɪʃəs]
+adj. 狂暴的；残酷的；凶猛危险的；充满仇恨的 | 网络 邪恶的；恶毒的；恶性的
+** centenarian [ˌsentəˈneriən]
+adj. 百岁(以上)的；一百周年的 | n. 人瑞；百岁人瑞 | 网络 百岁老人；百岁寿星；百龄人瑞
+** predate [ˌpriˈdeɪt]
+v. 早于；先于…建成（或形成、发生等） | 网络 在日期上早于；提早日期；在历史上早于
+** hasten [ˈheɪs(ə)n]
+v. 促进；急忙进行；赶紧说（或做）；使加快 | 网络 催促；赶快；加速
+** demise [dɪˈmaɪz]
+n. 死亡；逝世；终止；失败 | v. 遗赠；逊(位) | 网络 转让；让位；薨
+** chronicling [ˈkrɑnɪk(ə)l]
+n. 年代记；记录；《…新闻》 | v. 把…载于编年史中 | 网络 记载
+** stake [steɪk]
+n. 股份；桩；赌注；火刑柱 | v. 拿…冒险；用桩支撑 | 网络 利害关系；木桩；赌金
+** quackery [ˈkwækəri]
+n. 江湖医术；庸医行径 | 网络 骗术；庸医的医术；江湖郎中
+** nihe 
+网络 内科；耐克；年岁
+** niche [nɪtʃ]
+n. 壁龛；舒适或称心的工作（或生活等）；（产品的）商机；市场定位 | 网络 利基；生态位；小生境
+** ballpark [ˈbɔlˌpɑrk]
+n. 【体】球场；几近合适的程度；〈俚,口〉约略估计的数字 | adj. 【体】运动场的；大致正确的 | 网络 棒球场；活动领域；棒球场活动领域
+** snuggle [ˈsnʌɡ(ə)l]
+v. （使）依偎 | 网络 偎依；紧靠；挨近
+** disposal [dɪˈspoʊz(ə)l]
+n. 处理；清除；去掉；（企业、财产等的）变卖 | 网络 处置；废弃处置；配置
+** sheer [ʃɪr]
+adj. 纯；纯粹的；十足的；全然的 | adv. 十足地；全然地；绝对地；垂直地 | n. 透明薄纱；【航海】舷弧；以单锚系泊的船位；偏航 | v. 【航海】(使)偏航；(使)偏荡；避开；(使)转向 | 网络 陡峭的；绝对的；完全的
+** hindsight [ˈhaɪn(d)ˌsaɪt]
+n. 事后聪明；事后的领悟 | 网络 后见之明；蓝盐；表尺
+** crowdsourced
+网络 越来越众包化；众包的；众源
+** 前序遍历 [qián xù biàn lì] 
+n. preorder traversal | 网络 Preorder Traversal; PreOrder; DLR
+** awry [əˈraɪ]
+adj. 歪斜的 | adv. 扭曲地 | 网络 扭曲的；走样的；歪曲的
+** tonsil [ˈtɑns(ə)l]
+n. 扁桃体 | 网络 扁桃腺；扁桃腺癌；扁桃体炎
+** ethos [ˈiˌθɑs]
+n. （某团体或社会的）道德思想 | 网络 精神气质；民族精神；风气
+** benevolent [bəˈnevələnt]
+adj. 慈善的；行善的；乐善好施的；用于慈善机构名称 | 网络 仁慈的；仁爱的；善意的
+** profession [prəˈfeʃ(ə)n]
+n. 职业；行业；同行；业内人士 | 网络 专业；自由职业；表白
+** hughes [hju:z]
+n. 休斯；【姓氏】休斯 | 网络 休斯公司；休士；修斯
+** porfolio 
+网络 艺术家特写；账户情况；关於
+** flashy [ˈflæʃi]
+adj. 俗艳的；（因昂贵、巨大等）显眼的；穿着奢华的；炫耀技艺的 | 网络 浮华的；华而不实的；炫耀的
+** spawn  [spɔn]
+v. 产卵；导致；引发；引起 | n. （鱼、蛙等的）卵 | 网络 再生侠；闪灵悍将；产生
+** 宏观经济 [hóng guān jīng jì] 
+na. macro-economy | 网络 macroeconomic; Macroeconomics; macro economy
+** temporary [ˈtempəˌreri]
+adj. 短暂的；暂时的；临时的 | n. 临时工 | 网络 暂时性
+** 回溯 [huí sù] 
+na. recall; look back upon | 网络 backtracking; trace back; backdate
+** Retrospection [ˌretroʊˈspekʃən]
+n. 回顾；回忆 | 网络 追忆；回想；回顾式省思
+** truism [ˈtruˌɪzəm]
+n. 老生常谈；不言而喻的道理；自明之理 | 网络 真理；不言自明的真理；真实性
+** sterile [ˈsterəl]
+adj. 不能生育的；不育的；无菌的；消过毒的 | 网络 贫瘠的；消毒的；不孕的
+** sundial [ˈsʌnˌdaɪəl]
+n. 日晷 | 网络 日规；日晷仪；日晷仪台
+** purports [ˈpɜrpɔrt]
+n. (文件,演说等的)意义；要旨；〈罕〉目的 | v. 有…的意义；声称；意图 | 网络 主旨；涵义；旨趣
+** abreast [əˈbrest]
+adv. 并排；并肩；并列；看齐 | adj. 并列；平等 | 网络 并肩地；并排地；肩并肩地
+** societal [səˈsaɪət(ə)l]
+adj. 社会的；关于社会的 | 网络 社会为中心的；社会性；社会性的
+** oblivion [əˈblɪviən]
+n. 被遗忘；湮没；无意识状态；沉睡 | 网络 遗忘星球；忘却；湮灭
+** steadfastly 
+adv. 坚决；目不转睛地；踏实地 | 网络 坚定地；不变地；坚决地
+** bouts [baʊt]
+n. (工作,闹饮等的)一阵；(绳的)一绕；一缕；一锄 | 网络 发作；一阵阵的；鲍茨
+** indebtedness [ɪn'detɪdnəs]
+n. 负债；债务；受惠；蒙恩 | 网络 负债额；亏欠；欠款
+** partake [pɑrˈteɪk]
+v. 参加；参与；喝 | 网络 分享；分担；带有某种性质
+** radicle ['rædɪk]
+n. 根；【古生物】胚根；【化】基 | 网络 幼根；原子团；细根
+** tier [tɪr]
+n. 层；级；等级；阶 | v. 成层堆积[排列]；层层上升 | 网络 行；排层；多层
+** synopsis [sɪˈnɑpsɪs]
+n. 提要 | 网络 总览；概要；摘要
+** variables [ˈveriəb(ə)l]
+adj. 变量；可以调节的；可变的；形式多变的 | n. 因素；变数；变元；变动 | 网络 变项；变量声明；变量窗口
+** Artificial General Intelligence
+a. 强人工智慧 | 网络 以及人工普智能；人造智力一般；通用人工智能
+** rheumatoid 
+adj. 风湿性的；害风湿病的；患风湿性关节炎的；类风湿病的 | 网络 类风湿痛克星；类风湿的；类风湿性
+** pilot [ˈpaɪlət]
+n. 飞行员；领航员；引水员；（航空器）驾驶员 | v. 试点；引导；试行；驾驶（航空器） | adj. 试验性的；试点的 | 网络 百乐；试播集；引航员
+** circumvent [ˈsɜrkəmˌvent]
+v. 规避；设法回避；绕过；绕行 | 网络 包围；围绕；智取
+** bypassing [ˈbaɪˌpæs]
+v. 绕过；为…加设旁路[旁通管]；回避 | n. 【机】(煤气等的)旁(通)管；(为疏散交通而设的迂回的)旁路 | 网络 忽视；绕道而行；绕过行为
+** 绕过 
+adv. around | n. pass by | 网络 bypass; circumvent; skirt
+** plethora [ˈpleθərə]
+n. 过多；过量；过剩 | 网络 多血症；供过于求；太多
+** brainchild [ˈbreɪnˌtʃaɪld]
+n. 发明 | 网络 脑力劳动成果；脑力劳动的产物；脑创意
+** strung [strʌŋ]
+adj. 神经紧张的，激动的 | v. “string”的过去式和过去分词 | 网络 神经兴奋型的；拉线磅数；缚扎
+** inaugural [ɪˈnɔɡjərəl]
+n. 〈美〉就职演说 | adj. 就职的；开幕的；成立的；创始的 | 网络 开始的；就任的；首次的
+** crate [kreɪt]
+n. 大木箱；塑料分格箱；一箱（的量） | v. 把…装入大木箱（或板条箱、分格箱） | 网络 柳条箱；篓；条板箱
+** predicament [ˈpriˈdɪkɑmənt]
+n. 困境；尴尬的处境；窘境 | 网络 穷境；状态；困局
+** forsaken [fərˈseɪk]
+v. 舍弃；革除(旧风习等)；抛弃(坏习惯) | 网络 遗弃；放逐者；被遗忘者
+** solely [ˈsoʊlli]
+adv. 只；仅；唯；单独地 | 网络 独自地；唯一地；仅仅
+** breadth [bredθ]
+n. 宽度；（知识、兴趣等）广泛 | 网络 广度；幅面；幅度
+** worktile
+网络 工作台
+** monolithic [ˌmɒnəˈliθik]
+adj. 庞大的；巨石的；整体(式)的；铁板一块的 | 网络 单片；整体式；整体的
+** trivial [ˈtrɪviəl]
+adj. 不重要的；琐碎的；微不足道的 | 网络 琐细的；平常的；平凡的
+** proponents [prəˈpoʊnənt]
+n. 支持者；辩护者；提议者；主张者 | adj. 建议的；支持的；辩护的 | 网络 赞成者；提倡者
+** sapping [sæp]
+n. 汁；笨蛋；易上当的人 | v. 削弱；使虚弱；逐渐破坏 | abbr. (=semi-armour-piercing)半穿甲 | 网络 基蚀；崖底侵蚀；挖掘作用
+** pragmatism [ˈpræɡməˌtɪzəm]
+n. 实用主义；务实思想；实用观点 | 网络 实验主义；务实主义；实用主义哲学
+** elitist [ɪˈlitɪst]
+adj. 具有高人一等优越感的；上等的 | n. 精英主义者；杰出人物 | 网络 精英统治者；优秀人材；优秀人才
+** variant [ˈveriənt]
+n. 变体；变种；变形 | adj. 不一致的；各种各样的；易变的 | 网络 变体型；变量；不同的
+** vtable 
+网络 虚表；虚函数表；虚方法表
+** auxiliary [ɔɡˈzɪljəri]
+n. 助动词；辅助工；辅助人员 | adj. 辅助的；备用的 | 网络 辅助设备；补助的；支援的
+** calypso [kəˈlɪpsoʊ]
+n. 卡利普索民歌（以时事为主题，流行于加勒比海地区）；卡利普索音乐 | 网络 卡吕普索；卡里普索；土卫十四
+** a [ə]
+na. 一 | n. 英文字母表的第一字母；【乐】A音 | art. 冠以不定冠词主要表示类别 | 网络 从；按；一个
+** automotive [ˌɔtəˈmoʊtɪv]
+adj. 汽车的；机动车的 | 网络 汽车工业；汽车行业；汽车业
+** Intricate [ˈɪntrɪkət]
+adj. 错综复杂的 | 网络 复杂精细的；错综的；缠结的
+** comment off 
+网络 注释关闭
+** work out [ 和……协调]
+v. 作出；拟定；制定；计划一下 | 网络 算出；解决；制定出
+** ensue [ɪnˈsu]
+v. 接着发生；因而产生 | 网络 跟着发生；接踵而来；追求
+** postpone [poʊsˈpoʊn]
+v. 延期；延迟；展缓 | 网络 推迟；使延期；延缓
+** rationale [ˌræʃəˈnæl]
+n. 基本原理；根本原因 | 网络 理论基础；理由；基本理由
+** lurking [lɜrk]
+v. 潜伏；潜藏 | n. 潜伏；欺诈 | 网络 潜伏的；埋伏；潜水
+** alphanumeric [ˌælfənuˈmerɪk]
+adj. 含有字母和数字的；字母与数字并用的 | 网络 字母数字的；文字数字的；文数字
+** carat [ˈkerət]
+n. 克拉；黄金的成色单位 | 网络 重量；克拉重量；凯络媒体
+** novelty [ˈnɑv(ə)lti]
+n. 新颖；新奇；新鲜；新奇的事物（或人、环境） | adj. 新奇的；风格独特的 | 网络 新颖性；新奇性；新奇事物
+** deemphasize [di'efəsaɪz]
+v. 降低…重要性；不再加以强调 | 网络 降低重要性；不再给予强调；使不重要
+** cram [kræm]
+n. 克拉姆；填塞；填鸭式用功；考试前临时硬记 | v. 把…塞进；挤满；塞满；（为应考）临时死记硬背 | 网络 填满；塞入；临时抱佛脚
+** harking [hɑrk]
+v. 听
+** nuts-and-bolts 
+na. 主要特点；基本组成部分
+** gruesome [ˈɡrusəm]
+adj. 令人厌恶的；恐怖的；可怕的 | 网络 令人毛骨悚然的；阴森；阴森的
+** rigorous [ˈrɪɡərəs]
+adj. 谨慎的；细致的；彻底的；严格的 | 网络 严厉的；严酷的；严峻的
+** barcode [bɑr'kod]
+n. 条码 | 网络 条形码；条码技术；条码号
+** anticipate [ænˈtɪsɪˌpeɪt]
+v. 预料；预期；预见；期望 | 网络 期待；提前使用；预感
+** stagnating [ˈstæɡˌneɪt]
+v. (使)(水等)停滞不流；(使)不动；(使)迟钝；(使)变萧条 | 网络 沉滞期
+** proactive [ˌproʊ'æktɪv]
+adj. 积极主动的；主动出击的；先发制人的 | 网络 主动积极；前瞻性；主动性
+** mainstay [ˈmeɪnˌsteɪ]
+n. 支柱；中流砥柱 | 网络 台柱子；主干；主心骨
+** esoteric [ˌesəˈterɪk]
+adj. 只有内行才懂的；难领略的 | n. 受秘传的人 | 网络 深奥的；机密的；神秘的
+** antiquity [ænˈtɪkwəti]
+n. 古；古老；文物；古迹 | 网络 古代；古物；苍古
+** buoy [ˈbui]
+n. 浮标；航标 | v. 鼓舞；鼓励；使漂浮；使浮起 | 网络 救生圈；浮筒；浮子
+** formidable [fərˈmɪdəb(ə)l]
+adj. 可怕的；令人敬畏的；难对付的 | 网络 强大的；难以对付的；令人畏惧的
+** gestation [dʒəˈsteɪʃ(ə)n]
+n. 孕育；妊娠（期）；怀孕（期） | 网络 怀孕期；孕育时期；酝酿
+** whip [hwɪp]
+n. 鞭子；【无线】鞭状天线；投票指示；(某党)议员领袖 | v. 鞭打；鞭笞；〈口〉击败；抽打 | 网络 薇普；搅打；皮鞭
+** should [ʃʊd]
+modalv. 应当；可以；万一；可能 | auxv. 必须；会；倒；“shall”的过去式 | 网络 应该；将；宜
+** myriad [ˈmɪriəd]
+n. 无数；大量 | adj. 无数的；众多方面的 | 网络 万；一万；极大数量
+** tristate [ˈtraɪˌsteɪt]
+adj. 三态 | n. 三态 | 网络 三态型；三州钓鱼；三态值
+** tentatively [旺旺英语论坛]
+adv. 初步；尝试性地；暂时性地 | 网络 姑且；试验性地；聊且
+** avidly ['ævɪdli]
+adv. 贪婪地；竭力；令人神往；急切地 | 网络 贪心地；如饥似渴地；殷切地
+** vivacious [viˈveɪʃəs]
+adj. 活泼的 | 网络 快活的；性格活泼的；多年生的
+** sensibly [ˈsensəbli]
+adv. 显著地；明显地；聪明地；能感觉到地 | 网络 明智地，明白事理地；敏感地；容易感知地
+** flunks [flʌŋk]
+v. (使)失败；放弃；通不过 | n. 不及格
+** aced [eɪs]
+n. 空中英雄；专家；(纸牌,骰子等的)么；同花色中最大的牌 | adj. 第一流的；能干的 | v. (网球赛等)以发球赢(对方)一分；在(考试)中得满分 | 网络 团灭；“王牌；高手卓越赢一分测验
+** slain [sleɪ]
+v. 杀害；杀死；毁灭；给人强烈的好印象 | 网络 被杀；谋杀；用刀刺进他的心房
+** bent [bent]
+n. 爱好 | adj. 弯曲的；（因年老或生病）驼背的；不诚实的；不正派的 | v. “bend”的过去式和过去分词 | 网络 弯的；倾向；半路情缘
+** fret [fret]
+n. 【建筑】回纹饰；网状饰物；烦恼；(弦乐器指板上定音的)档子 | v. 把(弦)压在档子上；用回纹装饰；使烦恼；腐蚀 | 网络 荧光共振能量转移(fluorescence resonance energy transfer)；品；荧光能量共振转移
+** wed [wed]
+v. 结婚；娶；嫁 | short. we had；we would | 网络 星期三(Wednesday)；周三；与…结婚
+** cropping up 
+v. 突然发生；出现
+** relegate [ˈreləˌɡeɪt]
+v. 使贬职；使降级；降低…的地位；使（运动队，尤指足球队）降级 | 网络 贬谪；驱逐；降职
+** shim [ʃɪm]
+n. 垫片 | v. 用薄垫片填入；拿填隙片塞；向…中插夹铁 | 网络 气门间隙调节垫片；垫板；衬垫
+** implicite 
+网络 佩希；潜在地；曾记否和它牵连
+** insurmountable [ˌɪnsərˈmaʊntəb(ə)l]
+adj. 无法克服的；难以解决的；不可逾越的 | 网络 不能克服的；不可克服的；难以克服的
+** imperative [ɪmˈperətɪv]
+adj. 重要紧急的；迫切的；急需处理的；表示权威的 | n. 重要紧急的事；必要的事；祈使语气；祈使语气动词 | 网络 命令式；强制的；祈使句
+** crux [krʌks]
+n. 症结 | 网络 南十字座；关键；难题
+** didactic  [daɪˈdæktɪk]
+adj. 道德说教的；教诲的；教导的；说教似的 | 网络 启发人的；教训的；说教性的
+** dialogue [ˈdaɪəˌlɔɡ]
+v. 对话；用对话表达 | n. 对白；（尤指集体或国家间为解决问题、结束争端等进行的）对话 | 网络 十个对话；会话；谈话
+** thematic [θiˈmætɪk]
+adj. 题目的；主题的 | 网络 主题式；主旋律的；专题
+** sprinkled [ˈsprɪŋk(ə)l]
+n. 洒；撒；小雨；少量 | v. 洒；撒；撒布；点缀 | 网络 撒水系统；洒去；喷洒的
+** quiz yourself 
+网络 自我测试；英文各类测验；心理学自我测验
+** addendum [əˈdendəm]
+n. （尤指书籍的）补遗 | 网络 附录；齿顶高；补充
+** tool-chest 
+un. 工具箱；工具柜 | 网络 小型工具箱；手提工具箱；东西箱
+** chest [tʃest]
+n. 胸部；胸膛；有…胸的；胸部…的 | 网络 胸围；箱子；胸腔
+** cramming [k'ræmɪŋ]
+n. 填鸭式[死背硬记]的学习[教法] | v. “cram”的现在分词 | 网络 死记硬背；填鸭式教学；填鸭式的用功
+** projector [prəˈdʒektər]
+n. 投影仪；放映机 | 网络 投影机；幻灯机；投影器
+** pail [peɪl]
+n. 桶；一桶的量；〈美口〉容器 | 网络 提桶；水桶；洗衣桶
+** Yeats 
+n. 耶茨；William Butler Yeats 叶芝 | 网络 叶慈；诗人叶慈；爱尔兰诗人叶慈
+** pai [</span><a class="p1-12 b_alink" href="/dict/search?q=Travel&FORM=BDVSP6&cc=cn" h="ID=Dictionary,5144.1">Travel</a><span class="p1-12 b_regtxt">]
+n. 【旅】拜县 | 网络 聚酰胺-酰亚胺(Polyamide-imide)；抑制物；纤溶酶原激活物抑制物(plasminogen activator inhibitor)
+** interlude [ˈɪntərˌlud]
+n. （两事件之间的）间歇；插入事件；（戏剧、电影等的）幕间休息 | 网络 插曲；间奏曲；过场
+** Rutgers 
+网络 罗格斯；罗格斯大学；美国罗格斯
+** noble [ˈnoʊb(ə)l]
+adj. 崇高的；品质高尚的；宏伟的；壮丽的 | n. 出身高贵的人；贵族成员 | 网络 贵族的
+** incredulous [ɪnˈkredʒələs]
+adj. 不肯相信的；不能相信的；表示怀疑的 | 网络 不轻信的；难以置信的；不相信的
+** snatch [snætʃ]
+n. 音乐片段；抓；夺；抢夺 | v. 一把抓起；一下夺过；夺去；抢走 | 网络 偷拐抢骗；攫取；抓举
+** grasshopper [ˈɡræsˌhɑpər]
+n. 蝗虫；蚂蚱；【虫】蚱蜢；【空】小型侦察机 | 网络 草蜢；绿色蚱蜢；青草蜢
+** serenity [səˈrenəti]
+n. 宁静；平静；安详；从容 | 网络 冲出宁静号；晴朗；风和日丽
+** eagerly [ˈiɡɚlɪ]
+adv. 热切地；渴望地 | 网络 急切地；热心地；眼巴巴
+** context [ˈkɑnˌtekst]
+n. 上下文；语境；环境 | 网络 背景；情境；脉络
+** embryo [ˈɛmbriˌoʊ]
+n. 【生】胚胎；初级阶段；萌芽时期；【植】胚 | 网络 胚芽；胎儿；初期
+** replete [rɪˈplit]
+adj. 充满；充足；很饱；饱食 | 网络 充满的；饱满的；塞满的
+** nitty-gritty [ˌnitiˈɡriti]
+n. 〈非正式〉本质；事实真相；实质问题 | adj. 基本的；根本的 | 网络 细节；具体细节；基本情况
+** culprit [ˈkʌlprɪt]
+n. 罪犯；肇事者；犯错的人；引起问题的事物 | 网络 犯人；罪魁祸首；刑事被告
+** archive [ˈɑrˌkaɪv]
+n. 档案；档案馆；档案室 | v. 把…存档；把…归档；将（不常用信息）存档 | 网络 档案文件；文件归档；归档文件
+** unary 
+adj. 【数】单元的 | 网络 一元；一元的；一元码
+** cryptic [ˈkrɪptɪk]
+adj. 含义隐晦的；晦涩难懂的 | 网络 神秘的；秘密的；隐藏的
+** bogus [ˈboʊɡəs]
+adj. 假的；伪造的 | n. 赝品 | 网络 妈咪也疯狂；假冒的；冒牌
+** undeterred [ˌʌndɪˈtɜrd]
+adj. 顽强的；坚毅的；不屈不挠的 | 网络 未被吓住的；未受阻；未受阻的
+** synergistic [ˌsɪnə'dʒɪstɪk]
+adj. 协同性的；协同的；有协同作用的肌肉或器官的；有促进作用的药物等的 | 网络 协合的；增效作用；协作的
+** inexorably [ɪn'eksərəbli]
+adv. 无情地；不可抗拒地；坚稳；紧密地 | 网络 冷酷地；不可阻挡地；不为所动地
+** fabled [ˈfeɪb(ə)ld]
+adj. 传说中的 | 网络 虚构的；寓言中的；疑心生暗鬼
+** deceive [dɪˈsiv]
+v. 欺骗；蒙骗；诓骗；欺骗（自己） | 网络 蒙蔽；欺诈；哄骗
+** pithy [ˈpɪθi]
+adj. 言简意赅的；精练的 | 网络 有髓的；简练的；简洁
+** homily [ˈhɑmɪli]
+n. （有关规矩等的）说教 | 网络 训诫；讲道；布道
+** portfolio [pɔrtˈfoʊlioʊ]
+n. 文件夹；职务；有价证券组合；公事包 | 网络 投资组合；作品集；档案
+** pollination [ˌpɒlə'neɪʃ(ə)n]
+n. 【植】传粉 | 网络 授粉；甜蜜的果实；受粉
+** voraciously 
+网络 狼吞虎咽地；贪得无厌地；贪婪的
+** petulant [ˈpetʃələnt]
+adj. 闹脾气的；爱耍性子的；赌气的；任性的 | 网络 暴躁的；脾气坏的；使性子的
+** cynical [ˈsɪnɪk(ə)l]
+adj. 认为人皆自私的；愤世嫉俗的；悲观的；怀疑的 | 网络 嘲讽般的笑容；犬儒；冷嘲热讽的
+** inferred [ɪnˈfɜr]
+v. 推断；意味着；猜想；作出推论 | 网络 推断的；推测；自动推断的
+** jigsaw [ˈdʒɪɡˌsɔ]
+n. 拼图；拼板玩具；神秘莫测的事物；谜团 | v. 用锯曲线机锯；使互相交错搭接 | 网络 竖锯；拼图法；拼图游戏
+** up front [发言人]
+na. 在前面；预先 | 网络 前线；沙场乐；在前台
+** polymorphism 
+n. 【生】多态性(现象)；【化】(同质)多晶型(现象) | 网络 多型；多形性；多型性
+** simple [ˈsɪmp(ə)l]
+adj. 笨；易于理解的；易做的；简单的 | n. 单体；头脑简单的人；药草制剂；〈古〉药用植物 | 网络 简约；简易的；单纯的
+** simp [sɪmp]
+网络 SQE Integration Management Platform; 密度法; 笨人
+** motivating  [ˈmoʊtɪˌveɪt]
+v. 激发 | 网络 激励；积极性；调动职工积极性
+** tidbits [ˈtɪdˌbɪt]
+n. 花絮；少量的食物 | 网络 花边新闻；拍摄花絮；趣闻
+** modulo ['mɒdjəˌloʊ]
+prep. 【数】对…模 | 网络 取模；模数；除法
+** recap [ˌriˈkæp]
+n. 同“recapitulation”；再生轮胎 | v. =recapitulate；翻造(轮胎) | 网络 扼要重述；概括；回顾
+** thunk [θʌŋk]
+n. 〔计〕形实替换程序；计算机的形式实在转换程序 | 网络 形实转换程序；替换程式；出现在互操作中
+** conferred [kənˈfɜr]
+v. 商议；授与；比较 | 网络 授予；赋予；给予
+** infrequently [ɪnˈfrikwəntlɪ]
+adv. 不经常地 | 网络 罕见地；很少发生地；不经常的
+** whirlwind [ˈhwɜrlˌwɪnd]
+n. 旋风；旋流；一片忙乱 | adj. 快速的；匆匆忙忙的；旋风似的 | 网络 旋风斩；龙卷风；旋风行动
+** invoice [ˈɪnˌvɔɪs]
+n. 【商业】发票；发货单 | v. 开(…的)发票 | 网络 商业发票；开发票；装货清单
+** algebraic [ˌældʒəˈbreɪɪk]
+adj. 代数的 | 网络 关于代数学的；代数学；代数上的
+** Cartesian [kɑrˈtiʒən]
+adj. （法国哲学家和数学家）笛卡儿的；笛卡儿主义的 | n. 笛卡儿哲学的信徒 | 网络 笛卡尔；笛卡尔坐标系；笛卡尔的
+** anonymous [əˈnɑnɪməs]
+adj. 不知姓名的；名字不公开的；匿名的；不具名的 | 网络 匿名者；无名氏；佚名
+** illustration [ˌɪləˈstreɪʃ(ə)n]
+n. 插图；图解；示例；图示 | 网络 插画；说明；例证
+** bulky [ˈbʌlki]
+adj. 庞大的；笨重的；大块头的；高大肥胖的 | 网络 体积大的；巨大的；就是体积大
+** irksome [ˈɜrksəm]
+adj. 使人烦恼的；令人生气的 | 网络 讨厌的；令人厌烦的；令人厌倦的
+** isomorphic [ˌaɪsə'mɔrfɪk]
+adj. 同晶型的；【生化】同形的 | 网络 同构；同构的；同型的
+** offside [ˌɔfˈsaɪd]
+adj. （足球、曲棍球等体育运动中）越位的；（车辆）外侧的 | n. （足球、曲棍球等体育运动中的）越位；（车辆的）外侧 | 网络 越位女球迷；越位少年装；反越位
+** indentation [ˌɪndenˈteɪʃ(ə)n]
+n. 凹陷；缺口；凹痕；行首缩进 | 网络 压痕；缩排；压入
+** portability [ˌpɔrtəˈbɪləti]
+n. 可携带性 | 网络 可移植性；可携性；轻便
+** irrefutable [ɪˈrefjətəb(ə)l, ˌɪrɪˈfjutəb(ə)l]
+adj. 无可辩驳的；不能否认的 | 网络 颠扑不破；无可争辩；不能反驳的
+** haskell 
+网络 哈斯克尔；哈斯凯尔；哈斯喀尔
+** immensely [ɪˈmensli]
+adv. 非常；极端地；极大地 | 网络 无限地；无任；很
+** bunch [bʌntʃ]
+n. 束；串；扎；大量 | v. 成皱褶 | 网络 群，伙；捆；一群
+** parcel [ˈpɑrs(ə)l]
+n. 包裹；小包；一块地；一片地 | v. 包；裹好；打包 | adj. 部分(时间)的 | adv. 局部地 | 网络 邮包；混合包
+** tread [tred]
+n. 步法；步态；脚步声；（轮胎的）胎面 | v. 踩；踏；践踏；踩碎 | 网络 轮距；踏板；踩踏
+** hog [hɒɡ]
+n. （尤指喂肥供食用的）猪；（供食用的）阉公猪 | v. 多占；独占 | 网络 肥猪；阉猪；梯度方向直方图(Histograms of Oriented Gradients)
+** egomaniac [ˌiɡoʊˈmeɪniˌæk]
+网络 自大狂；极端自我主义者；极端利己主义者
+** judicious [dʒuˈdɪʃəs]
+adj. 审慎而明智的；明断的；有见地的 | 网络 有判断力的；贤明的；审慎的
+** 泥鳅 [ní qiū]
+na. loach; mud fish | 网络 Misgurnus anguillicaudatus; Oriental weatherfish; M. anguillicaudatus
+** 纤维化 
+n. fibrosis; fiberization; fibrosing | v. fiberize; fibreize | 网络 fibration; Fibrillation; hepatic fibrosis
+** 纤维 [xiān wéi] 
+na. fibre; staple; filamentary | 网络 fiber; Fibers; polyester
+** verbose [vɜrˈboʊs]
+adj. 冗长的；啰嗦的；唠叨的 | 网络 详细；罗嗦的；详细的
+** adios [ˌædiˈoʊs]
+int. 再见 | 网络 再会；自动数字输入输出系统(Automatic Digital Input Output System)；一路平安
+** transitioning [trænˈzɪʃ(ə)n]
+n. 过渡；转变；变迁；变革 | 网络 过渡中；转折；过渡的
+** wary [ˈweri]
+adj. （对待人或事物时）小心的 | 网络 谨慎的；机警的；小心翼翼的
+** malfeasance [ˌmælˈfiz(ə)ns]
+n. 【法】坏事；(尤指官吏的)非法行为 | 网络 渎职；不法行为；不正当
+** rogue [roʊɡ]
+n. 流氓；无赖；骗子；恶棍 | v. 流浪；骗；【农】间苗；去劣 | adj. 离群的；行为失常的；暴戾的 | 网络 盗贼；小淘气；逃亡鳄鱼岛
+** earlier on [ deceased mother]
+na. 以前 | 网络 先期；一向；在更早的时候
+** scoff [skɑf]
+n. 嘲弄；(特指对宗教的)嘲笑；冷笑；〔俚语〕食物 | v. 嘲笑；〔俚语〕狼吞虎咽地吃；饱食；攫取 | 网络 笑柄；讥笑；你嘲弄
+** enacting [ɪnˈækt]
+v. 颁布；制定(法律)；规定；扮演 | 网络 实施
+** enacted [ɪnˈækt]
+v. 颁布；演出；制定(法律)；规定 | 网络 制定的；规定的程序颁布；扮演
+** whet [hwet]
+n. 研磨；一杯酒；激励；〈方〉一段(短)时间(的工作) | v. 刺激…的欲望；增强…的兴趣 | 网络 磨快；助长；磨得快
+** appetite [ˈæpəˌtaɪt]
+n. 胃口；食欲；强烈欲望 | 网络 爱好；嗜好
+** Inferring [ɪnˈfɜr]
+v. 推断；表示；猜想；作出推论 | 网络 推理；推理推论；推理判断
+** forsee 
+网络 预见到；料到
+** foresaw [fɔrˈsi]
+v. 预知；有先见之明 | 网络 预见
+** overriden 
+网络 在子类中已经完全重写；被覆写；在子类中过载
+** omniscient [ɑmˈnɪʃənt]
+adj. 无所不知的；全知全能的；博闻广识的 | n. 上帝 | 网络 全知的；博识的；全知观点
+** turnaround time 
+un. 解题周期；周转时间；回程起飞时间 | 网络 回复时间；周围时间；转回时间
+** machinery [məˈʃinəri]
+n. 机构；（统称）机器；（尤指）大型机器；机器的运转部分 | 网络 机械；机械设备；机械类
+** amortize [ˈæmərˌtaɪz]
+v. 分期偿还 | 网络 摊销；摊还；分期清偿
+** pessimal ['pesɪməl]
+adj. 最坏的
+** relax [rɪˈlæks]
+v. 放松；休息；松懈；放心 | 网络 轻松；松弛；放轻松
+** proverbial [prəˈvɜrbiəl]
+adj. 众所周知；谚语的；谚语表达的；如谚语所说的 | 网络 众所周知的；格言般的；如同谚语的
+** alas [əˈlæs]
+int. （表示悲伤或遗憾）哎呀 | 网络 唉；呜呼；乌呼
+** 回顾 [huí gù] 
+na. review; look back; retrospect | 网络 look back on; in retrospect; retrospective
+** incurrence [ɪn'kʌrəns]
+n. 蒙受 | 网络 招致
+** 日志 [rì zhì] 
+na. daily record; journal | 网络 Blog; logging; Logs
+** voila 
+网络 瞧；那就是；李诺
+** treatment [ˈtritmənt]
+n. 治疗；处理；待遇；疗法 | 网络 对待；处置；治疗方法
+** relinquish [rəˈlɪŋkwɪʃ]
+v. （尤指不情愿地）放弃 | 网络 废除；撤回；停止
+** diacritics [ˌdaɪəˈkrɪtɪk]
+adj. 【医】同“diagnostic”；同“diacritical” | n. 同“diacritical mark” | 网络 附加符号；变音符号；附加符号或变音符
+** 规模 [guī mó]
+na. scale; scope; dimensions | 网络 size; magnitude; way
+** startup 
+n. 开机；创办中的公司 | v. 开办；发动(机器,引擎等) | adj. 新成立的 | 网络 启动；启动选项；启动数据库
+** prelude [ˈpreljud]
+n. 前奏；前奏曲；序幕；先声 | v. 开头；为…作序；成为…的前兆；成为…的序曲[序幕] | 网络 序言；战斗的序曲；预兆
+** indispensable [ˌɪndɪˈspensəb(ə)l]
+adj. 必不可少的 | n. 不可缺少的人或物 | 网络 必需的；不可或缺的；不可缺少之物
+** laundry [ˈlɔndri]
+n. 洗衣店；洗衣房；要（或正在）洗的衣物；刚洗好的衣物 | 网络 要洗的衣服；干洗；爱我别走
+** necessarily [ˌnesəˈserəli]
+adv. 必然地；不可避免地 | 网络 必定；必要地；当然
+** bitwise 
+网络 按位；位元；逐位
+** folds up 
+na. 折起；放弃；倒塌；〔俚语〕倒闭
+** gladiators [ˈɡlædiˌeɪtər]
+n. 角斗士；格斗者(尤指职业拳击者)；争论者 | 网络 格斗士；罗马角斗士；劲技赛
+** surmise [sə(r)ˈmaɪz]
+n. 〈正式〉推测；臆测；揣度；猜度 | v. 〈正式〉猜测；估计；认为 | 网络 猜想；臆想
+** roadblock [ˈroʊdˌblɑk]
+n. 路障；障碍 | 网络 拦路虎；路栅；障碍物
+** outright [ˈaʊtˌraɪt]
+adj. 完全的；彻底的；绝对的；公开的 | adv. 公开地；直率地；毫无保留地；完全彻底 | 网络 彻底地；直率的；总冠军
+** nod [nɑd]
+v. 点头；点头致意；点头示意；（朝…方向）点头（表示所谈论的人或物） | n. 点头 | 网络 非肥胖型糖尿病(non-obese diabetic)；打瞌睡；点头表示
+** haystack [ˈheɪˌstæk]
+n. 干草垛；干草堆 | 网络 乾草堆；大干草堆；聚集的干草垛
+** needle [ˈnid(ə)l]
+n. 针；针头；指针；缝针 | v. 穿过；刺激；拿针缝；拿针穿 | 网络 针状物；编织针；缝衣针
+** plop [plɑp]
+v. 咚的落下；扑通一声把…放入（尤指液体）；躺下 | adv. 噗通一声 | n. 咚 | 网络 扑通声；扑通落下；扑通一声地掉下去
+** disrupt [dɪsˈrʌpt]
+v. 扰乱；打乱；使中断 | adj. 混乱的；瓦解的；中断的 | 网络 使分裂；破坏；使瓦解
+** iin 
+网络 发卡机构标识码(Issuer Identification Number)；智能信息网络
+** voo-doo 
+网络 巫毒教
+** allotment [əˈlɑtmənt]
+n. 分配；（城镇内租用的）私家菜地；分配物；分配量 | 网络 配股；拨款；分配数
+** priori [转载]
+un. 先验的 | 网络 先天；倍欧丽；先验上
+** 否则 [fǒu zé] 
+na. otherwise; if not; or else | 网络 OWlSE OTHERWISE; unless
+** dogeared [ˈdɑɡ ˌɪrd]
+un. 卷边 | 网络 许愿链；祈愿项链；首饰
+** hype [haɪp]
+n. （电视、广播等中言过其实的）促销广告 | v. 夸张地宣传（某事物） | 网络 大肆宣传；炒作；天花乱坠的广告宣传
+** zealot [zelət]
+n. 狂热者 | 网络 狂战士；热心者；发烧友
+** dogma [ˈdɔɡmə]
+n. 教条；信条；教义；教理 | 网络 怒犯天条；教条主义；教义或曰信条
+** unt 
+网络 德州大学；新时代党(Un Nuevo Tiempo)；专业保养美妆
+** unto [ˈʌntu]
+prep. 对；向；直到；朝 | 网络 归向；施于；云登
+** tout [taʊt]
+v. 兜售；吹捧；推销；标榜 | n. （音乐会、体育比赛等的）倒卖门票的人 | 网络 招徕；陶特；劝诱
+** Deterministic [dɪˌtɜːmɪ'nɪstɪk]
+adj. 确定性；决定性的；必然 | 网络 确定性的；确定的；确定过程式
+** stride [straɪd]
+n. 大步；步伐；进展；一步（的距离） | v. 大步走；阔步行走 | 网络 大踏步走；跨过；步幅
+** persistence [pərˈsɪstəns]
+n. 坚持；持续存在；锲而不舍；维持 | 网络 持续性；持久性；持久化
+** gemini [ˈdʒemɪˌnaɪ]
+n. 【天】双子座；双子宫 | 网络 双子星；双子星座；双子型
+** scalable ['skeɪləbəl]
+adj. 可攀登的；可秤的；可剥去鳞片的 | 网络 可扩展；可扩展性；可伸缩
+** haul [hɔl]
+v. 拉；用力缓慢挪动到（某处）；强迫（某人）去某处；使某人出庭受审 | n. 大批赃物；大量非法物品；很高的得分；旅行的距离 | 网络 拖；拖运；拖曳
+** facets [ˈfæsɪt]
+n. 方面；小平面；小眼面指昆虫；八角形拍把上的一个伞面 | 网络 切面；刻面；宝石的刻面
+** hallmark [ˈhɔlˌmɑrk]
+n. 特点；特征 | v. 给…打金银纯度印记 | 网络 贺曼；标志；贺曼公司
+** panacea [ˌpænəˈsiə]
+n. 万灵药；万能之计 | 网络 万能药；灵丹妙药；万灵丹
+** dominant [ˈdɑmɪnənt]
+n. 优势种；【生】显性性状；显性基因；【乐】全阶第五音 | adj. 首要的；占支配地位的；占优势的；显著的 | 网络 支配的；统治的；显性的
+** proliferation [prəˌlɪfəˈreɪʃ(ə)n]
+n. 增生；〈正式〉(数量)激增；扩散 | 网络 增殖；繁殖；细胞增生
+** remedy [ˈremədi]
+n. 处理方法；改进措施；补偿；疗法 | v. 改正；纠正；改进 | 网络 补救；治疗；药物
+** swath [swɑθ]
+n. 割下的一行草[麦]；(一镰刀的)刈幅；(镰刀的)一挥 | 网络 小水线面双体船(Small Waterplane Area Twin Hull)；水线面双体船型；斯沃琪
+** cache coherence 
+n. 缓存一致性 | 网络 高速缓存一致性；快取一致性；高速缓存相干
+** bus snooping 
+网络 总线动态监视；总线窥探
+** snooping [snup]
+v. 窥探；偷窃；管闲事 | 网络 探听；偷窥；窥探技能
+** proprietary [prəˈpraɪəˌteri]
+n. 所有权；所有物；所有团体 | adj. 专卖的；专营的；专利的；所有的 | 网络 专有；专有的；专属
+** Affinity [əˈfɪnəti]
+n. 类同；喜好；喜爱；密切的关系 | 网络 亲和力；密切关系；亲和性
+** TLN 
+网络 The Library Network; 土伦; 踝蛋白(talin)
+** TLB 
+网络 快速启动工具栏(true launch bar)；缓冲器；后援缓冲器
+** admonition [ˌædməˈnɪʃ(ə)n]
+n. 警告；告诫 | 网络 训诫；劝告；训词
+** arcane [ɑrˈkeɪn]
+adj. 神秘的；晦涩难懂的 | 网络 奥术；不可思议的；晦涩难解的
+** vacuum [ˈvækjum]
+n. 真空；真空状态；空虚；空白 | adj. 真空的；用以产生真空的；利用真空的 | v. 用真空吸尘器清扫 | 网络 真空度；用吸尘器打扫；负压
+** profolio 
+网络 展示本；作品集；作品列表
+** 组合 [zǔ hé] 
+na. combination; combining | 网络 composition; combine; portfolio
+** clumsy [ˈklʌmzi]
+adj. 笨拙的；不灵巧的；无技巧的；冒犯人的 | 网络 愚笨的；笨笨；笨手笨脚的
+** Shaping [ʃeɪp]
+v. 成形；成型；塑造；形成 | n. 定型；形状；形态；样子 | abbr. (=Supreme Headquarters； Allied Powers in Europe)(北大西洋公约组织的)欧洲盟军最高司令部 | 网络 舍宾；整形；流量整形
+** intrinsically [ɪnˈtrɪnsɪklɪ]
+adv. 真正；从本质上来说；内在的；固有的 | 网络 内在地；本质地；固有地
+** sinister [ˈsɪnɪstər]
+adj. 邪恶的；险恶的；不祥的；有凶兆的 | 网络 阴险的；凶恶的
+** enact [ɪnˈækt]
+v. 扮演；通过（法律）；担任…角色；演出 | 网络 颁布；制定；制定法律
+** paranoid [ˈperəˌnɔɪd]
+n. 偏执狂；妄想症患者 | adj. 多疑的；恐惧的；患偏执症的；有妄想狂的 | 网络 禁室迷情夜；偏执狂的；偏执狂金属网
+** errand [ˈerənd]
+n. 差事；差使 | 网络 使命；任务；跑腿
+** uplifting [ʌpˈlɪftɪŋ]
+adj. 令人振奋的；鼓舞人心的；催人奋进的 | v. “uplift”的现在分词 | 网络 引人向上的；振奋人心的；振奋活力
+** nary [ˈneri]
+adj. 没有一个的；没有的 | 网络 连……也没有；耐瑞；一个也没有的
+** conspired [kənˈspaɪr]
+v. 协力；巧合；共同促成；搞阴谋 | 网络 共谋
+** scribble [ˈskrɪb(ə)l]
+v. 草草记下；胡写；乱画 | n. 潦草的文字；胡写乱画的东西 | 网络 涂鸦；乱写；涂写
+** per se [ˌpɜr ˈseɪ]
+adv. 本身；本质上 | 网络 自身；本来；本身餐厅
+** ecosphere ['ikoʊˌsfɪr]
+n. 生态层 | 网络 生态圈；生态球；生物圈
+** title [ˈtaɪt(ə)l]
+n. 标题；头衔；职称；所有权凭证 | v. （给书、乐曲等）加标题 | 网络 题目；书名；网页标题
+** tild 
+网络 玛蒂尔达；总胆红素
+** 工程理论 
+网络 Engineering Theory; IE; Ethics of Engineering
+** 成本预算 
+网络 Cost Budgeting; cost budget; Cost estimation
+** 书里 
+网络 Book; Heinz Kohut and the Psychology of the Self; Troubleshooting Oracle Performance
+** 梳理 [shū lǐ] 
+na. carding | 网络 comb; tease; grooming
+** project management 
+un. 专案管理；设计工作的组织领导 | 网络 项目管理；工程管理；工程项目管理
+** implicit [ɪmˈplɪsɪt]
+adj. 含蓄的；不直接言明的；成为一部分的；内含的 | 网络 隐式；暗示的；隐性
+** 显式 
+n. explicit formula | 网络 explicitly; explicit formulation; explicit expression
+** 切面 [qiē miàn]
+na. section; 【数】tangent plane | 网络 Aspect; Facets; cut
+** interposing [ˌɪntərˈpoʊz]
+v. 干预；插入；提出(异议)；【影视】使一镜头迅速替换(另一镜头) | 网络 介入；插话；使介入
+** judiciously [dʒuˈdɪʃəslɪ]
+adv. 明智地；得当；有机地；颇有见解地 | 网络 明智而审慎地；贤明地；明智的
+** laughably ['lɑːfəbli]
+adv. 可笑 | 网络 可笑地；有趣地
+** sparingly [ˈsperɪŋli]
+adv. 很少；细嚼慢咽地；节俭地 | 网络 保守地；节约地；节省地
+** empirical [emˈpɪrɪk(ə)l]
+adj. 凭经验的 | 网络 经验主义的；实证；实证的
+** pesky [ˈpeski]
+adj. 恼人的；讨厌的 | 网络 麻烦的；烦人的；让人讨厌的
+** tandem [ˈtændəm]
+adj. 串联；(两匹马)前后纵列 | n. 双座自行车；双人自行车 | 网络 天腾；纵列式；天腾公司
+** dandy [ˈdændi]
+adj. 非常好的；极佳的 | n. 讲究衣着和外表的男人；好打扮的男人 | 网络 德意；花花公子；丹迪
+** anatomy [əˈnætəmi]
+n. 解剖；解剖学；剖析；解析 | 网络 活人破胆；分解；解剖构造
+** pervasive [pərˈveɪsɪv]
+adj. 遍布的；充斥各处的；弥漫的 | 网络 普遍的；普遍深入的；渗透的
+** postponing [poʊsˈpoʊn]
+v. 延缓；搁置 (until, till, to, for) | 网络 推迟；使延期；延迟
+** scoot [skut]
+v. (使)迅速跑开；(使)溜走；(使)射出；(使)喷出 | 网络 酷航；疾走；飞奔
+** actuator ['æktʃʊˌeɪtə]
+n. 激励器；【自】执行元件；【机】促动器；【电】(电磁铁)螺线管 | 网络 致动器；执行机构；执行器
+** 怀旧 [huái jiù] 
+na. remember past times or old acquaintances | 网络 nostalgia; nostalgic; Reminiscence
+** reminiscence [ˌremɪˈnɪsəns]
+n. 回忆；回忆录；追忆；怀旧的谈话 | 网络 回想；旧事；记忆恢复
+** going nuts 
+网络 飞鼠吃坚果；亲爱的迈克；花生向前冲
+** flesh out 
+na. 充实；使…具体化 | 网络 使有血有肉；使之更充实并具体化；充实完整
+** interpose [ˌɪntərˈpoʊz]
+v. 插入；将…置于（二者）之间；夹进 | 网络 介入；插话；干预
+** interchangeably [ɪntɚˈtʃendʒəblɪ]
+adv. 互换 | 网络 可交换地；互换的；可互换地
+** crude [krud]
+adj. 粗略的；简略的；大概的；粗糙的 | n. 原油；石油 | 网络 天然的；粗鲁的；未加工的
+** ghastly [ˈɡæs(t)li]
+adj. （因有关疼痛、死亡等而）恐怖的；糟透的；令人不快的；令人恶心的 | adv. 鬼一样地 | 网络 可怕的；苍白的；寄生灵
+** junctures [ˈdʒʌŋktʃər]
+n. 连结；交界；时机；【语】连音 | 网络 关头；时刻；接合点
+** 编程 [biān chéng]
+v. program | 网络 programming; ISP; Program
+** chop up [喻]
+na. 切细；(地层等)突然露出；〔比喻〕割断(历史等)；同“chop” | 网络 切开；剁碎；切碎
+** designate [ˈdezɪɡnət]
+v. 指定；指派；命名；标示 | adj. （已受委派）尚未上任；（已当选）尚未就职 | 网络 指明；任命；指出
+** overheads [ˈoʊvərˌhed]
+adj. 所有的；头顶上的；架空的；架设的 | adv. 在上；在楼上；在空中；从头到脚全部没入 | n. 经费；营运费用；经常性开支 | 网络 企业一般管理费用；日常开支；间接成本
+** 隐喻 [yǐn yù] 
+na. 【语】metaphor | 网络 metaphors; The metaphor; metaphorical
+** aerobic [eˈroʊbɪk]
+adj. 需氧的；好氧的；有氧的；增强心肺功能的 | 网络 有氧运动；有氧代谢的；氧存在的
+** aftercare [ˈæftərˌker]
+n. （病人出院后的）护理；事后处理；售后服务 | adj. 售后服务的 | 网络 照顾调养；善后辅导；土地复田护理
+** Viriya 
+网络 精进；精进力；精进根
+** 渐近法 
+n. asymptotic method | 网络 method of approach; Asymptotic method; successive approximation
+** Asymptotic [æsɪmp'tɒtɪk]
+adj. 渐近 | 网络 渐近的；渐近线的；渐近性
+** 渐近线 [jiàn jìn xiàn] 
+n. asymptote; asymptotic line | 网络 asymptotes; calando; ASYMP
+** Asymptote ['æsɪmˌtoʊt]
+n. 【数】渐近线 | 网络 渐进线；渐进线设计组；渐近线设计组
+** disdain [dɪsˈdeɪn]
+v. 蔑视；鄙视；鄙弃；不屑（做某事） | n. 蔑视；鄙视；鄙弃 | 网络 轻视；轻蔑；藐视
+** detour [ˈdiˌtʊr]
+v. 绕道 | n. 弯路；绕行道 | 网络 绕路；迂回；绕路而行
+** perse [pɜːs]
+n. 深灰色(的) | 网络 佩斯家族；深紫色；波斯
+** combat [ˈkɑmˌbæt]
+v. 战斗；防止；减轻；与…搏斗 | n. 战斗；搏斗；打仗 | 网络 格斗；斗争；对抗
+** coalesce [ˌkoʊəˈles]
+v. 合并；结合；联合 | 网络 接合；愈合；聚结
+** corollary [ˈkɔrəˌleri]
+n. 必然的结果（或结论） | 网络 推论；系；系定理
+** 上游 [shàng yóu] 
+na. upstream; upper reaches | 网络 upper course; upper stream; headwater
+** unique [juˈnik]
+adj. 唯一的；独一无二的；独特的；罕见的 | n. 独一无二的人[物,事实] | 网络 独特性；唯一约束
+** coalescing [ˌkoʊəˈles]
+v. 结合；(政党等)合并；合作；(断骨等)接合 | 网络 联合；聚结；合并访问
+** housekeeping [ˈhaʊsˌkipɪŋ]
+n. 内务处理；家务（尤指采购和管理开支） | 网络 客房部；客房服务；家政
+** segregated [ˈseɡrəˌɡeɪtəd]
+v. “segregate”的过去式和过去分词 | 网络 隔离的；被隔离的；种族隔离的
+** beguile [bɪˈɡaɪl]
+v. 哄骗（某人做某事）；诱骗；吸引（某人）；使感兴趣 | 网络 欺骗；消遣；诱惑
+** immense [ɪˈmens]
+adj. 巨大的；大量的；浩瀚的；无限的 | 网络 广大的；无边的；极广大的
+** dilemma [daɪˈlemə]
+n. （进退两难的）窘境 | 网络 困境；左右为难；进退两难的局面
+** Derivation [ˌderɪˈveɪʃ(ə)n]
+n. 推导；衍生；导出；导子 | 网络 派生；派生法；引出
+** Dreaded [ˈdredəd]
+v. 害怕；担心；〔古语〕敬畏；预感到 | n. 害怕；〔古语〕敬畏；畏惧的事物；提心吊胆 | adj. 令人害怕的；可怕的 | 网络 令人畏惧的；感到恐惧的；那另人畏惧的
+** deity [ˈdiəti]
+n. 神；上帝；女神；天主 | 网络 神性；本尊；天神
+** repentance [rɪˈpentəns]
+n. 忏悔；后悔；懊悔；悔过 | 网络 悔改；悔恨；悔悟
+** from within [ 异虫咒 ]
+na. 从内 | 网络 由内而外；从里面；从内部
+** herein [hɪrˈɪn]
+adv. 在此处；于此文件（或声明、事实）中 | 网络 此中；在这里；于此处
+** polarity [poʊˈlerəti]
+n. （两种倾向、意见等的）截然对立；极性（两极并存的状态） | 网络 归向；极化；浪涌极性
+** overhead [ˈoʊvərˌhed]
+n. 天花板；【船】船舱的顶板；企业一般管理费用；【化】塔顶馏出物 | adj. 头上方的；地面以上的；高架的；经费的 | adv. 在头上方；在空中 | 网络 开销；间接费用；在头顶上的
+** lookaside [lʊk əˈsaɪd]
+un. 回过身；回过头看；把眼光避开；侧视 | 网络 结构
+** miscellaneous [ˌmɪsəˈleɪniəs]
+adj. 混杂的；各种各样的 | 网络 杂项；其他；其它
+** candidate [ˈkændiˌdeɪt]
+n. 候选人；理想对象；〈正式〉考生 | 网络 求职者；报考者；候补者
+** 辅助的 
+adj. auxilliary; associated; satellite | 网络 auxiliary; subsidiary; ancillary
+** auxilliary 
+adj. 辅助的
+** oscilloscope [əˈsɪləˌskoʊp]
+n. 示波器 | 网络 双通道示波器；虚拟示波器；双踪示波器
+** verification [ˌverɪfɪ'keɪʃ(ə)n]
+n. 验证；检验；证明；【法】诉状[答辩书]结尾的举证说明 | 网络 证实；确认；检定
+** validation [ˌvælɪ'deɪʃ(ə)n]
+n. 有效；〔商〕生效；核实 | 网络 确认；验证；校验
+** 认识新人 
+网络 Meeting new people; Getting to Know New Colleagues
+** policy [ˈpɑləsi]
+n. 政策；方针；保险单；原则 | 网络 策略；保单；安全策略
+** evict [ɪˈvɪkt]
+v. （尤指依法从房屋或土地上）驱逐 | 网络 逐出；赶出；收回
+** rosy [ˈroʊzi]
+adj. 粉红色的；红润的；美好的；乐观的 | n. 【女名】女子名 | 网络 玫瑰色的；玫瑰红；光明的
+** 新乐器
+网络 new instrument; GravS.; GravSynth
+** 木吉他 
+网络 Acoustic Guitar; Acoustic Guitars; woodguitar.myetang
+** simplifying [ˈsɪmplɪˌfaɪ]
+v. 简化；使简易；使单纯 | 网络 简单化；凡事简单化；简约
+** communication [kəˌmjunɪˈkeɪʃ(ə)n]
+n. 通信；交际；交流；信息 | 网络 沟通；通讯；传播
+** 探索 [tàn suǒ] 
+na. exploration; probe; explore | 网络 Explore; Discovery; seek
+** Routine [ˌruˈtin]
+n. 常规；例程；例行程序；正常顺序 | adj. 常规的；例行公事的；日常的；平常的 | 网络 惯例；例行的
+** reading [ˈridɪŋ]
+n. 阅读；解读；读物；宣读 | adj. 读书的 | v. “read”的现在分词 | 网络 雷丁大学；读数；朗读
+** 自上而下 [zì shàng ér xià] 
+na. from top to bottom | 网络 top-down; top-down processing; Top-down Approach
+** Concentration [ˌkɑnsənˈtreɪʃ(ə)n]
+n. 浓度；含量；集中；专心 | 网络 专注；浓缩；专注力
+** calibration [ˌkælɪˈbreɪʃ(ə)n]
+n. 校准；校正；定标；（温度计或其他仪表上的）刻度 | 网络 标定；校验；校对
+** mince [mɪns]
+v. 用绞肉机绞（食物，尤指肉）；装模作样地小步快走 | n. 肉末（尤指牛肉） | 网络 切碎；肉馅；剁碎
+** sheesh 
+网络 嘘；难以置信；老天
+** wanderlust [ˈwɑndərˌlʌst]
+n. 漫游癖；旅行癖 | 网络 流浪癖；旅游热；旅游癖
+** defer [dɪˈfɜr]
+v. 推迟；延缓；展期 | 网络 延期；拖延；延迟
+** grisly [ˈɡrɪzli]
+adj. 令人厌恶的；恐怖的；可怕的 | 网络 令人毛骨悚然的；吓人的；可怕的或讨厌的
+** whims [hwɪm]
+n. 忽起的念头；奇想；任性；【矿】采矿辘轳 | 网络 幻想；妇女健康行动记忆研究；妇女健康倡议记忆研究(Women's Health Initiative Memory Study)
+** strut [strʌt]
+n. 支撑；支柱；撑杆；支杆 | v. 趾高气扬地走；高视阔步 | 网络 昂首阔步；压杆；炫耀
+** gasp [ɡæsp]
+v. 喘息；透不过气；气喘吁吁地说；很想要（尤指饮料或香烟） | n. 喘息 | 网络 喘气；上气不接下气；气吁吁地说
+** indeterminate [ˌɪndɪˈtɜrmɪnət]
+adj. 模糊的；不确定的；难以识别的 | 网络 不定式；未定；不明确的
+** slide [slaɪd]
+n. 降低；跌落；衰落；滑动 | v. （使）滑行；（使）快捷而悄声地移动；逐渐降低；贬值 | adj. 滑动的；不稳定的 | 网络 幻灯片；滑梯；滑落
+** bottomup [2]
+adj. 〔计〕自底向上(的) | n. 倒置 | 网络 自下而上；由下而上；由下至上
+** 转移 [zhuǎn yí] 
+na. transfer; shift; transition | 网络 metastasis; distract; diversion
+** Atelier [ˌæt(ə)lˈjeɪ]
+n. 制作室 | 网络 工作室；画室；工作坊
+** carryover [ˈkeriˌoʊvər]
+n. 结转；拎携带；带出 | 网络 结转数目；结转次页；结转作用
+** 缩写 [suō xiě] 
+na. 【语】; abridge | 网络 abbreviation; abbreviate; Abbreviations
+** abbreviation [əˌbriviˈeɪʃ(ə)n]
+n. 缩写；【数学】约分；【音乐】略号；〔数〕约分 | 网络 缩写词；省略；简称
+** Outro [ˈaʊtroʊ]
+网络 抬起你的头来；终曲；再玩耍
+** Review [rɪˈvju]
+n. 回顾；述评；审查；评论 | v. 回顾；复习；审核；反思 | 网络 综述；评审；检查
+** immigrant [ˈɪmɪɡrənt]
+n. （外来）移民；外侨 | adj. 侨民的 | 网络 从某国来的移民；移民的；移来的，移民的
+** Parsec ['pɑːsek]
+n. 【天文】秒差距（天体距离单位，=3.26光年） | 网络 秒差矩；天秒差距；何谓秒差
+** 收敛 [shōu liǎn]
+na. astringent; 【数】convergence | 网络 convergent; convergency; astriction
+** Immigrating [ˈɪmɪˌɡreɪt]
+v. 迁移；使移居 | 网络 移民
+** karma [ˈkɑrmə]
+n. 因果报应；业（据信为可决定来生的个人善恶行为）；善报；恶报 | 网络 卡玛；业力；羯磨
+** diaries [ˈdaɪəri]
+n. 日记；日记簿 | 网络 日志；日记法；日志或日记
+** safely [ˈseɪfli]
+adv. 安全地；稳妥地；妥善保管地；小心收藏地 | 网络 平安地；确实地；安然
+** 鸡头 [jī tóu] 
+n. cordon furyale | 网络 Chicken Head; foxnut; Jeter
+** aspects [ˈæspekt]
+n. (问题的)方面；见地；【语】体；局势 | 网络 特征；相位；样子
+** 摄像机 [shè xiàng jī]
+na. camera; pickup camera | 网络 CCD; Cameras; video camera
+** 压力测试 
+网络 stress testing; Stress Test; Compression Test
+** wensday
+网络 星期三；周三
+** 周三 [zhōu sān] 
+n. Wednesday | 网络 Wednesdays; sreda; Your lucky day this week will be Wednesday
+** sincerity [sɪnˈserəti]
+n. 诚意；真挚；纯粹 | 网络 真诚；诚恳；诚实
+** dulcet [ˈdʌlsət]
+adj. 甜美的；悦耳动听的；美妙的 | 网络 悦耳的；佳妙；美味的
+** 培养 [péi yǎng] 
+n. training; cultivation; development | v. cultivate; train; develop; foster | 网络 bring up; education; educate
+** cultivate [ˈkʌltɪˌveɪt]
+v. 培育；栽培；耕作；种植 | 网络 培养；耕种；陶冶
+** cultivation [ˌkʌltɪˈveɪʃ(ə)n]
+n. 栽培；修养；文化；教化 | 网络 培养；耕作；培育
+** prepend 
+网络 预置；前置讯息；预先准备
+** groovy [ˈɡruvi]
+adj. 时髦的；吸引人的；有趣的 | 网络 很帅的；常规的；绝妙的
+** dailies [ˈdeɪli]
+adv. 每天；每日 | adj. 每日的；日常的；每个工作日的；按日的 | n. （除星期日外每日发行的）日报；（不寄宿的）仆人 | 网络 每天拍摄的胶片；天天抛；工作样片的流程
+** pitfall
+[ˈpɪtˌfɔl]
+** improvement [ɪmˈpruvmənt]
+n. 改进；改善；改进处；改善的事物 | 网络 进步；改良；提高
+** 价值观 [jià zhí guān] 
+n. value theory | 网络 values; Core Values; value system
+** flaccid [ˈflæsɪd]
+adj. 软弱的；松弛的；不结实的 | 网络 弛缓；松驰的；弛缓的
+** Cockpit [ˈkɑkˌpɪt]
+n. 驾驶座 | 网络 驾驶舱；座舱；驾驶员座舱
+** virgin [ˈvɜrdʒɪn]
+adj. 未开发的；原始状态的；天然的；未改变的 | n. 处女；童男；童贞马利亚（耶稣之母）；无…经验的人 | 网络 维珍；维京；维珍集团
+** 社交 [shè jiāo]
+na. social intercourse | 网络 Social; SNS; commerce
+** 社交 [shè jiāo]
+na. social intercourse | 网络 Social; SNS; commerce
+** ELISP
+网络 语言；编程语言；有几种方法加载
+** gentle [ˈdʒent(ə)l]
+n. (作鱼饵用的)蛆；〈古〉绅士 | adj. 文静的；慈祥的；温柔的；小心的 | v. 驯服(马等)；抚弄；使高贵；使柔和 | 网络 温和的；有礼貌的；文雅的
+** kindness [ˈkaɪndnəs]
+n. 仁慈；善良；体贴；宽容 | 网络 好意；亲切；善意
+** curated [kjəˈreɪt]
+n. 〈英〉副牧师；教区牧师；〈谑〉拨火棍 | 网络 策划的；策展式的；策展
+** neurology [nʊˈrɑlədʒi]
+n. 神经病学；神经学 | 网络 神经科；神经内科；脑神经科
+** yearly [ˈjɪrli]
+n. 年刊 | adv. 年年；一年一次；在那一年间 | adj. 每年的；一年一次的；年度的；一年的 | 网络 一年一度的；每年地
+** barf [bɑrf]
+n. 呕吐出来的东西 | v. 〔美俚〕呕吐 | 网络 吐的满地都是；Biologically Appropriate Raw Food；呕吐普科
+** slurp [slɜrp]
+v. （喝东西时）发出啧啧的声音；啧啧地响 | n. 〈俚〉咕噜[叭嗒]声 | 网络 啜食；啧啧吃的声音；大声地啜喝
+** Neuroscience [ˈnʊroʊˌsaɪəns]
+n. 神经科学 | 网络 神经系统科学；神经学；神经系统学
+** 可拓展性 
+网络 expansibility; scalable; scalability
+** Transceiver [trænˈsivər]
+n. 无线电收发两用机 | 网络 收发器；收发机；无线电收发机
+** usher [ˈʌʃər]
+n. 引座员；门房；男傧相 | v. 把…引往；引导；引领 | 网络 亚瑟小子；招待员；迎来
+** mantra [ˈmæntrə]
+n. 曼怛罗（某些宗教的念咒）；咒语 | 网络 真言；曼陀罗；曼特拉
+** wander [ˈwɑndər]
+n. 徘徊；游荡；闲逛；溜达 | v. 漫游；游荡；闲逛；走神 | 网络 漫步；流浪；迷路
+** stupendous [stuˈpendəs]
+adj. 极大的；令人惊叹的；了不起的 | 网络 惊人的；巨大的；大得惊人的
+** shredder [ˈʃredər]
+n. 切碎机；（尤指）碎纸机 | 网络 粉碎者；撕碎机；切菜器
+** LLM [.el el 'em]
+n. 法学硕士（全写为 Master of Laws，大学法学的中级学位） | 网络 法律硕士；国际商法法学硕士；法学硕士学位
+** vitality [vaɪˈtæləti]
+n. 活力；生命力；热情 | 网络 体力；活力值；生机
+** slew [slu]
+n. 大量；许多 | v. （使）突然转向 | 网络 旋转；回转；沼泽
+** provisioned [prəˈvɪʒ(ə)n]
+n. 准备；【法】规定；(一批)供应品；生活物质 | v. 向…供应粮食[必需品] | 网络 已置备；被供应的；供给的
+** provision [prəˈvɪʒ(ə)n]
+n. 提供；条款；供给；供应品 | v. 为…提供所需物品（尤指食物） | 网络 规定；预备；准备
+** callback [ˈkɔlˌbæk]
+n. 回拨的电话；打回的电话 | 网络 回调；回调函数；回呼
+** call back 
+na. 取消；喊回；回一个电话；再打一个电话来 | 网络 回电话；收回；回调
+** heavy [ˈhevi]
+adj. 重的；沉的；比一般严重的；大而结实的 | n. 保镖；打手；烈性啤酒；（尤指）苦啤酒 | adv. 同“heavily” | 网络 沉重的；重量级；重型
+** eyesight [ˈaɪˌsaɪt]
+n. 视力；目力 | 网络 视觉；眼力；视野
+** Eat your own dog food. 
+网络 使用你自己的产品
+** reem 
+网络 里姆；可再生能源的企业和管理(Renewable Energy Enterprise and Management)；雷姆
+** ream [rim]
+n. 大量的文字（或写作）；令（纸张的记数单位，等于 500 张） | v. 不公平地对待；欺骗 | 网络 铰孔；扩孔；大量的纸
+** cadences [ˈkeɪd(ə)ns]
+n. 节奏；(行军时的)步度；音律；调子 | v. 使成节奏 | 网络 终止式；两种终止式
+** matrons [ˈmeɪtrən]
+n. (年龄相当大的,有声望的)妇女；保姆；(学校等的)女主任；女舍监 | 网络 中学生活老师
+** intangible [ɪnˈtændʒəb(ə)l]
+adj. 难以形容（或理解）的；不易度量的 | n. 不可捉摸的东西 | 网络 无形的；触摸不到的；无形性
+** Persist [pərˈsɪst]
+v. 保持；持续存在；维持；顽强地坚持 | 网络 固执；存留；持久
+** chore [tʃɔr]
+n. 家务活；杂事；事务 | 网络 杂务；家务杂事；零工
+** 要求 [yāo qiú] 
+na. demand; require; ask; claim | 网络 Requirements; requirement; request
+** dice [daɪs]
+n. 骰子；色子；掷骰游戏；掷骰赌博 | v. 将（肉、菜等）切成小方块；将…切成丁 | 网络 切块；切丁；掷骰子
+** warfare [ˈwɔrˌfer]
+n. 战；战争；作战；冲突 | 网络 战争状态；斗争；战火
+** latch [lætʃ]
+n. 门闩；锁存；插销；卡齿 | v. 获得；抓住；用插销扣上(门等)；占有 | 网络 锁存器；闩锁；闭锁
+** matrices [ˈmeɪtrɪks]
+n. 基质；方阵；【生】衬质细胞；间质 | 网络 矩阵；矩阵复数；基质胶
+** cellular [ˈseljələr]
+adj. 细胞的；由细胞组成的；（无线电话）蜂窝状的；网状的 | 网络 一线声机；玩命手机；多孔的
+** goto ['ɡəʊtəʊ]
+na. 相当于；付出 | 网络 转到；跳转；跳转到指定的帧
+** happiness [ˈhæpinəs]
+n. 幸福；愉快；(用语等的)适当；〈古〉幸运 | 网络 快乐；幸福感；爱我就让我快乐
+** unicorn [ˈjunɪˌkɔrn]
+n. （传说中的）独角兽 | 网络 麒麟；麒麟情报局；独角兽的家
+** replace [rɪˈpleɪs]
+v. 取代；代替；更换；更新 | 网络 替换；替代；接替
+** plist 
+网络 属性列表；属性列表文件；参数列表名称的定义
+** excellent [ˈeksələnt]
+adj. 优秀的；杰出的；极好的；（用以表示愉快或赞同）好极了 | 网络 卓越的
+** happy [ˈhæpi]
+adj. 感到（或显得）快乐的；高兴的；给予（或带来）快乐的；使人高兴的 | 网络 幸福的；开心；欢乐
+** :herbivore [ˈɜrbɪˌvɔr]
+n. 食草动物；草食动物 | 网络 草食性动物；草食者；草食种
+** veggies ['veɡɪz]
+n. 〈口〉蔬菜；“veggie”的复数 | 网络 个蔬菜；希腊传统牛肉蔬菜汤；打字机
+** carnivore [ˈkɑrnɪˌvɔr]
+n. 食肉动物 | 网络 肉食动物；食虫植物；食肉生物
+** chaff [tʃæf]
+n. 箔条；开玩笑〔多指无恶意的〕；麻杆碎屑；不值钱的假货 | v. 戏弄；切碎 | 网络 谷壳；糠；米糠
+** arbiter [ˈɑrbɪtər]
+n. 仲裁人；公断人；裁决人；决定者 | 网络 仲裁者；仲裁器；神风烈士
+** juxtaposition [ˌdʒʌkstəpəˈzɪʃ(ə)n]
+n. 并列 | 网络 并置；并排；并列使用的现象
+** transducers [trænzˈdusər]
+n. 传感器；变频器；【无线】转换器；换能器 | 网络 变送器；传感器类；变能器
+** Evil Alien Conquerors 
+网络 邪恶的异种征服者
+** namaste [ˈnɑməsteɪ]
+网络 合十致敬；马斯特；合十礼
+** enlightenment [ɪnˈlaɪt(ə)nmənt]
+n. 启迪；启发；开导；开明 | 网络 开悟；启蒙运动；教化
+** pine [paɪn]
+n. 松木；菠萝；【植】松树 | v. 憔悴；渴望；郁郁寡欢；消瘦 | 网络 松景；松针
+** locust [ˈloʊkəst]
+n. 蝗虫 | 网络 洋槐；蝉；洋槐，刺槐
+** mantis [ˈmæntis]
+n. 【虫】螳螂 | 网络 快螳螂；美国螳螂；金丝螳螂
+** culinary [ˈkʌlɪˌneri]
+adj. 烹饪的；食物的 | 网络 厨房的；烹调的；烹饪艺术
+** menial [ˈminiəl]
+adj. 不需技巧的；枯燥的；报酬低的 | n. 仆人；佣人 | 网络 仆人的；卑贱的；卑微的
+** hiroshima [ˌhɪrəˈʃimə]
+n. 广岛 | 网络 広岛；广岛县；广岛市
+** nagasaki ['nɑ:gɑ:'sɑ:ki:]
+n. 长崎；【旅】长崎 | 网络 长崎市；长崎县；长崎自由行地图
+** inadvertent [ˌɪnədˈvərtənt]
+adj. 疏忽的；漫不经心的；出于无心的 | 网络 不注意的；非故意的；无意
+** peruse [pəˈruz]
+v. 细读；研读 | 网络 精读；审阅；熟读
+** smug [smʌɡ]
+adj. 沾沾自喜的；自鸣得意的 | n. 沾沾自喜的人；书呆子 | 网络 自以为是的；自满的；自命不凡的
+** unappetizing [ʌnˈæpəˌtaɪzɪŋ]
+adj. 难吃的；倒胃口的；看似难吃的 | 网络 引不起食欲的；令人食慾全消的
+** callous [ˈkæləs]
+adj. 冷酷无情的；无同情心的；冷漠的 | v. 使硬结；使无感觉；使无情 | 网络 冷淡的；起老茧的；无感觉的
+** servile [ˈsɜrˌvaɪl]
+adj. 奴性的；逢迎的；恭顺的 | n. 奴隶 | 网络 奴隶的；卑屈的；低三下四
+** hatred [ˈheɪtrəd]
+n. 仇恨；憎恨；厌恶 | 网络 憎恶；怨恨；敌意
+** surfaced [ˈsɜrfəs]
+n. 表面；地面；水面；空地 | adj. 表面的；水面的；外表上的；(对高架及地下铁路说的)平地上的 | v. 对…作表面处理；使成平面；掘开…的地面；铺(路面) | 网络 浮出水面；刨光；射镜
+** conformity [kənˈfɔrməti]
+n. （对社会规则的）遵从 | 网络 从众；一致；合格
+** pluck [plʌk]
+v. 摘；拔；采摘；拔掉 | n. 胆识；胆量；意志 | 网络 勇气；拉；鼓起
+** obscene [ɑbˈsin]
+adj. 淫秽的；猥亵的；下流的；（数量等）大得惊人的 | 网络 淫亵；淫猥
+** jagon 
+网络 书记细佬
+** pertaining [天]
+adj. 与…有关系的 | n. 附属(物) | v. “pertain”的现在分词 | 网络 附属的；与...有关系；与…有关的
+** shackle [ˈʃæk(ə)l]
+v. 束缚；给（某人）戴镣铐；阻挠；成为…的羁绊 | n. 桎梏；脚镣；手铐；束缚(物) | 网络 卸扣；钩环；枷锁
+** monadic [mə'nædɪk]
+adj. 单孢体的；一价元素的；一价物的；单轴的 | 网络 一元的；单子；单边的
+** unfathomable [ʌnˈfæðəməb(ə)l]
+adj. 难以理解的；莫测高深的；（表情）难以琢磨的 | 网络 深不可测的；无底的；难解的
+** defferred 
+网络 延迟
+** bail [beɪl]
+n. 保释；【法律】保释金；保释人；(篷帐的)半圆形支撑箍托 | v. 担保；舀；从(船中)戽出水；【法律】准许保释 | 网络 保证金；保证人；租约
+** strewn [stru]
+v. 撒(沙,花等)在…上；播；散播；点缀 | 网络 撒满；到处是；散落
+** enlist [ɪnˈlɪst]
+v. 争取；征募；（使）入伍；从军 | 网络 招募；参军；征召
+** guises [ɡaɪz]
+n. 外衣；衣服；形象；样子:外表 | v. 〈俚〉〔英方〕伪装 | 网络 装束
+** mimic [ˈmɪmɪk]
+v. 模仿（某人的言行举止）；（尤指）做滑稽模仿；似 | adj. 模仿的；【生】拟态的 | n. 会模仿的人（或动物） | 网络 模拟；假装的；摹拟
+** semicolons [ˌsɛmiˈkoʊlən]
+n. 分号 | 网络 关于分号；叙述
+** Grayscale [ˈɡreɪˌskeɪl]
+n. 【计】灰度；灰度图像 | 网络 灰阶；灰度模式；灰度级
+** kuming 
+网络 古明
+** 幸福 [xìng fú] 
+n. happiness; bliss; well-being | 网络 happy; Full Of Happiness; Blessed
+** 右结合 
+网络 right; right associative; RIGHT JOIN
+** gush [ɡʌʃ]
+v. 涌出；大量涌出；过分称赞；夸张地表现对…的感情 | n. 涌出；爆发 | 网络 喷出；喷涌；滔滔不绝地说
+** potion [ˈpoʊʃ(ə)n]
+n. 药水；毒液；魔水 | 网络 药剂；回复药；一服
+** flirt [flɜrt]
+n. 与多人调情的人 | v. 调情 | 网络 挑逗；花痴；卖弄风情
+** intrinsic [ɪnˈtrɪnsɪk]
+adj. 固有的；内在的；本身的 | 网络 本质的；内部的；真正的
+** edifice [ˈedəfɪs]
+n. 大厦；宏伟建筑 | 网络 大建筑物；体系；宏伟的建筑
+** latched [lætʃ]
+n. 锁存；门闩；插销；弹簧锁 | v. 理解；用碰锁锁上(门等)；获得；抓住 | 网络 锁存的；锁住；栓住
+** crank [kræŋk]
+n. 曲轴；（想法）古怪的人；脾气坏的人；容易恼怒的人 | adj. 活泼的；逞能的；(建筑物等)松松垮垮的；像要翻似的 | v. 用曲柄转动（或启动） | 网络 怒火攻心；快克杀手；曲柄轴
+** squiggly
+adj. 弯弯曲曲的 | 网络 弯弯曲曲地；扭一扭
+** squig 
+网络 史圭格；史辜格
+** Holistic Learning
+网络 整合式学习；整体性学习；整体学习
+** rote memorization 
+网络 机械背诵；死记硬背；重复记忆
+** 人性 [rén xìng]
+na. human nature; humanity | 网络 Human; humanism; humanness
+** 满意的
+网络 satisfied; satisfactory; pleased
+** abstraction [æbˈstrækʃən]
+n. 抽象；提取；抽取；抽象概念 | 网络 抽象化；抽象性；心不在焉
+** Gregorian [grɪˈgɔriən]
+adj. 罗马教皇格利高里的 | n. 格利高里圣歌 | 网络 格林高利合唱团；格里高利合唱团；历和格里高
+** grit [ɡrɪt]
+n. 勇气；沙砾；毅力；沙粒 | v. （在结冰的路上）撒沙砾 | 网络 砂砾；粗砂；粒度
+** Sperms [spɜrm]
+n. 精液；【生】精子；同“sperm whale” | 网络 好像和怀孕率有关
+** flinger [f'lɪnɡər]
+n. 抛掷器；撒布器 | 网络 抛油环；护圈；投掷手
+** challenge [ˈtʃæləndʒ]
+n. 挑战；质疑；质询；挑战书 | v. 考查；盘问；对…怀疑（或质疑）；拒绝接受 | 网络 向…挑战；挑战模式；叫板
+** implant [ˈɪmˌplænt]
+n. 植入物 | v. 灌输；（在思想上）生根；将（人造器官等）置入 | 网络 注入；移植；植牙
+** thorough [ˈθʌrə]
+adj. 彻底的；完全的；深入的；细致的 | n. 【英史】(如英王查理一世实行的)专横政策 | prep. 〈古〉同“through” | 网络 详尽的；周全；周密
+** 思想 [sī xiǎng] 
+na. thought; ideology; thinking; idea | 网络 concept; mind; thoughts
+** 抵赖 [dǐ lài]
+na. deny; disavow; renegue a promise | 网络 repudiation; Non-repudiation; refuse to admit
+** coerce [koʊˈɜrs]
+v. 强迫；胁迫；迫使 | 网络 强制；压制；要挟
+** rachet ['rætʃɪt]
+abbr. (=ratchet) | 网络 辣齿；拉杰特
+** ratched 
+网络 护士长拉契特；齐德；拉切
+** ratchet [ˈrætʃɪt]
+n. 棘齿 | v. 把…造成棘齿形 | 网络 救护车；棘轮；棘齿城
+** slump [slʌmp]
+n. 衰退；锐减；萧条期 | v. 猛跌；重重地坐下（或倒下） | 网络 暴跌；塌落；坍落
+** kitsch [kɪtʃ]
+adj. 迎合低级趣味的 | n. 迎合低级趣味的粗劣的作品 | 网络 媚俗；庸俗；庸俗文化
+** Pilate 
+n. 彼拉多；典当商；〈美俚〉法官 | 网络 罗马总督彼拉多；罗马总督比拉多；巡抚彼拉多
+** 普拉提 
+n. Pilates | 网络 Yoga; Pilates Exercise; Joseph Pilates
+** Pilates [pɪˈlɑteɪz]
+n. 【体】普拉提 | 网络 彼拉提斯；皮拉提斯；普拉提课程
+** egregious [ɪˈɡridʒəs]
+adj. 极糟的；极坏的 | 网络 惊人的；过分的；异乎寻常的
+** soar [sɔr]
+v. 翱翔；高飞；猛增；高耸 | n. 翱翔；上升高度；高飞范围 | 网络 高涨；剧增；飞翔
+** philosophy [fɪˈlɑsəfi]
+n. 哲学；人生哲学；哲学体系；思想体系 | 网络 自然哲理；理念；自然哲学
+** Dhrystone 
+网络 运算
+** 保守的 
+网络 conservative; orthodox; conserved
+** component [kəmˈpoʊnənt]
+n. 成分；部件；组成部分 | adj. 构成的 | 网络 组件；元件；构件
+** Excluding [ɪkˈskludɪŋ]
+prep. 不包括；除…外 | v. “exclude”的现在分词 | 网络 除外；扣除；不包括在内的
+** Freelance [ˈfriˌlæns]
+adj. 特约的；自由职业（者）的 | v. 做特约工作；从事自由职业 | 网络 自由职业者；自由作家；自由工作者
+** clumsier [ˈklʌmzi]
+adj. (手脚)笨拙的；愚笨的；制作粗陋的；(文体等)臃肿的
+** stagger [ˈstæɡə(r)]
+n. 摇晃；蹒跚(的步伐) | v. (因衰弱, 负重, 醉酒等)蹒跚；摇摆；(指打击或震惊)使蹒跚 | 网络 交错；摇摇晃晃；踉跄
+** bevy [ˈbevi]
+n. （同类人或东西的）一群 | 网络 一群少女；一群鸟；少女群
+** muddles [ˈmʌd(ə)l]
+v. 混；搅拌；使慌张；(酒)使(脑子)糊涂 | n. 混乱；昏迷 | 网络 使混乱；使糊涂；弄糟
+** beetle [ˈbit(ə)l]
+n. 甲虫 | adj. 突出的；愁眉苦脸的 | v. 快速移动 | 网络 甲壳虫；金龟车；金龟子
+** 罗嗦的 
+网络 verbose; prolix; wordy
+** muddle [ˈmʌd(ə)l]
+n. 混乱；糊涂；困惑；茫然 | v. 混淆；弄乱；搅混；使困惑 | 网络 使混乱；使糊涂；弄糟
+** ward off [ draw]
+v. 挡开；架开 | 网络 避开；防止；挡住
+** tease [tiz]
+v. 取笑；戏弄；梳理；挑逗 | n. 取笑；戏弄；捉弄；爱戏弄人的人 | 网络 逗弄；强求；嘲笑
+** bespoke [bɪˈspəʊk]
+adj. 定做的 | v. bespeak的过去式和过去分词 | 网络 定制；订制；定制的
+** serpent [ˈsɜrpənt]
+n. 蛇；（尤指）大蛇 | 网络 大毒蛇；阴险的人；巨蛇
+** kebab [kə'bæb]
+n. 烤肉串 | 网络 沙威玛；卡博串；烤腌羊肉串
+** cheshire [ˈtʃɛʃər]
+n. 柴郡 | 网络 切希尔；柴郡奶酪；柴郡干酪
+** regurgitation [rɪˌɡɜːdʒɪ'teɪʃ(ə)n]
+n. 反流；回流；〔动〕反刍；〔医〕心脏瓣口(血液)反流 | 网络 反胃；逆流；回流反流反胃
+** wrath [ræθ]
+n. 〈正式〉愤怒；怒气；怒火；震怒 | 网络 暴怒；狂怒；忿怒
+** Annually [ˈænjuəli]
+adv. 一年一次地 | 网络 每年；年年；每年地
+** spellbinding [ˈspelˌbaɪndɪŋ]
+adj. 让人着魔的；迷人的 | 网络 引人入胜的；使人入迷的；白雪公主的奇蹟
+** summer solstice 
+na. 夏至 | 网络 夏至日；夏至点；夏至时
+** mean reversion 
+网络 均值回归；均值回复；回归均值效应
+** interday 
+网络 间日内；日间波动；异日间
+** momentum [moʊˈmentəm]
+n. 动量；势头；动力；推进力 | 网络 要素；动量指标；冲力
+** reversion [rɪˈvɜrʒ(ə)n]
+n. 回复；回归；倒退；（土地或财产的）归还 | 网络 反转；逆转；回复突变
+** intraday ['ɪntrəˌdeɪ]
+adj. 一天之内的；一天内的 | 网络 日内；日内的；当天的
+** interim [ˈɪntərɪm]
+n. 临时；临时协定；【史】(宗教改革时的)临时敕令 | adj. 暂时的；过渡的；期中的 | 网络 临时的；中间的；过渡时期
+** treacherous [ˈtretʃərəs]
+adj. 不可信任的；背叛的；奸诈的；有潜在危险的 | 网络 叛逆的；不忠的；暗藏危险的
+** strove [straɪv]
+v. 力求；竞争；反抗 | 网络 奋斗；努力；斯特夫
+** crowdsource 
+网络 众包；群众外包；群众外包的方式
+** indebted [ɪnˈdetəd]
+adj. 感激的；蒙恩的；负债的 | 网络 负债累累；感恩的；欠债的
+** blithely [ˈblaɪðli]
+adv. 愉快地 | 网络 快活地；无忧无虑地；漫不经心地
+** regime [reɪˈʒim]
+n. 政体；组织方法；管理体制 | 网络 政权；制度；政权制度
+** involves [ɪnˈvɑlv]
+v. 涉及；含有…的意义；使陷入；围住 | 网络 包括；包含；涉及到
+** round trip 
+n. 来回旅行；往返旅程 | 网络 往返旅行；往返行程；来回票
+** statistical significance 
+n. 显着性差异 | 网络 统计显著性；统计意义；统计显着性
+** gloss [ɡlɔs]
+n. 光亮；用以产生光泽的物质；光泽涂料；亮光漆 | v. 在…上作注释（或评注） | 网络 光泽度；光彩；注解
+** ethereal [ɪˈθɪriəl]
+adj. 优雅的；轻飘的；缥缈的；超凡的 | 网络 飘渺的；仙乐；太空的
+** out-of-sample 
+网络 样本外；样本外点；样本外问题
+** toss [tɔs]
+v. 掷；甩（头，以表示恼怒或不耐烦）；挥动；摇匀 | n. 掷硬币决定；猛仰头（尤指表示恼怒或不耐烦） | 网络 扔；投；抛
+** edict [ˈidɪkt]
+n. 法令；命令；敕令 | 网络 布告；诏书；谕旨
+** turd [tɜrd]
+n. 粪块；粪球；粪团；臭狗屎（对不喜欢的人的冒犯语）
+** diligent [ˈdɪlɪdʒənt]
+adj. 孜孜不倦的；勤勉的；刻苦的 | 网络 勤奋的；用功的；勤劳
+** imposes [ɪmˈpoʊz]
+v. 使…负担；强派(工)；把(次品等)硬卖给 | 网络 规定；把…施加到
+** survivorship [sə'vaɪvəˌʃɪp]
+n. 生存者；存活；幸存；残存 | 网络 存活率；幸存者权；存活偏差
+** yet [jet]
+conj. 然而；但是 | adv. 还；现在；迄今为止；用于否定句和疑问句 | 网络 仍然；尚；已经
+** equation [ɪˈkweɪʒ(ə)n]
+n. 方程；方程式；等式；相等 | 网络 平衡；公式；反应式
+** aired [er]
+n. 公开；空气；天空；风度 | v. 晾；烘干；烤干；风干 | 网络 播出；直播；第一种是主动发布
+** their [ðer]
+adv. 他们的；她们的；它们的；在提及性别不详的人时 | det. 代指之前已经提到的或指向非常明显的一群人或事物的 | 网络 一朵诡异的花；物主代词
+** deviation [ˌdiviˈeɪʃ(ə)n]
+n. 偏差；偏离；背离；违背 | 网络 离差；偏向；绕航
+** bibliographies [ˌbɪbliˈɑɡrəfi]
+n. 书目；文献；书目提要 | 网络 参考书目；目录；目录学
+** fiat [ˈfiˌɑt]
+n. 命令 | v. 认可；以命令宣布 | abbr. 〈外(=Fabbrica Italiana Automobile Torine)飞雅特汽车公司 | 网络 菲亚特；快意；意大利
+** Curvature [ˈkɜrvəˌtʃʊr]
+n. 曲率；弯曲；曲度 | 网络 弯曲度；曲率连续；弧度
+** tabular [ˈtæbjələr]
+adj. 表格式的；列成表的；制成表的 | 网络 表格的；列表；板状的
+** Assessing [əˈses]
+v. 估定；评价(人物,工作等)；确定(税款,罚款,赔款的)数额 | 网络 评估；评估与反馈；评估阶段
+** frugal [ˈfruɡ(ə)l]
+adj. （对金钱、食物等）节约的；简单廉价的 | 网络 节俭的；俭朴的；节省的
+** Exposition [ˌekspəˈzɪʃ(ə)n]
+n. 阐述；（产品的）展销；商品交易会；产品博览会 | 网络 说明文；呈示部；展览会
+** Catalog [ˈkæt(ə)lˌɔɡ]
+n. 目录册；产品样本；学校便览；一览表 | v. (为…)编目录；(把…)按目录分类 | 网络 产品目录；商品目录；型录
+** ROI [rwɑ:]
+n. 〈外〉王 | 网络 投资回报率(return on investment)；投资报酬率；感兴趣区(region of interest)
+** exponent [ɪkˈspoʊnənt]
+n. 指数；（观点、理论等的）拥护者；（某种活动的）能手 | adj. 讲解的 | 网络 幂；解释者；说明者
+** frustrated [ˈfrʌˌstreɪtəd]
+adj. 沮丧的；失败的 | v. frustrate的过去式和过去分词 | 网络 挫败的；失意的；受挫折
+** snore [snɔr]
+v. 打鼾；打呼噜 | n. 鼾声；呼噜声 | 网络 发鼾声；打呼打鼾
+** distributive [dɪ'strɪbjətɪv]
+adj. 经销的；分销的 | n. 【语】个体词 | 网络 分布式；分配的；分配性
+** equivalent [ɪˈkwɪvələnt]
+n. 等值；同义词；【化】当量；【地】同期地层 | adj. 【化】等价的；同等的；同意义的 | 网络 相等的；相当的；等量的
+** laurel [ˈlɔrəl]
+n. 月桂树；月桂灌木；荣誉；赞誉 | v. 使戴桂冠；给以荣誉 | 网络 劳雷尔；胜利；罗瑞尔
+** flinging [flɪŋ]
+v. 抛；猛动（身体或身体部位）；粗暴地（向某人）说 | n. 一阵尽情欢乐；一时的放纵；短暂的风流韵事 | 网络 扔；猛冲；挥动
+** disposition [ˌdɪspəˈzɪʃ(ə)n]
+n. 倾向；性情；性格；布置 | 网络 处置；气质；处理
+** quectel 
+网络 移远通信；上海移远；移为
+** between [bɪˈtwin]
+prep. （空间上）在…中间；（时间上）在…之间 | adv. （空间或时间上）在中间 | 网络 在之间；在两者之间；在……中间
+** created [kriˈeɪt]
+v. 创造；产生；创作；设立 | 网络 创建；已创建；创造的
+** torque [tɔrk]
+n. （使机器等旋转的）转矩 | 网络 扭矩；扭力；力矩

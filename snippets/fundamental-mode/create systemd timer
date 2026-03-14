@@ -1,0 +1,17 @@
+# -*- mode: snippet -*-
+# name: create systemd timer
+# key: cst
+# --
+[Unit]
+Description=Rime Sync User Dictionary Timer
+After=network.target
+
+[Timer]
+#OnCalendar=Mon..Fri *-*-1..3 00:00:00
+OnCalendar=Fri *-*-* 18:00:00
+# Persistent=true
+# OnCalendar=Sat,Sun 17:00:00
+Unit=rime-sync-dict.service
+
+[Install]
+WantedBy=timers.target

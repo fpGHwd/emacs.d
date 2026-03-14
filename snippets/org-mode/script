@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name:script
+# key:script
+# --
+#+srcname: $0
+#+headers: :tangle $1
+#+begin_src bash :mkdirp yes :comments link
+#!/usr/bin/bash
+
+$2
+
+#+end_src

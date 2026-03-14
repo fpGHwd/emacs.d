@@ -1,0 +1,24 @@
+# -*- conf-unix -*-
+
+# Qmail{
+#    %INBOX:284320213/login@imap.qq.com:993!  "QQ 邮箱"
+# }
+
+
+Gmail {
+  %Inbox:ggwdwhu/clear@imap.gmail.com:993!  "Inbox"
+  %Sent:ggwdwhu/clear@imap.gmail.com:993!  "Sent"
+  %Emacs-devel Digest:ggwdwhu/clear@imap.gmail.com:993!  "Emacs-devel Digest"
+}
+
+# %[Gmail]/Spam:ggwdwhu/clear@imap.gmail.com:993!  "Spam"
+# %[Gmail]/Starred:ggwdwhu/clear@imap.gmail.com:993! "Starred"
+# %[Gmail]/Important:ggwdwhu/clear@imap.gmail.com:993!  "Important"
+
+# %[Gmail]/Drafts:ggwdwhu/clear@imap.gmail.com:993! "Drafts"
+# %[Gmail]/Trash:ggwdwhu/clear@imap.gmail.com:993! "Trash"
+
+# %考研/201710:ggwdwhu/clear@imap.gmail.com:993!  "考研/201710"
+# %考研/201712:ggwdwhu/clear@imap.gmail.com:993!  "考研/201712"
+
+# https://github.com/emacs-china/hello-emacs/blob/master/Emacs%E4%B8%AD%E7%9A%84%E9%82%AE%E4%BB%B6%E5%AE%A2%E6%88%B7%E7%AB%AF--WanderLust.org

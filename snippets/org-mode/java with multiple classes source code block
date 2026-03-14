@@ -1,0 +1,42 @@
+# -*- mode: snippet -*-
+# name: java with multiple classes source code block
+# key: jwmcscb
+# --
+
+#+headers: :imports java.util.ArrayList
+#+begin_src java :results output :dir /tmp/emacs-babel-java
+
+class PassByValueExample {
+    public static void main(String[] args) {
+        Dog dog = new Dog("A");
+        func(dog);
+        System.out.println(dog.getName());          // B
+    }
+
+    private static void func(Dog dog) {
+        dog.setName("B");
+    }
+}
+
+class Dog {
+
+    String name;
+
+    Dog(String name) {
+        this.name = name;
+    }
+
+    String getName() {
+        return this.name;
+    }
+
+    void setName(String name) {
+        this.name = name;
+    }
+
+    String getObjectAddress() {
+        return super.toString();
+    }
+}
+
+#+end_src

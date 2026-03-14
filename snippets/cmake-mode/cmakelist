@@ -1,0 +1,10 @@
+# key: cml
+# name: cmakelist
+# --
+cmake_minimum_required(VERSION 3.0.0)
+project(${1:project_name} VERSION 0.1.0)
+
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+set(CMAKE_BUILD_TYPE Debug)
+
+add_executable(${2:target_name} ${3:source_file})

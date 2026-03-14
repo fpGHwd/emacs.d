@@ -1,0 +1,65 @@
+# key: bsz
+# name: bash script for zone
+# --
+#!/bin/sh
+
+PRODUCT_TOP_FULLPATH=$2
+SECBOOT_FULLPATH=$3
+TARGET_TOOLCHAIN_ROOT_FULLPATH=$4
+PRODUCT_OUT_FULLPATH=$5
+
+SDK_ROOT_FULLPATH=${PRODUCT_TOP_FULLPATH}/vendor/qualcomm/ag550
+
+. ${SDK_ROOT_FULLPATH}/sdk_ag550.sh
+
+images_to_sign_build()
+{
+	mkdir -p "${QL_TARGET_DIR}/images_to_sign"
+	cd "${QL_TARGET_DIR}/images_to_sign"
+
+	secboot_files_list="abl.elf aop.mbn hyp.mbn sbl1.mbn tz.mbn uefi.elf apdp.mbn km4.mbn cmnlib.mbn haventkn.mbn multi_image.mbn ipa_fws.elf firehose/prog_firehose_sdx55.mbn sa515m-sysfs.ubi oemapp.ubi NON-HLOS.ubi devcfg_auto.mbn" # xml_config.mbn devcfg.mbn
+
+	for sec_file in $secboot_files_list; do
+		if [ -f "${QL_TARGET_DIR}/$sec_file" ]; then
+			cp -rf "${QL_TARGET_DIR}/$sec_file" ./
+		else
+			echo "${QL_TARGET_DIR}/$sec_file not exists"
+			exit 1;
+		fi
+	done
+
+	zip -r ./images_to_sign.zip ./*
+	cp -rf ./images_to_sign.zip "${QL_TARGET_DIR}/"
+	cp -rf "${QL_TARGET_DIR}/images_to_sign" "${PRODUCT_OUT_FULLPATH}"
+	rm -rf "${QL_TARGET_DIR}/images_to_sign"
+}
+
+images_to_sign_clean()
+{
+	rm -rf "${QL_TARGET_DIR}/images_to_sign.zip";
+	rm -rf "${PRODUCT_OUT_FULLPATH}/images_to_sign/";
+}
+
+
+usage()
+{
+cat << EOF
+Usage:
+	./build_images_to_sign.sh build top_path secboot_path toolchain_path product_out_path
+	./build_images_to_sign.sh clean top_path secboot_path toolchain_path product_out_path
+EOF
+exit
+}
+
+# start here
+case $1 in
+	build)
+		images_to_sign_build
+		;;
+	clean)
+		images_to_sign_clean
+		;;
+	*)
+		usage
+		;;
+esac

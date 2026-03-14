@@ -1,0 +1,24 @@
+# key: qtr
+# name: quectel test routine
+# --
+######################################################################
+include $(CLEAR_VARS)
+LOCAL_MODULE := ${1:MODULE NAME: uart-test}
+LOCAL_C_INCLUDES :=
+LOCAL_CFLAGS := --std=c++14 -fexceptions
+LOCAL_RTTI_FLAG := -frtti
+LOCAL_LDLIBS := -lpthread -lrt -lql_sdk
+#LOCAL_EXPORT_C_INCLUDE_DIRS := \
+#        $(LOCAL_PATH)/tinyxml/inc
+
+LOCAL_SRC_FILES := \
+        ${2:SOURCE FILES: main.c}
+
+#LOCAL_SHARED_LIBRARIES := \
+#    libcommonbase \
+#    $(LIB_LOG_CORE) \
+#    $(LIB_LOG_API)
+
+LOCAL_MODULE_PATH := $(PRODUCT_OUT)/oemapp/zos/bin
+include $(BUILD_EXECUTABLE)
+######################################################################

@@ -1,0 +1,7 @@
+# -*- mode: snippet -*-
+# name: java code without class
+# key: jcwc
+# --
+#+begin_src java :var a=1 b=2 :results output
+  System.out.print("sum: " + (a+b));
+#+end_src

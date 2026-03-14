@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: startup indent and startup overview
+# key: siso
+# --
+#+startup: indent
+#+startup: overview

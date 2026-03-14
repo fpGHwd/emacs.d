@@ -1,0 +1,12 @@
+# -*- mode: snippet -*-
+# name: leetcode-cpp-source-block
+# key: lcsb
+# --
+#+srcname: $1
+#+headers: :namespaces std
+#+headers: :includes <vector> <iostream>
+#+begin_src C++ :results output
+
+    cout << "Hello c++, Emacs loves U!" << endl;
+
+#+end_src

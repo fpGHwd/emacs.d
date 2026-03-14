@@ -1,0 +1,13 @@
+# key: cscb
+# name: c source code block
+# --
+#+srcname: $1
+#+headers: :includes <string.h> <stdio.h>
+#+headers: :flags "-lpthread"
+#+begin_src C :results output
+// happy coding, wd - C ♥ you!
+
+char * name = "wd";
+printf("Hello, %s\n", name);
+
+#+end_src

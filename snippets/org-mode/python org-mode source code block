@@ -1,0 +1,8 @@
+# key: poscb
+# name: python source code block
+# --
+#+headers: :sessions $1
+#+begin_src python :results output
+import os
+$2
+#+end_src
