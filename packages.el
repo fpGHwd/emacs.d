@@ -67,6 +67,7 @@
 
 ;; (package! use-proxy)
 
+;; https://github.com/casouri/valign
 ;; (package! valign)
 
 (progn

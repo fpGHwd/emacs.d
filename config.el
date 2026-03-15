@@ -36,7 +36,8 @@
 (require 'init-setup)
 
 ;; exec-path
-;; (add-to-list 'exec-path "~/.local/bin")
+(add-to-list 'exec-path "~/.local/bin")
+(add-to-list 'exec-path (concat (getenv "EMACSDIR") "/bin"))
 (when *is-mac*
   (add-to-list 'exec-path "/opt/homebrew/bin"))
 
