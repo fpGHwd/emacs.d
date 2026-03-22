@@ -138,10 +138,6 @@
 ;;            :repo "natrys/whisper.el"
 ;;            :branch "master"))
 
-;; add github copilot
-(package! copilot
-  :recipe (:host github :repo "copilot-emacs/copilot.el" :files ("*.el")))
-
 ;; add org-tree-slide
 ;; (package! org-tree-slide
 ;;   :recipe (:host github
