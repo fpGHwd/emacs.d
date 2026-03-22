@@ -35,11 +35,12 @@
 ;; Add setup support
 (require 'init-setup)
 
-;; exec-path
-(add-to-list 'exec-path "~/.local/bin")
-(add-to-list 'exec-path (concat (getenv "EMACSDIR") "/bin"))
-(when *is-mac*
-  (add-to-list 'exec-path "/opt/homebrew/bin"))
+;; exec-path - consolidated and de-duplicated
+(let ((paths (list "~/.local/bin"
+                   (concat (getenv "EMACSDIR") "/bin")
+                   "~/.config/emacs/bin")))
+  (dolist (p (cl-remove-duplicates (delq nil (mapcar #'expand-file-name paths)) :test #'equal))
+    (add-to-list 'exec-path p)))
 
 ;; utilities
 (if (not *is-mac*) (require 'init-mail))
