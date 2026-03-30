@@ -256,37 +256,6 @@
       (run-at-time "00:00" (* 24 60 60) '+wd/remove-deprecated-files "args"))))
 
 
-;; ;; 1. 为 NixOS 定义一个连接配置 profile
-;; (connection-local-set-profile-variables
-;;  'nixos-remote-profile
-;;  '((shell-file-name . "/run/current-system/sw/bin/bash")  ;; NixOS 的 bash 路径
-;;    (shell-command-switch . "-c")  ;; shell 参数，通常保持 -c
-;;    (tramp-remote-path . (          ;; 添加 NixOS 特有的可执行文件路径
-;;      "/run/wrappers/bin"            ;; sudo 等命令所在 [citation:2]
-;;      "/run/current-system/sw/bin"
-;;      "/run/current-system/sw/sbin"
-;;      tramp-default-remote-path))))   ;; 保留 Tramp 默认路径
-
-;; ;; 2. 将 profile 应用到所有 NixOS 主机
-;; ;;    通过主机名匹配（如果你的 NixOS 主机名包含 nixos）
-;; (connection-local-set-profiles
-;;  '(:application tramp :machine ".*nixos.*")  ;; 匹配主机名包含 nixos 的机器
-;;  'nixos-remote-profile)
-
-;; ;; 3. 或者针对特定主机（例如主机名为 "nix-server"）
-;; (connection-local-set-profiles
-;;  '(:application tramp :machine "nix-server")
-;;  'nixos-remote-profile)
-
-;; (connection-local-set-profiles
-;;  '(:application tramp :machine "nixos-nuc")
-;;  'nixos-remote-profile)
-
-;; ;; 4. （可选）如果是通过 sudo 或 doas 提权，也需要设置
-;; (connection-local-set-profiles
-;;  '(:application tramp :protocol "sudo" :machine ".*nixos.*")
-;;  'nixos-remote-profile)
-
 (setq envrc-remote 1)
 
 (provide 'init-misc)
