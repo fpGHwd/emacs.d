@@ -44,27 +44,15 @@
 (when (not *is-mac*)
   (add-to-list 'default-frame-alist '(fullscreen . fullboth)))
 
-
-(setup vertico
-  (:advice vertico--exhibit
-   :before #'(lambda () (setq-local vertico-posframe-width (floor (* *golden-ratio* (frame-width)))
-                                    vertico-posframe-height (floor (* *golden-ratio* (frame-height)))
-                                    vertico-count (1- (floor (* *golden-ratio* (frame-height)))))))
-  (:after vertico-posframe
-    (vertico-posframe-mode 1)))
-
-
-;; (add-hook! 'window-size-change-functions #'(lambda () (setq! vertico)))
-;; (after! vertico
-;;   (setq! vertico-posframe-width 150
-;;          vertico-posframe-height 38
-;;          vertico-count 38))
-;; how to set verticao-posframe-width dynamically? I want it to be golden ratio of frame width
-
-
 ;; auto save saved workspaces
 (add-hook! 'doom-after-init-hook #'(lambda () (run-with-idle-timer 1800 nil #'+wd/update-current-workspaces-to-saved-ones)))
 
-(setq! xclip-mode t)
+(after! xclip
+  (unless (display-graphic-p)
+    (when (or (executable-find "xclip")
+              (executable-find "xsel")
+              (and (executable-find "wl-copy")
+                   (executable-find "wl-paste")))
+      (xclip-mode 1))))
 
 (provide 'init-ui)

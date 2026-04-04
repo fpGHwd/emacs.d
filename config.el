@@ -40,7 +40,10 @@
                    (concat (getenv "EMACSDIR") "/bin")
                    "~/.config/emacs/bin")))
   (dolist (p (cl-remove-duplicates (delq nil (mapcar #'expand-file-name paths)) :test #'equal))
-    (add-to-list 'exec-path p)))
+    (add-to-list 'exec-path p))
+  (when (string= (system-name) "ubuntu2204")
+    (cl-pushnew (file-truename "~/.local/share/python-venvs/main/bin/") exec-path)))
+
 
 ;; utilities
 (if (not *is-mac*) (require 'init-mail))

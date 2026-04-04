@@ -9,7 +9,8 @@
  '(safe-local-variable-values
    '((projectile-project-compilation-cmd . "python setup.py test -t ind -n pbbm")
      (projectile-project-compilation-cmd
-      . "python ~/.hikyuu/hub_cache/default/setup.py test -t other -n \"misc\""))))
+      . "python ~/.hikyuu/hub_cache/default/setup.py test -t other -n \"misc\"")))
+ '(sql-mysql-program "mariadb"))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.

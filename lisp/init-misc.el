@@ -7,7 +7,7 @@
   :hook (doom-first-file-hook . (lambda () (require 'bing-dict)))
   :custom
   (bing-dict-vocabulary-save t)
-  (bing-dict-vocabulary-file "~/.config/doom/etc/bing-dict/vocabulary.org")
+  (bing-dict-vocabulary-file (concat doom-user-dir "/etc/bing-dict/vocabulary.org"))
   :config
   (map! :leader :desc "Search word via Bing Dictionary" "sy" #'bing-dict-brief))
 
@@ -95,7 +95,7 @@
   :custom
   (wakatime-cli-path (or (executable-find "wakatime-cli")
                          (executable-find "wakatime")))
-  (wakatime-api-key "dd9ed811-5f7c-4e42-9224-8c93005c00bd")
+  (wakatime-api-key (password-store-get "wakatime/WAKATIME_API_KEY"))
   (wakatime-disable-on-error t))
 
 
@@ -231,11 +231,6 @@
 ;;   ;; (add-hook 'vterm-mode-hook #'meow-insert) # vterm-mode-hook not used
 ;;   )
 
-(cl-pushnew (file-truename "~/.config/emacs/bin/") exec-path) ;; priority 1, add doom/bin for all
-(when (string= (system-name) "ubuntu2204")
-  (cl-pushnew (file-truename "~/.local/bin/") exec-path) ;; priority 2
-  (cl-pushnew (file-truename "~/.local/share/python-venvs/main/bin/") exec-path) ;; priority 0
-  ) 
 
 ;; (setup pdf-view
 ;;   (:hook pdf-view-mode #'toggle-frame-fullscreen)) ;; failed
