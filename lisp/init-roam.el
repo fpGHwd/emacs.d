@@ -3,14 +3,18 @@
 
 (use-package! org-roam
   :after lib-org
-  ;; :hook
-  ;; (before-save-hook . #'vulpea-project-udpate-tag)
+  :commands (org-roam-node-find org-roam-buffer-toggle org-roam-capture org-roam-db-sync)
   :custom
   (org-roam-directory "~/org/roam")
+  :hook
+  (org-mode . +wd/org-roam-maybe-track-project-tag)
   :config
-  (add-hook 'before-save-hook #'vulpea-project-update-tag)
-
   (advice-add 'org-agenda-files :filter-return #'dynamic-agenda-files-advice))
+
+(defun +wd/org-roam-maybe-track-project-tag ()
+  "Only track Vulpea tags in Org Roam buffers."
+  (when (vulpea-buffer-p)
+    (add-hook 'before-save-hook #'vulpea-project-update-tag nil t)))
 
 ;; (use-package! org-roam-capture
 ;;   :defer t
@@ -25,7 +29,8 @@
 ;; (setq +org-roam-open-buffer-on-find-file nil)
 
 (use-package! org-roam-ui
-  :if (featurep 'org-roam-ui)
+  :after org-roam
+  :commands (org-roam-ui-mode org-roam-ui-open)
   :custom
   (org-roam-ui-sync-theme t)
   (org-roam-ui-follow t)

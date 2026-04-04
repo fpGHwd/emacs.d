@@ -3,6 +3,7 @@
 ;; gptel
 (use-package! gptel
   :defer t
+  :commands (gptel gptel-send gptel-menu)
   :custom
   (gptel-use-curl t)
   (gptel-default-mode 'org-mode)
@@ -15,6 +16,7 @@
 
 (use-package! aidermacs
   :defer t
+  :commands (aidermacs-transient-menu)
   :init
   :bind (("C-c a" . aidermacs-transient-menu))
   :custom

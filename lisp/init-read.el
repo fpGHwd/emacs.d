@@ -2,6 +2,7 @@
 ;;; Copyright (C) 2024 Wang Ding
 
 (setup calibredb
+  (:with-function calibredb)
   (:only-if (or (string= (system-name) "nixos-nuc")
                 (string= (system-name) "arch-nuc")))
   (:when-loaded

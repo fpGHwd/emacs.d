@@ -2,6 +2,7 @@
 
 (use-package! mu4e
   :defer t
+  :commands (mu4e mu4e-compose-new)
   :load-path
   ("/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e/"
    "/usr/share/emacs/site-lisp/mu4e"
