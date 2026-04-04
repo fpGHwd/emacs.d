@@ -253,7 +253,7 @@
 
 
 (after! citar
-  (setq! citar-bibliography '("~/org/refs/zotero.bib"
+  (setopt citar-bibliography '("~/org/refs/zotero.bib"
                               "~/org/refs/calibre.bib"
                               "~/org/refs/citar.bib")
          citar-library-paths (pcase (system-name)
@@ -262,10 +262,10 @@
          citar-notes-paths '("~/org/roam/notes/")))
 
 (after! reftex
-  (setq! reftex-default-bibliography citar-bibliography))
+  (setopt reftex-default-bibliography citar-bibliography))
 
 (after! citar-org-roam
-  (setq! citar-org-roam-subdir "notes/"))
+  (setopt citar-org-roam-subdir "notes/"))
 
 
 (use-package! calendar
@@ -286,31 +286,72 @@
     (setq org-download-screenshot-method (concat (executable-find "spectacle") " -r -b -o %s"))))
 
 
+(defun +wd/org-work-agenda-files ()
+  "Return work agenda directories for the configured year window."
+  (let ((year-number (string-to-number (format-time-string "%Y")))
+        (files nil))
+    (dotimes (offset (1+ +wd/seven-year-life))
+      (let* ((year-str (number-to-string (- year-number offset)))
+             (org-dir (expand-file-name (concat "~/org/work/current/org/" year-str)))
+             (noter-dir (expand-file-name (concat "~/org/work/current/noter/" year-str))))
+        (when (file-directory-p org-dir)
+          (push org-dir files))
+        (when (file-directory-p noter-dir)
+          (push noter-dir files))))
+    (nreverse files)))
+
+(defvar +wd/org-agenda-work-mode--saved-agenda-files nil
+  "Snapshot of `org-agenda-files' before `org-agenda-work-mode' is enabled.")
+
+(defun +wd/org-agenda-work-mode-update-agenda-files ()
+  "Enable work agenda files and restore the previous state when disabled."
+  (if org-agenda-work-mode
+      (progn
+        (unless +wd/org-agenda-work-mode--saved-agenda-files
+          (setq +wd/org-agenda-work-mode--saved-agenda-files
+                (copy-sequence org-agenda-files)))
+        (setq org-agenda-files
+              (cl-union org-agenda-files (+wd/org-work-agenda-files) :test #'equal)))
+    (when +wd/org-agenda-work-mode--saved-agenda-files
+      (setq org-agenda-files +wd/org-agenda-work-mode--saved-agenda-files
+            +wd/org-agenda-work-mode--saved-agenda-files nil))))
+
+(defun +wd/org-agenda-work-mode-update-roam-link ()
+  "Create or remove the Org Roam work symlink for `org-agenda-work-mode'."
+  (let ((target (expand-file-name "~/org/work/zone/roam"))
+        (link (expand-file-name "~/org/roam/zone")))
+    (cond
+     (org-agenda-work-mode
+      (unless (file-symlink-p link)
+        (when (file-exists-p link)
+          (user-error "%s exists and is not a symlink" link))
+        (make-symbolic-link target link t)))
+     ((file-symlink-p link)
+      (delete-file link)))))
+
+(defun +wd/org-agenda-work-mode-sync-roam ()
+  "Refresh Org Roam after `org-agenda-work-mode' changes."
+  (when (or (featurep 'org-roam)
+            (require 'org-roam nil t))
+    (org-roam-db-sync)))
+
+(defun +wd/org-agenda-work-mode-apply ()
+  "Apply the current `org-agenda-work-mode' state."
+  (+wd/org-agenda-work-mode-update-agenda-files)
+  (+wd/org-agenda-work-mode-update-roam-link)
+  (+wd/org-agenda-work-mode-sync-roam)
+  (message "org-agenda-work-mode %s" (if org-agenda-work-mode "enabled" "disabled")))
+
 (define-minor-mode org-agenda-work-mode
-  "A minor mode for org-agenda-work."
+  "Toggle work-specific Org agenda and Org Roam sources."
   :init-value nil
+  :global t
   :lighter " OrgWork"
   :keymap (let ((map (make-sparse-keymap)))
             (define-key map (kbd "C-c w a") #'org-agenda)
             map)
   :group 'org-agenda-work
-  (progn (if org-agenda-work-mode
-             (message "org-agenda-work-mode enabled")
-           (message "org-agenda-work-mode disabled"))
-         (let* ((year-number (string-to-number (format-time-string "%Y")))
-                (add-year year-number))
-           (while (<= (- year-number add-year) +wd/seven-year-life)
-             (let ((add-year-str (number-to-string add-year)))
-               (if org-agenda-work-mode
-                   (progn (cl-pushnew (concat "~/org/work/current/org/" add-year-str) org-agenda-files :test #'equal)
-                          (cl-pushnew (concat "~/org/work/current/noter/" add-year-str) org-agenda-files :test #'equal))
-                 (progn (setq org-agenda-files (cl-remove (concat "~/org/work/current/org/" add-year-str) org-agenda-files :test #'equal))
-                        (setq org-agenda-files (cl-remove (concat "~/org/work/current/noter/" add-year-str) org-agenda-files :test #'equal)))))
-             (cl-decf add-year)))
-         (if org-agenda-work-mode
-             (make-symbolic-link (file-truename "~/org/work/zone/roam") "~/org/roam/zone"  t)
-           (delete-file (expand-file-name "~/org/roam/zone")))
-         (org-roam-db-sync)))
+  (+wd/org-agenda-work-mode-apply))
 
 (provide 'init-org)
 ;;; init-org.el ends here
