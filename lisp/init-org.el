@@ -191,6 +191,191 @@
   (dired-mode . (lambda () (define-key dired-mode-map (kbd "C-c C-x a")
                                        #'org-attach-dired-to-subtree))))
 
+
+(defun +wd/org-noter--current-session ()
+  "Return current org-noter session object, or nil if unavailable."
+  (when (require 'org-noter-core nil t)
+    (cond
+     ;; Newer/packaged builds may not expose `org-noter--get-session`.
+     ((boundp 'org-noter--session)
+      (and (org-noter--session-p org-noter--session) org-noter--session))
+     ((fboundp 'org-noter--get-session)
+      (ignore-errors (org-noter--get-session)))
+     (t nil))))
+
+(defun +wd/org-noter--page-progress (&optional session)
+  "Return current page and total pages as (CURRENT . TOTAL) for SESSION."
+  (let* ((session (or session (+wd/org-noter--current-session)))
+         (doc-buffer (and session (org-noter--session-doc-buffer session))))
+    (when (buffer-live-p doc-buffer)
+      (with-current-buffer doc-buffer
+        (cond
+         ((and (derived-mode-p 'pdf-view-mode)
+               (fboundp 'pdf-view-current-page)
+               (fboundp 'pdf-cache-number-of-pages))
+          (cons (pdf-view-current-page)
+                (pdf-cache-number-of-pages)))
+         ((derived-mode-p 'doc-view-mode)
+          (let ((current (if (fboundp 'doc-view-current-page)
+                             (doc-view-current-page)
+                           (and (boundp 'doc-view-current-page)
+                                doc-view-current-page)))
+                (total (if (boundp 'doc-view-last-page-number)
+                           doc-view-last-page-number
+                         nil)))
+            (when (and (numberp current) (numberp total) (> total 0))
+              (cons current total))))
+         (t nil))))))
+
+(defun +wd/org-noter--find-noter-document-heading-point ()
+  "Return nearest headline point that locally defines NOTER_DOCUMENT."
+  (org-with-wide-buffer
+   (save-excursion
+     (when (org-before-first-heading-p)
+       (outline-next-heading))
+     (when (org-at-heading-p)
+       (let ((found nil))
+         (while (and (not found) (org-at-heading-p))
+           (when (org-entry-get nil "NOTER_DOCUMENT" nil)
+             (setq found (point)))
+           (unless found
+             (if (org-up-heading-safe)
+                 t
+               (goto-char (point-min)))))
+         found)))))
+
+(defun +wd/org-noter--same-notes-buffer-p (buffer-a buffer-b)
+  "Return non-nil when BUFFER-A and BUFFER-B are same or share base buffer."
+  (let ((a (and (buffer-live-p buffer-a) buffer-a))
+        (b (and (buffer-live-p buffer-b) buffer-b)))
+    (and a
+         b
+         (or (eq a b)
+             (eq (buffer-base-buffer a) b)
+             (eq a (buffer-base-buffer b))
+             (eq (buffer-base-buffer a) (buffer-base-buffer b))))))
+
+(defcustom +wd/calibredb-sync-progress-column "percentage"
+  "Calibre custom column name used to store reading progress."
+  :type 'string
+  :group 'org-noter)
+
+(defcustom +wd/calibredb-sync-library-url "http://localhost:8080/"
+  "Calibre content server URL for progress sync."
+  :type 'string
+  :group 'org-noter)
+
+(defcustom +wd/calibredb-sync-username "wd"
+  "Calibre content server username for progress sync."
+  :type 'string
+  :group 'org-noter)
+
+(defcustom +wd/calibredb-sync-password-store-key "calibre-lib/wd"
+  "Password-store key used to fetch calibre content server password."
+  :type 'string
+  :group 'org-noter)
+
+(defun +wd/org-noter--document-filename-from-property (noter-document)
+  "Derive final filename (with extension) from NOTER-DOCUMENT path."
+  (when (and (stringp noter-document) (not (string-empty-p noter-document)))
+    (let* ((raw (string-trim noter-document))
+           (clean (replace-regexp-in-string "\\`file:" "" raw))
+           (path (car (split-string clean "::"))))
+      (file-name-nondirectory path))))
+
+(defun +wd/org-noter--calibredb-base-args ()
+  "Build base calibredb args for calibre content server."
+  (let ((pw (when (and (fboundp 'password-store-get)
+                       (stringp +wd/calibredb-sync-password-store-key)
+                       (not (string-empty-p +wd/calibredb-sync-password-store-key)))
+              (ignore-errors
+                (password-store-get +wd/calibredb-sync-password-store-key)))))
+    (if (and (stringp +wd/calibredb-sync-library-url)
+             (not (string-empty-p +wd/calibredb-sync-library-url))
+             (stringp +wd/calibredb-sync-username)
+             (not (string-empty-p +wd/calibredb-sync-username))
+             (stringp pw)
+             (not (string-empty-p pw)))
+        (list (concat "--with-library=" +wd/calibredb-sync-library-url)
+              (concat "--username=" +wd/calibredb-sync-username)
+              (concat "--password=" pw))
+      nil)))
+
+(defun +wd/org-noter--calibre-id-from-path (path)
+  "Extract calibre numeric id from parent directory of PATH."
+  (when (stringp path)
+    (let ((dir (file-name-nondirectory
+                (directory-file-name (file-name-directory path)))))
+      (when (string-match ".*(\\([0-9]+\\))\\'" dir)
+        (match-string 1 dir)))))
+
+(defun +wd/org-noter-sync-calibredb-percentage (target ratio &optional silent)
+  "Sync current book progress RATIO (0-100 scale) to calibredb #percentage."
+  (let* ((bin (executable-find "calibredb"))
+         (base-args (+wd/org-noter--calibredb-base-args)))
+    (when (and bin base-args (numberp ratio) (>= ratio 0))
+      (let* ((noter-document (save-excursion
+                               (goto-char target)
+                               (org-entry-get (point) "NOTER_DOCUMENT" nil)))
+             (filename (+wd/org-noter--document-filename-from-property noter-document)))
+        (when (and (stringp filename) (not (string-empty-p filename)))
+          (let* ((case-fold-search t)
+                 (matches (directory-files-recursively
+                           +wd/org-noter-calibre-library-root
+                           (concat (regexp-quote filename) "\\'")))
+                 (value (format "%.1f" ratio))
+                 (updated-ids nil))
+            (dolist (path matches)
+              (let ((id (+wd/org-noter--calibre-id-from-path path)))
+                (when id
+                  (let ((ok
+                         (eq 0 (apply #'call-process bin nil nil nil
+                                      (append base-args
+                                              (list "set_custom"
+                                                    +wd/calibredb-sync-progress-column
+                                                    id value))))))
+                    (when ok
+                      (push id updated-ids))))))
+            (unless silent
+              (message "calibredb #percentage synced: %s -> %s (%s)"
+                       filename
+                       value
+                       (if updated-ids
+                           (mapconcat #'identity (reverse (delete-dups updated-ids)) ",")
+                         "no-id-updated")))))))))
+
+(defun +wd/org-noter-update-read-progress (&optional silent)
+  "Update NOTER_READ at the headline which defines NOTER_DOCUMENT."
+  (interactive)
+  (let* ((session (+wd/org-noter--current-session))
+         (notes-buffer (and session (org-noter--session-notes-buffer session)))
+         (progress (+wd/org-noter--page-progress session))
+         (target (+wd/org-noter--find-noter-document-heading-point)))
+    (when (and session
+               (buffer-live-p notes-buffer)
+               (+wd/org-noter--same-notes-buffer-p (current-buffer) notes-buffer)
+               progress
+               target)
+        (let* ((current (car progress))
+               (total (cdr progress))
+               (ratio (* 100.0 (/ (float current) total)))
+               (value (format "%.1f%% (%d/%d)" ratio current total)))
+          (save-excursion
+            (goto-char target)
+            (org-entry-put (point) "NOTER_READ" value))
+          (+wd/org-noter-sync-calibredb-percentage target ratio t)
+          (unless silent
+            (message "NOTER_READ -> %s" value))))))
+
+(defun +wd/org-noter-auto-update-read-progress ()
+  "Auto update NOTER_READ on DONE/KILL inside org-noter notes buffer."
+  (when (and (derived-mode-p 'org-mode)
+             (bound-and-true-p org-noter-notes-mode)
+             (bound-and-true-p org-state)
+             (member org-state '("DONE" "KILL")))
+    (+wd/org-noter-update-read-progress t)))
+
+
 (use-package! org-noter
   :defer t
   :custom
@@ -226,7 +411,8 @@
 
   (add-hook 'org-noter-parse-document-property-hook
             #'+wd/org-noter-parse-document-property-calibre)
-  (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current")))
+  (add-hook 'org-after-todo-state-change-hook
+            #'+wd/org-noter-auto-update-read-progress))
 
 (use-package! deft
   :defer t
