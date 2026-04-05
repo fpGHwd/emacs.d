@@ -198,6 +198,36 @@
   :custom
   (org-noter-doc-split-fraction '(0.618 . 0.382))
   :config
+
+  (defcustom +wd/org-noter-calibre-library-root
+    (file-truename "~/Calibre Library")
+    "Root directory used to resolve `:NOTER_DOCUMENT:` files for org-noter."
+    :type 'directory
+    :group 'org-noter)
+
+  (defun +wd/org-noter--find-document-in-calibre (document)
+    "Resolve DOCUMENT by filename under `+wd/org-noter-calibre-library-root`."
+    (let* ((doc (and (stringp document) (string-trim document)))
+           (expanded (and doc (expand-file-name doc))))
+      (cond
+       ((or (null doc) (string-empty-p doc)) nil)
+       ((file-exists-p expanded) expanded)
+       ((not (file-directory-p +wd/org-noter-calibre-library-root)) nil)
+       (t
+        (let* ((filename (file-name-nondirectory expanded))
+               (matches (directory-files-recursively
+                         +wd/org-noter-calibre-library-root
+                         (concat "\\`" (regexp-quote filename) "\\'")))
+               ;; Prefer the shortest path when duplicate filenames exist.
+               (sorted (sort matches (lambda (a b) (< (length a) (length b))))))
+          (car sorted))))))
+
+  (defun +wd/org-noter-parse-document-property-calibre (document &rest _)
+    "Hook for `org-noter-parse-document-property-hook` to resolve DOCUMENT path."
+    (+wd/org-noter--find-document-in-calibre document))
+
+  (add-hook 'org-noter-parse-document-property-hook
+            #'+wd/org-noter-parse-document-property-calibre)
   (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current")))
 
 (use-package! deft
