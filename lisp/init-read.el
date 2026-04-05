@@ -8,7 +8,7 @@
   (:when-loaded
     (:also-load lib-misc)
     (:option
-     calibredb-search-page-max-rows 50
+     calibredb-search-page-max-rows 30
      calibredb-ref-default-bibliography "~/org/refs/calibre.bib"
      calibredb-id-width 6
      calibredb-size-show t

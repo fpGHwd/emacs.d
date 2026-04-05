@@ -13,10 +13,9 @@
   (system-time-locale "C")
   (org-log-done 'time)
   (org-archive-location "~/org/org/current/archive.org.bak::* From %s")
-  (org-id-locations-file (concat doom-cache-dir "/org-id-locations"))
-  (org-agenda-diary-file (concat doom-user-dir "etc/diary"))
-
-  (diary-file (concat doom-user-dir "etc/diary"))
+  (org-id-locations-file (expand-file-name "org-id-locations" doom-cache-dir))
+  (org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir))
+  (diary-file (expand-file-name "etc/diary" doom-user-dir))
   (org-agenda-include-diary t)
   (org-agenda-files (let* ((year-number (string-to-number (format-time-string "%Y")))
                            (add-year year-number))
@@ -114,8 +113,7 @@
    'org-babel-load-languages
    '((jupyter . t)
      (gnuplot . t)
-     (plantuml . t)))
-  )
+     (plantuml . t))))
 
 ;; TODO: 只显示当前 headline 到最顶层父节点的路径，其他的内容都隐藏起来，作为 hook 添加到 org-agenda-goto 和 org-roam-node-find 之后
 ;; (defun my/org-show-path-only ()

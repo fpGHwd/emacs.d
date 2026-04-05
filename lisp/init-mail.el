@@ -15,11 +15,7 @@
                         (setq +wd/mu4e-index-timer
                               (run-at-time nil (* 5 60) #'mu4e-update-index)))))
   :config
-  (setq mu4e-mu-binary (pcase (system-name)
-                         ("macbook-m1-pro" "/opt/homebrew/bin/mu")
-                         ("ubuntu2204" "/home/wd/.local/bin/mu")
-                         ("nixos-nuc" "/home/wd/.nix-profile/bin/mu")
-                         (_ "/usr/bin/mu"))
+  (setq mu4e-mu-binary (executable-find "mu")
         sendmail-program (executable-find "msmtp")
         send-mail-function #'smtpmail-send-it
         message-sendmail-f-is-evil t
