@@ -1,6 +1,6 @@
 ;;; autosar-can-mode.el --- Inspect BLF frames with AUTOSAR ARXML -*- lexical-binding: t; -*-
 
-;; Author: Codex
+;; Author: Wang Ding(ggwdwhu@gmail.com), codex
 ;; Keywords: tools, autosar, can
 ;; Package-Requires: ((emacs "28.1"))
 

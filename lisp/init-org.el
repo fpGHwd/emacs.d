@@ -27,8 +27,8 @@
                       org-agenda-files))
 
   (org-agenda-start-day (pcase (system-name)
-                         ("ubuntu2204" "-3d")
-                         (_ "-1d")))
+                          ("ubuntu2204" "-3d")
+                          (_ "-1d")))
   (org-agenda-span (pcase (system-name)
                      ("ubuntu2204" 10)
                      (_ 6)))
@@ -468,12 +468,12 @@
 
 (after! citar
   (setopt citar-bibliography '("~/org/refs/zotero.bib"
-                              "~/org/refs/calibre.bib"
-                              "~/org/refs/citar.bib")
-         citar-library-paths (pcase (system-name)
-                               ("ubuntu2204" '("~/Sync/citar-lib/"))
-                               ("arch-nuc" '("/home/data/books/citar-library/")))
-         citar-notes-paths '("~/org/roam/notes/")))
+                               "~/org/refs/calibre.bib"
+                               "~/org/refs/citar.bib")
+          citar-library-paths (pcase (system-name)
+                                ("ubuntu2204" '("~/Sync/citar-lib/"))
+                                ("arch-nuc" '("/home/data/books/citar-library/")))
+          citar-notes-paths '("~/org/roam/notes/")))
 
 (after! reftex
   (setopt reftex-default-bibliography citar-bibliography))
