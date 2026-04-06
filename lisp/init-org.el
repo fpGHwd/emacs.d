@@ -225,6 +225,14 @@
                          nil)))
             (when (and (numberp current) (numberp total) (> total 0))
               (cons current total))))
+         ((derived-mode-p 'nov-mode)
+          (let* ((idx (and (boundp 'nov-documents-index) nov-documents-index))
+                 (docs (and (boundp 'nov-documents) nov-documents))
+                 (total (and (sequencep docs) (length docs)))
+                 ;; `nov-documents-index' is zero-based; convert to one-based.
+                 (current (and (integerp idx) (1+ idx))))
+            (when (and (numberp current) (numberp total) (> total 0))
+              (cons (max 1 (min current total)) total))))
          (t nil))))))
 
 (defun +wd/org-noter--find-noter-document-heading-point ()
@@ -257,6 +265,11 @@
 
 (defcustom +wd/calibredb-sync-progress-column "percentage"
   "Calibre custom column name used to store reading progress."
+  :type 'string
+  :group 'org-noter)
+
+(defcustom +wd/calibredb-sync-read-date-column "read_date"
+  "Calibre custom column name used to store last read timestamp."
   :type 'string
   :group 'org-noter)
 
@@ -324,22 +337,30 @@
                            +wd/org-noter-calibre-library-root
                            (concat (regexp-quote filename) "\\'")))
                  (value (format "%.1f" ratio))
+                 (read-date (format-time-string "%Y-%m-%d %H:%M:%S"))
                  (updated-ids nil))
             (dolist (path matches)
               (let ((id (+wd/org-noter--calibre-id-from-path path)))
                 (when id
-                  (let ((ok
+                  (let ((ok-progress
                          (eq 0 (apply #'call-process bin nil nil nil
                                       (append base-args
                                               (list "set_custom"
                                                     +wd/calibredb-sync-progress-column
-                                                    id value))))))
-                    (when ok
+                                                    id value)))))
+                        (ok-read-date
+                         (eq 0 (apply #'call-process bin nil nil nil
+                                      (append base-args
+                                              (list "set_custom"
+                                                    +wd/calibredb-sync-read-date-column
+                                                    id read-date))))))
+                    (when (or ok-progress ok-read-date)
                       (push id updated-ids))))))
             (unless silent
-              (message "calibredb #percentage synced: %s -> %s (%s)"
+              (message "calibredb synced: %s -> progress=%s read_date=%s (%s)"
                        filename
                        value
+                       read-date
                        (if updated-ids
                            (mapconcat #'identity (reverse (delete-dups updated-ids)) ",")
                          "no-id-updated")))))))))
