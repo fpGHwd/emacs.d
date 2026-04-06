@@ -361,6 +361,12 @@
             (require 'org-roam nil t))
     (org-roam-db-sync)))
 
+(defun +wd/org-agenda-work-mode-cleanup-roam-link ()
+  "Remove the work Org Roam symlink when Emacs is shutting down."
+  (let ((link (expand-file-name "~/org/roam/zone")))
+    (when (file-symlink-p link)
+      (delete-file link))))
+
 (defun +wd/org-agenda-work-mode-apply ()
   "Apply the current `org-agenda-work-mode' state."
   (+wd/org-agenda-work-mode-update-agenda-files)
@@ -378,6 +384,8 @@
             map)
   :group 'org-agenda-work
   (+wd/org-agenda-work-mode-apply))
+
+(add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)
 
 
 (defun +wd/org-prepend-inactive-timestamp-to-heading ()
