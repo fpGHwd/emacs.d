@@ -63,6 +63,65 @@ The `ARG` parameter is used to distinguish whether to use current branch or spec
     (dolist (ws intersection)
       (+workspace-save ws))))
 
+(defcustom +wd/workspace-hourly-cleanup-pattern "^#[0-9]+$"
+  "Workspace name regexp to be auto-removed hourly."
+  :type 'regexp
+  :group 'doom)
+
+(defcustom +wd/workspace-hourly-cleanup-interval 3600
+  "Interval in seconds for auto-removing numbered tag workspaces."
+  :type 'integer
+  :group 'doom)
+
+(defvar +wd/workspace-hourly-cleanup-timer nil
+  "Timer used to cleanup numbered tag workspaces hourly.")
+
+(defun +wd/workspace-hourly-cleanup-target-p (name)
+  "Return non-nil if NAME should be cleaned up."
+  (and (stringp name)
+       (string-match-p +wd/workspace-hourly-cleanup-pattern name)))
+
+(defun +wd/workspace-delete-by-predicate (pred)
+  "Delete all current workspaces whose names satisfy PRED.
+PRED accepts one arg NAME and returns non-nil to delete."
+  (let ((deleted nil)
+        (keep-going t))
+    ;; Re-scan after each pass to avoid missing workspaces while current
+    ;; workspace changes during deletion.
+    (while keep-going
+      (setq keep-going nil)
+      (let ((snapshot (copy-sequence (+workspace-list-names))))
+        (dolist (name snapshot)
+          (when (funcall pred name)
+            (setq keep-going t)
+            (ignore-errors
+              (when (and (fboundp '+workspace-exists-p)
+                         (+workspace-exists-p name)
+                         (fboundp '+workspace-kill))
+                (+workspace-kill name t)))
+            (ignore-errors
+              (when (fboundp '+workspace-delete)
+                (+workspace-delete name)))
+            (push name deleted)))))
+    (nreverse (delete-dups deleted))))
+
+(defun +wd/workspace-hourly-cleanup ()
+  "Remove runtime/saved workspaces whose names look like #<number>."
+  (interactive)
+  (when (fboundp '+workspace-list-names)
+    (+wd/workspace-delete-by-predicate #'+wd/workspace-hourly-cleanup-target-p)))
+
+(defun +wd/workspace-hourly-cleanup-start ()
+  "Start hourly cleanup timer for #<number> workspaces."
+  (interactive)
+  (when (timerp +wd/workspace-hourly-cleanup-timer)
+    (cancel-timer +wd/workspace-hourly-cleanup-timer))
+  (setq +wd/workspace-hourly-cleanup-timer
+        (run-at-time
+         +wd/workspace-hourly-cleanup-interval
+         +wd/workspace-hourly-cleanup-interval
+         #'+wd/workspace-hourly-cleanup)))
+
 ;; rime
 (defun +wd/sync-emacs-rime-dict ()
   "Sync EMACS rime dictionary to git repository with default remote."
