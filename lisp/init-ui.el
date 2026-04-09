@@ -1,6 +1,6 @@
 ;;; ../../Sync/dotfiles/doom.d/lisp/init-ui.el -*- lexical-binding: t; -*-
 
-                                        ; set fonts
+; set fonts
 ;; (add-hook! 'after-setting-font-hook
 ;;   (lambda ()
 ;;     (when window-system

@@ -80,7 +80,7 @@
 
   :custom
   ;; (doom-theme 'doom-one)
-  (doom-theme 'doom-one-light)
+  ;; (doom-theme 'doom-one-light)
   (initial-scratch-message (concat ";; Happy hacking, " user-full-name " - Emacs ♥ you!\n\n"))
   (fancy-splash-image (file-truename (concat doom-user-dir "assets/2025/bitmap_resized_2.png")))
 

@@ -199,6 +199,10 @@
   :config
   (require 'lib-reading)
 
+  (when (string= (system-name) "ubuntu2204")
+    (setq +wd/org-noter-calibre-library-root
+          "/home/wd/windows_share_dir/reference/books"))
+
   (defun +wd/org-noter--find-document-in-calibre (document)
     "Resolve DOCUMENT by filename under `+wd/org-noter-calibre-library-root`."
     (let* ((doc (and (stringp document) (string-trim document)))
