@@ -15,6 +15,16 @@
   :type 'string
   :group 'org-noter)
 
+(defcustom +wd/calibredb-sync-genre-column "genres"
+  "Calibre custom column name used to mark books managed by org-noter."
+  :type 'string
+  :group 'org-noter)
+
+(defcustom +wd/calibredb-sync-genre-value "reading"
+  "Genre value to set for books managed by org-noter."
+  :type 'string
+  :group 'org-noter)
+
 (defcustom +wd/calibredb-sync-library-url "http://localhost:8080/"
   "Calibre content server URL for progress sync."
   :type 'string
@@ -459,14 +469,21 @@ FILENAME should be the basename of the epub file (without directory)."
                                       (append base-args
                                               (list "set_custom"
                                                     +wd/calibredb-sync-read-date-column
-                                                    id read-date))))))
-                    (when (or ok-progress ok-read-date)
+                                                    id read-date)))))
+                        (ok-genre
+                         (eq 0 (apply #'call-process bin nil nil nil
+                                      (append base-args
+                                              (list "set_custom"
+                                                    +wd/calibredb-sync-genre-column
+                                                    id +wd/calibredb-sync-genre-value))))))
+                    (when (or ok-progress ok-read-date ok-genre)
                       (push id updated-ids))))))
             (unless silent
-              (message "calibredb synced: %s -> progress=%s read_date=%s (%s)"
+              (message "calibredb synced: %s -> progress=%s read_date=%s genres=%s (%s)"
                        filename
                        value
                        read-date
+                       +wd/calibredb-sync-genre-value
                        (if updated-ids
                            (mapconcat #'identity (reverse (delete-dups updated-ids)) ",")
                          "no-id-updated")))))))))
