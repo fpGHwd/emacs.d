@@ -106,7 +106,7 @@ fields like \"交易时间：04月19日 19:11\"."
     (when (and card-number stripped-value ledger-account description)
       (concat "\n"
               (if transaction-date-time
-                  transaction-date-time
+                  (concat transaction-date-time "[" (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date) "]")
                 (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date))
               " "
               description
