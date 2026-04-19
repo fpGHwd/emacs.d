@@ -12,7 +12,38 @@
 (defvar +wd/ledger-file-name "~/org/ledger/accounts")
 (defvar ledger-mutex (make-mutex "open ledger file"))
 
-(defun +wd/write-transactions (transaction-text file-name chat-date)
+(defun +wd/telega-normalize-transaction-value (chat-text amount)
+  "Return AMOUNT adjusted for special transaction text in CHAT-TEXT.
+Messages containing \"退货\" should always produce a positive amount."
+  (if (and (stringp chat-text)
+           (string-match-p "退货" chat-text))
+      (abs amount)
+    amount))
+
+(defun +wd/telega-parse-transaction-time (chat-text chat-date)
+  "Parse transaction time from CHAT-TEXT, falling back to CHAT-DATE's year.
+Recognizes message headers like \"尾号5048信用卡04月19日19:11\" and explicit
+fields like \"交易时间：04月19日 19:11\"."
+  (let ((current-year (format-time-string "%Y" chat-date))
+        (parsed nil))
+    (when (and (stringp chat-text)
+               (or (string-match
+                    "\\([0-9]\\{2\\}\\)月\\([0-9]\\{2\\}\\)日\\s-*\\([0-9]\\{2\\}\\):\\([0-9]\\{2\\}\\)\\(?::\\([0-9]\\{2\\}\\)\\)?"
+                    chat-text)
+                   (string-match
+                    "交易时间：? ?\\([0-9]\\{2\\}\\)月\\([0-9]\\{2\\}\\)日\\s-*\\([0-9]\\{2\\}\\):\\([0-9]\\{2\\}\\)\\(?::\\([0-9]\\{2\\}\\)\\)?"
+                    chat-text)))
+      (setq parsed
+            (format "%s/%s/%s * %s:%s:%s"
+                    current-year
+                    (match-string 1 chat-text)
+                    (match-string 2 chat-text)
+                    (match-string 3 chat-text)
+                    (match-string 4 chat-text)
+                    (or (match-string 5 chat-text) "00"))))
+    parsed))
+
+(defun +wd/write-transactions (transaction-text)
   ;; (message "write transactions 1")
   (with-mutex ledger-mutex
     ;; (message "write transactions 2")
@@ -23,31 +54,28 @@
         (goto-char (point-max))
         (let*
             ((buffer-string (buffer-substring (point-min) (point-max)))
-             (time-string-local (format-time-string "%a %H:%M:%S" chat-date))
-             (match-string1 (concat (format-time-string "%Y/%m/%d \\* %a %H:%M:%S" chat-date)))
-             (match-string2 (concat (format-time-string "%Y/%m/%d %a %H:%M:%S" chat-date))))
-          ;; (message "match-string1: %s; match-string2: %s" match-string1 match-string2)
-          (when (not (or (string-match match-string1 buffer-string)
-                         (string-match match-string2 buffer-string)))
+             (first-line (car (split-string transaction-text "\n" t)))
+             (alt-first-line (and first-line
+                                  (replace-regexp-in-string
+                                   "\\([^[:space:]]+\\)[[:space:]]+\\*[[:space:]]+"
+                                   "\\1 "
+                                   first-line))))
+          (when (and first-line
+                     (not (string-match-p (regexp-quote first-line) buffer-string))
+                     (not (and alt-first-line
+                               (string-match-p (regexp-quote alt-first-line) buffer-string))))
             (progn
               (insert transaction-text)
               (write-region (point-min) (point-max) +wd/ledger-file-name))))))))
 
 (defun +wd/creditcard-transaction (chat-text chat-date)
   (let* ((card-number-regexp "尾号\\(5048\\|6798\\|2972\\|6912\\)\\w*")
-         (transaction-date-time-regexp "交易时间：:? ?\\(.*\\)")
          (transaction-pattern-regexp "交易类型：:? ?\\(.*\\)")
          (trader-name-regexp "交易商户：:? ?\\(.*\\)")
          (value-regexp "交易金额：:? ?\\(人民币活期\\)?\\([-+]?[-0-9,.]*\\)\\(人民币\\)?")
          (card-number (progn (string-match card-number-regexp chat-text)
                              (match-string 1 chat-text)))
-         (current-year (format-time-string "%Y" chat-date))
-         (transaction-date-time nil
-                                ;; (replace-regexp-in-string
-                                ;;  "交易时间：:? ?\\([0-9]+\\)月\\([0-9]+\\)日 \\([0-9]+\\):\\([0-9]+\\):?\\([0-9]+\\)?"
-                                ;;  (format "%s-\\1-\\2 \\3:\\4" current-year) chat-text)
-                                ) 
-         ;; (parsed-time-string (parse-time-string transaction-date-time))
+         (transaction-date-time (+wd/telega-parse-transaction-time chat-text chat-date))
          (transaction-pattern (progn (string-match transaction-pattern-regexp chat-text)
                                      (match-string 1 chat-text)))
          (trader-name (progn (string-match trader-name-regexp chat-text)
@@ -56,8 +84,9 @@
                        (match-string 2 chat-text)))
          (stripped-value (replace-regexp-in-string (regexp-quote (string ?,)) "" value))
          (pufa-p (string= card-number "6912"))
-         (real-value (if pufa-p (string-to-number stripped-value)
-                       (* -1 (string-to-number stripped-value))))
+         (raw-value (if pufa-p (string-to-number stripped-value)
+                      (* -1 (string-to-number stripped-value))))
+         (real-value (+wd/telega-normalize-transaction-value chat-text raw-value))
          (ledger-account (progn
                            (cond ((or (string= card-number "5048")
                                       (string= card-number "6798")
@@ -84,7 +113,8 @@
          (value (progn (string-match value-regexp chat-text)
                        (match-string 1 chat-text)))
          (stripped-value (replace-regexp-in-string (regexp-quote (string ?,)) "" value))
-         (real-value (* -1 (string-to-number stripped-value)))
+         (raw-value (* -1 (string-to-number stripped-value)))
+         (real-value (+wd/telega-normalize-transaction-value chat-text raw-value))
          (ledger-account "Assets:token:lunch")
          (transaction-string (concat  "\n"
                                       (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date)
@@ -103,8 +133,8 @@
              (guanaitong-p (string-match "余额变动提示" chat-text))
              (account-need-p (or (string-match "交易金额" chat-text) guanaitong-p)))
         (when (and account-need-p guanaitong-p)
-          (+wd/write-transactions (+wd/guanaitong-transaction chat-text chat-date) +wd/ledger-file-name chat-date))
+          (+wd/write-transactions (+wd/guanaitong-transaction chat-text chat-date)))
         (when (and account-need-p (not guanaitong-p))
-          (+wd/write-transactions (+wd/creditcard-transaction chat-text chat-date) +wd/ledger-file-name chat-date))))))
+          (+wd/write-transactions (+wd/creditcard-transaction chat-text chat-date)))))))
 
 (provide 'lib-telega)
