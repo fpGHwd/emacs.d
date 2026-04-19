@@ -9,7 +9,6 @@
 
 ;; update telega hook to accounting
 (defvar +wd/ledger-file-name "~/org/ledger/current.ledger")
-(defvar +wd/ledger-file-name "~/org/ledger/accounts")
 (defvar ledger-mutex (make-mutex "open ledger file"))
 
 (defun +wd/telega-normalize-transaction-value (chat-text amount)
@@ -43,27 +42,37 @@ fields like \"交易时间：04月19日 19:11\"."
                     (or (match-string 5 chat-text) "00"))))
     parsed))
 
+(defun +wd/telega-match-group (regexp text &optional group)
+  "Return REGEXP GROUP from TEXT, or nil when REGEXP does not match."
+  (when (and (stringp text)
+             (string-match regexp text))
+    (match-string (or group 1) text)))
+
+(defun +wd/telega-transaction-dedup-keys (transaction-text)
+  "Return structured dedup keys for TRANSACTION-TEXT."
+  (let* ((lines (split-string transaction-text "\n" t))
+         (headline (car lines))
+         (alt-headline (and headline
+                            (replace-regexp-in-string
+                             "\\([^[:space:]]+\\)[[:space:]]+\\*[[:space:]]+"
+                             "\\1 "
+                             headline))))
+    (delq nil (list headline alt-headline))))
+
 (defun +wd/write-transactions (transaction-text)
-  ;; (message "write transactions 1")
   (with-mutex ledger-mutex
-    ;; (message "write transactions 2")
-    (when (or  (string= (system-name) "nixos-nuc")
-               (string= (system-name) "arch-nuc")) ;; only record on arch-nuc & nixos-nuc
+    (when (string= (system-name) "nixos-nuc")
       (with-temp-buffer
         (insert-file-contents +wd/ledger-file-name)
         (goto-char (point-max))
         (let*
             ((buffer-string (buffer-substring (point-min) (point-max)))
-             (first-line (car (split-string transaction-text "\n" t)))
-             (alt-first-line (and first-line
-                                  (replace-regexp-in-string
-                                   "\\([^[:space:]]+\\)[[:space:]]+\\*[[:space:]]+"
-                                   "\\1 "
-                                   first-line))))
-          (when (and first-line
-                     (not (string-match-p (regexp-quote first-line) buffer-string))
-                     (not (and alt-first-line
-                               (string-match-p (regexp-quote alt-first-line) buffer-string))))
+             (dedup-keys (+wd/telega-transaction-dedup-keys transaction-text)))
+          (when (and dedup-keys
+                     (not (seq-some
+                           (lambda (key)
+                             (string-match-p (regexp-quote key) buffer-string))
+                           dedup-keys)))
             (progn
               (insert transaction-text)
               (write-region (point-min) (point-max) +wd/ledger-file-name))))))))
@@ -73,19 +82,18 @@ fields like \"交易时间：04月19日 19:11\"."
          (transaction-pattern-regexp "交易类型：:? ?\\(.*\\)")
          (trader-name-regexp "交易商户：:? ?\\(.*\\)")
          (value-regexp "交易金额：:? ?\\(人民币活期\\)?\\([-+]?[-0-9,.]*\\)\\(人民币\\)?")
-         (card-number (progn (string-match card-number-regexp chat-text)
-                             (match-string 1 chat-text)))
+         (card-number (+wd/telega-match-group card-number-regexp chat-text 1))
          (transaction-date-time (+wd/telega-parse-transaction-time chat-text chat-date))
-         (transaction-pattern (progn (string-match transaction-pattern-regexp chat-text)
-                                     (match-string 1 chat-text)))
-         (trader-name (progn (string-match trader-name-regexp chat-text)
-                             (match-string 1 chat-text)))
-         (value (progn (string-match value-regexp chat-text)
-                       (match-string 2 chat-text)))
-         (stripped-value (replace-regexp-in-string (regexp-quote (string ?,)) "" value))
+         (transaction-pattern (+wd/telega-match-group transaction-pattern-regexp chat-text 1))
+         (trader-name (+wd/telega-match-group trader-name-regexp chat-text 1))
+         (value (+wd/telega-match-group value-regexp chat-text 2))
+         (stripped-value (and value
+                              (replace-regexp-in-string (regexp-quote (string ?,)) "" value)))
          (pufa-p (string= card-number "6912"))
-         (raw-value (if pufa-p (string-to-number stripped-value)
-                      (* -1 (string-to-number stripped-value))))
+         (raw-value (and stripped-value
+                         (if pufa-p
+                             (string-to-number stripped-value)
+                           (* -1 (string-to-number stripped-value)))))
          (real-value (+wd/telega-normalize-transaction-value chat-text raw-value))
          (ledger-account (progn
                            (cond ((or (string= card-number "5048")
@@ -94,33 +102,34 @@ fields like \"交易时间：04月19日 19:11\"."
                                   (concat "Liabilities:credit card:cmb-5048:" card-number))
                                  ((string= card-number "6912")
                                   "Assets:current:deposit:spdb-6912"))))
-         (transaction-string (concat "\n"
-                                     (if transaction-date-time
-                                         transaction-date-time
-                                       (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date))
-                                     " "
-                                     (if (string= card-number "6912")
-                                         transaction-pattern
-                                       trader-name)
-                                     "\n"
-                                     "    " ledger-account "  " (number-to-string real-value) " CNY  ;\n"
-                                     "    Expenses:\n")))
-    transaction-string))
+         (description (if pufa-p transaction-pattern trader-name)))
+    (when (and card-number stripped-value ledger-account description)
+      (concat "\n"
+              (if transaction-date-time
+                  transaction-date-time
+                (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date))
+              " "
+              description
+              "\n"
+              "    " ledger-account "  " (number-to-string real-value) " CNY  ;\n"
+              "    Expenses:\n"))))
 
 (defun +wd/guanaitong-transaction (chat-text chat-date)
   ;; (message "chat-text: %s" chat-text)
   (let* ((value-regexp "变动金额：:? ?[-+]?\\([-0-9,.]*\\)")
-         (value (progn (string-match value-regexp chat-text)
-                       (match-string 1 chat-text)))
-         (stripped-value (replace-regexp-in-string (regexp-quote (string ?,)) "" value))
-         (raw-value (* -1 (string-to-number stripped-value)))
+         (value (+wd/telega-match-group value-regexp chat-text 1))
+         (stripped-value (and value
+                              (replace-regexp-in-string (regexp-quote (string ?,)) "" value)))
+         (raw-value (and stripped-value
+                         (* -1 (string-to-number stripped-value))))
          (real-value (+wd/telega-normalize-transaction-value chat-text raw-value))
          (ledger-account "Assets:token:lunch")
-         (transaction-string (concat  "\n"
-                                      (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date)
-                                      " 关爱通消费\n"
-                                      "    " ledger-account "  " (number-to-string real-value) " CNY  ;\n"
-                                      "    Expenses:\n")))
+         (transaction-string (and stripped-value
+                                  (concat  "\n"
+                                           (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date)
+                                           " 关爱通消费\n"
+                                           "    " ledger-account "  " (number-to-string real-value) " CNY  ;\n"
+                                           "    Expenses:\n"))))
     transaction-string))
 
 (defvar +wd/telegram-cmb-chat-id (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
@@ -133,8 +142,12 @@ fields like \"交易时间：04月19日 19:11\"."
              (guanaitong-p (string-match "余额变动提示" chat-text))
              (account-need-p (or (string-match "交易金额" chat-text) guanaitong-p)))
         (when (and account-need-p guanaitong-p)
-          (+wd/write-transactions (+wd/guanaitong-transaction chat-text chat-date)))
+          (let ((transaction-text (+wd/guanaitong-transaction chat-text chat-date)))
+            (when transaction-text
+              (+wd/write-transactions transaction-text))))
         (when (and account-need-p (not guanaitong-p))
-          (+wd/write-transactions (+wd/creditcard-transaction chat-text chat-date)))))))
+          (let ((transaction-text (+wd/creditcard-transaction chat-text chat-date)))
+            (when transaction-text
+              (+wd/write-transactions transaction-text))))))))
 
 (provide 'lib-telega)
