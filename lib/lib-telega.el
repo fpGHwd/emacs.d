@@ -24,6 +24,7 @@ Messages containing \"退货\" should always produce a positive amount."
 Recognizes message headers like \"尾号5048信用卡04月19日19:11\" and explicit
 fields like \"交易时间：04月19日 19:11\"."
   (let ((current-year (format-time-string "%Y" chat-date))
+        (weekday-names ["Sun" "Mon" "Tue" "Wed" "Thu" "Fri" "Sat"])
         (parsed nil))
     (when (and (stringp chat-text)
                (or (string-match
@@ -32,14 +33,17 @@ fields like \"交易时间：04月19日 19:11\"."
                    (string-match
                     "交易时间：? ?\\([0-9]\\{2\\}\\)月\\([0-9]\\{2\\}\\)日\\s-*\\([0-9]\\{2\\}\\):\\([0-9]\\{2\\}\\)\\(?::\\([0-9]\\{2\\}\\)\\)?"
                     chat-text)))
-      (setq parsed
-            (format "%s/%s/%s * %s:%s:%s"
-                    current-year
-                    (match-string 1 chat-text)
-                    (match-string 2 chat-text)
-                    (match-string 3 chat-text)
-                    (match-string 4 chat-text)
-                    (or (match-string 5 chat-text) "00"))))
+      (let* ((month (string-to-number (match-string 1 chat-text)))
+             (day (string-to-number (match-string 2 chat-text)))
+             (hour (string-to-number (match-string 3 chat-text)))
+             (minute (string-to-number (match-string 4 chat-text)))
+             (second (string-to-number (or (match-string 5 chat-text) "00")))
+             (year (string-to-number current-year))
+             (time (encode-time second minute hour day month year))
+             (weekday (aref weekday-names (nth 6 (decode-time time)))))
+        (setq parsed
+              (format "%04d/%02d/%02d * %s %02d:%02d:%02d"
+                      year month day weekday hour minute second))))
     parsed))
 
 (defun +wd/telega-match-group (regexp text &optional group)
