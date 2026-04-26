@@ -244,9 +244,10 @@
   (progn
     (defvar my/foo-timer nil
       "Timer for my foo task.")
-    (when (not (string= (system-name) "ubuntu2204"))
-      (unless (timerp my/foo-timer)
-        (setq my/foo-timer (run-at-time "00:00" (* 24 60 60) #'auto-backup-zshrc-to-mnt))))
+    (when (string= (system-name) "nixos-nuc")
+      (when (not (string= (system-name) "ubuntu2204"))
+        (unless (timerp my/foo-timer)
+          (setq my/foo-timer (run-at-time "00:00" (* 24 60 60) #'auto-backup-zshrc-to-mnt)))))
     (when (string= (system-name) "ubuntu2204")
       (run-at-time "00:00" (* 24 60 60) '+wd/remove-deprecated-files "args"))))
 
