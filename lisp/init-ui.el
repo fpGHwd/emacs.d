@@ -26,13 +26,16 @@
                                         ;  (setq doom-serif-font (font-spec :family "Noto Serif CJK SC" :weight 'regular)))
 
 
-(add-hook!
- 'after-setting-font-hook
- #'(lambda ()
-     ;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
-     (setq use-default-font-for-symbols nil)
-     (dolist (charset '(kana han cjk-misc bopomofo))
-       (set-fontset-font t charset (font-spec :family "Sarasa Gothic SC")))))
+(defun +wd/apply-cjk-fontset (&optional frame)
+  "Keep CJK fallback stable across daemon and emacsclient frames."
+  (with-selected-frame (or frame (selected-frame))
+    ;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
+    (setq use-default-font-for-symbols nil)
+    (dolist (charset '(kana han cjk-misc bopomofo))
+      (set-fontset-font t charset (font-spec :family "Sarasa Gothic SC")))))
+
+(add-hook! 'after-setting-font-hook #'+wd/apply-cjk-fontset)
+(add-hook! 'server-after-make-frame-hook #'+wd/apply-cjk-fontset)
 
 
 (add-hook! 'doom-load-theme-hook
