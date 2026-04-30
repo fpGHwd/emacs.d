@@ -172,6 +172,7 @@ PRED accepts one arg NAME and returns non-nil to delete."
 
 (defun +wd/org--find-item-by-json (item)
   (require 'org-id)
+  (require 'subr-x)
   (let* ((marker-id (alist-get 'marker_id item nil nil #'string=))
          (id (alist-get 'id item nil nil #'string=)))
     (cond
@@ -216,12 +217,38 @@ Return shape: {\"count\":N,\"items\":[...]}"
     (org-map-entries
      (lambda ()
        (let ((todo (org-get-todo-state)))
-         (when (and todo (string= todo "TODO"))
+         (when (and (stringp todo) (> (length todo) 0))
            (push (+wd/org--item-at-point-plist) items))))
      nil 'agenda)
     (json-encode
      `((count . ,(length items))
        (items . ,(nreverse items))))))
+
+(defun +wd/org-keywords-json ()
+  "Return all distinct TODO keywords/states in agenda scope as JSON.
+
+Return shape: {"count":N,"keywords":["TODO","PROJ",...]}"
+  (interactive)
+  (require 'json)
+  (require 'org)
+  (require 'org-agenda)
+  (let (states)
+    (save-window-excursion
+      (if (buffer-live-p (get-buffer org-agenda-buffer-name))
+          (with-current-buffer org-agenda-buffer-name
+            (org-agenda-redo))
+        (org-agenda-list)))
+    (org-map-entries
+     (lambda ()
+       (let ((todo (org-get-todo-state)))
+         (when (and (stringp todo) (> (length todo) 0))
+           (push todo states))))
+     nil 'agenda)
+    (let* ((uniq (delete-dups states))
+           (sorted (sort uniq #'string<)))
+      (json-encode
+       `((count . ,(length sorted))
+         (keywords . ,sorted))))))
 
 (defun +wd/org-agenda-json ()
   "Return agenda entries from the currently generated agenda view as JSON.
@@ -262,6 +289,7 @@ Return shape: {\"count\":N,\"items\":[...]}"
   (require 'json)
   (require 'org)
   (require 'org-id)
+  (require 'subr-x)
   (condition-case err
       (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
              (ok (+wd/org--find-item-by-json item)))
@@ -277,6 +305,50 @@ Return shape: {\"count\":N,\"items\":[...]}"
      (json-encode `((ok . :json-false)
                     (message . ,(format "%s" err))
                     (item . nil))))))
+
+
+(defun +wd/org-item-note-json (item-json note-text)
+  "Add org note for item from ITEM-JSON and return operation result as JSON."
+  (interactive "sitem-json: \nsnote: ")
+  (require 'json)
+  (require 'org)
+  (require 'org-id)
+  (require 'subr-x)
+  (condition-case err
+      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
+             (ok (+wd/org--find-item-by-json item))
+             (trimmed (string-trim (or note-text "")))
+             (decoded (if (string-match-p "\\\\u[0-9a-fA-F]\\{4\\}" trimmed)
+                          (json-parse-string
+                           (concat "\""
+                                   (replace-regexp-in-string "\"" "\\\\\"" trimmed t t)
+                                   "\""))
+                        trimmed)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
+          (if (string-empty-p decoded)
+              (json-encode '((ok . :json-false) (message . "note is empty") (item . nil)))
+            (progn
+              (or (org-id-get) (org-id-get-create))
+              ;; Append note into the current entry log area without touching other content.
+              (let* ((ts (format-time-string (org-time-stamp-format 'long 'inactive) (current-time)))
+                     (indented (replace-regexp-in-string "\n" "\n  " decoded))
+                     (note-entry (format "- Note taken on %s\n  %s\n" ts indented)))
+                (save-excursion
+                  (goto-char (org-log-beginning t))
+                  (insert note-entry)))
+              (save-buffer)
+              (json-encode `((ok . t)
+                             (message . "note added")
+                             (item . ,(+wd/org--item-at-point-plist))))))))
+    (error
+     (json-encode `((ok . :json-false)
+                    (message . ,(format "%s" err))
+                    (item . nil))))))
+
+(defun +wd/org-agenda-note-json (item-json note-text)
+  "Alias for `+wd/org-item-note-json' for agenda action naming."
+  (+wd/org-item-note-json item-json note-text))
 
 (defun +wd/org-item-todo-json (item-json todo-state)
   "Set TODO state for org item from ITEM-JSON and return operation result as JSON."
