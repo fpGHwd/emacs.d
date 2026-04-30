@@ -3,8 +3,7 @@
 
 ;; https://github.com/zevlg/telega.el
 (setup telega
-  (:only-if (or (string= (system-name) "nixos-nuc")
-                (string= (system-name) "arch-nuc")))
+  (:only-if (string= (system-name) "nixos-nuc"))
   (:defer (telega t))
   (:when-loaded
     (:also-load lib-telega)
