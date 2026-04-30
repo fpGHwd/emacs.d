@@ -262,12 +262,9 @@ Return shape: {\"count\":N,\"items\":[...]}"
   (require 'org-agenda)
   (let (items)
     (save-window-excursion
-      ;; Sticky agenda buffers should be refreshed with `org-agenda-redo`.
-      ;; Calling `org-agenda-list` again can raise:
-      ;; \"Sticky agenda buffer, use 'r' to refresh\".
-      (if (buffer-live-p (get-buffer org-agenda-buffer-name))
-          (with-current-buffer org-agenda-buffer-name
-            (org-agenda-redo))
+      ;; Force real `org-agenda-list` content each time.
+      ;; Do not reuse sticky agenda buffers from other agenda commands.
+      (let ((org-agenda-sticky nil))
         (org-agenda-list))
       (with-current-buffer org-agenda-buffer-name
         (save-excursion
