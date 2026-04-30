@@ -144,4 +144,161 @@ PRED accepts one arg NAME and returns non-nil to delete."
     (magit-commit-create `("--all" "-m" ,commit-message))
     (magit-push-current-to-upstream nil)))
 
+(defun +wd/org--marker-id (source-file pos)
+  (format "%s::%s" (or source-file "") pos))
+
+(defun +wd/org--item-at-point-plist ()
+  (let* ((source-file (or (buffer-file-name) ""))
+         (pos (point))
+         (todo (or (org-get-todo-state) ""))
+         (id (or (org-id-get) "")))
+    `((id . ,id)
+      (marker_id . ,(+wd/org--marker-id source-file pos))
+      (title . ,(org-get-heading t t t t))
+      (todo_state . ,todo)
+      (tags . ,(or (org-get-tags) '()))
+      (scheduled . ,(org-entry-get (point) "SCHEDULED"))
+      (deadline . ,(org-entry-get (point) "DEADLINE"))
+      (source_file . ,source-file))))
+
+(defun +wd/org--item-from-agenda-marker (marker)
+  (when (and (markerp marker) (marker-buffer marker))
+    (with-current-buffer (marker-buffer marker)
+      (save-excursion
+        (goto-char marker)
+        (when (and (derived-mode-p 'org-mode)
+                   (not (org-before-first-heading-p)))
+          (+wd/org--item-at-point-plist))))))
+
+(defun +wd/org--find-item-by-json (item)
+  (require 'org-id)
+  (let* ((marker-id (alist-get 'marker_id item nil nil #'string=))
+         (id (alist-get 'id item nil nil #'string=)))
+    (cond
+     ((and (stringp marker-id) (string-match "^\\(.*\\)::\\([0-9]+\\)$" marker-id))
+      (let* ((file (match-string 1 marker-id))
+             (pos (string-to-number (match-string 2 marker-id))))
+        (when (and (stringp file)
+                   (> (length file) 0)
+                   (file-exists-p file))
+          (find-file file)
+          (goto-char (min (max pos (point-min)) (point-max)))
+          (when (and (derived-mode-p 'org-mode)
+                     (not (org-before-first-heading-p)))
+            t))))
+     ((and (stringp id) (> (length id) 0))
+      (let ((m (org-id-find id 'marker)))
+        (when (markerp m)
+          (switch-to-buffer (marker-buffer m))
+          (goto-char m)
+          (when (and (derived-mode-p 'org-mode)
+                     (not (org-before-first-heading-p)))
+            t))))
+     (t nil))))
+
+(defun +wd/org-todos-json ()
+  "Return TODO items in agenda as a JSON string.
+
+Only entries with TODO keyword exactly equal to \"TODO\" are included.
+Fields: id, marker_id, title, todo_state, tags, scheduled, deadline, source_file.
+Return shape: {\"count\":N,\"items\":[...]}"
+  (interactive)
+  (require 'json)
+  (require 'org)
+  (require 'org-agenda)
+  (let (items)
+    ;; Keep TODO extraction aligned with current sticky agenda context.
+    (save-window-excursion
+      (if (buffer-live-p (get-buffer org-agenda-buffer-name))
+          (with-current-buffer org-agenda-buffer-name
+            (org-agenda-redo))
+        (org-agenda-list)))
+    (org-map-entries
+     (lambda ()
+       (let ((todo (org-get-todo-state)))
+         (when (and todo (string= todo "TODO"))
+           (push (+wd/org--item-at-point-plist) items))))
+     nil 'agenda)
+    (json-encode
+     `((count . ,(length items))
+       (items . ,(nreverse items))))))
+
+(defun +wd/org-agenda-json ()
+  "Return agenda entries from the currently generated agenda view as JSON.
+
+This follows the same window/filter as agenda UI (for example 7-day page).
+Fields: id, marker_id, title, todo_state, tags, scheduled, deadline, source_file.
+Return shape: {\"count\":N,\"items\":[...]}"
+  (interactive)
+  (require 'json)
+  (require 'org)
+  (require 'org-agenda)
+  (let (items)
+    (save-window-excursion
+      ;; Sticky agenda buffers should be refreshed with `org-agenda-redo`.
+      ;; Calling `org-agenda-list` again can raise:
+      ;; \"Sticky agenda buffer, use 'r' to refresh\".
+      (if (buffer-live-p (get-buffer org-agenda-buffer-name))
+          (with-current-buffer org-agenda-buffer-name
+            (org-agenda-redo))
+        (org-agenda-list))
+      (with-current-buffer org-agenda-buffer-name
+        (save-excursion
+          (goto-char (point-min))
+          (while (< (point) (point-max))
+            (let* ((marker (or (get-text-property (point) 'org-hd-marker)
+                               (get-text-property (point) 'org-marker)))
+                   (item (+wd/org--item-from-agenda-marker marker)))
+              (when item
+                (push item items)))
+            (forward-line 1)))))
+    (json-encode
+     `((count . ,(length items))
+       (items . ,(nreverse items))))))
+
+(defun +wd/org-item-schedule-json (item-json schedule-spec)
+  "Schedule org item from ITEM-JSON and return operation result as JSON."
+  (interactive "sitem-json: \nschedule: ")
+  (require 'json)
+  (require 'org)
+  (require 'org-id)
+  (condition-case err
+      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
+             (ok (+wd/org--find-item-by-json item)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
+          (let* ((id (or (org-id-get) (org-id-get-create))))
+            (org-schedule nil schedule-spec)
+            (save-buffer)
+            (json-encode `((ok . t)
+                           (message . "scheduled")
+                           (item . ,(+wd/org--item-at-point-plist)))))))
+    (error
+     (json-encode `((ok . :json-false)
+                    (message . ,(format "%s" err))
+                    (item . nil))))))
+
+(defun +wd/org-item-todo-json (item-json todo-state)
+  "Set TODO state for org item from ITEM-JSON and return operation result as JSON."
+  (interactive "sitem-json: \nstate: ")
+  (require 'json)
+  (require 'org)
+  (require 'org-id)
+  (condition-case err
+      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
+             (ok (+wd/org--find-item-by-json item)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
+          (progn
+            (or (org-id-get) (org-id-get-create))
+            (org-todo todo-state)
+            (save-buffer)
+            (json-encode `((ok . t)
+                           (message . "todo state updated")
+                           (item . ,(+wd/org--item-at-point-plist)))))))
+    (error
+     (json-encode `((ok . :json-false)
+                    (message . ,(format "%s" err))
+                    (item . nil))))))
+
 (provide 'lib-misc)
