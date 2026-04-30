@@ -200,7 +200,7 @@ PRED accepts one arg NAME and returns non-nil to delete."
 (defun +wd/org-todos-json ()
   "Return TODO items in agenda as a JSON string.
 
-Only entries with TODO keyword exactly equal to \"TODO\" are included.
+Only entries whose TODO keyword is in `org-todo-keywords` and belongs to the not-done set are included.
 Fields: id, marker_id, title, todo_state, tags, scheduled, deadline, source_file.
 Return shape: {\"count\":N,\"items\":[...]}"
   (interactive)
@@ -217,7 +217,8 @@ Return shape: {\"count\":N,\"items\":[...]}"
     (org-map-entries
      (lambda ()
        (let ((todo (org-get-todo-state)))
-         (when (and (stringp todo) (> (length todo) 0))
+         (when (and (stringp todo)
+                    (member todo org-not-done-keywords))
            (push (+wd/org--item-at-point-plist) items))))
      nil 'agenda)
     (json-encode
