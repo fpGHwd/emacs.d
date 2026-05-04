@@ -48,7 +48,7 @@
   (add-to-list 'default-frame-alist '(fullscreen . fullboth)))
 
 ;; auto save saved workspaces
-(add-hook! 'doom-after-init-hook #'(lambda () (run-with-idle-timer 1800 nil #'+wd/update-current-workspaces-to-saved-ones)))
+;; (add-hook! 'doom-after-init-hook #'(lambda () (run-with-idle-timer 1800 nil #'+wd/update-current-workspaces-to-saved-ones)))
 (add-hook! 'doom-after-init-hook #'+wd/workspace-hourly-cleanup-start)
 
 (after! xclip

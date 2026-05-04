@@ -42,7 +42,7 @@ fields like \"交易时间：04月19日 19:11\"."
              (time (encode-time second minute hour day month year))
              (weekday (aref weekday-names (nth 6 (decode-time time)))))
         (setq parsed
-              (format "%04d/%02d/%02d * %s %02d:%02d:%02d"
+              (format "%04d/%02d/%02d %s %02d:%02d:%02d"
                       year month day weekday hour minute second))))
     parsed))
 
@@ -60,8 +60,12 @@ fields like \"交易时间：04月19日 19:11\"."
                             (replace-regexp-in-string
                              "\\([^[:space:]]+\\)[[:space:]]+\\*[[:space:]]+"
                              "\\1 "
-                             headline))))
-    (delq nil (list headline alt-headline))))
+                             headline)))
+         (alt-headline-pending (and headline
+                                    (replace-regexp-in-string
+                                     "\\([^[:space:]]+\\)[[:space:]]+![[:space:]]+"
+                                     "\\1 "))))
+    (delq nil (list headline alt-headline alt-headline-pending))))
 
 (defun +wd/write-transactions (transaction-text)
   (with-mutex ledger-mutex
@@ -111,7 +115,7 @@ fields like \"交易时间：04月19日 19:11\"."
       (concat "\n"
               (if transaction-date-time
                   (concat transaction-date-time "[" (format-time-string "%H:%M:%S" chat-date) "]")
-                (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date))
+                (format-time-string "%Y/%m/%d %a %H:%M:%S" chat-date))
               " "
               description
               "\n"
@@ -130,9 +134,9 @@ fields like \"交易时间：04月19日 19:11\"."
          (ledger-account "Assets:token:lunch")
          (transaction-string (and stripped-value
                                   (concat  "\n"
-                                           (format-time-string "%Y/%m/%d * %a %H:%M:%S" chat-date)
+                                           (format-time-string "%Y/%m/%d %a %H:%M:%S" chat-date)
                                            " 关爱通消费\n"
-                                           "    " ledger-account "  " (number-to-string real-value) " CNY  ;\n"
+                                           "    " ledger-account "  " (number-to-string real-value) " CNY\n"
                                            "    Expenses:\n"))))
     transaction-string))
 
