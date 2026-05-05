@@ -108,9 +108,9 @@ fields like \"交易时间：04月19日 19:11\"."
                            (cond ((or (string= card-number "5048")
                                       (string= card-number "6798")
                                       (string= card-number "2972"))
-                                  (concat "Liabilities:credit card:cmb-5048:" card-number))
+                                  (concat "Liabilities:CreditCard:CMB-5048:" card-number))
                                  ((string= card-number "6912")
-                                  "Assets:current:deposit:spdb-6912"))))
+                                  "Assets:Liquid:Bank:SPDB-6912"))))
          (description (if pufa-p transaction-pattern trader-name)))
     (when (and card-number stripped-value ledger-account description)
       (concat "\n"
@@ -120,7 +120,7 @@ fields like \"交易时间：04月19日 19:11\"."
               " "
               description
               "\n"
-              "    " ledger-account "  " (number-to-string real-value) " CNY  ;\n"
+              "    " ledger-account "  " (number-to-string real-value) " CNY\n"
               "    Expenses:\n"))))
 
 (defun +wd/guanaitong-transaction (chat-text chat-date)
