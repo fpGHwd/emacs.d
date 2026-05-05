@@ -108,7 +108,7 @@ fields like \"交易时间：04月19日 19:11\"."
                            (cond ((or (string= card-number "5048")
                                       (string= card-number "6798")
                                       (string= card-number "2972"))
-                                  (concat "Liabilities:CreditCard:CMB-5048:" card-number))
+                                  "Liabilities:CreditCard:CMB-5048")
                                  ((string= card-number "6912")
                                   "Assets:Liquid:Bank:SPDB-6912"))))
          (description (if pufa-p transaction-pattern trader-name)))

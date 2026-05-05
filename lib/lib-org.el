@@ -615,22 +615,18 @@ PRIORITY-VALUE supports A/B/C or empty string to clear."
                    (transition-log-p (and periodic-p (not (string= old-state new-state)))))
               (+wd/org--call-with-safe-archive-location
                (lambda ()
-                 ;; Directly modify heading text to avoid org-todo's interactive prompts
-                 (org-back-to-heading t)
-                 (let ((inhibit-modification-hooks t)
-                       (bol (point)))
-                   ;; Move past "* " or "** " etc to find the TODO keyword
-                   (skip-chars-forward "*+ ")
-                   ;; If there's a TODO keyword, replace it
-                   (if (re-search-forward org-todo-regexp (line-end-position) t)
+                 ;; Call org-todo in non-interactive mode
+                 (let ((noninteractive t)
+                       (inhibit-redisplay t)
+                       (org-inhibit-logging nil))
+                   (condition-case err
                        (if (string-empty-p new-state)
-                           ;; Remove the TODO keyword if state is empty
-                           (replace-match "")
-                         ;; Replace with new state
-                         (replace-match new-state))
-                     ;; No existing keyword, insert if new-state is not empty
-                     (when (not (string-empty-p new-state))
-                       (insert new-state " "))))))
+                           ;; Clear TODO state
+                           (when (org-get-todo-state)
+                             (org-todo 'none))
+                         ;; Set TODO state
+                         (org-todo new-state))
+                     (error nil)))))
               ;; For repeating entries, ensure a state log line exists when completed.
               ;; Example: - State "DONE"       from ""           [2026-04-26 Sun 16:41]
               (when transition-log-p
@@ -742,6 +738,58 @@ Return shape: {\"count\":N,\"items\":[...]}"
      (json-encode `((ok . :json-false)
                     (message . ,(error-message-string err))
                     (id . nil))))))
+
+(defun +wd/org-ensure-ids-by-markers-json (marker-ids-json)
+  "Ensure org IDs for multiple headings in same file. Process high-to-low by point.
+MARKER-IDS-JSON: JSON string, list of marker-id strings (format: \"file::point\")
+Returns: JSON array of {markerId, newId, updatedMarkerId}."
+  (require 'json)
+  (require 'org)
+  (require 'org-id)
+  (condition-case err
+      (let* ((marker-ids (json-read-from-string marker-ids-json))
+             (parsed (mapcar (lambda (mid)
+                               (if (string-match "^\\(.*\\)::\\([0-9]+\\)$" mid)
+                                   `((marker-id . ,mid)
+                                     (file . ,(match-string 1 mid))
+                                     (pos . ,(string-to-number (match-string 2 mid))))
+                                 (error "invalid marker_id format: %s" mid)))
+                             marker-ids))
+             (file (cdr (assoc 'file (car parsed))))
+             (results '()))
+
+        (unless (and (stringp file) (> (length file) 0) (file-exists-p file))
+          (error "marker file not found: %s" file))
+
+        ;; Sort by point descending (high to low) so inserted properties do not
+        ;; shift positions of items that still need to be processed.
+        (let ((sorted (sort parsed (lambda (a b)
+                                      (> (cdr (assoc 'pos a))
+                                         (cdr (assoc 'pos b)))))))
+          (with-current-buffer (find-file-noselect file)
+            (dolist (marker-data sorted)
+              (let* ((marker-id (cdr (assoc 'marker-id marker-data)))
+                     (pos (cdr (assoc 'pos marker-data)))
+                     (new-id nil)
+                     (updated-pos nil))
+                (save-excursion
+                  (goto-char (min (max pos (point-min)) (point-max)))
+                  (when (or (not (derived-mode-p 'org-mode))
+                            (org-before-first-heading-p))
+                    (error "item not found at position %d" pos))
+                  (org-back-to-heading t)
+                  (setq new-id (or (org-id-get) (org-id-get-create)))
+                  (save-buffer)
+                  (setq updated-pos (point)))
+
+                (push `((markerId . ,marker-id)
+                        (newId . ,new-id)
+                        (updatedMarkerId . ,(concat file "::" (number-to-string updated-pos))))
+                      results)))))
+
+        (json-encode (nreverse results)))
+    (error
+     (json-encode `((error . ,(error-message-string err)))))))
 
 (defun +wd/org--clock-time-string (time)
   (format-time-string "[%Y-%m-%d %a %H:%M]" time))
