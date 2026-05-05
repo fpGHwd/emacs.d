@@ -58,13 +58,14 @@ fields like \"交易时间：04月19日 19:11\"."
          (headline (car lines))
          (alt-headline (and headline
                             (replace-regexp-in-string
-                             "\\([^[:space:]]+\\)[[:space:]]+\\*[[:space:]]+"
-                             "\\1 "
+                             "\\([0-9]\\{4\\}/[0-9]\\{2\\}/[0-9]\\{2\\}\\)[[:space:]]+"
+                             "\\1 * "
                              headline)))
          (alt-headline-pending (and headline
                                     (replace-regexp-in-string
-                                     "\\([^[:space:]]+\\)[[:space:]]+![[:space:]]+"
-                                     "\\1 "))))
+                                     "\\([0-9]\\{4\\}/[0-9]\\{2\\}/[0-9]\\{2\\}\\)[[:space:]]+"
+                                     "\\1 ! "
+                                     headline))))
     (delq nil (list headline alt-headline alt-headline-pending))))
 
 (defun +wd/write-transactions (transaction-text)
