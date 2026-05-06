@@ -252,6 +252,7 @@
       (run-at-time "00:00" (* 24 60 60) '+wd/remove-deprecated-files "args"))))
 
 
+;; add for some tramp/vterm connection, LSP json-rpc session
 (setq envrc-remote 1)
 
 (provide 'init-misc)

@@ -16,24 +16,24 @@ Leave point after open-quote."
         (column (number-to-string (current-column))))
     (apply 'call-process "code" nil nil nil (list (concat buffer-file-name ":" line ":" column) "--goto"))))
 
-
-(defun +wd/update-bash-history (&optional args)
-  "Update bash history hourly."
-  (interactive)
-  (let* ((dotdrop-cmd (executable-find "dotdrop"))
-         (dotfiles-dir (file-truename "~/.config/dotfiles"))
-         (bash-eternal-history (expand-file-name "~/.config/bash/bash_eternal_history"))
-         (bash-eternal-history-dotdrop (expand-file-name (concat dotfiles-dir "config/bash/bash_eternal_history-ubuntu2004")))
-         (bash-eternal-history-tmp (expand-file-name (concat dotfiles-dir "config/bash/bash_eternal_history-bak-ubuntu2004"))))
-    (when dotdrop-cmd
-      (let ((cmd (format "%s -c %s update --force -k f_bash_eternal_history" dotdrop-cmd (concat dotfiles-dir "dotdrop-config.yaml")))) ;; 更新的是 bak 文件
-        ;; (message "%s" cmd)
-        (shell-command-to-string cmd)
-        (let* ((size1 (nth 7 (file-attributes bash-eternal-history-dotdrop)))
-               (size2 (nth 7 (file-attributes bash-eternal-history-tmp))))
-          (if (> size2 size1)
-              (copy-file bash-eternal-history-tmp bash-eternal-history-dotdrop t)
-            (copy-file bash-eternal-history-dotdrop bash-eternal-history t)))))))
+;; 2026-04-27 not use bash on ubuntu anymore
+;; (defun +wd/update-bash-history (&optional args)
+;;   "Update bash history hourly."
+;;   (interactive)
+;;   (let* ((dotdrop-cmd (executable-find "dotdrop"))
+;;          (dotfiles-dir (file-truename "~/.config/dotfiles"))
+;;          (bash-eternal-history (expand-file-name "~/.config/bash/bash_eternal_history"))
+;;          (bash-eternal-history-dotdrop (expand-file-name (concat dotfiles-dir "config/bash/bash_eternal_history-ubuntu2004")))
+;;          (bash-eternal-history-tmp (expand-file-name (concat dotfiles-dir "config/bash/bash_eternal_history-bak-ubuntu2004"))))
+;;     (when dotdrop-cmd
+;;       (let ((cmd (format "%s -c %s update --force -k f_bash_eternal_history" dotdrop-cmd (concat dotfiles-dir "dotdrop-config.yaml")))) ;; 更新的是 bak 文件
+;;         ;; (message "%s" cmd)
+;;         (shell-command-to-string cmd)
+;;         (let* ((size1 (nth 7 (file-attributes bash-eternal-history-dotdrop)))
+;;                (size2 (nth 7 (file-attributes bash-eternal-history-tmp))))
+;;           (if (> size2 size1)
+;;               (copy-file bash-eternal-history-tmp bash-eternal-history-dotdrop t)
+;;             (copy-file bash-eternal-history-dotdrop bash-eternal-history t)))))))
 
 (defun +wd/magit-push-to-gerrit (arg)
   "Push HEAD to remote branch. SAIC limited.
