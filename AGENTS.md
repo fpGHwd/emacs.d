@@ -1,0 +1,1 @@
+/home/wd/.config/nix.d/doc/AGENTS.md

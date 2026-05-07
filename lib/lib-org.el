@@ -330,26 +330,16 @@ end of string are ignored."
                       (file-exists-p file))
              (find-file file)
              (goto-char (min (max pos (point-min)) (point-max)))
-             (and (derived-mode-p 'org-mode)
-                  (not (org-before-first-heading-p))
-                  (string= (or (org-entry-get (point) "ID") "") id)))))
+             (when (and (derived-mode-p 'org-mode)
+                        (not (org-before-first-heading-p))
+                        (string= (or (org-entry-get (point) "ID") "") id))
+               ;; Warm the org-id cache so subsequent org-id-find hits it directly.
+               (org-id-add-location id file)
+               t))))
        (let ((m (condition-case nil (org-id-find id 'marker) (error nil))))
          (when (markerp m)
            (switch-to-buffer (marker-buffer m))
            (goto-char m)
-           (and (derived-mode-p 'org-mode)
-                (not (org-before-first-heading-p)))))
-       ;; Fallback when org-id locations cache misses.
-       (let (fallback)
-         (org-map-entries
-          (lambda ()
-            (when (and (not fallback)
-                       (string= (or (org-entry-get (point) "ID") "") id))
-              (setq fallback (point-marker))))
-          nil 'agenda)
-         (when (markerp fallback)
-           (switch-to-buffer (marker-buffer fallback))
-           (goto-char fallback)
            (and (derived-mode-p 'org-mode)
                 (not (org-before-first-heading-p)))))))
      ((and (stringp marker-id) (string-match "^\\(.*\\)::\\([0-9]+\\)$" marker-id))
@@ -439,15 +429,16 @@ Return shape: {\"count\":N,\"items\":[...]} "
   (condition-case err
       (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
              (ok (+wd/org--find-item-by-json item))
-             (sched (string-trim (or schedule-spec ""))))
+             (sched (string-trim (or schedule-spec "")))
+             (clear-p (or (string-empty-p sched) (string= sched "__CLEAR__"))))
         (if (not ok)
             (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
           (let* ((id (or (org-id-get) (org-id-get-create))))
             ;; Directly set schedule without interactive org-schedule
-            (org-entry-put (point) "SCHEDULED" (if (string-empty-p sched) nil schedule-spec))
+            (org-entry-put (point) "SCHEDULED" (if clear-p nil schedule-spec))
             (save-buffer)
             (json-encode `((ok . t)
-                           (message . ,(if (string-empty-p sched) "schedule cleared" "scheduled"))
+                           (message . ,(if clear-p "schedule cleared" "scheduled"))
                            (item . ,(+wd/org--item-at-point-plist)))))))
     (error
      (json-encode `((ok . :json-false)
@@ -848,6 +839,7 @@ to handle propertized strings from fontified buffers."
 (defun +wd/org-item-clock-in-json (item-json)
   "Clock in org item from ITEM-JSON and return operation result as JSON."
   (require 'json)
+  (require 'cl-lib)
   (require 'org)
   (require 'org-clock)
   (require 'org-id)
@@ -869,8 +861,19 @@ to handle propertized strings from fontified buffers."
                (lambda ()
                  (with-timeout (8 (error "clock-in timeout"))
                    (let ((org-clock-in-resume t)
-                         (org-clock-continuously nil))
-                     (org-clock-in nil)))))
+                         (org-clock-continuously nil)
+                         (org-clock-persist-query-resume nil)
+                         (org-clock-resolve-expert t)
+                         (org-clock-clocked-in-display nil))
+                     ;; Force non-interactive handling for dangling clocks.
+                     ;; Keep 0 minutes and never block on prompt.
+                     (cl-letf (((symbol-function 'read-char-exclusive) (lambda (&rest _args) ?k))
+                               ((symbol-function 'read-char-choice) (lambda (&rest _args) ?k))
+                               ((symbol-function 'read-number) (lambda (&rest _args) 0))
+                               ((symbol-function 'read-string) (lambda (&rest _args) "0"))
+                               ((symbol-function 'y-or-n-p) (lambda (&rest _args) t))
+                               ((symbol-function 'yes-or-no-p) (lambda (&rest _args) t)))
+                       (org-clock-in nil))))))
               (save-buffer))
             (let ((clock-start-time (bound-and-true-p org-clock-start-time)))
               (json-encode
@@ -882,7 +885,6 @@ to handle propertized strings from fontified buffers."
      (json-encode `((ok . :json-false)
                     (message . ,(format "%s" err))
                     (item . nil))))))
-
 (defun +wd/org-item-clock-out-json (item-json)
   "Clock out org item from ITEM-JSON and return operation result as JSON."
   (require 'json)
@@ -1242,6 +1244,27 @@ Stops before the first child heading."
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
 
+(defun +wd/org-item-set-tags-json (item-json tags-json)
+  "Replace tags of an item with TAGS-JSON array."
+  (require 'json)
+  (condition-case err
+      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list
+                                      :null-object nil :false-object :json-false))
+             (tags (json-parse-string tags-json :object-type 'alist :array-type 'list
+                                      :null-object nil :false-object :json-false))
+             (ok (+wd/org--find-item-by-json item))
+             (normalized-tags (seq-filter #'stringp tags)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
+          (org-back-to-heading t)
+          (org-set-tags normalized-tags)
+          (save-buffer)
+          (json-encode `((ok . t)
+                         (message . "tags updated")
+                         (item . ,(+wd/org--item-at-point-plist))))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
+
 (defun +wd/org-item-add-child-json (item-json child-json)
   "Add a child heading under the item at point.
 CHILD-JSON: {\"heading\":\"...\",\"todo_state\":\"TODO\",\"body\":\"...\"}"
@@ -1273,5 +1296,31 @@ CHILD-JSON: {\"heading\":\"...\",\"todo_state\":\"TODO\",\"body\":\"...\"}"
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
 
+
+(defun +wd/org-item-delete-json (item-json)
+  "Delete an item and its subtree."
+  (require 'json)
+  (condition-case err
+      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list
+                                      :null-object nil :false-object :json-false))
+             (ok (+wd/org--find-item-by-json item)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
+          (org-cut-subtree)
+          (save-buffer)
+          (json-encode '((ok . t) (message . "item deleted") (item . nil)))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
+
+
+(defun +wd/org-mode-restart-json ()
+  "Restart org-mode runtime state and return JSON result."
+  (require 'json)
+  (condition-case err
+      (progn
+        (org-mode-restart)
+        (json-encode '((ok . t) (message . "org restarted") (item . nil))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
 
 (provide 'lib-org)
