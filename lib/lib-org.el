@@ -330,6 +330,45 @@ end of string are ignored."
               (throw 'found (cons file (point))))))))
     nil))
 
+(defun +wd/org--ensure-org-id-locations-hash-table ()
+  "Normalize `org-id-locations' to hash-table to avoid org-id type errors."
+  (when (and (boundp 'org-id-locations)
+             org-id-locations
+             (not (hash-table-p org-id-locations)))
+    (setq org-id-locations
+          (if (fboundp 'org-id-alist-to-hash)
+              (org-id-alist-to-hash org-id-locations)
+            (let ((ht (make-hash-table :test 'equal)))
+              (dolist (pair org-id-locations)
+                (when (and (consp pair) (stringp (car pair)))
+                  (puthash (car pair) (cdr pair) ht)))
+              ht)))))
+
+(defun +wd/org--safe-org-id-add-location (id file)
+  "Safely add ID location even when org-id cache is in legacy alist form."
+  (+wd/org--ensure-org-id-locations-hash-table)
+  (ignore-errors (org-id-add-location id file)))
+
+(defun +wd/org--id-present-in-file-p (id file)
+  "Return non-nil if FILE contains a heading with property ID."
+  (when (and (stringp file)
+             (> (length file) 0)
+             (file-exists-p file))
+    (with-current-buffer (find-file-noselect file)
+      (save-excursion
+        (goto-char (point-min))
+        (re-search-forward
+         (concat "^[ \t]*:ID:[ \t]*" (regexp-quote id) "[ \t]*$")
+         nil t)))))
+
+(defun +wd/org--item-id-fast-known-p (id)
+  "Return non-nil when ID can be confirmed quickly without global scan."
+  (or (+wd/org--find-item-position-by-id-in-capture-files id)
+      (progn
+        (+wd/org--ensure-org-id-locations-hash-table)
+        (let ((id-file (ignore-errors (org-id-find-id-file id))))
+          (+wd/org--id-present-in-file-p id id-file)))))
+
 (defun +wd/org--find-item-by-json (item)
   (require 'org-id)
   (require 'subr-x)
@@ -351,22 +390,23 @@ end of string are ignored."
              (when (and (derived-mode-p 'org-mode)
                         (not (org-before-first-heading-p))
                         (string= (or (org-entry-get (point) "ID") "") id))
-               (org-id-add-location id file)
+               (+wd/org--safe-org-id-add-location id file)
                t))))
        ;; Fast path for freshly captured items.
        (let ((hit (+wd/org--find-item-position-by-id-in-capture-files id)))
          (when hit
            (find-file (car hit))
            (goto-char (cdr hit))
-           (org-id-add-location id (car hit))
+           (+wd/org--safe-org-id-add-location id (car hit))
            t))
-       ;; Fallback to org-id global lookup.
-       (let ((m (condition-case nil (org-id-find id 'marker) (error nil))))
-         (when (markerp m)
-           (switch-to-buffer (marker-buffer m))
-           (goto-char m)
-           (and (derived-mode-p 'org-mode)
-                (not (org-before-first-heading-p)))))))
+       ;; Only do global org-id lookup when we can quickly confirm ID exists.
+       (when (+wd/org--item-id-fast-known-p id)
+         (let ((m (condition-case nil (org-id-find id 'marker) (error nil))))
+           (when (markerp m)
+             (switch-to-buffer (marker-buffer m))
+             (goto-char m)
+             (and (derived-mode-p 'org-mode)
+                  (not (org-before-first-heading-p))))))))
      ((and (stringp marker-id) (string-match "^\\(.*\\)::\\([0-9]+\\)$" marker-id))
       (let* ((file (match-string 1 marker-id))
              (pos (string-to-number (match-string 2 marker-id))))
@@ -1057,7 +1097,7 @@ to handle propertized strings from fontified buffers."
             (when (re-search-forward (concat "^\\* Inbox\\s-*$") nil t)
               (forward-line 1)
               (when id-str
-                (org-id-add-location id-str file))
+                (+wd/org--safe-org-id-add-location id-str file))
               (setq item (+wd/org--item-at-point-plist t)))))
         (json-encode `((ok . t) (message . "todo captured") (item . ,item))))
     (error
@@ -1089,7 +1129,7 @@ to handle propertized strings from fontified buffers."
             (when (re-search-forward (concat "^\\* Inbox\\s-*$") nil t)
               (forward-line 1)
               (when id-str
-                (org-id-add-location id-str file))
+                (+wd/org--safe-org-id-add-location id-str file))
               (setq item (+wd/org--item-at-point-plist t)))))
         (json-encode `((ok . t) (message . "note captured") (item . ,item))))
     (error
@@ -1126,7 +1166,7 @@ to handle propertized strings from fontified buffers."
               (insert entry)
               (goto-char insert-pos)
               (when id-str
-                (org-id-add-location id-str file))
+                (+wd/org--safe-org-id-add-location id-str file))
               (setq item (+wd/org--item-at-point-plist t))))
           (let ((coding-system-for-write 'utf-8))
             (save-buffer)))
