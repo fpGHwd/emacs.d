@@ -275,34 +275,33 @@ end of string are ignored."
 
 (defun +wd/org--item-at-point-plist (&optional ensure-id)
   (require 'org-id)
-  (let* ((source-file (or (buffer-file-name) ""))
-         (pos (point))
-         (todo (or (org-get-todo-state) ""))
-         ;; Default behavior keeps stable IDs for agenda/todo exports.
-         ;; Tag search can pass ENSURE-ID=nil to avoid touching files.
-         (id (if (eq ensure-id nil)
-                 (or (org-id-get) "")
-               (or (org-id-get) (org-id-get-create) "")))
-         (headline-line (save-excursion
-                          (org-back-to-heading t)
-                          (buffer-substring-no-properties
+  (save-excursion
+    (org-back-to-heading t)
+    (let* ((source-file (or (buffer-file-name) ""))
+           (pos (point))
+           (todo (or (org-get-todo-state) ""))
+           ;; Default behavior keeps stable IDs for agenda/todo exports.
+           ;; Tag search can pass ENSURE-ID=nil to avoid touching files.
+           (id (if (eq ensure-id nil)
+                   (or (org-id-get) "")
+                 (or (org-id-get) (org-id-get-create) "")))
+           (headline-line (buffer-substring-no-properties
                            (line-beginning-position)
-                           (line-end-position))))
-         (priority-value
-          (if (and (stringp headline-line)
-                   (string-match "\\\[#\\([ABC]\\)\\]" headline-line))
-              (match-string 1 headline-line)
-            "")))
-    `((id . ,id)
-      (marker_id . ,(+wd/org--marker-id source-file pos))
-      (title . ,(org-get-heading t t t t))
-      (todo_state . ,todo)
-      (priority . ,priority-value)
-      (tags . ,(or (org-get-tags) (quote ())))
-      (scheduled . ,(org-entry-get (point) "SCHEDULED"))
-      (deadline . ,(org-entry-get (point) "DEADLINE"))
-      (source_file . ,source-file))))
-
+                           (line-end-position)))
+           (priority-value
+            (if (and (stringp headline-line)
+                     (string-match "\\[#\\([ABC]\\)\\]" headline-line))
+                (match-string 1 headline-line)
+              "")))
+      `((id . ,id)
+        (marker_id . ,(+wd/org--marker-id source-file pos))
+        (headline . ,(org-get-heading t t t t))
+        (keyword . ,todo)
+        (priority . ,priority-value)
+        (tags . ,(or (org-get-tags) (quote ())))
+        (schedule . ,(org-entry-get (point) "SCHEDULED"))
+        (deadline . ,(org-entry-get (point) "DEADLINE"))
+        (source_file . ,source-file)))))
 (defun +wd/org--item-from-agenda-marker (marker)
   (when (and (markerp marker) (marker-buffer marker))
     (with-current-buffer (marker-buffer marker)
@@ -312,6 +311,25 @@ end of string are ignored."
                    (not (org-before-first-heading-p)))
           (+wd/org--item-at-point-plist))))))
 
+(defun +wd/org--find-item-position-by-id-in-capture-files (id)
+  "Find heading by ID in capture target files and return (FILE . POS)."
+  (catch 'found
+    (dolist (file (list (expand-file-name +org-capture-todo-file org-directory)
+                        (expand-file-name +org-capture-notes-file org-directory)
+                        (expand-file-name +org-capture-journal-file)))
+      (when (and (stringp file)
+                 (> (length file) 0)
+                 (file-exists-p file))
+        (with-current-buffer (find-file-noselect file)
+          (save-excursion
+            (goto-char (point-min))
+            (when (re-search-forward
+                   (concat "^[ \t]*:ID:[ \t]*" (regexp-quote id) "[ \t]*$")
+                   nil t)
+              (org-back-to-heading t)
+              (throw 'found (cons file (point))))))))
+    nil))
+
 (defun +wd/org--find-item-by-json (item)
   (require 'org-id)
   (require 'subr-x)
@@ -320,7 +338,7 @@ end of string are ignored."
     (cond
      ((and (stringp id) (> (length id) 0))
       (or
-       ;; If request carries marker_id, use it as a strict tie-breaker for duplicated IDs.
+       ;; If request carries location, use it as strict tie-breaker.
        (when (and (stringp marker-id)
                   (string-match "^\\(.*\\)::\\([0-9]+\\)$" marker-id))
          (let* ((file (match-string 1 marker-id))
@@ -333,9 +351,16 @@ end of string are ignored."
              (when (and (derived-mode-p 'org-mode)
                         (not (org-before-first-heading-p))
                         (string= (or (org-entry-get (point) "ID") "") id))
-               ;; Warm the org-id cache so subsequent org-id-find hits it directly.
                (org-id-add-location id file)
                t))))
+       ;; Fast path for freshly captured items.
+       (let ((hit (+wd/org--find-item-position-by-id-in-capture-files id)))
+         (when hit
+           (find-file (car hit))
+           (goto-char (cdr hit))
+           (org-id-add-location id (car hit))
+           t))
+       ;; Fallback to org-id global lookup.
        (let ((m (condition-case nil (org-id-find id 'marker) (error nil))))
          (when (markerp m)
            (switch-to-buffer (marker-buffer m))
@@ -378,7 +403,7 @@ MODE can be \"agenda\" (default) or \"todo\".
 - agenda: entries from `org-agenda-list` visible view (same as agenda UI page).
 - todo: entries in agenda scope whose TODO keyword is in `org-not-done-keywords`.
 
-Fields: id, marker_id, title, todo_state, tags, scheduled, deadline, source_file.
+Fields: id, marker_id, headline, keyword, tags, schedule, deadline, source_file.
 Return shape: {\"count\":N,\"items\":[...]} "
   (interactive)
   (require 'json)
@@ -412,7 +437,7 @@ Return shape: {\"count\":N,\"items\":[...]} "
                (let* ((marker (or (get-text-property (point) 'org-hd-marker)
                                   (get-text-property (point) 'org-marker)))
                       (item (+wd/org--item-from-agenda-marker marker))
-                      (todo (and item (alist-get 'todo_state item nil nil #'string=))))
+                      (todo (and item (alist-get 'keyword item nil nil #'string=))))
                  (when (and item (not (member todo done-keys)))
                    (push item items)))
                (forward-line 1)))))))
@@ -836,6 +861,14 @@ to handle propertized strings from fontified buffers."
                             (if (+wd/org--archive-location-valid-p clean) clean safe))))))
       (funcall thunk))))
 
+(defun +wd/org--save-buffer-without-hooks ()
+  "Save current buffer while skipping save hooks for API mutations."
+  (let ((before-save-hook nil)
+        (after-save-hook nil)
+        (write-file-functions nil)
+        (write-contents-functions nil))
+    (save-buffer)))
+
 (defun +wd/org-item-clock-in-json (item-json)
   "Clock in org item from ITEM-JSON and return operation result as JSON."
   (require 'json)
@@ -874,7 +907,8 @@ to handle propertized strings from fontified buffers."
                                ((symbol-function 'y-or-n-p) (lambda (&rest _args) t))
                                ((symbol-function 'yes-or-no-p) (lambda (&rest _args) t)))
                        (org-clock-in nil))))))
-              (save-buffer))
+              (when (buffer-modified-p)
+                (+wd/org--save-buffer-without-hooks)))
             (let ((clock-start-time (bound-and-true-p org-clock-start-time)))
               (json-encode
                `((ok . t)
@@ -882,9 +916,11 @@ to handle propertized strings from fontified buffers."
                  (clock_interval . ,(+wd/org--clock-interval-alist clock-start-time nil))
                  (item . ,(+wd/org--item-at-point-plist))))))))
     (error
-     (json-encode `((ok . :json-false)
-                    (message . ,(format "%s" err))
-                    (item . nil))))))
+     (json-encode
+      `((ok . :json-false)
+        (message . ,(format "%s" err))
+        (item . nil))))))
+
 (defun +wd/org-item-clock-out-json (item-json)
   "Clock out org item from ITEM-JSON and return operation result as JSON."
   (require 'json)
@@ -893,8 +929,13 @@ to handle propertized strings from fontified buffers."
   (require 'org-id)
   (require 'subr-x)
   (condition-case err
-      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
-             (ok (+wd/org--find-item-by-json item)))
+      (let* ((total-start (current-time))
+             (item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
+             (item-id (or (alist-get 'id item) ""))
+             (marker-id (or (alist-get 'marker_id item) ""))
+             (find-start (current-time))
+             (ok (+wd/org--find-item-by-json item))
+             (find-ms (floor (* 1000 (float-time (time-subtract (current-time) find-start))))))
         (if (not ok)
             (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
           (let ((target-buffer (current-buffer)))
@@ -916,17 +957,29 @@ to handle propertized strings from fontified buffers."
                   (if (not (string= target-id clock-id))
                       (json-encode '((ok . :json-false) (message . "active clock belongs to another item") (item . nil)))
                     (let ((clock-start-time (bound-and-true-p org-clock-start-time))
-                          (clock-end-time (current-time)))
+                          (clock-end-time (current-time))
+                          clock-out-ms
+                          save-ms)
                       (with-current-buffer target-buffer
                         (+wd/org--guard-archive-location)
                         (+wd/org--call-with-safe-archive-location
                          (lambda ()
-                           (with-timeout (8 (error "clock-out timeout"))
-                             (let ((org-inhibit-logging t)
-                                   (org-log-note-clock-out nil)
-                                   (org-log-note-clock-in nil))
-                               (org-clock-out nil t)))))
-                        (save-buffer))
+                           (let ((clock-start (current-time)))
+                             (with-timeout (8 (error "clock-out timeout"))
+                               (let ((org-inhibit-logging t)
+                                     (org-log-note-clock-out nil)
+                                     (org-log-note-clock-in nil))
+                                 (org-clock-out nil t)))
+                             (setq clock-out-ms
+                                   (floor (* 1000 (float-time (time-subtract (current-time) clock-start))))))))
+                        (let ((save-start (current-time)))
+                          (when (buffer-modified-p)
+                            (+wd/org--save-buffer-without-hooks))
+                          (setq save-ms
+                                (floor (* 1000 (float-time (time-subtract (current-time) save-start)))))))
+                      (message "[haskell-web][clock-out] id=%s marker=%s find_item_ms=%d clock_out_ms=%d save_buffer_ms=%d total_ms=%d"
+                               item-id marker-id find-ms (or clock-out-ms 0) (or save-ms 0)
+                               (floor (* 1000 (float-time (time-subtract (current-time) total-start)))))
                       (json-encode
                        `((ok . t)
                          (message . "clocked out")
@@ -979,47 +1032,89 @@ to handle propertized strings from fontified buffers."
       (concat " :" (mapconcat #'identity tags ":") ":")
     ""))
 
-(defun +wd/org-capture-todo-json (title body tags)
+(defun +wd/org-capture-todo-json (title body tags &optional client-request-id)
   "Capture a TODO with TITLE, BODY and TAGS to org todo inbox. Return JSON string."
   (require 'json)
+  (require 'org-id)
   (condition-case err
       (let* ((file (expand-file-name +org-capture-todo-file org-directory))
+             (id-str (and (stringp client-request-id)
+                          (not (string-empty-p (string-trim client-request-id)))
+                          (string-trim client-request-id)))
              (tag-str (+wd/org-format-tags tags))
-             (entry (concat "** [ ] " title tag-str
-                            (if (string-empty-p body) "" (concat "\n" body))
-                            "\n")))
+             (entry (concat "** [ ] " title tag-str "\n"
+                            (if id-str
+                                (concat ":PROPERTIES:\n:ID: " id-str "\n:END:\n")
+                              "")
+                            (if (string-empty-p body) "" (concat body "\n"))
+                            "\n"))
+             item)
         (+wd/org-prepend-under-headline file "Inbox" entry)
-        (json-encode '((ok . t) (message . "todo captured"))))
+        (with-current-buffer (find-file-noselect file)
+          (save-excursion
+            (widen)
+            (goto-char (point-min))
+            (when (re-search-forward (concat "^\\* Inbox\\s-*$") nil t)
+              (forward-line 1)
+              (when id-str
+                (org-id-add-location id-str file))
+              (setq item (+wd/org--item-at-point-plist t)))))
+        (json-encode `((ok . t) (message . "todo captured") (item . ,item))))
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
-(defun +wd/org-capture-notes-json (title body tags)
+(defun +wd/org-capture-notes-json (title body tags &optional client-request-id)
   "Capture a note with TITLE, BODY and TAGS to org notes inbox. Return JSON string."
   (require 'json)
+  (require 'org-id)
   (condition-case err
       (let* ((file (expand-file-name +org-capture-notes-file org-directory))
              (date-stamp (format-time-string "[%Y-%m-%d %a]"))
+             (id-str (and (stringp client-request-id)
+                          (not (string-empty-p (string-trim client-request-id)))
+                          (string-trim client-request-id)))
              (tag-str (+wd/org-format-tags tags))
-             (entry (concat "** " date-stamp " " title tag-str
-                            (if (string-empty-p body) "" (concat "\n" body))
-                            "\n")))
+             (entry (concat "** " date-stamp " " title tag-str "\n"
+                            (if id-str
+                                (concat ":PROPERTIES:\n:ID: " id-str "\n:END:\n")
+                              "")
+                            (if (string-empty-p body) "" (concat body "\n"))
+                            "\n"))
+             item)
         (+wd/org-prepend-under-headline file "Inbox" entry)
-        (json-encode '((ok . t) (message . "note captured"))))
+        (with-current-buffer (find-file-noselect file)
+          (save-excursion
+            (widen)
+            (goto-char (point-min))
+            (when (re-search-forward (concat "^\\* Inbox\\s-*$") nil t)
+              (forward-line 1)
+              (when id-str
+                (org-id-add-location id-str file))
+              (setq item (+wd/org--item-at-point-plist t)))))
+        (json-encode `((ok . t) (message . "note captured") (item . ,item))))
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
-(defun +wd/org-capture-journal-json (title body tags)
+(defun +wd/org-capture-journal-json (title body tags &optional client-request-id)
   "Capture a journal entry under today's datetree in the journal file."
   (require 'json)
+  (require 'org-id)
   (require 'org-datetree)
   (condition-case err
-      (let* ((file +org-capture-journal-file)
+      (let* ((file (expand-file-name +org-capture-journal-file))
              (now (current-time))
              (timestamp (format-time-string "[%Y-%m-%d %a %H:%M]" now))
+             (id-str (and (stringp client-request-id)
+                          (not (string-empty-p (string-trim client-request-id)))
+                          (string-trim client-request-id)))
              (tag-str (+wd/org-format-tags tags))
-             (entry (concat "**** " timestamp " " title tag-str
-                            (if (string-empty-p body) "" (concat "\n" body))
-                            "\n")))
+             (entry (concat "**** " timestamp " " title tag-str "\n"
+                            (if id-str
+                                (concat ":PROPERTIES:\n:ID: " id-str "\n:END:\n")
+                              "")
+                            (if (string-empty-p body) "" (concat body "\n"))
+                            "\n"))
+             item)
         (with-current-buffer (find-file-noselect file)
           (save-excursion
             (widen)
@@ -1027,10 +1122,15 @@ to handle propertized strings from fontified buffers."
              (calendar-gregorian-from-absolute
               (time-to-days now)))
             (forward-line 1)
-            (insert entry))
+            (let ((insert-pos (point)))
+              (insert entry)
+              (goto-char insert-pos)
+              (when id-str
+                (org-id-add-location id-str file))
+              (setq item (+wd/org--item-at-point-plist t))))
           (let ((coding-system-for-write 'utf-8))
             (save-buffer)))
-        (json-encode '((ok . t) (message . "journal captured"))))
+        (json-encode `((ok . t) (message . "journal captured") (item . ,item))))
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
@@ -1171,11 +1271,11 @@ Stops before the first child heading."
                  (pos (point))
                  (id (alist-get 'id base nil nil #'string=))
                  (source-file (alist-get 'source_file base nil nil #'string=))
-                 (heading (alist-get 'title base nil nil #'string=))
-                 (todo (alist-get 'todo_state base nil nil #'string=))
+                 (heading (alist-get 'headline base nil nil #'string=))
+                 (todo (alist-get 'keyword base nil nil #'string=))
                  (priority (alist-get 'priority base nil nil #'string=))
                  (tags (alist-get 'tags base nil nil #'string=))
-                 (scheduled (alist-get 'scheduled base nil nil #'string=))
+                 (scheduled (alist-get 'schedule base nil nil #'string=))
                  (deadline (alist-get 'deadline base nil nil #'string=))
                  (level (org-current-level)))
             (json-encode `((ok . t)
@@ -1187,11 +1287,11 @@ Stops before the first child heading."
                                     (file . ,source-file)
                                     (pos . ,pos)
                                     (level . ,level)
-                                    (heading . ,heading)
-                                    (todo . ,todo)
+                                    (headline . ,heading)
+                                    (keyword . ,todo)
                                     (priority . ,priority)
                                     (tags . ,tags)
-                                    (scheduled . ,scheduled)
+                                    (schedule . ,scheduled)
                                     (deadline . ,deadline)
                                     (properties . ,properties)
                                     (children_ids . ,children-ids)
@@ -1267,7 +1367,7 @@ Stops before the first child heading."
 
 (defun +wd/org-item-add-child-json (item-json child-json)
   "Add a child heading under the item at point.
-CHILD-JSON: {\"heading\":\"...\",\"todo_state\":\"TODO\",\"body\":\"...\"}"
+CHILD-JSON: {\"heading\":\"...\",\"keyword\":\"TODO\",\"body\":\"...\"}"
   (require 'json)
   (condition-case err
       (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list
@@ -1279,7 +1379,7 @@ CHILD-JSON: {\"heading\":\"...\",\"todo_state\":\"TODO\",\"body\":\"...\"}"
             (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
           (let* ((level (org-current-level))
                  (stars (make-string (1+ level) ?*))
-                 (todo (or (alist-get 'todo_state child nil nil #'string=) ""))
+                 (todo (or (alist-get 'keyword child nil nil #'string=) ""))
                  (heading (or (alist-get 'heading child nil nil #'string=) ""))
                  (body (or (alist-get 'body child nil nil #'string=) ""))
                  (heading-line (concat stars
@@ -1322,5 +1422,16 @@ CHILD-JSON: {\"heading\":\"...\",\"todo_state\":\"TODO\",\"body\":\"...\"}"
         (json-encode '((ok . t) (message . "org restarted") (item . nil))))
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
+
+
+(defun +wd/org-capture-extension-url-json (file entry-text)
+  "Prepend extension URL capture ENTRY-TEXT under * Inbox for iOS in FILE."
+  (require 'json)
+  (condition-case err
+      (progn
+        (+wd/org-prepend-under-headline file "Inbox for iOS" entry-text)
+        (json-encode '((ok . t) (message . "capture inserted"))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
 (provide 'lib-org)
