@@ -1509,4 +1509,6 @@ CHILD-JSON: {\"heading\":\"...\",\"keyword\":\"TODO\",\"body\":\"...\"}"
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
+;; TODO: refactor OrgCapture elisp backend
+
 (provide 'lib-org)
