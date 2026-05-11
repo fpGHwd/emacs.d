@@ -132,7 +132,7 @@ fields like \"交易时间：04月19日 19:11\"."
          (raw-value (and stripped-value
                          (* -1 (string-to-number stripped-value))))
          (real-value (+wd/telega-normalize-transaction-value chat-text raw-value))
-         (ledger-account "Assets:token:lunch")
+         (ledger-account "Assets:Virtual:Token")
          (transaction-string (and stripped-value
                                   (concat  "\n"
                                            (format-time-string "%Y/%m/%d %a %H:%M:%S" chat-date)
