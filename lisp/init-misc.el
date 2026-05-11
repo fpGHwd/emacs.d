@@ -55,7 +55,7 @@
   :defer t
   :custom
   (auth-source-save-behavior 'ask)
-  (auth-sources '("~/.config/doom/etc/authinfo.gpg")))
+  (auth-sources '("~/.config/emacs.d/etc/authinfo.gpg")))
 
 
 ;; (use-package! ispell

@@ -316,7 +316,7 @@ end of string are ignored."
   (catch 'found
     (dolist (file (list (expand-file-name +org-capture-todo-file org-directory)
                         (expand-file-name +org-capture-notes-file org-directory)
-                        (expand-file-name +org-capture-journal-file)))
+                        (expand-file-name +org-capture-journal-file org-directory)))
       (when (and (stringp file)
                  (> (length file) 0)
                  (file-exists-p file))
@@ -361,9 +361,36 @@ end of string are ignored."
          (concat "^[ \t]*:ID:[ \t]*" (regexp-quote id) "[ \t]*$")
          nil t)))))
 
+(defun +wd/org--find-item-position-by-id-in-files (id files)
+  "Find heading by ID in FILES and return (FILE . POS)."
+  (catch 'found
+    (dolist (file files)
+      (when (and (stringp file)
+                 (> (length file) 0)
+                 (file-exists-p file))
+        (with-current-buffer (find-file-noselect file)
+          (save-excursion
+            (goto-char (point-min))
+            (when (re-search-forward
+                   (concat "^[ \t]*:ID:[ \t]*" (regexp-quote id) "[ \t]*$")
+                   nil t)
+              (org-back-to-heading t)
+              (throw 'found (cons file (point))))))))
+    nil))
+
+(defun +wd/org--find-item-position-by-id-in-agenda-files (id)
+  "Find heading by ID in agenda/capture files and return (FILE . POS)."
+  (let* ((agenda-files (ignore-errors (org-agenda-files t)))
+         (capture-files (list (expand-file-name +org-capture-todo-file org-directory)
+                              (expand-file-name +org-capture-notes-file org-directory)
+                              (expand-file-name +org-capture-journal-file org-directory)))
+         (files (delete-dups (append agenda-files capture-files))))
+    (+wd/org--find-item-position-by-id-in-files id files)))
+
 (defun +wd/org--item-id-fast-known-p (id)
   "Return non-nil when ID can be confirmed quickly without global scan."
   (or (+wd/org--find-item-position-by-id-in-capture-files id)
+      (+wd/org--find-item-position-by-id-in-agenda-files id)
       (progn
         (+wd/org--ensure-org-id-locations-hash-table)
         (let ((id-file (ignore-errors (org-id-find-id-file id))))
@@ -399,8 +426,16 @@ end of string are ignored."
            (goto-char (cdr hit))
            (+wd/org--safe-org-id-add-location id (car hit))
            t))
-       ;; Only do global org-id lookup when we can quickly confirm ID exists.
-       (when (+wd/org--item-id-fast-known-p id)
+       ;; Search agenda/capture files to tolerate stale org-id-locations.
+       (let ((hit (+wd/org--find-item-position-by-id-in-agenda-files id)))
+         (when hit
+           (find-file (car hit))
+           (goto-char (cdr hit))
+           (+wd/org--safe-org-id-add-location id (car hit))
+           t))
+       ;; Final fallback to org-id global lookup.
+       (progn
+         (+wd/org--ensure-org-id-locations-hash-table)
          (let ((m (condition-case nil (org-id-find id 'marker) (error nil))))
            (when (markerp m)
              (switch-to-buffer (marker-buffer m))
