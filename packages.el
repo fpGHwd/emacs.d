@@ -222,4 +222,5 @@
 
 ;; (package! meow-tree-sitter)
 
+;; only rename, not as good as lispy
 ;; (package! emacs-refactor)
