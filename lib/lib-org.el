@@ -801,86 +801,74 @@ Return shape: {\"count\":N,\"items\":[...]}"
      `((count . ,(length items))
        (items . ,(nreverse items))))))
 
-(defun +wd/org-ensure-id-by-marker-json (marker-id)
-  "Ensure org ID for heading located by MARKER-ID and return JSON result."
-  (require 'json)
-  (require 'org)
-  (require 'org-id)
-  (condition-case err
-      (progn
-        (unless (and (stringp marker-id)
-                     (string-match "^\\(.*\\)::\\([0-9]+\\)$" marker-id))
-          (error "invalid marker_id"))
-        (let* ((file (match-string 1 marker-id))
-               (pos (string-to-number (match-string 2 marker-id))))
-          (unless (and (stringp file) (> (length file) 0) (file-exists-p file))
-            (error "marker file not found"))
-          (with-current-buffer (find-file-noselect file)
-            (save-excursion
-              (goto-char (min (max pos (point-min)) (point-max)))
-              (when (or (not (derived-mode-p 'org-mode))
-                        (org-before-first-heading-p))
-                (error "item not found"))
-              (org-back-to-heading t)
-              (let ((id (or (org-id-get) (org-id-get-create))))
-                (save-buffer)
-                (json-encode `((ok . t) (message . "id ensured") (id . ,id))))))))
-    (error
-     (json-encode `((ok . :json-false)
-                    (message . ,(error-message-string err))
-                    (id . nil))))))
-
-(defun +wd/org-ensure-ids-by-markers-json (marker-ids-json)
-  "Ensure org IDs for multiple headings in same file. Process high-to-low by point.
-MARKER-IDS-JSON: JSON string, list of marker-id strings (format: \"file::point\")
+(defun +wd/org-write-ids-by-markers-json (items-json)
+  "Write provided IDs to org headings. Supports items from multiple files.
+ITEMS-JSON: JSON string, array of {markerId, id} objects.
+Groups items by file, processes each file bottom-to-top (descending pos) to
+avoid position shifts from property insertions. If a heading already has an ID,
+its existing ID is returned unchanged.
 Returns: JSON array of {markerId, newId, updatedMarkerId}."
   (require 'json)
   (require 'org)
   (require 'org-id)
   (condition-case err
-      (let* ((marker-ids (json-read-from-string marker-ids-json))
-             (parsed (mapcar (lambda (mid)
-                               (if (string-match "^\\(.*\\)::\\([0-9]+\\)$" mid)
-                                   `((marker-id . ,mid)
-                                     (file . ,(match-string 1 mid))
-                                     (pos . ,(string-to-number (match-string 2 mid))))
-                                 (error "invalid marker_id format: %s" mid)))
-                             marker-ids))
-             (file (cdr (assoc 'file (car parsed))))
+      (let* ((items (json-read-from-string items-json))
+             (parsed (mapcar (lambda (item)
+                               (let ((mid (cdr (assoc 'markerId item)))
+                                     (id  (cdr (assoc 'id item))))
+                                 (if (string-match "^\\(.*\\)::\\([0-9]+\\)$" mid)
+                                     `((marker-id . ,mid)
+                                       (id . ,id)
+                                       (file . ,(match-string 1 mid))
+                                       (pos . ,(string-to-number (match-string 2 mid))))
+                                   (error "invalid marker_id format: %s" mid))))
+                             items))
+             ;; Group by file path
+             (by-file (let ((table (make-hash-table :test 'equal)))
+                        (dolist (p parsed)
+                          (let ((f (cdr (assoc 'file p))))
+                            (puthash f (cons p (gethash f table '())) table)))
+                        table))
              (results '()))
-
-        (unless (and (stringp file) (> (length file) 0) (file-exists-p file))
-          (error "marker file not found: %s" file))
-
-        ;; Sort by point descending (high to low) so inserted properties do not
-        ;; shift positions of items that still need to be processed.
-        (let ((sorted (sort parsed (lambda (a b)
-                                      (> (cdr (assoc 'pos a))
-                                         (cdr (assoc 'pos b)))))))
-          (with-current-buffer (find-file-noselect file)
-            (dolist (marker-data sorted)
-              (let* ((marker-id (cdr (assoc 'marker-id marker-data)))
-                     (pos (cdr (assoc 'pos marker-data)))
-                     (new-id nil)
-                     (updated-pos nil))
-                (save-excursion
-                  (goto-char (min (max pos (point-min)) (point-max)))
-                  (when (or (not (derived-mode-p 'org-mode))
-                            (org-before-first-heading-p))
-                    (error "item not found at position %d" pos))
-                  (org-back-to-heading t)
-                  (setq new-id (or (org-id-get) (org-id-get-create)))
-                  (save-buffer)
-                  (setq updated-pos (point)))
-
-                (push `((markerId . ,marker-id)
-                        (newId . ,new-id)
-                        (updatedMarkerId . ,(concat file "::" (number-to-string updated-pos))))
-                      results)))))
-
+        ;; Process each file independently
+        (maphash
+         (lambda (file group)
+           (unless (and (stringp file) (> (length file) 0) (file-exists-p file))
+             (error "marker file not found: %s" file))
+           ;; Sort descending by position within this file
+           (let ((sorted (sort group (lambda (a b)
+                                       (> (cdr (assoc 'pos a))
+                                          (cdr (assoc 'pos b)))))))
+             (with-current-buffer (find-file-noselect file)
+               (dolist (marker-data sorted)
+                 (let* ((marker-id  (cdr (assoc 'marker-id marker-data)))
+                        (id         (cdr (assoc 'id marker-data)))
+                        (pos        (cdr (assoc 'pos marker-data)))
+                        (final-id   nil)
+                        (updated-pos nil))
+                   (save-excursion
+                     (goto-char (min (max pos (point-min)) (point-max)))
+                     (when (or (not (derived-mode-p 'org-mode))
+                               (org-before-first-heading-p))
+                       (error "item not found at position %d in %s" pos file))
+                     (org-back-to-heading t)
+                     (let ((existing (org-id-get)))
+                       (if existing
+                           (setq final-id existing)
+                         (org-entry-put (point) "ID" id)
+                         (+wd/org--safe-org-id-add-location id file)
+                         (setq final-id id)))
+                     (setq updated-pos (point)))
+                   (push `((markerId . ,marker-id)
+                           (newId . ,final-id)
+                           (updatedMarkerId . ,(concat file "::" (number-to-string updated-pos))))
+                         results)))
+               (save-buffer))))
+         by-file)
         (json-encode (nreverse results)))
     (error
      (json-encode `((error . ,(error-message-string err)))))))
+
 
 (defun +wd/org--clock-time-string (time)
   (format-time-string "[%Y-%m-%d %a %H:%M]" time))
@@ -938,11 +926,22 @@ to handle propertized strings from fontified buffers."
 
 (defun +wd/org--save-buffer-without-hooks ()
   "Save current buffer while skipping save hooks for API mutations."
-  (let ((before-save-hook nil)
-        (after-save-hook nil)
-        (write-file-functions nil)
-        (write-contents-functions nil))
-    (save-buffer)))
+  ;; Kill buffer-local hook values first; let bindings only shadow the global
+  ;; value, so buffer-local hooks (e.g. org-roam-db-autosync) would still run.
+  (let ((saved-after-save (when (local-variable-p 'after-save-hook)
+                            (prog1 after-save-hook
+                              (kill-local-variable 'after-save-hook))))
+        (saved-before-save (when (local-variable-p 'before-save-hook)
+                             (prog1 before-save-hook
+                               (kill-local-variable 'before-save-hook)))))
+    (unwind-protect
+        (let ((before-save-hook nil)
+              (after-save-hook nil)
+              (write-file-functions nil)
+              (write-contents-functions nil))
+          (save-buffer))
+      (when saved-after-save (setq-local after-save-hook saved-after-save))
+      (when saved-before-save (setq-local before-save-hook saved-before-save)))))
 
 (defun +wd/org-item-clock-in-json (item-json)
   "Clock in org item from ITEM-JSON and return operation result as JSON."
@@ -953,11 +952,18 @@ to handle propertized strings from fontified buffers."
   (require 'org-id)
   (require 'subr-x)
   (condition-case err
-      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
-             (ok (+wd/org--find-item-by-json item)))
+      (let* ((total-start (current-time))
+             (item (json-parse-string item-json :object-type 'alist :array-type 'list :null-object nil :false-object :json-false))
+             (item-id (or (alist-get 'id item) ""))
+             (marker-id (or (alist-get 'marker_id item) ""))
+             (find-start (current-time))
+             (ok (+wd/org--find-item-by-json item))
+             (find-ms (floor (* 1000 (float-time (time-subtract (current-time) find-start))))))
         (if (not ok)
             (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
-          (let ((target-buffer (current-buffer)))
+          (let ((target-buffer (current-buffer))
+                clock-in-ms
+                save-ms)
             (unless (derived-mode-p 'org-mode)
               (error "target buffer is not org-mode"))
             (+wd/org--guard-archive-location)
@@ -967,23 +973,32 @@ to handle propertized strings from fontified buffers."
               (+wd/org--guard-archive-location)
               (+wd/org--call-with-safe-archive-location
                (lambda ()
-                 (with-timeout (8 (error "clock-in timeout"))
-                   (let ((org-clock-in-resume t)
-                         (org-clock-continuously nil)
-                         (org-clock-persist-query-resume nil)
-                         (org-clock-resolve-expert t)
-                         (org-clock-clocked-in-display nil))
-                     ;; Force non-interactive handling for dangling clocks.
-                     ;; Keep 0 minutes and never block on prompt.
-                     (cl-letf (((symbol-function 'read-char-exclusive) (lambda (&rest _args) ?k))
-                               ((symbol-function 'read-char-choice) (lambda (&rest _args) ?k))
-                               ((symbol-function 'read-number) (lambda (&rest _args) 0))
-                               ((symbol-function 'read-string) (lambda (&rest _args) "0"))
-                               ((symbol-function 'y-or-n-p) (lambda (&rest _args) t))
-                               ((symbol-function 'yes-or-no-p) (lambda (&rest _args) t)))
-                       (org-clock-in nil))))))
-              (when (buffer-modified-p)
-                (+wd/org--save-buffer-without-hooks)))
+                 (let ((clock-start (current-time)))
+                   (with-timeout (8 (error "clock-in timeout"))
+                     (let ((org-clock-in-resume t)
+                           (org-clock-continuously nil)
+                           (org-clock-persist-query-resume nil)
+                           (org-clock-resolve-expert t)
+                           (org-clock-clocked-in-display nil))
+                       ;; Force non-interactive handling for dangling clocks.
+                       ;; Keep 0 minutes and never block on prompt.
+                       (cl-letf (((symbol-function 'read-char-exclusive) (lambda (&rest _args) ?k))
+                                 ((symbol-function 'read-char-choice) (lambda (&rest _args) ?k))
+                                 ((symbol-function 'read-number) (lambda (&rest _args) 0))
+                                 ((symbol-function 'read-string) (lambda (&rest _args) "0"))
+                                 ((symbol-function 'y-or-n-p) (lambda (&rest _args) t))
+                                 ((symbol-function 'yes-or-no-p) (lambda (&rest _args) t)))
+                         (org-clock-in nil))))
+                   (setq clock-in-ms
+                         (floor (* 1000 (float-time (time-subtract (current-time) clock-start))))))))
+              (let ((save-start (current-time)))
+                (when (buffer-modified-p)
+                  (+wd/org--save-buffer-without-hooks))
+                (setq save-ms
+                      (floor (* 1000 (float-time (time-subtract (current-time) save-start)))))))
+            (message "[haskell-web][clock-in] id=%s marker=%s find_item_ms=%d clock_in_ms=%d save_buffer_ms=%d total_ms=%d"
+                     item-id marker-id find-ms (or clock-in-ms 0) (or save-ms 0)
+                     (floor (* 1000 (float-time (time-subtract (current-time) total-start)))))
             (let ((clock-start-time (bound-and-true-p org-clock-start-time)))
               (json-encode
                `((ok . t)
@@ -1107,7 +1122,7 @@ to handle propertized strings from fontified buffers."
       (concat " :" (mapconcat #'identity tags ":") ":")
     ""))
 
-(defun +wd/org-capture-todo-json (title body tags &optional client-request-id)
+(defun +wd/org-capture-todo-json (title body tags &optional client-request-id keyword priority schedule)
   "Capture a TODO with TITLE, BODY and TAGS to org todo inbox. Return JSON string."
   (require 'json)
   (require 'org-id)
@@ -1117,7 +1132,19 @@ to handle propertized strings from fontified buffers."
                           (not (string-empty-p (string-trim client-request-id)))
                           (string-trim client-request-id)))
              (tag-str (+wd/org-format-tags tags))
-             (entry (concat "** [ ] " title tag-str "\n"
+             (kw-str  (and (stringp keyword) (not (string-empty-p (string-trim keyword)))
+                           (string-trim keyword)))
+             (prio-str (and (stringp priority)
+                            (member (string-trim priority) '("A" "B" "C"))
+                            (string-trim priority)))
+             (sched-str (and (stringp schedule) (not (string-empty-p (string-trim schedule)))
+                             (concat "SCHEDULED: <" (string-trim schedule) ">")))
+             (headline (cond
+                         ((and kw-str prio-str) (concat "** " kw-str " [#" prio-str "] " title tag-str))
+                         (kw-str                (concat "** " kw-str " " title tag-str))
+                         (t                     (concat "** [ ] " title tag-str))))
+             (entry (concat headline "\n"
+                            (if sched-str (concat sched-str "\n") "")
                             (if id-str
                                 (concat ":PROPERTIES:\n:ID: " id-str "\n:END:\n")
                               "")
@@ -1138,7 +1165,7 @@ to handle propertized strings from fontified buffers."
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
-(defun +wd/org-capture-notes-json (title body tags &optional client-request-id)
+(defun +wd/org-capture-notes-json (title body tags &optional client-request-id keyword priority schedule)
   "Capture a note with TITLE, BODY and TAGS to org notes inbox. Return JSON string."
   (require 'json)
   (require 'org-id)
@@ -1149,7 +1176,19 @@ to handle propertized strings from fontified buffers."
                           (not (string-empty-p (string-trim client-request-id)))
                           (string-trim client-request-id)))
              (tag-str (+wd/org-format-tags tags))
-             (entry (concat "** " date-stamp " " title tag-str "\n"
+             (kw-str  (and (stringp keyword) (not (string-empty-p (string-trim keyword)))
+                           (string-trim keyword)))
+             (prio-str (and (stringp priority)
+                            (member (string-trim priority) '("A" "B" "C"))
+                            (string-trim priority)))
+             (sched-str (and (stringp schedule) (not (string-empty-p (string-trim schedule)))
+                             (concat "SCHEDULED: <" (string-trim schedule) ">")))
+             (headline (cond
+                         ((and kw-str prio-str) (concat "** " kw-str " [#" prio-str "] " date-stamp " " title tag-str))
+                         (kw-str                (concat "** " kw-str " " date-stamp " " title tag-str))
+                         (t                     (concat "** " date-stamp " " title tag-str))))
+             (entry (concat headline "\n"
+                            (if sched-str (concat sched-str "\n") "")
                             (if id-str
                                 (concat ":PROPERTIES:\n:ID: " id-str "\n:END:\n")
                               "")
@@ -1170,7 +1209,7 @@ to handle propertized strings from fontified buffers."
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
-(defun +wd/org-capture-journal-json (title body tags &optional client-request-id)
+(defun +wd/org-capture-journal-json (title body tags &optional client-request-id keyword priority schedule)
   "Capture a journal entry under today's datetree in the journal file."
   (require 'json)
   (require 'org-id)
@@ -1183,7 +1222,19 @@ to handle propertized strings from fontified buffers."
                           (not (string-empty-p (string-trim client-request-id)))
                           (string-trim client-request-id)))
              (tag-str (+wd/org-format-tags tags))
-             (entry (concat "**** " timestamp " " title tag-str "\n"
+             (kw-str  (and (stringp keyword) (not (string-empty-p (string-trim keyword)))
+                           (string-trim keyword)))
+             (prio-str (and (stringp priority)
+                            (member (string-trim priority) '("A" "B" "C"))
+                            (string-trim priority)))
+             (sched-str (and (stringp schedule) (not (string-empty-p (string-trim schedule)))
+                             (concat "SCHEDULED: <" (string-trim schedule) ">")))
+             (headline (cond
+                         ((and kw-str prio-str) (concat "**** " kw-str " [#" prio-str "] " timestamp " " title tag-str))
+                         (kw-str                (concat "**** " kw-str " " timestamp " " title tag-str))
+                         (t                     (concat "**** " timestamp " " title tag-str))))
+             (entry (concat headline "\n"
+                            (if sched-str (concat sched-str "\n") "")
                             (if id-str
                                 (concat ":PROPERTIES:\n:ID: " id-str "\n:END:\n")
                               "")
@@ -1209,6 +1260,29 @@ to handle propertized strings from fontified buffers."
     (error
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
+
+(defun +wd/org-set-property-by-marker-json (marker-id key value)
+  "Set or delete KEY property on heading at MARKER-ID. Empty VALUE deletes it."
+  (require 'json)
+  (condition-case err
+      (progn
+        (unless (string-match "^\\(.*\\)::\\([0-9]+\\)$" marker-id)
+          (error "invalid marker_id: %s" marker-id))
+        (let* ((file (match-string 1 marker-id))
+               (pos  (string-to-number (match-string 2 marker-id))))
+          (unless (file-exists-p file)
+            (error "marker file not found: %s" file))
+          (with-current-buffer (find-file-noselect file)
+            (save-excursion
+              (goto-char (min (max pos (point-min)) (point-max)))
+              (org-back-to-heading t)
+              (if (string-empty-p (string-trim value))
+                  (org-entry-delete (point) key)
+                (org-entry-put (point) key value))
+              (save-buffer)
+              (json-encode `((ok . t) (message . "property updated") (key . ,key)))))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(error-message-string err)))))))
 
 ;;; ---------------------------------------------------------------------------
 ;;; Item detail read / edit
@@ -1352,7 +1426,14 @@ Stops before the first child heading."
                  (tags (alist-get 'tags base nil nil #'string=))
                  (scheduled (alist-get 'schedule base nil nil #'string=))
                  (deadline (alist-get 'deadline base nil nil #'string=))
-                 (level (org-current-level)))
+                 (level (org-current-level))
+                 (marker-id (+wd/org--marker-id source-file pos))
+                 (file-attrs (and (stringp source-file) (not (string= source-file ""))
+                                  (file-attributes source-file)))
+                 (file-mtime (if file-attrs
+                                 (format-time-string "%Y-%m-%dT%H:%M:%S%z"
+                                                     (file-attribute-modification-time file-attrs))
+                               "")))
             (json-encode `((ok . t)
                            (message . "")
                            (data . ((item . ,base)
@@ -1362,6 +1443,8 @@ Stops before the first child heading."
                                     (file . ,source-file)
                                     (pos . ,pos)
                                     (level . ,level)
+                                    (marker_id . ,marker-id)
+                                    (file_mtime . ,file-mtime)
                                     (headline . ,heading)
                                     (keyword . ,todo)
                                     (priority . ,priority)
@@ -1510,5 +1593,343 @@ CHILD-JSON: {\"heading\":\"...\",\"keyword\":\"TODO\",\"body\":\"...\"}"
      (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
 
 ;; TODO: refactor OrgCapture elisp backend
+
+(defun +wd/org-thema-list-json (params-json)
+  "List items from specific org files with filtering for Thema pages.
+PARAMS-JSON is a JSON string with:
+  source_files:       [\"/path/file.org\", ...]  (required)
+  match_tags:         \"+food-done\" (org MATCH string, optional)
+  keywords:           [\"TODO\",\"NEXT\"] (keyword whitelist; nil = all undone)
+  include_no_keyword: true/false (include headings with no keyword)
+  exclude_keywords:   [\"TODO\"] (always excluded, takes precedence)
+  has_schedule:       \"true\"/\"false\"/null
+  q:                  \"search\" (title substring, case-insensitive)
+  limit:              100
+  offset:             0
+Returns JSON: {total:N, count:N, items:[...]}"
+  (require 'json)
+  (require 'org)
+  (condition-case err
+      (let* ((params (json-parse-string params-json
+                                        :object-type 'alist
+                                        :array-type 'list
+                                        :null-object nil
+                                        :false-object nil))
+             (source-files (or (cdr (assoc 'source_files params))
+                               (org-agenda-files t)))
+             (match-str (let ((m (cdr (assoc 'match_tags params))))
+                          (if (or (null m) (string-empty-p m)) nil m)))
+             (keywords-param (cdr (assoc 'keywords params)))
+             (include-no-kw (eq t (cdr (assoc 'include_no_keyword params))))
+             (exclude-kws (cdr (assoc 'exclude_keywords params)))
+             (has-sched-param (cdr (assoc 'has_schedule params)))
+             (q-param (let ((q (cdr (assoc 'q params))))
+                        (if (or (null q) (string-empty-p q)) nil q)))
+             (limit (or (cdr (assoc 'limit params)) 100))
+             (offset (or (cdr (assoc 'offset params)) 0))
+             (not-done-keys (+wd/org--not-done-keywords-from-config))
+             (all-items nil))
+        (let ((org-use-tag-inheritance nil))
+          (dolist (file source-files)
+            (let ((expanded (expand-file-name file)))
+              (when (file-exists-p expanded)
+                (with-current-buffer (find-file-noselect expanded)
+                  (org-map-entries
+                   (lambda ()
+                     (let* ((todo (or (org-get-todo-state) ""))
+                            (is-no-kw (string-empty-p todo))
+                            (in-whitelist (if (and (listp keywords-param)
+                                                   (> (length keywords-param) 0))
+                                             (member todo keywords-param)
+                                           (member todo not-done-keys)))
+                            (in-blacklist (and (listp exclude-kws)
+                                               (member todo exclude-kws)))
+                            (kw-ok (or (and is-no-kw include-no-kw)
+                                       (and (not is-no-kw)
+                                            in-whitelist
+                                            (not in-blacklist))))
+                            (sched (org-entry-get (point) "SCHEDULED"))
+                            (has-sched (and sched (not (string-empty-p sched))))
+                            (sched-ok (cond
+                                       ((string= has-sched-param "true") has-sched)
+                                       ((string= has-sched-param "false") (not has-sched))
+                                       (t t)))
+                            (headline (org-get-heading t t t t))
+                            (q-ok (or (null q-param)
+                                      (string-match-p
+                                       (regexp-quote (downcase q-param))
+                                       (downcase headline)))))
+                       (when (and kw-ok sched-ok q-ok)
+                         (push (+wd/org--item-at-point-plist nil) all-items))))
+                   match-str 'file))))))
+        (let* ((total (length all-items))
+               (sorted (nreverse all-items))
+               (safe-offset (max 0 (min offset total)))
+               (safe-end (min (+ safe-offset limit) total))
+               (paged (seq-subseq sorted safe-offset safe-end)))
+          (json-encode `((total . ,total)
+                         (count . ,(length paged))
+                         (items . ,paged)))))
+    (error
+     (json-encode `((ok . :json-false)
+                    (message . ,(error-message-string err)))))))
+
+;; ─── Babel source block support ─────────────────────────────────────────────
+
+(defun +wd/org--parse-babel-header-args (raw)
+  "Parse RAW header args string into alist of known keys for JSON encoding.
+Returns nil values for absent keys so json-encode produces null."
+  (require 'ob)
+  (let* ((parsed (org-babel-parse-header-arguments (string-trim raw)))
+         (get-val (lambda (key)
+                    (let ((pair (assoc key parsed)))
+                      (if pair (cdr pair) nil)))))
+    `((results . ,(funcall get-val :results))
+      (exports . ,(funcall get-val :exports))
+      (tangle  . ,(funcall get-val :tangle))
+      (session . ,(funcall get-val :session))
+      (noweb   . ,(funcall get-val :noweb))
+      (var     . ,(funcall get-val :var)))))
+
+(defun +wd/org--babel-rebuild-header-line (lang current-raw update-alist)
+  "Reconstruct #+begin_src header for LANG with merged header args.
+CURRENT-RAW is the existing raw args string.
+UPDATE-ALIST pairs :keyword → value; nil value removes the key."
+  (require 'ob)
+  (let* ((current-parsed (org-babel-parse-header-arguments (string-trim current-raw)))
+         (merged (copy-alist current-parsed)))
+    (dolist (pair update-alist)
+      (let ((key (car pair))
+            (val (cdr pair)))
+        (setq merged (assoc-delete-all key merged))
+        (when val
+          (push (cons key val) merged))))
+    (let ((args-str (mapconcat (lambda (p) (format "%s %s" (car p) (cdr p)))
+                               merged " ")))
+      (if (string-empty-p args-str)
+          (format "#+begin_src %s" lang)
+        (format "#+begin_src %s %s" lang args-str)))))
+
+(defun +wd/org--babel-body-bounds ()
+  "Return (start . end) of body region for org entry at point."
+  (save-excursion
+    (org-back-to-heading t)
+    (org-end-of-meta-data t)
+    (let* ((start (point))
+           (limit (save-excursion (org-end-of-subtree t) (point)))
+           (end   (save-excursion
+                    (if (re-search-forward "^\\*+ " limit t)
+                        (line-beginning-position)
+                      limit))))
+      (cons start end))))
+
+(defun +wd/org--scan-babel-blocks-in-region (start end)
+  "Scan buffer region START to END for org-babel source blocks.
+Returns list of plists with block info and buffer positions."
+  (require 'ob)
+  (let ((index 0)
+        blocks)
+    (save-excursion
+      (goto-char start)
+      (let ((case-fold-search t))
+        (while (re-search-forward
+                "^[[:space:]]*#\\+begin_src\\(?:[[:space:]]+\\([^[:space:]\n]+\\)\\)?\\([^\n]*\\)\n"
+                end t)
+          ;; Capture positions BEFORE any string-trim/regex calls that would reset match data.
+          (let* ((hdr-line-pos (match-beginning 0))
+                 (code-start   (match-end 0))
+                 (lang-raw     (match-string-no-properties 1))
+                 (header-raw-m (match-string-no-properties 2))
+                 (lang         (string-trim (or lang-raw "")))
+                 (header-raw   (string-trim (or header-raw-m "")))
+                 (end-src-info
+                  (save-excursion
+                    (if (re-search-forward
+                         "^[[:space:]]*#\\+end_src[^\n]*\n?" end t)
+                        (cons (match-beginning 0) (match-end 0))
+                      (cons end end))))
+                 (code-end     (car end-src-info))
+                 (after-endsrc (cdr end-src-info))
+                 (code         (buffer-substring-no-properties code-start code-end))
+                 (results
+                  (save-excursion
+                    (goto-char after-endsrc)
+                    (skip-chars-forward " \t\n")
+                    (when (and (< (point) end)
+                               (looking-at-p "^[[:space:]]*#\\+RESULTS:"))
+                      (forward-line 1)
+                      (let ((r-start (point)))
+                        (while (and (< (point) end)
+                                    (not (looking-at-p "^\\*"))
+                                    (not (looking-at-p "^[[:space:]]*#\\+begin_src"))
+                                    (not (eobp)))
+                          (forward-line 1))
+                        (let ((r-text (buffer-substring-no-properties r-start (point))))
+                          (unless (string-empty-p (string-trim r-text))
+                            (string-trim r-text)))))))
+                 (parsed-args (+wd/org--parse-babel-header-args header-raw)))
+            (push `(:index          ,index
+                    :lang           ,lang
+                    :header-args-raw ,header-raw
+                    :header-args    ,parsed-args
+                    :code           ,code
+                    :results        ,results
+                    :has-results    ,(if results t :json-false)
+                    :header-line-pos ,hdr-line-pos
+                    :code-start-pos  ,code-start
+                    :code-end-pos    ,code-end)
+                  blocks)
+            (setq index (1+ index))
+            (goto-char after-endsrc)))))
+    (nreverse blocks)))
+
+(defun +wd/org--babel-nth-block (blocks n)
+  "Return Nth block plist from BLOCKS (0-based), or nil."
+  (seq-find (lambda (b) (= (plist-get b :index) n)) blocks))
+
+(defun +wd/org-item-list-babel-blocks-json (item-json)
+  "Return JSON array of all babel source blocks in the item's body.
+ITEM-JSON locates the item as usual."
+  (require 'json)
+  (require 'ob)
+  (condition-case err
+      (let* ((item (json-parse-string item-json :object-type 'alist :array-type 'list
+                                      :null-object nil :false-object :json-false))
+             (ok (+wd/org--find-item-by-json item)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found")))
+          (let* ((bounds (+wd/org--babel-body-bounds))
+                 (blocks (+wd/org--scan-babel-blocks-in-region
+                          (car bounds) (cdr bounds)))
+                 (json-blocks
+                  (mapcar
+                   (lambda (b)
+                     `((index           . ,(plist-get b :index))
+                       (language        . ,(plist-get b :lang))
+                       (header_args_raw . ,(plist-get b :header-args-raw))
+                       (header_args     . ,(plist-get b :header-args))
+                       (code            . ,(plist-get b :code))
+                       (results         . ,(plist-get b :results))
+                       (has_results     . ,(plist-get b :has-results))))
+                   blocks)))
+            (json-encode `((ok . t)
+                           (data . ((blocks . ,json-blocks)
+                                    (count  . ,(length json-blocks)))))))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
+
+(defun +wd/org-item-execute-babel-block-json (item-json block-index-json)
+  "Execute Nth babel block in item body (N given by BLOCK-INDEX-JSON).
+Returns JSON with execution results."
+  (require 'json)
+  (require 'ob)
+  (condition-case err
+      (let* ((item  (json-parse-string item-json :object-type 'alist :array-type 'list
+                                       :null-object nil :false-object :json-false))
+             (n     (json-parse-string block-index-json))
+             (ok    (+wd/org--find-item-by-json item)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found")))
+          (let* ((bounds (+wd/org--babel-body-bounds))
+                 (blocks (+wd/org--scan-babel-blocks-in-region
+                          (car bounds) (cdr bounds)))
+                 (block  (+wd/org--babel-nth-block blocks n)))
+            (if (not block)
+                (json-encode `((ok . :json-false)
+                               (message . ,(format "block %d not found" n))))
+              (goto-char (plist-get block :code-start-pos))
+              (let ((org-confirm-babel-evaluate nil))
+                (org-babel-execute-src-block))
+              (let* ((new-bounds (+wd/org--babel-body-bounds))
+                     (new-blocks (+wd/org--scan-babel-blocks-in-region
+                                  (car new-bounds) (cdr new-bounds)))
+                     (new-block  (+wd/org--babel-nth-block new-blocks n))
+                     (results    (and new-block (plist-get new-block :results))))
+                (json-encode `((ok . t)
+                               (data . ((results      . ,(or results ""))
+                                        (results_type . "output"))))))))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)))))))
+
+(defun +wd/org-item-update-babel-block-header-json (item-json update-json)
+  "Update header (language and/or header args) of Nth babel block.
+UPDATE-JSON: {\"index\": N, \"language\": \"lang\", \"header_args\": {...}}"
+  (require 'json)
+  (require 'ob)
+  (condition-case err
+      (let* ((item   (json-parse-string item-json :object-type 'alist :array-type 'list
+                                        :null-object nil :false-object :json-false))
+             (update (json-parse-string update-json :object-type 'alist :array-type 'list
+                                        :null-object nil :false-object :json-false))
+             (n      (cdr (assoc 'index update)))
+             (ok     (+wd/org--find-item-by-json item)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
+          (let* ((bounds (+wd/org--babel-body-bounds))
+                 (blocks (+wd/org--scan-babel-blocks-in-region
+                          (car bounds) (cdr bounds)))
+                 (block  (+wd/org--babel-nth-block blocks n)))
+            (if (not block)
+                (json-encode `((ok . :json-false)
+                               (message . ,(format "block %d not found" n))
+                               (item . nil)))
+              (let* ((new-lang   (or (cdr (assoc 'language update))
+                                    (plist-get block :lang)))
+                     (args-obj  (cdr (assoc 'header_args update)))
+                     (update-pairs
+                      (when (and args-obj (listp args-obj))
+                        (mapcar (lambda (pair)
+                                  (let* ((k   (car pair))
+                                         (v   (cdr pair))
+                                         (sym (intern (concat ":" (symbol-name k)))))
+                                    (cons sym (if (or (null v) (eq v :json-false)) nil v))))
+                                args-obj)))
+                     (new-line  (+wd/org--babel-rebuild-header-line
+                                 new-lang
+                                 (plist-get block :header-args-raw)
+                                 update-pairs)))
+                (save-excursion
+                  (goto-char (plist-get block :header-line-pos))
+                  (delete-region (point) (line-end-position))
+                  (insert new-line))
+                (save-buffer)
+                (json-encode `((ok . t)
+                               (message . "header updated")
+                               (item . ,(+wd/org--item-at-point-plist)))))))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
+
+(defun +wd/org-item-update-babel-block-code-json (item-json update-json)
+  "Replace code content of Nth babel block.
+UPDATE-JSON: {\"index\": N, \"code\": \"new code\\n\"}"
+  (require 'json)
+  (condition-case err
+      (let* ((item   (json-parse-string item-json :object-type 'alist :array-type 'list
+                                        :null-object nil :false-object :json-false))
+             (update (json-parse-string update-json :object-type 'alist :array-type 'list
+                                        :null-object nil :false-object :json-false))
+             (n      (cdr (assoc 'index update)))
+             (code   (or (cdr (assoc 'code update)) ""))
+             (ok     (+wd/org--find-item-by-json item)))
+        (if (not ok)
+            (json-encode '((ok . :json-false) (message . "item not found") (item . nil)))
+          (let* ((bounds (+wd/org--babel-body-bounds))
+                 (blocks (+wd/org--scan-babel-blocks-in-region
+                          (car bounds) (cdr bounds)))
+                 (block  (+wd/org--babel-nth-block blocks n)))
+            (if (not block)
+                (json-encode `((ok . :json-false)
+                               (message . ,(format "block %d not found" n))
+                               (item . nil)))
+              (delete-region (plist-get block :code-start-pos)
+                             (plist-get block :code-end-pos))
+              (goto-char (plist-get block :code-start-pos))
+              (insert (if (string-suffix-p "\n" code) code (concat code "\n")))
+              (save-buffer)
+              (json-encode `((ok . t)
+                             (message . "code updated")
+                             (item . ,(+wd/org--item-at-point-plist))))))))
+    (error
+     (json-encode `((ok . :json-false) (message . ,(format "%s" err)) (item . nil))))))
 
 (provide 'lib-org)
