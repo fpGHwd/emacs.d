@@ -298,5 +298,12 @@
   (add-hook 'json-mode-hook #'+wd/maybe-disable-json-ls-on-tramp)
   (add-hook 'json-ts-mode-hook #'+wd/maybe-disable-json-ls-on-tramp))
 
+(when (string= (system-name) "nixos-nuc")
+  (progn 
+    (add-load-path! "/home/wd/projects/2026/haskell-web/scripts/elisp/")
+    (require 'lib-org-capture)
+    (advice-remove 'org-agenda-goto #'+wd/org-agenda-goto-narrow)
+    (advice-remove 'org-roam-node-find #'+wd/org-capture-goto-narrow)))
+
 (provide 'init-misc)
 ;;; init-misc.el ends here
