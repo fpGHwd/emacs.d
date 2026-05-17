@@ -113,7 +113,10 @@
    'org-babel-load-languages
    '((jupyter . t)
      (gnuplot . t)
-     (plantuml . t))))
+     (plantuml . t)
+     (haskell . t)))
+
+  (setq org-babel-haskell-command "ghci"))
 
 ;; TODO: 只显示当前 headline 到最顶层父节点的路径，其他的内容都隐藏起来，作为 hook 添加到 org-agenda-goto 和 org-roam-node-find 之后
 ;; (defun my/org-show-path-only ()

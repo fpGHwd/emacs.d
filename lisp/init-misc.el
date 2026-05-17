@@ -167,9 +167,6 @@
   (add-to-list '+lookup-provider-url-alist
                '("NixOS Package Search" "https://search.nixos.org/packages?channel=25.11&query=%s")))
 
-(setup haskell-mode
-  (:hook org-mode (lambda ()
-                    (org-babel-do-load-languages 'org-babel-load-languages '((haskell . t))))))
 
 ;; (setq mac-command-modifier 'meta)
 
