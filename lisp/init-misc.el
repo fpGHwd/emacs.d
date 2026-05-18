@@ -33,24 +33,6 @@
                                evil-forward-WORD-begin
                                evil-backward-WORD-begin)))
 
-;; leetcode
-;; (use-package! leetcode
-;;   :defer t
-;;   :custom
-;;   (leetcode-save-solutions t)
-;;   (leetcode-directory (concat  (file-truename "~/Sync/leetcode/") (format-time-string "%Y")))
-;;   (leetcode-prefer-language "python3"))
-
-
-;; org-mobile
-;; (use-package! org-mobile
-;;   :defer t
-;;   :custom
-;;   (org-mobile-encryption-password (password-store-get "org/org-mobile"))
-;;   (org-mobile-directory "/srv/http/dav/org")
-;;   (org-mobile-files '("~/org/2025/todo.org")))
-
-
 (use-package! auth-source
   :defer t
   :custom
