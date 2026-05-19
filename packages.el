@@ -224,3 +224,7 @@
 
 ;; only rename, not as good as lispy
 ;; (package! emacs-refactor)
+
+(package! codex-ide
+  :recipe (:host github
+           :repo "dgillis/emacs-codex-ide"))

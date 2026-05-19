@@ -284,5 +284,11 @@
     (advice-remove 'org-agenda-goto #'+wd/org-agenda-goto-narrow)
     (advice-remove 'org-roam-node-find #'+wd/org-capture-goto-narrow)))
 
+(after! so-long
+  (add-to-list 'doom-file-lines-threshold-alist
+               '("\\.org\\'" . 50000)))
+
+
 (provide 'init-misc)
 ;;; init-misc.el ends here
+
