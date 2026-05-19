@@ -111,6 +111,8 @@
 (use-package! vterm
   :defer t
   :custom
+  ;; Prefer vendored libvterm to avoid depending on system curses/ncurses headers.
+  (vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=Off")
   (vterm-shell (let ((zsh-path (executable-find "zsh")))
                  (if zsh-path
                      zsh-path
@@ -291,4 +293,3 @@
 
 (provide 'init-misc)
 ;;; init-misc.el ends here
-

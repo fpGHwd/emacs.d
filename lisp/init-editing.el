@@ -20,6 +20,22 @@
     (:advice meow-mark-thing :override meow-mark-thing-cjk)
     (:advice meow-next-thing :override meow-next-thing-cjk)))
 
+;; Keep Meow cheatsheet alignment stable: fixed pitch + no soft wrap.
+(defun +wd/meow-cheatsheet-display-fix (&rest _)
+  "Normalize the *Meow Cheatsheet* buffer display."
+  (when-let ((buf (get-buffer "*Meow Cheatsheet*")))
+    (with-current-buffer buf
+      (setq-local truncate-lines t)
+      (setq-local word-wrap nil)
+      (buffer-face-set 'fixed-pitch)
+      (text-scale-set 0))))
+
+(advice-add 'meow-cheatsheet :after #'+wd/meow-cheatsheet-display-fix)
+
+(after! meow
+  (set-face-attribute 'meow-cheatsheet-command nil :inherit 'fixed-pitch :family "Sarasa Mono SC")
+  (set-face-attribute 'meow-cheatsheet-highlight nil :inherit 'meow-cheatsheet-command))
+
 (setup meow-tree-sitter
   (:defer (:require meow-tree-sitter))
   (:when-loaded (meow-tree-sitter-register-defaults)))

@@ -22,6 +22,8 @@
 ;; override doom font setting
 (setq doom-font (font-spec :family "Fira Code" :weight 'regular :size (if (string= (system-name) "ubuntu2204") 16 15)))
 (setq doom-variable-pitch-font (font-spec :family "Sarasa Gothic SC" :weight 'regular))
+;; Keep symbol fallback in a true monospace family for line-drawing tables.
+(setq doom-unicode-font (font-spec :family "Sarasa Mono SC"))
                                         ;(when (not (featurep :system 'macos))
                                         ;  (setq doom-serif-font (font-spec :family "Noto Serif CJK SC" :weight 'regular)))
 
@@ -32,7 +34,12 @@
     ;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
     (setq use-default-font-for-symbols nil)
     (dolist (charset '(kana han cjk-misc bopomofo))
-      (set-fontset-font t charset (font-spec :family "Sarasa Gothic SC")))))
+      (set-fontset-font t charset (font-spec :family "Sarasa Gothic SC")))
+    ;; Ensure fixed-pitch does not fall back to generic Monospace (which can mismatch glyph metrics).
+    (set-face-attribute 'fixed-pitch (or frame (selected-frame)) :family "Sarasa Mono SC")
+    ;; Force monospace fallback for line-drawing and arrows used by meow cheatsheet.
+    (set-fontset-font t '(#x2500 . #x257F) (font-spec :family "Sarasa Mono SC"))
+    (set-fontset-font t '(#x2190 . #x21FF) (font-spec :family "Sarasa Mono SC"))))
 
 (add-hook! 'after-setting-font-hook #'+wd/apply-cjk-fontset)
 (add-hook! 'server-after-make-frame-hook #'+wd/apply-cjk-fontset)
