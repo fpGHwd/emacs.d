@@ -1,9 +1,10 @@
 ;;; ../Sync/dotfiles/doom.d/lisp/init-rime.el -*- lexical-binding: t; -*-
 
-(setq default-input-method "rime")
+;; Keep rime-emacs available, but let sis + system IME be the default path.
+(setq default-input-method nil)
 
 (setup rime
-  (:bind "M-\\" rime-force-enable)
+  ;; Do not bind a global hotkey in daily use: sis + system IME is primary.
   (:when-loaded
     (:also-load lib-rime)
     (:option
@@ -52,6 +53,14 @@
 
   ;; 安装 advice（在 rime 被载入后执行）
   (advice-add 'rime-compile-module :around #'my/rime-compile-module-advice))
+
+;; Debug-only entrypoint: explicitly enable rime-emacs when needed.
+(defun +wd/rime-debug-enable ()
+  "Manually enable rime-emacs for debugging."
+  (interactive)
+  (if (fboundp 'rime-force-enable)
+      (call-interactively #'rime-force-enable)
+    (user-error "rime is not loaded")))
 
 (provide 'init-rime)
 ;;; init-rime.el ends here
