@@ -76,8 +76,8 @@
 
 (package! keyfreq)
 
-;; (package! meow)
-;; (package! sis)
+(package! meow)
+(package! sis)
 
 (package! wakatime-mode)
 
@@ -219,7 +219,7 @@
 ;;            :repo "joostkremers/ebib"
 ;;            :branch "master"))
 
-;; (package! meow-tree-sitter)
+(package! meow-tree-sitter)
 
 ;; only rename, not as good as lispy
 ;; (package! emacs-refactor)

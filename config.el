@@ -58,7 +58,7 @@
 (require 'init-read)
 
 ;; writing
-;; (require 'init-editing)
+(require 'init-editing)
 
 ;; org-mode
 (require 'init-org)
