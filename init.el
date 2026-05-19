@@ -25,8 +25,8 @@
        (corfu +orderless)     ; complete with cap(f), cape and a flying feather!
        ;; helm              ; the *other* search engine for love and life
        ;; ido               ; the other *other* search engine...
-       ivy                              ; a search engine for love and life
-       ;; (vertico +childframe +icons)           ; the search engine of the future
+       ;; ivy                              ; a search engine for love and life
+       (vertico +icons)           ; the search engine of the future
 
        :ui
        ;; deft              ; notational velocity for Emacs
@@ -56,7 +56,7 @@
        zen                    ; distraction-free coding or writing
 
        :editor
-       (evil +everywhere)
+       ;; (evil +everywhere)
        file-templates          ; auto-snippets for empty files
        ;; fold           ; (nigh) universal code folding
        ;; (format +onsave)     ; automated prettiness
@@ -91,7 +91,7 @@
        :tools
        ;; ansible
        ;; biblio               ; Writes a PhD for you (citation needed)
-       debugger          ; FIXME stepping through code, to help you add bugs
+       ;; debugger          ; FIXME stepping through code, to help you add bugs
        direnv
        ;; docker
        ;; editorconfig      ; let someone else argue about tabs vs spaces
@@ -164,9 +164,10 @@
         +noter
         +roam
         ;; +pretty
-        +org-tree-slide
-        +present
-        +pomodoro)     ; organize your plain life in plain text
+        ;; +org-tree-slide
+        ;; +present
+        ;; +pomodoro)     ; organize your plain life in plain text
+       )     ; organize your plain life in plain text
        ;; php            ; perl's insecure younger brother
        plantuml                   ; diagrams for confusing people more
        ;; graphviz                   ; diagrams for confusing yourself even more
@@ -205,7 +206,7 @@
        :app
        calendar
        ;; emms
-       everywhere ; *leave* Emacs!? You must be joking
+       ;; everywhere ; *leave* Emacs!? You must be joking
        ;; irc                              ; how neckbeards socialize
        (rss +org)                       ; emacs as an RSS reader
 
@@ -213,4 +214,3 @@
                                         ; literate
        ;; (default +bindings +smartparens +gnupg)
        (default +bindings +gnupg))
-
