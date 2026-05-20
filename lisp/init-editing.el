@@ -37,7 +37,7 @@
   (setq meow-cheatsheet-ellipsis "…")
   (set-face-attribute 'meow-cheatsheet-command nil
                       :inherit 'fixed-pitch
-                      :family "Sarasa Fixed SC"
+                      :family (if (boundp '+wd/fixed-font-family) +wd/fixed-font-family "Monospace")
                       :height 1.0)
   (set-face-attribute 'meow-cheatsheet-highlight nil :inherit 'meow-cheatsheet-command))
 
