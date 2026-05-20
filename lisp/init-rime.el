@@ -23,9 +23,9 @@
      rime-librime-root (getenv "LIBRIME_ROOT")
      module-file-suffix (getenv "MODULE_FILE_SUFFIX")
      rime-user-data-dir (file-truename "~/.config/rime"))
-    ;; (:after evil-mode
-    ;;   (:global "M-\\" rime-force-enable))
-    )
+    ;; Disable global IME toggle shortcuts; open rime manually when needed.
+    (dolist (k '("C-\\" "C-|"))
+      (global-unset-key (kbd k))))
 
   (defvar my/rime-compile-fallback-commands
     '("/home/wd/.config/dotfiles/local/scripts/2026/build-rime-module.sh"

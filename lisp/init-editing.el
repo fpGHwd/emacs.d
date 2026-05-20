@@ -109,6 +109,9 @@
 
 ;; https://github.com/meow-edit/meow/blob/master/TUTORIAL.org
 ;; https://github.com/meow-edit/meow/blob/master/GET_STARTED.org
-;; https://github.com/meow-edit/doom-meow 
+;; https://github.com/meow-edit/doom-meow
+;; https://chatgpt.com/c/6a0dc321-0dac-83a3-a63f-8f6da6ce5552
+
+;; TODO: 增加模式设置，以及某些状态下快捷键的设置：例如 normal backspace 不要，motion j/k 是上下。magit 进入 motion 等
 
 (provide 'init-editing)
