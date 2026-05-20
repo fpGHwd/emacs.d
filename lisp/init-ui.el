@@ -69,40 +69,34 @@
         (setq +wd/font-warning-shown t)
         (display-warning 'init-ui (+wd/font-install-warning-message missing) :warning)))))
 
-(defconst +wd/code-font-family
-  (or (+wd/first-installed-font '("Fira Code" "Sarasa Fixed SC" "Sarasa Mono SC" "Noto Sans Mono CJK SC"))
-      "Monospace"))
-
-(defconst +wd/cjk-font-family
-  (or (+wd/first-installed-font '("Sarasa Gothic SC" "Noto Sans CJK SC" "Noto Sans CJK"))
-      "Sans"))
-
-(defconst +wd/fixed-font-family
-  (or (+wd/first-installed-font '("Sarasa Fixed SC" "Sarasa Mono SC" "Noto Sans Mono CJK SC"))
-      "Monospace"))
-
 ;; override doom font setting
-(setq doom-font (font-spec :family +wd/code-font-family :weight 'regular :size (if (string= (system-name) "ubuntu2204") 16 15)))
-(setq doom-variable-pitch-font (font-spec :family +wd/cjk-font-family :weight 'regular))
+(setq doom-font (font-spec :family +wd/preferred-code-font :weight 'regular :size (if (string= (system-name) "ubuntu2204") 16 15)))
+(setq doom-variable-pitch-font (font-spec :family +wd/preferred-cjk-font :weight 'regular))
 ;; Keep symbol fallback in a true monospace family for line-drawing tables.
-(setq doom-unicode-font (font-spec :family +wd/fixed-font-family))
+(setq doom-unicode-font (font-spec :family +wd/preferred-fixed-font))
                                         ;(when (not (featurep :system 'macos))
                                         ;  (setq doom-serif-font (font-spec :family "Noto Serif CJK SC" :weight 'regular)))
 
 
 (defun +wd/apply-cjk-fontset (&optional frame)
   "Keep CJK fallback stable across daemon and emacsclient frames."
+  (let ((cjk-font (or (and (+wd/font-installed-p +wd/preferred-cjk-font) +wd/preferred-cjk-font)
+                      (+wd/first-installed-font '("Noto Sans CJK SC" "Noto Sans CJK"))
+                      "Sans"))
+        (fixed-font (or (and (+wd/font-installed-p +wd/preferred-fixed-font) +wd/preferred-fixed-font)
+                        (+wd/first-installed-font '("Sarasa Mono SC" "Noto Sans Mono CJK SC"))
+                        "Monospace")))
   (with-selected-frame (or frame (selected-frame))
     ;; 如果不把这玩意设置为 nil, 会默认去用 fontset-default 来展示, 配置无效
     (setq use-default-font-for-symbols nil)
     (dolist (charset '(kana han cjk-misc bopomofo))
-      (set-fontset-font t charset (font-spec :family +wd/cjk-font-family)))
+      (set-fontset-font t charset (font-spec :family cjk-font)))
     ;; Ensure fixed-pitch does not fall back to generic Monospace (which can mismatch glyph metrics).
-    (set-face-attribute 'fixed-pitch (or frame (selected-frame)) :family +wd/fixed-font-family)
+    (set-face-attribute 'fixed-pitch (or frame (selected-frame)) :family fixed-font)
     ;; Force monospace fallback for line-drawing and arrows used by meow cheatsheet.
-    (set-fontset-font t '(#x2500 . #x257F) (font-spec :family +wd/fixed-font-family))
-    (set-fontset-font t '(#x2190 . #x21FF) (font-spec :family +wd/fixed-font-family))
-    (+wd/warn-missing-preferred-fonts)))
+    (set-fontset-font t '(#x2500 . #x257F) (font-spec :family fixed-font))
+    (set-fontset-font t '(#x2190 . #x21FF) (font-spec :family fixed-font))
+    (+wd/warn-missing-preferred-fonts))))
 
 (add-hook! 'after-setting-font-hook #'+wd/apply-cjk-fontset)
 (add-hook! 'server-after-make-frame-hook #'+wd/apply-cjk-fontset)

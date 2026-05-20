@@ -1,25 +1,15 @@
-;;; lib-meow.el --- meow setup -*- lexical-binding: t -*-
+;;; lib-meow.el --- Meow CJK selection helpers -*- lexical-binding: t -*-
 ;;; Commentary:
+;;; This library only keeps CJK-related selection/navigation overrides for Meow.
 ;;; Code:
 
 (defun meow-mark-thing-cjk (thing type &optional backward regexp-format)
-  "Make expandable selection of THING, with TYPE and forward/BACKWARD direction.
+  "Make expandable selection of THING with CJK-aware behavior.
 
-THING is a symbol usable by `forward-thing', which see.
-
-TYPE is a symbol. Usual values are `word' or `line'.
-
-The selection will be made in the \\='forward\\=' direction unless BACKWARD is
-non-nil.
-
-When REGEXP-FORMAT is non-nil and a string, the content of the selection will be
-quoted to regexp, then pushed into `regexp-search-ring' which will be read by
-`meow-search' and other commands. In this case, REGEXP-FORMAT is used as a
-format-string to format the regexp-quoted selection content (which is passed as
-a string to `format'). Further matches of this formatted search will be
-highlighted in the buffer."
+THING is a symbol usable by `forward-thing'. TYPE is usually `word' or `line'.
+Selection is made in forward direction unless BACKWARD is non-nil.
+When REGEXP-FORMAT is a string, push a formatted regexp to search ring."
   (interactive "p")
-  ;; Ensure that EMT is loaded
   (emt-ensure)
   (let ((direction (if backward 'backward 'forward)))
     (if (or (eq type 'symbol) (not (looking-at-p "\\cc")))
@@ -27,7 +17,7 @@ highlighted in the buffer."
       (meow--select-cjk direction backward))))
 
 (defun meow--select-noncjk (thing type backward regexp-format)
-  "Select non-CJK text based on THING, TYPE, and BACKWARD direction."
+  "Select non-CJK text based on THING, TYPE and BACKWARD."
   (let* ((bounds (bounds-of-thing-at-point thing))
          (beg (car bounds))
          (end (cdr bounds)))
@@ -36,12 +26,13 @@ highlighted in the buffer."
         (meow--make-selection (cons 'expand type) beg end)
         (meow--select t backward))
       (when (stringp regexp-format)
-        (let ((search (format regexp-format (regexp-quote (buffer-substring-no-properties beg end)))))
+        (let ((search (format regexp-format
+                              (regexp-quote (buffer-substring-no-properties beg end)))))
           (meow--push-search search)
           (meow--highlight-regexp-in-buffer search))))))
 
 (defun meow--select-cjk (direction backward)
-  "Select CJK text based on DIRECTION and BACKWARD direction."
+  "Select CJK text based on DIRECTION and BACKWARD."
   (let* ((bounds (emt--get-bounds-at-point
                   (emt--move-by-word-decide-bounds-direction direction)))
          (beg (car bounds))
@@ -64,9 +55,9 @@ highlighted in the buffer."
           (meow--highlight-regexp-in-buffer regexp))))))
 
 (defun meow-next-thing-cjk (thing type n &optional include-syntax)
-  "Create non-expandable selection of TYPE to the end of the next Nth THING.
+  "Create non-expandable selection of TYPE to next Nth THING with CJK support.
 
-If N is negative, select to the beginning of the previous Nth thing instead."
+If N is negative, select to the beginning of previous Nth thing instead."
   (unless (equal type (cdr (meow--selection-type)))
     (meow--cancel-selection))
   (unless include-syntax
@@ -79,14 +70,15 @@ If N is negative, select to the beginning of the previous Nth thing instead."
               (cadr thing-include-syntax)))))
   (let* ((expand (equal (cons 'expand type) (meow--selection-type)))
          (_ (when expand
-              (if (< n 0) (meow--direction-backward)
+              (if (< n 0)
+                  (meow--direction-backward)
                 (meow--direction-forward))))
          (new-type (if expand (cons 'expand type) (cons 'select type)))
          (m (point))
          (p (save-mark-and-excursion
               (if (and (eq thing 'word) (eq system-type 'darwin))
                   (progn
-                    (emt-ensure) ;; Ensure EMT is loaded
+                    (emt-ensure)
                     (if (> n 0)
                         (emt-forward-word n)
                       (emt-backward-word (- n))))
@@ -106,133 +98,22 @@ If N is negative, select to the beginning of the previous Nth thing instead."
              (apply-partially #'meow--forward-thing-1-cjk thing))))))
 
 (defun meow--forward-thing-1-cjk (thing)
+  "Move forward one THING for CJK-aware highlighting."
   (let ((pos (point)))
-    (if (and (eq thing 'word))
+    (if (eq thing 'word)
         (emt-forward-word 1)
       (forward-thing thing 1))
-    (when (not (= pos (point)))
+    (when (/= pos (point))
       (meow--hack-cursor-pos (point)))))
 
 (defun meow--backward-thing-1-cjk (thing)
+  "Move backward one THING for CJK-aware highlighting."
   (let ((pos (point)))
-    (if (and (eq thing 'word))
+    (if (eq thing 'word)
         (emt-backward-word 1)
       (forward-thing thing -1))
-    (when (not (= pos (point)))
+    (when (/= pos (point))
       (point))))
 
-(defun meow-setup ()
-  "Meow setup."
-  (setq meow-cheatsheet-layout meow-cheatsheet-layout-qwerty)
-  (setq meow-use-clipboard t)
-  (meow-motion-overwrite-define-key
-   '("j" . meow-next)
-   '("k" . meow-prev)
-   '("<escape>" . ignore))
-  (meow-leader-define-key
-   ;; SPC j/k will run the original command in MOTION state.
-   '("j" . "H-j")
-   '("k" . "H-k")
-   ;; Git / Magit
-   '("g s" . magit-status)
-   '("g g" . magit-status)
-   '("g b" . magit-blame)
-   '("g l" . magit-log-buffer-file)
-   ;; Use SPC (0-9) for digit arguments.
-   '("1" . meow-digit-argument)
-   '("2" . meow-digit-argument)
-   '("3" . meow-digit-argument)
-   '("4" . meow-digit-argument)
-   '("5" . meow-digit-argument)
-   '("6" . meow-digit-argument)
-   '("7" . meow-digit-argument)
-   '("8" . meow-digit-argument)
-   '("9" . meow-digit-argument)
-   '("0" . meow-digit-argument)
-   '("/" . meow-keypad-describe-key)
-   '("?" . meow-cheatsheet))
-  (meow-normal-define-key
-   '("0" . meow-expand-0)
-   '("9" . meow-expand-9)
-   '("8" . meow-expand-8)
-   '("7" . meow-expand-7)
-   '("6" . meow-expand-6)
-   '("5" . meow-expand-5)
-   '("4" . meow-expand-4)
-   '("3" . meow-expand-3)
-   '("2" . meow-expand-2)
-   '("1" . meow-expand-1)
-   '("-" . negative-argument)
-   '("/" . find-file)
-   (if *is-mac*
-       '(";" . sis-meow-reverse)
-     '(";" . meow-reverse))
-   '("," . meow-inner-of-thing)
-   '("." . meow-bounds-of-thing)
-   '("[" . meow-beginning-of-thing)
-   '("]" . meow-end-of-thing)
-   '("a" . meow-append)
-   '("A" . meow-open-below)
-   '("b" . meow-back-word)
-   '("B" . meow-back-symbol)
-   '("c" . meow-change)
-   '("d" . meow-delete)
-   '("D" . meow-backward-delete)
-   '("e" . meow-next-word)
-   '("E" . meow-next-symbol)
-   '("f" . meow-find)
-   '("g" . meow-cancel-selection)
-   '("G" . meow-grab)
-   '("h" . meow-left)
-   '("H" . meow-left-expand)
-   '("i" . meow-insert)
-   '("I" . meow-open-above)
-   '("j" . meow-next)
-   '("J" . meow-next-expand)
-   '("k" . meow-prev)
-   '("K" . meow-prev-expand)
-   '("l" . meow-right)
-   '("L" . meow-right-expand)
-   '("m" . meow-join)
-   '("n" . meow-search)
-   '("o" . meow-block)
-   '("O" . meow-to-block)
-   '("p" . meow-yank)
-   '("q" . meow-quit)
-   '("Q" . meow-goto-line)
-   '("r" . meow-replace)
-   '("R" . meow-swap-grab)
-   '("s" . meow-kill)
-   '("t" . meow-till)
-   '("u" . meow-undo)
-   '("U" . meow-undo-in-selection)
-   '("V" . meow-visit)
-   '("w" . meow-mark-word)
-   '("W" . meow-mark-symbol)
-   '("x" . meow-line)
-   '("X" . meow-goto-line)
-   '("y" . meow-save)
-   '("Y" . meow-sync-grab)
-   '("z" . meow-pop-selection)
-   '("'" . repeat)
-   '("<escape>" . ignore)
-   '("<return>" . ignore)
-   '("=" . meow-indent))
-  (dolist
-      (state
-       '((telega-root-mode . normal)
-         (telega-chat-mode . normal)
-         (magit-mode . normal)
-         (vterm-mode . insert)))
-    (add-to-list 'meow-mode-state-list state)))
-
-;; sis-global-respect-mode 使得 meow-reverse 无效
-(defun sis-meow-reverse ()
-  "Just exchange point and mark.
-This command supports `meow-selection-command-fallback'."
-  (interactive)
-  (sis-global-respect-mode 0)
-  (meow-reverse)
-  (sis-global-respect-mode t))
 (provide 'lib-meow)
 ;;; lib-meow.el ends here

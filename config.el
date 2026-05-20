@@ -1,7 +1,12 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
 ;; Add path
-(add-load-path! "lisp/" "lib/")
+(add-load-path! "lisp/"
+                "lisp/core/"
+                "lisp/tools/"
+                "lisp/ui/"
+                "lisp/host/"
+                "lib/")
 
 ;; From Lucius
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues

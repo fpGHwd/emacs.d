@@ -1,24 +1,10 @@
 ;;; ../../Sync/dotfiles/doom.d/lisp/init-editing.el -*- lexical-binding: t; -*-
 
-(setup meow
-  (:also-load lib-meow)
-  (:with-function meow-setup (:autoload-this))
-  (meow-global-mode 1)
-  (meow-setup)
-  (:option  wrap-keymap (let ((map (make-keymap)))
-                          (suppress-keymap map)
-                          (dolist (k '("(" "[" "{" "<"))
-                            (define-key map k #'insert-pair))
-                          map))
-  (meow-normal-define-key (cons "\\" wrap-keymap))
-  (:hooks meow-insert-mode-hook
-          (lambda ()
-            (if meow-insert-mode
-                (run-hooks 'meow-entering-insert-mode-hook)
-              (run-hooks 'meow-leaving-insert-mode-hook))))
-  (when *is-mac*
-    (:advice meow-mark-thing :override meow-mark-thing-cjk)
-    (:advice meow-next-thing :override meow-next-thing-cjk)))
+(defun +wd/meow-run-insert-mode-hooks ()
+  "Bridge Meow insert toggles to custom entering/leaving hooks."
+  (if meow-insert-mode
+      (run-hooks 'meow-entering-insert-mode-hook)
+    (run-hooks 'meow-leaving-insert-mode-hook)))
 
 ;; Keep Meow cheatsheet alignment stable: fixed pitch + no soft wrap.
 (defun +wd/meow-cheatsheet-display-fix (&rest _)
@@ -31,13 +17,33 @@
       (buffer-face-set 'fixed-pitch)
       (text-scale-set 0))))
 
-(advice-add 'meow-cheatsheet :after #'+wd/meow-cheatsheet-display-fix)
-
 (after! meow
+  ;; Keep doom-meow as the source of truth for base keymaps/state machine.
+  ;; We only layer local overrides here.
+  (require 'lib-meow)
+
+  (let ((wrap-keymap (let ((map (make-keymap)))
+                       (suppress-keymap map)
+                       (dolist (k '("(" "[" "{" "<"))
+                         (define-key map k #'insert-pair))
+                       map)))
+    (meow-normal-define-key (cons "\\" wrap-keymap)))
+
+  (remove-hook 'meow-insert-mode-hook #'+wd/meow-run-insert-mode-hooks)
+  (add-hook 'meow-insert-mode-hook #'+wd/meow-run-insert-mode-hooks)
+
+  (unless (advice-member-p #'+wd/meow-cheatsheet-display-fix 'meow-cheatsheet)
+    (advice-add 'meow-cheatsheet :after #'+wd/meow-cheatsheet-display-fix))
+
+  (when *is-mac*
+    (unless (advice-member-p #'meow-mark-thing-cjk 'meow-mark-thing)
+      (advice-add 'meow-mark-thing :override #'meow-mark-thing-cjk))
+    (unless (advice-member-p #'meow-next-thing-cjk 'meow-next-thing)
+      (advice-add 'meow-next-thing :override #'meow-next-thing-cjk)))
+
   (setq meow-cheatsheet-ellipsis "…")
   (set-face-attribute 'meow-cheatsheet-command nil
                       :inherit 'fixed-pitch
-                      :family (if (boundp '+wd/fixed-font-family) +wd/fixed-font-family "Monospace")
                       :height 1.0)
   (set-face-attribute 'meow-cheatsheet-highlight nil :inherit 'meow-cheatsheet-command))
 
