@@ -27,13 +27,18 @@
     (with-current-buffer buf
       (setq-local truncate-lines t)
       (setq-local word-wrap nil)
+      (setq-local line-spacing 0)
       (buffer-face-set 'fixed-pitch)
       (text-scale-set 0))))
 
 (advice-add 'meow-cheatsheet :after #'+wd/meow-cheatsheet-display-fix)
 
 (after! meow
-  (set-face-attribute 'meow-cheatsheet-command nil :inherit 'fixed-pitch :family "Sarasa Mono SC")
+  (setq meow-cheatsheet-ellipsis "…")
+  (set-face-attribute 'meow-cheatsheet-command nil
+                      :inherit 'fixed-pitch
+                      :family "Sarasa Fixed SC"
+                      :height 1.0)
   (set-face-attribute 'meow-cheatsheet-highlight nil :inherit 'meow-cheatsheet-command))
 
 (setup meow-tree-sitter
