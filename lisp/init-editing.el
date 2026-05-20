@@ -102,5 +102,6 @@
         ('other
          (setq sis--prefix-override-map-enable t))))))
 
+(setq blink-cursor-interval 0.618)
 
 (provide 'init-editing)
