@@ -211,6 +211,7 @@ If N is negative, select to the beginning of the previous Nth thing instead."
    '("z" . meow-pop-selection)
    '("'" . repeat)
    '("<escape>" . ignore)
+   '("<return>" . ignore)
    '("=" . meow-indent))
   (dolist
       (state
