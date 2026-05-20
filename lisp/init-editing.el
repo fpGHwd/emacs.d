@@ -29,6 +29,8 @@
                        map)))
     (meow-normal-define-key (cons "\\" wrap-keymap)))
 
+  ;; TODO/IMPLEMENT: Enter insert state automatically in Magit commit message buffers.
+
   (remove-hook 'meow-insert-mode-hook #'+wd/meow-run-insert-mode-hooks)
   (add-hook 'meow-insert-mode-hook #'+wd/meow-run-insert-mode-hooks)
 
@@ -103,5 +105,10 @@
          (setq sis--prefix-override-map-enable t))))))
 
 (setq blink-cursor-interval 0.618)
+(setq meow-cursor-type-normal 'box)
+
+;; https://github.com/meow-edit/meow/blob/master/TUTORIAL.org
+;; https://github.com/meow-edit/meow/blob/master/GET_STARTED.org
+;; https://github.com/meow-edit/doom-meow 
 
 (provide 'init-editing)
