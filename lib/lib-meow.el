@@ -133,6 +133,11 @@ If N is negative, select to the beginning of the previous Nth thing instead."
    ;; SPC j/k will run the original command in MOTION state.
    '("j" . "H-j")
    '("k" . "H-k")
+   ;; Git / Magit
+   '("g s" . magit-status)
+   '("g g" . magit-status)
+   '("g b" . magit-blame)
+   '("g l" . magit-log-buffer-file)
    ;; Use SPC (0-9) for digit arguments.
    '("1" . meow-digit-argument)
    '("2" . meow-digit-argument)
