@@ -56,7 +56,8 @@
          (telega-chat-mode . normal)
          (magit-mode . motion)
          (vterm-mode . insert)
-         (dired-mode . motion)))
+         (dired-mode . motion)
+         (eshell-mode . insert)))
     (add-to-list 'meow-mode-state-list state)))
 
 (setup meow-tree-sitter
