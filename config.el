@@ -81,6 +81,3 @@
 ;; others
 (require 'init-misc)
 ;; (require 'init-elfeed)
-
-;; test new function
-(require 'autosar-can-mode)
