@@ -47,7 +47,17 @@
   (set-face-attribute 'meow-cheatsheet-command nil
                       :inherit 'fixed-pitch
                       :height 1.0)
-  (set-face-attribute 'meow-cheatsheet-highlight nil :inherit 'meow-cheatsheet-command))
+  (set-face-attribute 'meow-cheatsheet-highlight nil :inherit 'meow-cheatsheet-command)
+
+  ;; Default to motion state in special/readonly-like modes.
+  (dolist
+      (state
+       '((telega-root-mode . normal)
+         (telega-chat-mode . normal)
+         (magit-mode . motion)
+         (vterm-mode . insert)
+         (dired-mode . motion)))
+    (add-to-list 'meow-mode-state-list state)))
 
 (setup meow-tree-sitter
   (:defer (:require meow-tree-sitter))
