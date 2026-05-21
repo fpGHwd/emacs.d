@@ -22,10 +22,7 @@
      rime-emacs-module-header-root (concat (getenv "LIBEMACS_ROOT") "/include")
      rime-librime-root (getenv "LIBRIME_ROOT")
      module-file-suffix (getenv "MODULE_FILE_SUFFIX")
-     rime-user-data-dir (file-truename "~/.config/rime"))
-    ;; Disable global IME toggle shortcuts; open rime manually when needed.
-    (dolist (k '("C-\\" "C-|"))
-      (global-unset-key (kbd k))))
+     rime-user-data-dir (file-truename "~/.config/rime")))
 
   (defvar my/rime-compile-fallback-commands
     '("/home/wd/.config/dotfiles/local/scripts/2026/build-rime-module.sh"
