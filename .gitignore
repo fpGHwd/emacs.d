@@ -3,3 +3,5 @@
 etc/gptel/gptel-crowdsourced-prompts.csv
 
 .stfolder/
+
+.codebuddy/

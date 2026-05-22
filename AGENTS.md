@@ -1,1 +1,202 @@
-/home/wd/.config/nix.d/doc/AGENTS.md
+# AGENTS.md - Emacs Configuration
+
+## Purpose
+
+This document defines the execution contract for AI agents working in this Doom Emacs configuration repository. It establishes workflows, file organization, and integration with the Nix-based system environment.
+
+## Non-Goals
+
+- This is not a generic Emacs tutorial.
+- This does not replace Doom Emacs or upstream package documentation.
+- This does not manage external tool dependencies (those are in the Nix configuration).
+
+## Repository Structure
+
+```
+~/.config/emacs.d/
+├── init.el              # Doom module configuration (enable/disable modules)
+├── config.el            # Main configuration entry point, loads all lisp/
+├── packages.el          # Package declarations (package! forms)
+├── custom.el            # Custom variables (auto-generated, avoid editing)
+├── lisp/                # Feature-specific configuration modules
+│   ├── init-editing.el  # Editing behavior (evil, meow, etc.)
+│   ├── init-org.el      # Org-mode configuration
+│   ├── init-roam.el     # Org-roam setup
+│   ├── init-rime.el     # Input method (Rime)
+│   ├── init-gptel.el    # AI integration
+│   ├── init-ui.el       # UI/theming
+│   ├── init-mail.el     # Email (mu4e)
+│   ├── init-telega.el   # Telegram client
+│   ├── init-haskell.el  # Haskell development
+│   ├── init-ledger.el   # Finance (ledger-mode)
+│   ├── init-read.el     # Reading (nov, calibre)
+│   ├── init-misc.el     # Miscellaneous
+│   ├── init-setup.el    # Setup macro utilities
+│   ├── core/            # Core runtime, lookup
+│   ├── tools/           # Tool integrations
+│   └── ui/              # UI enhancements
+├── lib/                 # Helper libraries (loaded as needed)
+└── snippets/            # Yasnippet snippets
+```
+
+## Configuration Rules
+
+### File Placement
+
+- **Doom modules**: Changes in `init.el` (enable/disable modules)
+- **Package declarations**: Add `package!` forms in `packages.el`
+- **Feature configuration**: Create `lisp/init-<feature>.el` files
+- **Helper functions**: Place in `lib/lib-<name>.el`
+- **Load order**: Controlled by `config.el` require statements
+
+### Code Style
+
+- Use `;;; filename.el --- description` header comment
+- Use `setup` macro from `init-setup.el` for configuration
+- Use `after!` for package-specific configuration
+- Prefer `setopt` over `setq` for user options
+- Add `(provide 'filename)` at end of files
+
+### Package Management
+
+```elisp
+;; packages.el - Add new packages
+(package! package-name)
+
+;; packages.el - Pin to specific commit
+(package! package-name :pin "commit-hash")
+
+;; packages.el - From non-standard source
+(package! package-name :recipe (:host github :repo "user/repo"))
+```
+
+## External Dependencies
+
+This Emacs configuration depends on external tools managed through Nix:
+
+| Tool | Purpose | Nix Location |
+|------|---------|--------------|
+| `ghc` | Haskell development | `~/.config/nix.d/modules/emacs.nix` |
+| `cabal-install` | Haskell build | `~/.config/nix.d/modules/emacs.nix` |
+| `haskell-language-server` | Haskell LSP | `~/.config/nix.d/modules/emacs.nix` |
+| `ripgrep` | Search backend | `~/.config/nix.d/modules/emacs.nix` |
+| `mu` | Email indexing | `~/.config/nix.d/modules/emacs.nix` |
+| `ledger` | Finance tracking | `~/.config/nix.d/modules/emacs.nix` |
+| `rime` | Input method | `~/.config/nix.d/modules/emacs.nix` |
+
+**To add external tool dependencies**: Edit `~/.config/nix.d/modules/emacs.nix`, then run `nix-sr` to apply.
+
+## Common Workflows
+
+### Add a New Package
+
+1. Add `(package! package-name)` to `packages.el`
+2. Create configuration in `lisp/init-<feature>.el` or existing file
+3. Run `doom sync` in terminal
+4. Restart Emacs or `M-x doom/reload`
+
+### Modify Editor Behavior
+
+1. Edit `lisp/init-editing.el` for editing-related settings
+2. For evil-specific: use `(after! evil ...)`
+3. For meow-specific: use `(after! meow ...)` (currently disabled, using evil)
+4. Evaluate with `M-x eval-buffer` or restart
+
+### Change UI/Theme
+
+1. Theme settings in `lisp/init-ui.el`
+2. Font settings defined in `config.el` constants
+3. Run `M-x doom/reload` after changes
+
+### Update Org Configuration
+
+1. Edit `lisp/init-org.el` for Org-mode settings
+2. Org-roam in `lisp/init-roam.el`
+3. Citations managed via `citar` (see `init-org.el`)
+
+## Doom Emacs Specifics
+
+### Key Conventions
+
+- `SPC` is the leader key
+- `SPC h d h` - Doom documentation
+- `SPC f e d` - Open Doom config (this directory)
+- `SPC h r r` - Reload Doom configuration
+- `M-x doom/reload` - Full reload
+
+### Module Flags
+
+In `init.el`, flags modify module behavior:
+```elisp
+(lang +lsp +tree-sitter)  ; Enable LSP and tree-sitter
+(editor +everywhere)      ; Enable in all buffers
+```
+
+## Integration with Nix Configuration
+
+### Workflow: Change External Tool Dependency
+
+1. Edit `~/.config/nix.d/modules/emacs.nix`
+2. Run `nix-sr` (home-manager switch)
+3. Verify tool is available: `which <tool>`
+4. Restart Emacs if needed
+
+### Workflow: Add Emacs Package Requiring External Tool
+
+1. Add external tool to `~/.config/nix.d/modules/emacs.nix`
+2. Run `nix-sr`
+3. Add `(package! package-name)` to `packages.el`
+4. Add configuration in `lisp/`
+5. Run `doom sync`
+6. Restart Emacs
+
+## Debugging and Troubleshooting
+
+### Emacs Won't Start
+
+1. Check `*Messages*` buffer: `emacs --debug-init`
+2. Check `~/.config/emacs.d/custom.el` for issues
+3. Run `doom doctor` for diagnostics
+
+### Package Not Loading
+
+1. Verify in `packages.el`
+2. Check `(after! package ...)` syntax
+3. Check `*Messages*` for errors
+4. Use `emacsclient --eval '(featurep \'package-name)'` to verify
+
+### External Tool Not Found
+
+1. Check `~/.config/nix.d/modules/emacs.nix` has the tool
+2. Run `nix-sr` to apply Nix changes
+3. Verify with `which <tool>` in shell
+4. Check `exec-path` in Emacs: `C-h v exec-path`
+
+## Skills
+
+This repository includes an `emacs-client` skill for interacting with a running Emacs instance:
+
+- Location: `.codebuddy/skills/emacs-client/`
+- Usage: Invoke when needing to debug Emacs state, evaluate Elisp, or inspect configuration
+- Scripts: `emacs-query.sh`, `emacs-debug.sh`
+
+## Definition of Done
+
+A configuration change is complete when:
+
+- Correct file location (lisp/, packages.el, or init.el)
+- `doom sync` completed without errors
+- Emacs restarts successfully
+- Feature works as expected
+- No errors in `*Messages*` buffer
+- External dependencies (if any) added to Nix and applied
+
+## Default Agent Behavior
+
+When instructions are ambiguous:
+
+- Prefer `lisp/init-<feature>.el` for feature-specific code
+- Use `after!` for package-specific configuration
+- Add new packages to `packages.el`, not directly in init.el
+- External tools go to Nix configuration, not shell commands
+- Test changes with `M-x eval-buffer` before full reload
