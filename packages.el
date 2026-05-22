@@ -3,7 +3,7 @@
 
 ;; Core input and utility packages
 (package! rime)
-(package! sis)
+;; (package! sis)  ; disabled: not needed with evil
 (package! setup
   :recipe (:host github
            :repo "emacs-straight/setup"
@@ -15,7 +15,7 @@
 (package! pine-script-mode)
 
 ;; Editing experience
-(package! meow-tree-sitter)
+;; (package! meow-tree-sitter)  ; disabled: switched back to evil
 
 ;; Reading and personal knowledge
 (package! nov
