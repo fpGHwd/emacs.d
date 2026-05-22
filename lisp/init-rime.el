@@ -1,10 +1,10 @@
 ;;; ../Sync/dotfiles/doom.d/lisp/init-rime.el -*- lexical-binding: t; -*-
 
 ;; Keep rime-emacs available, but let sis + system IME be the default path.
-(setq default-input-method nil)
+(setq default-input-method "rime")
 
 (setup rime
-  ;; Do not bind a global hotkey in daily use: sis + system IME is primary.
+  (:bind "M-\\" rime-force-enable)
   (:when-loaded
     (:also-load lib-rime)
     (:option

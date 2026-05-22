@@ -212,5 +212,4 @@
 
        :config
                                         ; literate
-       ;; (default +bindings +smartparens +gnupg)
-       (default +bindings +gnupg))
+       (default +bindings +smartparens +gnupg))
