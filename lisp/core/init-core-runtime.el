@@ -38,47 +38,58 @@
 ;; Add for some tramp/vterm connection and LSP json-rpc sessions.
 (setq envrc-remote 1)
 
-;; LSP over TRAMP (ssh://nixos-nuc): prefer remote-resolvable JSON LS commands.
 (after! tramp
+  (setq tramp-default-method "ssh"
+        remote-file-name-inhibit-cache 30)
   (add-to-list 'tramp-remote-path 'tramp-own-remote-path)
-  (dolist (p '("~/.nix-profile/bin" "/etc/profiles/per-user/wd/bin" "/run/current-system/sw/bin"))
-    (add-to-list 'tramp-remote-path p)))
+  (dolist (p '("~/.nix-profile/bin" "/etc/profiles/per-user/wd/bin"))
+    (add-to-list 'tramp-remote-path p))
+  ;; tramp-gvfs 是 Linux/GNOME 专用，在 macOS 上对远程路径做 file-notify
+  ;; 时会调用 `gio monitor`，每个 watcher 开一个 SSH 连接，导致连接爆炸。
+  ;; 必须在加载前设置，阻止 tramp-gvfs 注册 ssh method 的 file-notify handler。
+  (setq tramp-gvfs-methods nil)
+  (defvar tramp-gvfs-enabled nil)
+  (provide 'tramp-gvfs))
 
 (after! lsp-mode
-  (defvar +wd/json-ls-remote-candidates
-    '("json-language-server"
-      "json-languageserver"
-      "vscode-json-language-server"
-      "vscode-json-languageserver")
-    "Candidate executables for JSON language server on remote hosts.")
+  (defvar +wd/remote-python-lsp-disabled-clients
+    '(pyright pyright-tramp
+      ruff ruff-tramp
+      pylsp pylsp-tramp
+      pyls pyls-tramp
+      semgrep-ls semgrep-ls-tramp
+      ty-ls ty-ls-tramp)
+    "Clients disabled for remote Python buffers to keep a single LSP path.")
 
-  (defun +wd/tramp-json-ls-executable ()
-    "Return remote JSON language server executable, or nil if unavailable."
+  (defun +wd/guard-remote-python-lsp ()
+    "Reduce remote Python LSP overhead and avoid conflicting clients."
     (when (file-remote-p default-directory)
-      (cl-loop for exe in +wd/json-ls-remote-candidates
-               when (eq 0 (process-file "sh" nil nil nil "-lc"
-                                        (format "command -v %s >/dev/null 2>&1" exe)))
-               return exe)))
+      (setq-local lsp-enable-file-watchers nil)
+      (dolist (client +wd/remote-python-lsp-disabled-clients)
+        (cl-pushnew client lsp-disabled-clients))))
 
-  (defun +wd/maybe-disable-json-ls-on-tramp ()
-    "Disable json-ls in remote JSON buffers when no server command exists."
-    (when (and (file-remote-p default-directory)
-               (null (+wd/tramp-json-ls-executable)))
-      (setq-local lsp-disabled-clients
-                  (cl-adjoin 'json-ls lsp-disabled-clients :test #'eq))
-      (message "Remote json-ls disabled: install vscode-json-language-server on remote host.")))
+  (dolist (hook '(python-mode-hook python-ts-mode-hook))
+    (add-hook hook #'+wd/guard-remote-python-lsp)))
 
-  (defun +wd/lsp-json-use-remote-command-a (orig-fn pkg)
-    "Advice ORIG-FN to return remote JSON LS command for PKG over TRAMP."
-    (if (and (eq pkg 'vscode-json-languageserver)
-             (file-remote-p default-directory))
-        (or (+wd/tramp-json-ls-executable) (funcall orig-fn pkg))
-      (funcall orig-fn pkg)))
+(after! lsp-pyright
+  (setopt lsp-pyright-diagnostic-mode "openFilesOnly"
+          lsp-pyright-multi-root nil)
 
-  (advice-add 'lsp-package-path :around #'+wd/lsp-json-use-remote-command-a)
-  ;; Doom with +tree-sitter uses `json-ts-mode`, so guard both mode hooks.
-  (add-hook 'json-mode-hook #'+wd/maybe-disable-json-ls-on-tramp)
-  (add-hook 'json-ts-mode-hook #'+wd/maybe-disable-json-ls-on-tramp))
+  (defun +wd/pyright-remote-root ()
+    "Return workspace root for remote pyright checks."
+    (or (ignore-errors (lsp-workspace-root))
+        default-directory))
+
+  (defun +wd/pyright-remote-bin ()
+    "Return remote pyright-langserver path, prefer PATH before .venv."
+    (let* ((remote-root (+wd/pyright-remote-root))
+           (default-directory remote-root)
+           (from-path (executable-find "pyright-langserver" t))
+           (from-venv (expand-file-name ".venv/bin/pyright-langserver" remote-root)))
+      (cond
+       ((and from-path (file-executable-p from-path)) from-path)
+       ((file-executable-p from-venv) from-venv)
+       (t nil)))))
 
 (after! so-long
   (add-to-list 'doom-file-lines-threshold-alist
