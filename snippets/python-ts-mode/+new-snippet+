@@ -1,0 +1,8 @@
+# -*- mode: snippet -*-
+# name: insert compile command for hikyuu
+# key: iccfh
+# --
+
+# Local Variables:
+# compile-command: "python `(file-name-nondirectory buffer-file-name)`"
+# End:
