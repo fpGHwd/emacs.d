@@ -191,6 +191,22 @@ A configuration change is complete when:
 - No errors in `*Messages*` buffer
 - External dependencies (if any) added to Nix and applied
 
+## Emacs 重启与强制关闭
+
+```bash
+# 强制杀掉并重启（卡死时用）
+pkill -9 -f "Emacs" && sleep 1 && open -a Emacs
+
+# 正常退出（有时卡住不响应）
+osascript -e 'tell application "Emacs" to quit'
+
+# 验证 LSP 远程进程是否还在
+ssh nixos-nuc "pgrep -a pyright-langserver; pgrep -a ruff"
+
+# 杀掉远程遗留 LSP 进程
+ssh nixos-nuc "pkill -f pyright-langserver; pkill -f 'ruff server'"
+```
+
 ## Default Agent Behavior
 
 When instructions are ambiguous:
