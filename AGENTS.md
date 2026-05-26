@@ -216,3 +216,6 @@ When instructions are ambiguous:
 - Add new packages to `packages.el`, not directly in init.el
 - External tools go to Nix configuration, not shell commands
 - Test changes with `M-x eval-buffer` before full reload
+- 你可以使用 emacsclient 观测现在的 emacs 状态，执行命令等。调查问题时，可以通过 emacscilent 查看 Emacs 的执行结果。
+- 如果是调查问题，首先请找出问题或错误出现的调用栈，然后去解决。而不是想出一招是一招。
+- 不要在找出根因前乱改代码，找出根因之前只能写临时代码，千万不要乱改。

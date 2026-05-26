@@ -5,7 +5,7 @@
 (require 'init-core-runtime)
 
 (when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
-  (load file-org-capture))
+  (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
 
 (provide 'init-misc)
 ;;; init-misc.el ends here
