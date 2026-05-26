@@ -2,10 +2,6 @@
 
 ;; Add path
 (add-load-path! "lisp/"
-                "lisp/core/"
-                "lisp/tools/"
-                "lisp/ui/"
-                "lisp/host/"
                 "lib/")
 
 ;; From Lucius
