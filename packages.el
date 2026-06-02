@@ -44,3 +44,7 @@
            :branch "master"
            :files (:defaults "etc" "server" "Makefile"))
   :pin "fe91f0d4eed1cc4a6a4df4e69fd69cf98fc1ce65")
+
+;; claude-code emacs integration
+(package! claude-code-ide
+  :recipe (:host github :repo "manzaltu/claude-code-ide.el"))
