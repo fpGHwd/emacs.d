@@ -4,5 +4,5 @@
 # --
 
 # Local Variables:
-# compile-command: "python `(file-name-nondirectory buffer-file-name)`"
+# compile-command: "nix develop /home/wd/.config/nix.d#python -c /home/wd/.config/freqtrade/.venv/bin/python -u `(file-name-nondirectory buffer-file-name)`"
 # End:

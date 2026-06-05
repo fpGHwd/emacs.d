@@ -6,6 +6,9 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(org-attach-sync-delete-empty-dir t)
+ '(safe-local-variable-directories
+   '("/mnt/home/wd/.hikyuu/hub_cache/default/" "/home/wd/.config/emacs.d/"
+     "/home/wd/.config/emacs"))
  '(safe-local-variable-values
    '((projectile-project-compilation-cmd . "python setup.py test -t ind -n pbbm")
      (projectile-project-compilation-cmd

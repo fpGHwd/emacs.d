@@ -24,7 +24,7 @@
                           (cl-pushnew (concat "~/org/org/" add-year-str) org-agenda-files)
                           (cl-pushnew (concat "~/org/noter/" add-year-str) org-agenda-files))
                         (cl-decf add-year))
-                      (cl-pushnew "~/org/beorg" org-agenda-files)
+                      (cl-pushnew "~/org/beorg/" org-agenda-files)
                       org-agenda-files))
 
   (org-agenda-start-day (pcase (system-name)
