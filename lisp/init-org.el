@@ -98,17 +98,17 @@
   (org-toggle-sticky-agenda 1)
 
   ;; org-agenda-goto automatically narrow
-  (after! org-agenda
-    (defadvice! +wd/org-agenda-goto-narrow (&rest _)
-      "When org-agenda-goto narrow to current HEADLINE."
-      :after #'org-agenda-goto
-      (org-narrow-to-subtree)))
+  ;; (after! org-agenda
+  ;;   (defadvice! +wd/org-agenda-goto-narrow (&rest _)
+  ;;     "When org-agenda-goto narrow to current HEADLINE."
+  ;;     :after #'org-agenda-goto
+  ;;     (org-narrow-to-subtree)))
 
-  (after! org-roam-node
-    (defadvice! +wd/org-capture-goto-narrow (&rest _)
-      "When org-capture-goto narrow to current HEADLINE."
-      :after #'org-roam-node-find
-      (org-narrow-to-subtree)))
+  ;; (after! org-roam-node
+  ;;   (defadvice! +wd/org-capture-goto-narrow (&rest _)
+  ;;     "When org-capture-goto narrow to current HEADLINE."
+  ;;     :after #'org-roam-node-find
+  ;;     (org-narrow-to-subtree)))
 
   (org-babel-do-load-languages
    'org-babel-load-languages
@@ -417,6 +417,10 @@
 
       (unless (looking-at org-ts-regexp-inactive)
         (insert ts " ")))))
+
+(advice-add 'org-read-date :around
+            (lambda (orig &optional with-time &rest args)
+              (apply orig t args)))
 
 (provide 'init-org)
 ;;; init-org.el ends here

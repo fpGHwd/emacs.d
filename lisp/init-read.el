@@ -104,4 +104,36 @@
                   (directory-files pa t pf)))))))
 
 
+(after! pdf-tools
+  (defun +wd/zathura-open-current-pdf ()
+    "Open the current pdf-view buffer's file in zathura at the current page."
+    (interactive)
+    (unless (derived-mode-p 'pdf-view-mode)
+      (user-error "Not in a pdf-view buffer"))
+    (start-process "zathura" nil "zathura"
+                   "-P" (number-to-string (pdf-view-current-page))
+                   buffer-file-name))
+
+  (setq pdf-annot-default-annotation-properties
+        '((t         (label . "Wang Ding"))
+          (text       (color . "#FFD966") (icon . "Note"))
+          (highlight  (color . "#FFD966"))
+          (underline  (color . "#93C47D"))
+          (squiggly   (color . "#E06C75"))
+          (strike-out (color . "#76A5AF"))))
+
+  (map! :map pdf-view-mode-map
+        :localleader
+        (:prefix ("a" . "annotate")
+         "t" #'pdf-annot-add-text-annotation
+         "h" #'pdf-annot-add-highlight-markup-annotation
+         "u" #'pdf-annot-add-underline-markup-annotation
+         "s" #'pdf-annot-add-squiggly-markup-annotation
+         "x" #'pdf-annot-add-strikeout-markup-annotation
+         "l" #'pdf-annot-list-annotations
+         "d" #'pdf-annot-delete)
+        (:prefix ("v" . "view")
+         "z" #'+wd/zathura-open-current-pdf)))
+
+
 (provide 'init-read)

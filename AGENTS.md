@@ -152,6 +152,16 @@ In `init.el`, flags modify module behavior:
 
 ## Debugging and Troubleshooting
 
+### Inspecting Live Emacs State
+
+Use `emacsclient` to query a running Emacs instance during investigation — evaluate expressions, check variable values, and observe the effect of changes without restarting:
+
+```bash
+emacsclient -e '(some-elisp-expression)'
+```
+
+When debugging a problem, first find the call stack / error source before touching any code. Do not make speculative changes prior to identifying the root cause.
+
 ### Emacs Won't Start
 
 1. Check `*Messages*` buffer: `emacs --debug-init`
@@ -191,6 +201,16 @@ A configuration change is complete when:
 - No errors in `*Messages*` buffer
 - External dependencies (if any) added to Nix and applied
 
+### Auto Eval After Edit
+
+After editing any `lisp/init-*.el` or `lib/lib-*.el` file, immediately eval it in the running Emacs instance:
+
+```bash
+emacsclient -e '(load-file "<absolute-path>")'
+```
+
+This applies changes without requiring a full reload. Only fall back to `M-x doom/reload` if the change involves `packages.el`, `init.el`, or macro definitions that require reload to take effect.
+
 ## Emacs 重启与强制关闭
 
 ```bash
@@ -216,6 +236,3 @@ When instructions are ambiguous:
 - Add new packages to `packages.el`, not directly in init.el
 - External tools go to Nix configuration, not shell commands
 - Test changes with `M-x eval-buffer` before full reload
-- 你可以使用 emacsclient 观测现在的 emacs 状态，执行命令等。调查问题时，可以通过 emacscilent 查看 Emacs 的执行结果。
-- 如果是调查问题，首先请找出问题或错误出现的调用栈，然后去解决。而不是想出一招是一招。
-- 不要在找出根因前乱改代码，找出根因之前只能写临时代码，千万不要乱改。
