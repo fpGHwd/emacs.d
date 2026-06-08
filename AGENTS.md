@@ -201,32 +201,6 @@ A configuration change is complete when:
 - No errors in `*Messages*` buffer
 - External dependencies (if any) added to Nix and applied
 
-### Auto Eval After Edit
-
-After editing any `lisp/init-*.el` or `lib/lib-*.el` file, immediately eval it in the running Emacs instance:
-
-```bash
-emacsclient -e '(load-file "<absolute-path>")'
-```
-
-This applies changes without requiring a full reload. Only fall back to `M-x doom/reload` if the change involves `packages.el`, `init.el`, or macro definitions that require reload to take effect.
-
-## Emacs 重启与强制关闭
-
-```bash
-# 强制杀掉并重启（卡死时用）
-pkill -9 -f "Emacs" && sleep 1 && open -a Emacs
-
-# 正常退出（有时卡住不响应）
-osascript -e 'tell application "Emacs" to quit'
-
-# 验证 LSP 远程进程是否还在
-ssh nixos-nuc "pgrep -a pyright-langserver; pgrep -a ruff"
-
-# 杀掉远程遗留 LSP 进程
-ssh nixos-nuc "pkill -f pyright-langserver; pkill -f 'ruff server'"
-```
-
 ## Default Agent Behavior
 
 When instructions are ambiguous:
@@ -236,3 +210,7 @@ When instructions are ambiguous:
 - Add new packages to `packages.el`, not directly in init.el
 - External tools go to Nix configuration, not shell commands
 - Test changes with `M-x eval-buffer` before full reload
+- You can use emacsclient to observe the current Emacs state, execute commands, etc. When investigating issues, check Emacs execution results via emacsclient.
+- When investigating issues, always find the call stack of the problem or error first, then fix it. Do not try random workarounds.
+- Never modify code haphazardly before identifying the root cause. Before finding the root cause, only write temporary code — never make permanent changes.
+- If you write new Elisp functions, you can load and test them directly using emacsclient.
