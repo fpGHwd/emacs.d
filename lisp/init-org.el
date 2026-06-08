@@ -115,7 +115,8 @@
    '((jupyter . t)
      (gnuplot . t)
      (plantuml . t)
-     (haskell . t)))
+     (haskell . t)
+     (makefile . t)))
 
   (setq org-babel-haskell-command "ghci"))
 
