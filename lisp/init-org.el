@@ -197,43 +197,6 @@
                                        #'org-attach-dired-to-subtree))))
 
 
-(use-package! org-noter
-  :defer t
-  :custom
-  (org-noter-doc-split-fraction '(0.618 . 0.382))
-  :config
-  (require 'lib-reading)
-
-  (when (string= (system-name) "ubuntu2204")
-    (setq +wd/org-noter-calibre-library-root
-          "/home/wd/windows_share_dir/reference/books"))
-
-  (defun +wd/org-noter--find-document-in-calibre (document)
-    "Resolve DOCUMENT by filename under `+wd/org-noter-calibre-library-root`."
-    (let* ((doc (and (stringp document) (string-trim document)))
-           (expanded (and doc (expand-file-name doc))))
-      (cond
-       ((or (null doc) (string-empty-p doc)) nil)
-       ((file-exists-p expanded) expanded)
-       ((not (file-directory-p +wd/org-noter-calibre-library-root)) nil)
-       (t
-        (let* ((filename (file-name-nondirectory expanded))
-               (matches (directory-files-recursively
-                         +wd/org-noter-calibre-library-root
-                         (concat "\\`" (regexp-quote filename) "\\'")))
-               ;; Prefer the shortest path when duplicate filenames exist.
-               (sorted (sort matches (lambda (a b) (< (length a) (length b))))))
-          (car sorted))))))
-
-  (defun +wd/org-noter-parse-document-property-calibre (document &rest _)
-    "Hook for `org-noter-parse-document-property-hook` to resolve DOCUMENT path."
-    (+wd/org-noter--find-document-in-calibre document))
-
-  (add-hook 'org-noter-parse-document-property-hook
-            #'+wd/org-noter-parse-document-property-calibre)
-  (add-hook 'org-after-todo-state-change-hook
-            #'+wd/org-noter-auto-update-read-progress)
-  (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current")))
 
 (use-package! deft
   :defer t
@@ -318,7 +281,7 @@
   :config
   (when (and (featurep :system 'linux)
              (executable-find "spectacle"))
-    (setq org-download-screenshot-method (concat (executable-find "spectacle") " -r -b -o %s"))))
+    (setq org-download-screenshot-method (concat (executable-find "spectacle") " -br -o %s"))))
 
 
 (defun +wd/org-work-agenda-files ()
