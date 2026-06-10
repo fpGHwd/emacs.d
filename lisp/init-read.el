@@ -185,7 +185,7 @@ WHERE b.id = %s GROUP BY b.id" id))))
                 (author (mapconcat #'identity
                                    (seq-take (split-string (or (nth 1 row) "Unknown") " & ") 2)
                                    " & "))
-                (filename (format "calibredb-%s.org" id))
+                (filename (format "CDB-%s.org" id))
                 (notes-dir (car org-noter-notes-search-path))
                 (notes-path (expand-file-name filename notes-dir)))
       (unless (file-exists-p notes-path)
