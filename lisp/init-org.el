@@ -383,8 +383,18 @@
         (insert ts " ")))))
 
 (advice-add 'org-read-date :around
-            (lambda (orig &optional with-time &rest args)
-              (apply orig t args)))
+            (lambda (orig &optional with-time to-time from-string prompt default-time default-input &rest args)
+              (let* ((effective-default
+                      ;; If existing timestamp has no time (default-input nil),
+                      ;; use current time so the prompt doesn't default to 00:00.
+                      (if (and default-time (not default-input))
+                          (org-current-time)
+                        default-time))
+                     (result (apply orig t to-time from-string prompt
+                                    effective-default default-input args)))
+                (when (boundp 'org-time-was-given)
+                  (setq org-time-was-given t))
+                result)))
 
 (provide 'init-org)
 ;;; init-org.el ends here
