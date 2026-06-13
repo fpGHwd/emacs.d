@@ -132,6 +132,7 @@
   (meow-normal-define-key '("<return>" . meow-line))
   (meow-normal-define-key '("DEL" . ignore))
   (meow-normal-define-key '("<backspace>" . ignore))
+  (meow-normal-define-key '("C-o" . better-jumper-jump-backward))
   (setq blink-cursor-interval 0.618)
   (setq meow-cursor-type-normal 'box
         meow-cursor-type-motion 'box
