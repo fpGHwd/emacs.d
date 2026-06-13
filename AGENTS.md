@@ -223,6 +223,7 @@ A configuration change is complete when:
 - Feature works as expected
 - No errors in `*Messages*` buffer
 - External dependencies (if any) added to Nix and applied
+- Before committing: verify `emacsclient -e '(doom/reload)'` reports "Config successfully reloaded!" and `*Messages*` contains no new errors. For structural changes (file renames, new requires, deleted files), also grep config.el and lisp/ for dangling `require` calls pointing to non-existent features.
 
 ## Default Agent Behavior
 
