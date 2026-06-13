@@ -6,3 +6,5 @@
   :custom
   (auth-source-save-behavior 'ask)
   (auth-sources '("~/.config/emacs.d/etc/authinfo.gpg")))
+
+(provide 'init-misc)

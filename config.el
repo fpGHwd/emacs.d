@@ -1,16 +1,11 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
 ;; Add path
-(add-load-path! "lisp/"
-                "lib/")
+(add-load-path! "lisp/" "lisp/lib/")
 
 ;; From Lucius
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
 ;; (setq debug-on-error t)
-;; ignore native compile warning
-(setq warning-minimum-level :emergency)
-;; Enable with t if you prefer
-(defconst *spell-check-support-enabled* nil )
 (defconst *is-mac* (eq system-type 'darwin))
 (defconst *is-linux* (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
 (defconst *org-path* "~/org/")
