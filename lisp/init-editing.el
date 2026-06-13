@@ -9,7 +9,8 @@
 
 
 (after! meow
-  (meow-normal-define-key '("<return>" . meow-line)))
+  (meow-normal-define-key '("<return>" . meow-line))
+  (add-hook 'git-commit-mode-hook #'meow-insert))
 
 (provide 'init-editing)
 ;;; init-editing.el ends here
