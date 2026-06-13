@@ -89,7 +89,7 @@
         (when (file-directory-p pa)
           (mapcar (lambda (path)
                     (let* ((cmd (concat bin-path
-                                        " --with-library=http://nixos-nuc.local:8080"
+                                        " --with-library=http://nixos-nuc:8080"
                                         " --username=wd"
                                         " --password=" password
                                         " --duplicates add " "'" path "'")))
