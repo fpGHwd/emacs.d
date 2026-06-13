@@ -269,4 +269,26 @@ end of string are ignored."
       (capitalize-word 1)
       (buffer-substring start end))))
 
+(defun +wd/org-prepend-inactive-timestamp-to-heading ()
+  "在当前 Org headline 中，在 TODO keyword 后插入 inactive timestamp（带 []）。"
+  (interactive)
+  (save-excursion
+    (org-back-to-heading t)
+    (let* ((components (org-heading-components))
+           (todo (nth 2 components))
+           (ts (format-time-string
+                (concat "[" (cdr org-time-stamp-formats) "]")
+                (current-time))))
+
+      (beginning-of-line)
+      (looking-at "^\\*+\\s-*")
+      (goto-char (match-end 0))
+
+      (when todo
+        (forward-word 1)
+        (skip-chars-forward " "))
+
+      (unless (looking-at org-ts-regexp-inactive)
+        (insert ts " ")))))
+
 (provide 'lib-org)

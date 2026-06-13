@@ -31,20 +31,18 @@
 ;; nov.el
 ;; https://emacs-china.org/t/emacs-epub/4713/11
 ;; FIXME: errors while opening `nov' files with Unicode characters
-(use-package nov
-  :mode ("\\.epub\\'" . nov-mode)
-  :init
-  ;; (set-evil-initial-state! 'nov-mode 'emacs)
-  :config
-  (with-no-warnings
-    (defun my-nov-content-unique-identifier (content)
-      "Return the the unique identifier for CONTENT."
-      (when-let* ((name (nov-content-unique-identifier-name content))
-                  (selector (format "package>metadata>identifier[id='%s']"
-                                    (regexp-quote name)))
-                  (id (car (esxml-node-children (esxml-query selector content)))))
-        (intern id)))
-    (advice-add #'nov-content-unique-identifier :override #'my-nov-content-unique-identifier)))
+(setup nov
+  (:match-file "\\.epub\\'")
+  (:when-loaded
+    (with-no-warnings
+      (defun my-nov-content-unique-identifier (content)
+        "Return the the unique identifier for CONTENT."
+        (when-let* ((name (nov-content-unique-identifier-name content))
+                    (selector (format "package>metadata>identifier[id='%s']"
+                                      (regexp-quote name)))
+                    (id (car (esxml-node-children (esxml-query selector content)))))
+          (intern id)))
+      (advice-add #'nov-content-unique-identifier :override #'my-nov-content-unique-identifier))))
 
 ;; (setup nov
 ;;   (:file-match "\\.epub\\'")
@@ -93,17 +91,18 @@
                   (directory-files pa t pf)))))))
 
 
-(after! pdf-tools
-  (defun +wd/zathura-open-current-pdf ()
-    "Open the current pdf-view buffer's file in zathura at the current page."
-    (interactive)
-    (unless (derived-mode-p 'pdf-view-mode)
-      (user-error "Not in a pdf-view buffer"))
-    (start-process "zathura" nil "zathura"
-                   "-P" (number-to-string (pdf-view-current-page))
-                   buffer-file-name))
+(setup pdf-tools
+  (:when-loaded
+   (defun +wd/zathura-open-current-pdf ()
+     "Open the current pdf-view buffer's file in zathura at the current page."
+     (interactive)
+     (unless (derived-mode-p 'pdf-view-mode)
+       (user-error "Not in a pdf-view buffer"))
+     (start-process "zathura" nil "zathura"
+                    "-P" (number-to-string (pdf-view-current-page))
+                    buffer-file-name))
 
-  (setq pdf-annot-default-annotation-properties
+   (setq pdf-annot-default-annotation-properties
         '((t         (label . "Wang Ding"))
           (text       (color . "#FFD966") (icon . "Note"))
           (highlight  (color . "#FFD966"))
@@ -122,17 +121,15 @@
          "l" #'pdf-annot-list-annotations
          "d" #'pdf-annot-delete)
         (:prefix ("v" . "view")
-         "z" #'+wd/zathura-open-current-pdf)))
+         "z" #'+wd/zathura-open-current-pdf))))
 
 
-(use-package! org-noter
-  :defer t
-  :custom
-  (org-noter-doc-split-fraction '(0.618 . 0.382))
-  :config
-  (require 'lib-read)
+(setup org-noter
+  (:when-loaded
+    (:also-load lib-read)
+    (:option org-noter-doc-split-fraction '(0.618 . 0.382))
 
-  (when (string= (system-name) "ubuntu2204")
+    (when (string= (system-name) "ubuntu2204")
     (setq +wd/org-noter-calibre-library-root
           "/home/wd/windows_share_dir/reference/books"))
 
@@ -189,13 +186,7 @@ WHERE b.id = %s GROUP BY b.id" id))))
             #'+wd/org-noter-parse-document-property-calibre)
   (add-hook 'org-after-todo-state-change-hook
             #'+wd/org-noter-auto-update-read-progress)
-  (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current")))
-
-
-(use-package! recentf
-  :hook (doom-first-file-hook . recentf-mode)
-  :config
-  (setq recentf-max-saved-items 5000))
+  (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current"))))
 
 
 (provide 'init-read)

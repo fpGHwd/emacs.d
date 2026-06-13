@@ -1,12 +1,10 @@
 ;;; ../../Sync/dotfiles/doom.d/lisp/init-ledger.el -*- lexical-binding: t; -*-
 
-(use-package! ledger-mode
-  :defer t
-  :mode "\\.ledger\\'"
-  :hook
-  (ledger-mode-hook . auto-revert-mode)
-  :custom
-  (ledger-reports
+(setup ledger-mode
+  (:match-file "\\.ledger\\'")
+  (:hook auto-revert-mode)
+  (:option
+   ledger-reports
    '(("month meal expense"
       "ledger -f %(ledger-file) --monthly register ^Expenses:meal")
      ("month period"
@@ -21,11 +19,10 @@
      ;; ("bal" "%(binary) -f %(ledger-file) bal -V")
      ("reg" "%(binary) -f %(ledger-file) reg")
      ("payee" "%(binary) -f %(ledger-file) reg @%(payee)")
-     ("account" "%(binary) -f %(ledger-file) reg %(account)")))
-  (ledger-schedule-file "~/org/ledger/2021/schedule.ledger")
-  (ledger-accounts-file "~/org/ledger/account.ledger")
-  (ledger-reconcile-default-commodity "CNY")
-  (ledger-reconcile-default-date-format "%Y-%m-%d"))
-
+     ("account" "%(binary) -f %(ledger-file) reg %(account)"))
+   ledger-schedule-file "~/org/ledger/2021/schedule.ledger"
+   ledger-accounts-file "~/org/ledger/account.ledger"
+   ledger-reconcile-default-commodity "CNY"
+   ledger-reconcile-default-date-format "%Y-%m-%d"))
 
 (provide 'init-ledger)
