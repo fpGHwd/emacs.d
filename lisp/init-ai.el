@@ -1,6 +1,5 @@
-;;; ../../Sync/dotfiles/doom.d/lisp/init-gpt.el -*- lexical-binding: t; -*-
+;;; init-ai.el --- AI assistant configuration (gptel, aidermacs) -*- lexical-binding: t; -*-
 
-;; gptel
 (use-package! gptel
   :defer t
   :commands (gptel gptel-send gptel-menu)
@@ -25,5 +24,5 @@
   (aidermacs-backend 'vterm)
   (aidermacs-program (executable-find "aider")))
 
-(provide 'init-gptel)
-;;; init-gptel.el ends here
+(provide 'init-ai)
+;;; init-ai.el ends here

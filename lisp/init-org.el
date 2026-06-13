@@ -396,5 +396,9 @@
                   (setq org-time-was-given t))
                 result)))
 
+(after! so-long
+  (add-to-list 'doom-file-lines-threshold-alist
+               '("\\.org\\'" . 50000)))
+
 (provide 'init-org)
 ;;; init-org.el ends here

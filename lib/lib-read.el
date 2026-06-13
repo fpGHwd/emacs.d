@@ -1,4 +1,4 @@
-;;; lib-reading.el --- Reading progress helpers -*- lexical-binding: t; -*-
+;;; lib-read.el --- Reading progress helpers -*- lexical-binding: t; -*-
 
 (require 'json)
 (require 'org)
@@ -519,4 +519,5 @@ FILENAME should be the basename of the epub file (without directory)."
              (member org-state '("DONE" "KILL")))
     (+wd/org-noter-update-read-progress t)))
 
-(provide 'lib-reading)
+(provide 'lib-read)
+;;; lib-read.el ends here

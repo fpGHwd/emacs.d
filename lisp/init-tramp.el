@@ -1,29 +1,4 @@
-;;; init-core-runtime.el --- Core runtime, remote, and lookup settings -*- lexical-binding: t; -*-
-
-(use-package! auth-source
-  :defer t
-  :custom
-  (auth-source-save-behavior 'ask)
-  (auth-sources '("~/.config/emacs.d/etc/authinfo.gpg")))
-
-(use-package! recentf
-  :hook (doom-first-file-hook . recentf-mode)
-  :config
-  (setq recentf-max-saved-items 5000))
-
-(use-package! eldoc
-  :defer t
-  :custom
-  (eldoc-idle-delay 2))
-
-(when (string= (system-name) "ubuntu2204")
-  (after! doom
-    (add-to-list '+lookup-provider-url-alist
-                 '("Bing" "https://cn.bing.com/search?go=Search&q=%s&qs=ds&form=QBRE"))))
-
-(after! doom
-  (add-to-list '+lookup-provider-url-alist
-               '("NixOS Package Search" "https://search.nixos.org/packages?channel=25.11&query=%s")))
+;;; init-tramp.el --- TRAMP and remote LSP configuration -*- lexical-binding: t; -*-
 
 (setq source-directory "/sshx:wd@nixos-nuc:~/projects/github/2024/emacs/src")
 
@@ -62,9 +37,5 @@
         (funcall orig reg)))
     '((name . +wd/skip-watchers-for-remote-workspace))))
 
-(after! so-long
-  (add-to-list 'doom-file-lines-threshold-alist
-               '("\\.org\\'" . 50000)))
-
-(provide 'init-core-runtime)
-;;; init-core-runtime.el ends here
+(provide 'init-tramp)
+;;; init-tramp.el ends here

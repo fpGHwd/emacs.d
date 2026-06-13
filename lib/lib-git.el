@@ -1,6 +1,4 @@
-;;; lib-magit.el --- vc setup -*- lexical-binding: t -*-
-;;; Commentary:
-;;; Code:
+;;; lib-git.el --- Git/Magit utilities -*- lexical-binding: t -*-
 
 (defconst gptel-commit-prompt
   "The user provides the result of running `git diff --cached`. You suggest a conventional commit message. Don't add anything else to the response. The following describes conventional commits.
@@ -138,5 +136,20 @@ the built-in VC log view instead."
     (setf (nth 1 (car args)) author-abbr))
   (car args))
 
-(provide 'lib-magit)
-;;; lib-magit.el ends here
+(defun +wd/magit-push-to-gerrit (arg)
+  "Push HEAD to remote branch. SAIC limited.
+The `ARG` parameter is used to distinguish whether to use current branch or specify a remote branch.
+1 to specify a remote branch, nil current branch to remote same branch."
+  (interactive "p")
+  (let* ((current-branch (magit-get-current-branch))
+         (remote-name (magit-read-remote "select remote"))
+         (gitlab-url (magit-get "remote" remote-name "url"))
+         (gerrit-url (replace-regexp-in-string "\\(^https?://[^/]+/\\)" "\\1a/" gitlab-url))
+         (remote-branch (pcase arg
+                          (1 (replace-regexp-in-string ".*/" "" (magit-read-remote-branch "remote branch")))
+                          (_ current-branch))))
+    (magit-git-command
+     (concat "git push " gerrit-url " HEAD:refs/for/" remote-branch))))
+
+(provide 'lib-git)
+;;; lib-git.el ends here

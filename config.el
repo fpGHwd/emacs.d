@@ -36,6 +36,23 @@
 ;; Add setup support
 (require 'init-setup)
 
+;; session defaults
+(use-package! auth-source
+  :defer t
+  :custom
+  (auth-source-save-behavior 'ask)
+  (auth-sources '("~/.config/emacs.d/etc/authinfo.gpg")))
+
+(use-package! recentf
+  :hook (doom-first-file-hook . recentf-mode)
+  :config
+  (setq recentf-max-saved-items 5000))
+
+(use-package! eldoc
+  :defer t
+  :custom
+  (eldoc-idle-delay 2))
+
 ;; exec-path - consolidated and de-duplicated
 (let ((paths (list "~/.local/bin"
                    (concat (getenv "EMACSDIR") "/bin")
@@ -58,24 +75,26 @@
 ;; reading
 (require 'init-read)
 
-;; writing
-(require 'init-editing)
-
 ;; org-mode
 (require 'init-org)
 (require 'init-roam)
 
 ;; AI
-(require 'init-gptel)
+(require 'init-ai)
 
 (when (or (string= (system-name) "arch-nuc")
           (string= (system-name) "nixos-nuc"))
   (require 'lib-stock))
 
-(require 'init-haskell)
-
 ;; others
-(require 'init-misc)
+(require 'init-tramp)
+(require 'init-lookup)
+(require 'init-vcs)
+(require 'init-term)
+(require 'init-langs)
+
+(when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
+  (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
 ;; (require 'init-elfeed)
 
 ;; ------------------------------------ temporatory ---------------------

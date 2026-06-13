@@ -4,7 +4,7 @@
 (setup calibredb
   (:with-function calibredb)
   (:when-loaded
-    (:also-load lib-misc)
+    (:also-load lib-util)
     (:option
      calibredb-search-page-max-rows 30
      calibredb-ref-default-bibliography "~/org/refs/calibre.bib"
@@ -130,7 +130,7 @@
   :custom
   (org-noter-doc-split-fraction '(0.618 . 0.382))
   :config
-  (require 'lib-reading)
+  (require 'lib-read)
 
   (when (string= (system-name) "ubuntu2204")
     (setq +wd/org-noter-calibre-library-root

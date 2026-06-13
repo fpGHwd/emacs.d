@@ -1,4 +1,4 @@
-;;; ../../Sync/dotfiles/doom.d/lisp/init-ui.el -*- lexical-binding: t; -*-
+;;; init-ui.el --- UI, fonts, and visual appearance -*- lexical-binding: t; -*-
 
 (require 'seq)
 
@@ -107,7 +107,7 @@
   (set-face-attribute 'font-lock-keyword-face t :slant 'italic))
 
 
-(require 'lib-misc)
+(require 'lib-util)
 (when (not *is-mac*)
   (add-to-list 'default-frame-alist '(fullscreen . fullboth)))
 
@@ -122,5 +122,56 @@
               (and (executable-find "wl-copy")
                    (executable-find "wl-paste")))
       (xclip-mode 1))))
+
+(after! meow
+  (meow-normal-define-key '("<return>" . meow-line))
+  (setq blink-cursor-interval 0.618)
+  (setq meow-cursor-type-normal 'box
+        meow-cursor-type-motion 'box
+        meow-cursor-type-beacon 'box
+        meow-cursor-type-insert 'bar)
+  ;; Box-drawing chars in the cheatsheet fall back to Sarasa Fixed SC; force
+  ;; the whole buffer to use it so ASCII and box chars share the same metrics.
+  (advice-add 'meow-cheatsheet :after
+              (lambda (&rest _)
+                (when-let ((buf (get-buffer "*Meow Cheatsheet*")))
+                  (with-current-buffer buf
+                    (when (member "Sarasa Fixed SC" (font-family-list))
+                      (buffer-face-set
+                       `(:family "Sarasa Fixed SC"))))))))
+
+;; identity and workspace settings (from init-ui-misc)
+(setq! +workspaces-data-file (concat (system-name) "_workspaces"))
+
+(setq user-full-name "Wang Ding"
+      user-mail-address "ggwdwhu@gmail.com"
+      initial-scratch-message (concat ";; Happy hacking, " user-full-name " - Emacs ♥ you!\n\n")
+      fancy-splash-image (file-truename (concat doom-user-dir "assets/2025/bitmap_resized_2.png"))
+      imenu-auto-rescan t)
+
+;; gif-screencast
+;; https://github.com/Ambrevar/emacs-gif-screencast
+(use-package! gif-screencast
+  :defer t
+  :custom
+  (gif-screencast-convert-program (executable-find "magick"))
+  (gif-screencast-convert-args '("convert" "-delay" "10" "-loop" "0"))
+  (gif-screencast-args '("-x"))
+  (gif-screencast-cropping-program "mogrify")
+  (gif-screencast-capture-format "ppm")
+  :config
+  (with-eval-after-load 'gif-screencast
+    (define-key gif-screencast-mode-map (kbd "<f8>") 'gif-screencast-toggle-pause)
+    (define-key gif-screencast-mode-map (kbd "<f9>") 'gif-screencast-stop))
+
+  (when (string= system-name "macbook-m1-pro")
+    (advice-add
+     #'gif-screencast--cropping-region
+     :around
+     (lambda (oldfun &rest r)
+       (apply #'format "%dx%d+%d+%d"
+              (mapcar
+               (lambda (x) (* 2 (string-to-number x)))
+               (split-string (apply oldfun r) "[+x]")))))))
 
 (provide 'init-ui)
