@@ -9,11 +9,7 @@
  '(safe-local-variable-directories
    '("/mnt/home/wd/.hikyuu/hub_cache/default/" "/home/wd/.config/emacs.d/"
      "/home/wd/.config/emacs"))
- '(safe-local-variable-values
-   '((projectile-project-compilation-cmd . "python setup.py test -t ind -n pbbm")
-     (projectile-project-compilation-cmd
-      . "python ~/.hikyuu/hub_cache/default/setup.py test -t other -n \"misc\"")))
- '(sql-mysql-program "mariadb"))
+'(sql-mysql-program "mariadb"))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
