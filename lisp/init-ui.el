@@ -124,7 +124,14 @@
       (xclip-mode 1))))
 
 (after! meow
+  ;; meow's suppress-keymap only blocks self-insert; RET/backspace are bound to
+  ;; functional commands (newline/delete) and fall through to the major-mode in
+  ;; normal state. Bind them explicitly so they don't edit. Only affects normal
+  ;; state (motion state for dired/magit uses a separate keymap).
+  (meow-normal-define-key '("RET" . meow-line))
   (meow-normal-define-key '("<return>" . meow-line))
+  (meow-normal-define-key '("DEL" . ignore))
+  (meow-normal-define-key '("<backspace>" . ignore))
   (setq blink-cursor-interval 0.618)
   (setq meow-cursor-type-normal 'box
         meow-cursor-type-motion 'box
@@ -139,7 +146,11 @@
                     (when (member "Sarasa Fixed SC" (font-family-list))
                       (buffer-face-set
                        `(:family "Sarasa Fixed SC")))))))
-  (add-hook 'meow-insert-exit-hook #'deactivate-input-method))
+  (add-hook 'meow-insert-exit-hook #'deactivate-input-method)
+
+  ;; lispy belongs only in insert mode.
+  (add-hook 'meow-normal-mode-hook (lambda () (when meow-normal-mode (lispy-mode -1))))
+  (add-hook 'meow-insert-enter-hook (lambda () (when (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'scheme-mode 'clojure-mode) (lispy-mode 1)))))
 
 ;; identity and workspace settings (from init-ui-misc)
 (setq! +workspaces-data-file (concat (system-name) "_workspaces"))

@@ -400,5 +400,7 @@
   (add-to-list 'doom-file-lines-threshold-alist
                '("\\.org\\'" . 50000)))
 
+(add-hook 'org-capture-mode-hook #'meow-insert)
+
 (provide 'init-org)
 ;;; init-org.el ends here
