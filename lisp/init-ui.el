@@ -123,6 +123,14 @@
                    (executable-find "wl-paste")))
       (xclip-mode 1))))
 
+(defun +wd/jump-to-matching-paren ()
+  "Jump to the matching delimiter, like vim's %."
+  (interactive)
+  (cond
+   ((looking-at "[([{]") (forward-sexp 1) (backward-char 1))
+   ((looking-at "[)\\]}]") (forward-char 1) (backward-sexp 1))
+   (t (message "Not on a delimiter"))))
+
 (after! meow
   ;; meow's suppress-keymap only blocks self-insert; RET/backspace are bound to
   ;; functional commands (newline/delete) and fall through to the major-mode in
@@ -133,6 +141,7 @@
   (meow-normal-define-key '("DEL" . ignore))
   (meow-normal-define-key '("<backspace>" . ignore))
   (meow-normal-define-key '("C-o" . better-jumper-jump-backward))
+  (meow-normal-define-key '("%" . +wd/jump-to-matching-paren))
   (setq blink-cursor-interval 0.618)
   (setq meow-cursor-type-normal 'box
         meow-cursor-type-motion 'box
