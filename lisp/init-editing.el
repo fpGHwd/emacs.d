@@ -10,7 +10,11 @@
 
 (after! meow
   (meow-normal-define-key '("<return>" . meow-line))
-  (add-hook 'git-commit-mode-hook #'meow-insert))
+  (add-hook 'git-commit-mode-hook #'meow-insert)
+  (setq meow-cursor-type-normal 'box
+        meow-cursor-type-motion 'box
+        meow-cursor-type-beacon 'box
+        meow-cursor-type-insert 'bar))
 
 (provide 'init-editing)
 ;;; init-editing.el ends here
