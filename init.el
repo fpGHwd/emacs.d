@@ -159,30 +159,14 @@
        (nix +tree-sitter +lsp)          ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        ;;odin              ; C, minus its footguns
-       (org
-        +brain
-        +contacts
-        +crypt
-        +gnuplot
-        ;;+jupyter
-        +journal
-        +dragndrop
-        +pandoc
-        +noter
-        +roam
-        +pretty
-        +org-tree-slide
-        +present
-        +pomodoro)         ; organize your plain life in plain text
+       (org +brain +contacts +crypt +gnuplot +journal +dragndrop
+            +pandoc +noter +roam +pretty +org-tree-slide +present
+            +pomodoro)         ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
        plantuml            ; diagrams for confusing people more
        ;;graphviz          ; diagrams for confusing yourself even more
        ;;purescript        ; javascript, but functional
-       (python
-        +lsp
-        +poetry
-        +pyright
-        +tree-sitter)
+       (python +lsp +poetry +pyright +tree-sitter)
        ;;qt                ; the 'cutest' gui framework ever
        ;;racket            ; a DSL for DSLs
        ;;raku              ; the artist formerly known as perl6
