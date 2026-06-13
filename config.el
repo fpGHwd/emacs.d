@@ -82,9 +82,6 @@
 ;; AI
 (require 'init-ai)
 
-(when (or (string= (system-name) "arch-nuc")
-          (string= (system-name) "nixos-nuc"))
-  (require 'lib-stock))
 
 ;; others
 (require 'init-tramp)
