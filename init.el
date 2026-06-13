@@ -47,7 +47,7 @@
        ;;tabs              ; a tab bar for Emacs
        ;;treemacs          ; a project drawer, like neotree but cooler
        ;;unicode           ; extended unicode support for various languages
-       vc-gutter           ; vcs diff in the fringe
+       (vc-gutter +pretty) ; vcs diff in the fringe
        vi-tilde-fringe     ; fringe tildes to mark beyond EOB
        (window-select +numbers) ; visually switch windows
        workspaces          ; tab emulation, persistence & separate workspaces
@@ -71,12 +71,12 @@
 
        :emacs
        (dired +dirvish +icons) ; making dired pretty [functional]
-       ;;electric          ; smarter, keyword-based electric-indent
-       ;;eww               ; the internet is gross
+       electric            ; smarter, keyword-based electric-indent
+       eww                 ; the internet is gross
        ;;ibuffer           ; interactive buffer management
        tramp               ; remote files at your arthritic fingertips
        undo                ; persistent, smarter undo for your inevitable mistakes
-       ;;vc                ; version-control and Emacs, sitting in a tree
+       vc                  ; version-control and Emacs, sitting in a tree
 
        :term
        eshell              ; the elisp shell that works everywhere
@@ -145,8 +145,8 @@
        ;;hy                ; readability of scheme w/ speed of python
        ;;idris             ; a language you can depend on
        (json +lsp +tree-sitter)         ; At least it ain't XML
-       ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        ;;janet             ; Fun fact: Janet is me!
+       ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
        ;;(javascript +lsp +tree-sitter) ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
@@ -191,8 +191,8 @@
        ;;(ruby +rails +tree-sitter)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
        ;;(rust +tree-sitter)            ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
        ;;scala             ; java, but good
-       ;;(scheme +guile)   ; a fully conniving family of lisps
-       ;;(sh +tree-sitter) ; she sells {ba,z,fi}sh shells on the C xor
+       (scheme +guile)   ; a fully conniving family of lisps
+       (sh +tree-sitter) ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
        ;;swift             ; who asked for emoji variables?
