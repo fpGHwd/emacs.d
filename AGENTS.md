@@ -56,6 +56,8 @@ This document defines the execution contract for AI agents working in this Doom 
 - Use `after!` for package-specific configuration
 - Prefer `setopt` over `setq` for user options
 - Add `(provide 'filename)` at end of files
+- **Prefer defaults over explicit config**: If a setting matches the package or Doom default, delete the explicit override and rely on the default. Only write configuration that actually differs from the default.
+- **Guard `pcase`-derived paths before using in lists**: When a variable is set via `pcase system-name` and not all hosts are covered, the value may be `nil` on unmatched hosts. Never put such a value directly into a list (e.g. `(list (list var))`); wrap it with `(when var ...)` to avoid inserting `(nil)` entries that cause `wrong-type-argument` errors downstream.
 
 ### Package Management
 
@@ -162,6 +164,8 @@ emacsclient -e '(some-elisp-expression)'
 
 When debugging a problem, first find the call stack / error source before touching any code. Do not make speculative changes prior to identifying the root cause.
 
+**Query live state before reading files**: All current Emacs state — keybindings, variable values, loaded features, active modes, keymap lookups — can and should be obtained via `emacsclient` first. Prefer `emacsclient -e '(expression)'` over guessing from source files, since runtime state may differ from what the code suggests (e.g. hooks may have modified things, packages may not have loaded, or advices may be in effect).
+
 ### Emacs Won't Start
 
 1. Check `*Messages*` buffer: `emacs --debug-init`
@@ -181,6 +185,25 @@ When debugging a problem, first find the call stack / error source before touchi
 2. Run `nix-sr` to apply Nix changes
 3. Verify with `which <tool>` in shell
 4. Check `exec-path` in Emacs: `C-h v exec-path`
+
+## Meow Modal Editing
+
+This config uses `meow` (not evil). The active states and their roles:
+
+| State | Indicator | Role |
+|-------|-----------|------|
+| Normal | `[N]` | Primary state: navigation, selection, text operations |
+| Insert | `[I]` | Text input; entered via `i`/`a`/`c`, exited via `ESC` |
+| Keypad | `[K]` | Leader-key sequences triggered by `SPC`; exits automatically |
+| Motion | `[M]` | Auto-applied to special buffers (magit, dired, help); read-only nav |
+| Beacon | `[B]` | Multi-cursor batch operations |
+| Emacs  | `[E]` | Full Emacs key passthrough; toggle with `C-]` |
+
+**Key bindings (qwerty layout, Normal state):** `h/j/k/l` move, `w/b/e` word motion, `x` select line, `d` delete, `s` kill, `c` change (→ Insert), `i`/`a` insert/append, `y` copy, `p` paste, `n` search, `f`/`t` find/till, `u` undo, `SPC` keypad/leader.
+
+**Known pitfalls fixed in `lisp/init-editing.el`:**
+- In GUI Emacs (macOS and Linux), Enter sends `<return>`, not `RET`. `RET` was bound to `meow-line` in Normal state but `<return>` was not, causing it to fall through to `newline`. Fixed by binding `<return>` → `meow-line` in Normal state.
+- Motion state is only used for special buffers (magit, dired, help); normal text files never enter Motion state, so no fixes are needed there.
 
 ## Skills
 

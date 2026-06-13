@@ -3,8 +3,6 @@
 
 (setup calibredb
   (:with-function calibredb)
-  (:only-if (or (string= (system-name) "nixos-nuc")
-                (string= (system-name) "arch-nuc")))
   (:when-loaded
     (:also-load lib-misc)
     (:option
@@ -17,26 +15,17 @@
      calibredb-opds-download-dir "~/Downloads/calibredb"
      calibredb-download-dir "~/Downloads/calibredb"
      calibredb-format-nerd-icons t
-     calibredb-library-alist `()
-     calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir)
-     calibredb-root-dir (pcase system-name
-                          ("nixos-nuc" "/home/wd/Calibre Library")
-                          ("arch-nuc" "/home/data/books/calibre-lib")
-                          ("ubuntu2204" "/home/wd/Documents/calibre-web")))
-
-    ;; (calibredb-title-face ((t :family "Sarasa Gothic SC")))
-    ;; (calibredb-comment-face ((t :family "Sarasa Gothic SC")))
+     calibredb-root-dir "/home/wd/Calibre Library")
 
     ;; for folder driver metadata: it should be .metadata.calibre
+    (setq calibredb-library-alist
+          (when calibredb-root-dir (list (list calibredb-root-dir))))
     (when (not (string= (system-name) "arch-nuc"))
-      (push `(,(pcase system-name
-                 ("ubuntu2204" "https://library.autove.dev/opds")
-                 (_ "http://nixos-nuc.local:8083/opds"))
+      (push `("http://nixos-nuc:8083/opds"
               (name . "calibre-web")
               (account . "wd")
               (password . ,(password-store-get "calibre-web/wd")))
             calibredb-library-alist))))
-
 
 
 ;; nov.el

@@ -7,5 +7,9 @@
 ;; (after! evil
 ;;   ...)
 
+
+(after! meow
+  (meow-normal-define-key '("<return>" . meow-line)))
+
 (provide 'init-editing)
 ;;; init-editing.el ends here
