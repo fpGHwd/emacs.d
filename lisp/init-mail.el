@@ -4,9 +4,7 @@
   :defer t
   :commands (mu4e mu4e-compose-new)
   :load-path
-  ("/opt/homebrew/opt/mu/share/emacs/site-lisp/mu/mu4e/"
-   "/usr/share/emacs/site-lisp/mu4e"
-   "/home/wd/.nix-profile/share/emacs/site-lisp/elpa/mu4e-1.12.13")
+  ("~/.nix-profile/share/emacs/site-lisp/elpa/mu4e-1.12.13")
   :init
   (defvar +wd/mu4e-index-timer nil "Timer for auto-updating mu4e index.")
   :hook

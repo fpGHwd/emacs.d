@@ -17,5 +17,10 @@
   :config
   (map! :leader :desc "Search word via Bing Dictionary" "sy" #'bing-dict-brief))
 
+(use-package! eldoc
+  :defer t
+  :custom
+  (eldoc-idle-delay 2))
+
 (provide 'init-lookup)
 ;;; init-lookup.el ends here

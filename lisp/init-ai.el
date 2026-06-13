@@ -1,4 +1,4 @@
-;;; init-ai.el --- AI assistant configuration (gptel, aidermacs) -*- lexical-binding: t; -*-
+;;; init-llm.el --- AI assistant configuration (gptel, aidermacs) -*- lexical-binding: t; -*-
 
 (use-package! gptel
   :defer t
@@ -24,5 +24,11 @@
   (aidermacs-backend 'vterm)
   (aidermacs-program (executable-find "aider")))
 
-(provide 'init-ai)
-;;; init-ai.el ends here
+;; claude-code
+(use-package! claude-code-ide
+  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
+  :config
+  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
+
+(provide 'init-llm)
+;;; init-llm.el ends here

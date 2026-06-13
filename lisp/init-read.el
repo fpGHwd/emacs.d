@@ -192,4 +192,10 @@ WHERE b.id = %s GROUP BY b.id" id))))
   (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current")))
 
 
+(use-package! recentf
+  :hook (doom-first-file-hook . recentf-mode)
+  :config
+  (setq recentf-max-saved-items 5000))
+
+
 (provide 'init-read)

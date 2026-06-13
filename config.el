@@ -36,33 +36,6 @@
 ;; Add setup support
 (require 'init-setup)
 
-;; session defaults
-(use-package! auth-source
-  :defer t
-  :custom
-  (auth-source-save-behavior 'ask)
-  (auth-sources '("~/.config/emacs.d/etc/authinfo.gpg")))
-
-(use-package! recentf
-  :hook (doom-first-file-hook . recentf-mode)
-  :config
-  (setq recentf-max-saved-items 5000))
-
-(use-package! eldoc
-  :defer t
-  :custom
-  (eldoc-idle-delay 2))
-
-;; exec-path - consolidated and de-duplicated
-(let ((paths (list "~/.local/bin"
-                   (concat (getenv "EMACSDIR") "/bin")
-                   "~/.config/emacs/bin")))
-  (dolist (p (cl-remove-duplicates (delq nil (mapcar #'expand-file-name paths)) :test #'equal))
-    (add-to-list 'exec-path p))
-  (when (string= (system-name) "ubuntu2204")
-    (cl-pushnew (file-truename "~/.local/share/python-venvs/main/bin/") exec-path)))
-
-
 ;; utilities
 (if (not *is-mac*) (require 'init-mail))
 (require 'init-ledger)
@@ -80,8 +53,9 @@
 (require 'init-roam)
 
 ;; AI
-(require 'init-ai)
+(require 'init-llm)
 
+(require 'init-misc)
 
 ;; others
 (require 'init-tramp)
@@ -93,9 +67,3 @@
 (when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
   (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
 ;; (require 'init-elfeed)
-
-;; ------------------------------------ temporatory ---------------------
-(use-package! claude-code-ide
-  :bind ("C-c C-'" . claude-code-ide-menu) ; Set your favorite keybinding
-  :config
-  (claude-code-ide-emacs-tools-setup)) ; Optionally enable Emacs MCP tools
