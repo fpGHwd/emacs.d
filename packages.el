@@ -14,9 +14,6 @@
 (package! aidermacs)
 (package! pine-script-mode)
 
-;; Editing experience
-;; (package! meow-tree-sitter)  ; disabled: switched back to evil
-
 ;; Reading and personal knowledge
 (package! nov
   :recipe (:host github
