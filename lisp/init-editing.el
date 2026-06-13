@@ -15,7 +15,16 @@
   (setq meow-cursor-type-normal 'box
         meow-cursor-type-motion 'box
         meow-cursor-type-beacon 'box
-        meow-cursor-type-insert 'bar))
+        meow-cursor-type-insert 'bar)
+  ;; Box-drawing chars in the cheatsheet fall back to Sarasa Fixed SC; force
+  ;; the whole buffer to use it so ASCII and box chars share the same metrics.
+  (advice-add 'meow-cheatsheet :after
+              (lambda (&rest _)
+                (when-let ((buf (get-buffer "*Meow Cheatsheet*")))
+                  (with-current-buffer buf
+                    (when (member "Sarasa Fixed SC" (font-family-list))
+                      (buffer-face-set
+                       `(:family "Sarasa Fixed SC"))))))))
 
 (provide 'init-editing)
 ;;; init-editing.el ends here

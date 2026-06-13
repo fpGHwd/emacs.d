@@ -233,6 +233,7 @@ When instructions are ambiguous:
 - Add new packages to `packages.el`, not directly in init.el
 - External tools go to Nix configuration, not shell commands
 - Test changes with `M-x eval-buffer` before full reload
+- After modifying an Elisp file, automatically reload it via `emacsclient -e '(load-file "path/to/file.el")'` and run relevant tests or sanity checks where possible.
 - You can use emacsclient to observe the current Emacs state, execute commands, etc. When investigating issues, check Emacs execution results via emacsclient.
 - When investigating issues, always find the call stack of the problem or error first, then fix it. Do not try random workarounds.
 - Never modify code haphazardly before identifying the root cause. Before finding the root cause, only write temporary code — never make permanent changes.
