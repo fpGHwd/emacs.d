@@ -138,7 +138,8 @@
                   (with-current-buffer buf
                     (when (member "Sarasa Fixed SC" (font-family-list))
                       (buffer-face-set
-                       `(:family "Sarasa Fixed SC"))))))))
+                       `(:family "Sarasa Fixed SC")))))))
+  (add-hook 'meow-insert-exit-hook #'deactivate-input-method))
 
 ;; identity and workspace settings (from init-ui-misc)
 (setq! +workspaces-data-file (concat (system-name) "_workspaces"))
