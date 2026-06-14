@@ -94,13 +94,30 @@
 (setup pdf-tools
   (:when-loaded
    (defun +wd/zathura-open-current-pdf ()
-     "Open the current pdf-view buffer's file in zathura at the current page."
+     "Open the current pdf-view buffer's file in zathura at the current page.
+When invoked inside an org-noter session, the page last viewed in zathura
+is written back to the root heading's NOTER_PAGE property once zathura is
+closed, so reading progress stays in sync across both viewers."
      (interactive)
      (unless (derived-mode-p 'pdf-view-mode)
        (user-error "Not in a pdf-view buffer"))
-     (start-process "zathura" nil "zathura"
-                    "-P" (number-to-string (pdf-view-current-page))
-                    buffer-file-name))
+     (require 'lib-read)
+     (let* ((file buffer-file-name)
+            (session (+wd/org-noter--current-session))
+            (session (and (org-noter--session-p session)
+                          (eq (org-noter--session-doc-buffer session)
+                              (current-buffer))
+                          session)))
+       (make-process
+        :name "zathura"
+        :noquery t
+        :command (list "zathura" "-P" (number-to-string (pdf-view-current-page)) file)
+        :sentinel
+        (lambda (_proc event)
+          (when (and session (string-prefix-p "finished" event))
+            (when-let* ((page (+wd/zathura-last-page file)))
+              (+wd/org-noter-goto-doc-page session page)
+              (+wd/org-noter-set-root-page session page)))))))
 
    (setq pdf-annot-default-annotation-properties
         '((t         (label . "Wang Ding"))

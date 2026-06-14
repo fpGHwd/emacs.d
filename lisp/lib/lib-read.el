@@ -519,5 +519,67 @@ FILENAME should be the basename of the epub file (without directory)."
              (member org-state '("DONE" "KILL")))
     (+wd/org-noter-update-read-progress t)))
 
+;;; zathura <-> org-noter page sync
+
+(defun +wd/zathura--database-file ()
+  "Return the path to zathura's sqlite database."
+  (expand-file-name "zathura/bookmarks.sqlite"
+                    (or (getenv "XDG_DATA_HOME")
+                        (expand-file-name "~/.local/share"))))
+
+(defun +wd/zathura-last-page (file)
+  "Return the last viewed 1-based page of FILE from zathura's database.
+zathura stores page numbers 0-based in its `fileinfo' table; this
+returns the 1-based page matching `pdf-view-current-page', or nil when
+unavailable.  Falls back to matching by basename when FILE is not stored
+verbatim (e.g. zathura canonicalised the path)."
+  (let ((db (+wd/zathura--database-file)))
+    (when (and (fboundp 'sqlite-available-p) (sqlite-available-p)
+               (stringp file) (file-readable-p db))
+      (let ((conn (sqlite-open db)))
+        (unwind-protect
+            (let ((row (or (car (sqlite-select
+                                 conn
+                                 "SELECT page FROM fileinfo WHERE file = ? \
+ORDER BY time DESC LIMIT 1"
+                                 (list file)))
+                           (car (sqlite-select
+                                 conn
+                                 "SELECT page FROM fileinfo WHERE file LIKE ? \
+ORDER BY time DESC LIMIT 1"
+                                 (list (concat "%/" (file-name-nondirectory file))))))))
+              (when (and row (numberp (car row)))
+                (1+ (car row))))
+          (sqlite-close conn))))))
+
+(defun +wd/org-noter-goto-doc-page (session page)
+  "Move SESSION's pdf-view document buffer to 1-based PAGE."
+  (let ((doc-buffer (and (org-noter--session-p session)
+                         (org-noter--session-doc-buffer session))))
+    (when (buffer-live-p doc-buffer)
+      (with-current-buffer doc-buffer
+        (when (and (derived-mode-p 'pdf-view-mode)
+                   (fboundp 'pdf-view-goto-page))
+          (let ((window (get-buffer-window doc-buffer t)))
+            (if window
+                (pdf-view-goto-page page window)
+              (pdf-view-goto-page page))))))))
+
+(defun +wd/org-noter-set-root-page (session page)
+  "Set NOTER_PAGE on SESSION's root heading to PAGE, then save the notes file."
+  (let ((notes-buffer (and (org-noter--session-p session)
+                           (org-noter--session-notes-buffer session))))
+    (when (buffer-live-p notes-buffer)
+      (with-current-buffer notes-buffer
+        (org-with-wide-buffer
+         (let ((inhibit-read-only t)
+               (ast (org-noter--parse-root session)))
+           (goto-char (org-element-property :begin ast))
+           (org-entry-put nil org-noter-property-note-location
+                          (number-to-string page))))
+        (when buffer-file-name (save-buffer)))
+      (message "org-noter: %s <- %d (from zathura)"
+               org-noter-property-note-location page))))
+
 (provide 'lib-read)
 ;;; lib-read.el ends here
