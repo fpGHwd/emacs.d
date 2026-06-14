@@ -12,6 +12,7 @@
     (meow-normal-define-key '("<backspace>" . ignore))
     (meow-normal-define-key '("C-o" . better-jumper-jump-backward))
     (meow-normal-define-key '("%" . lispy-different))
+    (meow-normal-define-key '("=" . indent-region))
     (:option
      blink-cursor-interval 0.618
      meow-cursor-type-normal 'box
