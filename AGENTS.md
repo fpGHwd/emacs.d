@@ -184,6 +184,21 @@ When debugging a problem, first find the call stack / error source before touchi
 2. Check `~/.config/emacs.d/custom.el` for issues
 3. Run `doom doctor` for diagnostics
 
+### Never start Emacs with bare `emacs --daemon`
+
+The Emacs server is managed exclusively by the systemd user unit `emacs.service`
+(which runs `emacs --fg-daemon`). Launching `emacs --daemon` directly — e.g. to
+"restart" after `(kill-emacs)` during debugging — creates an orphan daemon
+outside systemd's control that steals the server socket. The systemd unit then
+fails with `Unable to start the daemon. Another instance of Emacs is running the
+server`, exits 1, and enters a `Restart=on-failure` loop.
+
+- To restart/recover the server: `systemctl --user restart emacs`
+  (use `systemctl --user reset-failed emacs` first if it is stuck failing).
+- To reload config in the running server: `emacsclient -e '(doom/reload)'`.
+- Never run `emacs --daemon`, and never pair `(kill-emacs)` with a manual
+  daemon relaunch.
+
 ### Package Not Loading
 
 1. Verify in `packages.el`
