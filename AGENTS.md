@@ -27,7 +27,6 @@ This document defines the execution contract for AI agents working in this Doom 
 │   ├── init-editor.el      # modal editing (meow), lispy, clipboard (xclip)
 │   ├── init-rime.el        # input method (Rime)
 │   │  -- dev tools --
-│   ├── init-lsp.el         # cross-language LSP (lsp-haskell, remote-LSP advice)
 │   ├── init-langs.el       # small language modes without their own file
 │   ├── init-vcs.el         # magit / git-commit
 │   ├── init-term.el        # vterm
