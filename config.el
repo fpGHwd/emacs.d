@@ -23,7 +23,6 @@
 (require 'init-rime)                    ;; rime font-size = (+1 init-fonts)
 
 ;; dev tools
-(require 'init-lsp)
 (require 'init-langs)
 (require 'init-vcs)
 (require 'init-term)
