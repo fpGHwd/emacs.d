@@ -26,7 +26,7 @@
 (require 'init-langs)
 (require 'init-vcs)
 (require 'init-term)
-(require 'init-tramp)
+(require 'init-remote)
 (require 'init-lookup)
 
 ;; org ecosystem
