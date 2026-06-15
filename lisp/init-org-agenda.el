@@ -18,12 +18,8 @@
                           (cl-decf add-year))
                         (cl-pushnew "~/org/beorg/" org-agenda-files)
                         org-agenda-files)
-     org-agenda-start-day (pcase (system-name)
-                            ("ubuntu2204" "-3d")
-                            (_ "-1d"))
-     org-agenda-span (pcase (system-name)
-                       ("ubuntu2204" 10)
-                       (_ 6))
+     org-agenda-start-day "-1d"
+     org-agenda-span 4
      org-agenda-show-inherited-tags 'always
      org-agenda-sorting-strategy
      '((agenda habit-down time-up urgency-down category-keep)
