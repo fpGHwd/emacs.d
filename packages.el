@@ -45,3 +45,6 @@
 ;; claude-code emacs integration
 (package! claude-code-ide
   :recipe (:host github :repo "manzaltu/claude-code-ide.el"))
+
+;; add android-mode for adb
+(package! android-mode)
