@@ -8,7 +8,7 @@
    vterm-tramp-shells '(("sshx" login-shell "/bin/zsh" "/bin/bash")
                         ("ssh" login-shell "/bin/zsh" "/bin/bash")
                         ("scp" login-shell "/bin/zsh" "/bin/bash")
-                        ("docker" "/bin/zsh" "/bin/bash" "/bin/sh")))
+                        ("docker" "/bin/bash" "/bin/sh")))
   (:hook meow-insert))
 
 (provide 'init-term)

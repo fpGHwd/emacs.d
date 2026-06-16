@@ -27,7 +27,12 @@
                     (with-current-buffer buf
                       (when (member "Sarasa Fixed SC" (font-family-list))
                         (buffer-face-set
-                         `(:family "Sarasa Fixed SC")))))))
+                         `(:family "Sarasa Fixed SC")))
+                      ;; The cheatsheet is a read-only text-mode buffer, so meow
+                      ;; puts it in normal state where `q' is suppressed. Drop
+                      ;; normal state here and let `q' close the popup.
+                      (meow-normal-mode -1)
+                      (local-set-key "q" #'quit-window)))))
     (:hooks
      meow-insert-exit-hook deactivate-input-method
      ;; lispy belongs only in insert mode.
