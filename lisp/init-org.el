@@ -7,7 +7,7 @@
   ;; (org-mode-hook . (lambda () (company-mode -1)))
   (:hooks
    org-mode-hook auto-revert-mode
-   org-mode-hook variable-pitch-mode
+   org-mode-hook mixed-pitch-mode
    org-mode-hook (lambda () (when (org-property-values "GPTEL_SYSTEM")
                               (progn (gptel-mode)
                                      (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))))
