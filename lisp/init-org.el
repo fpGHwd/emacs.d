@@ -42,7 +42,16 @@
        (plantuml . t)
        (haskell . t)
        (makefile . t)))
-    (setq org-babel-haskell-command "ghci")))
+    (setq org-babel-haskell-command "ghci")
+
+    ;; Load `+wd/org-count-total-update' from the `count-fn' block in
+    ;; habit.org, then refresh COUNT_* after each stored log note (e.g. the
+    ;; count note added on TODO DONE).
+    (let ((org-confirm-babel-evaluate nil))
+      (with-current-buffer (find-file-noselect "~/org/beorg/habit.org")
+        (org-babel-goto-named-src-block "count-fn")
+        (org-babel-execute-src-block)))
+    (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))
 
 
 (setup org-attach
