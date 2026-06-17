@@ -1,8 +1,7 @@
 ;;; init-org.el --- Org-mode core configuration -*- lexical-binding: t; -*-
 
-(setq org-directory (file-truename "~/org/org/current"))
-
 (setup org
+  (:option org-directory "~/org/org/current")
   (keymap-global-set "C-c i" #'org-insert-item)
   ;; (org-mode-hook . (lambda () (company-mode -1)))
   (:hooks
@@ -48,11 +47,11 @@
     ;; habit.org, then refresh COUNT_* after each stored log note (e.g. the
     ;; count note added on TODO DONE).
     (when (not (string= (system-name) "ubuntu2204"))
-    (let ((org-confirm-babel-evaluate nil))
-      (with-current-buffer (find-file-noselect "~/org/beorg/habit.org")
-        (org-babel-goto-named-src-block "count-fn")
-        (org-babel-execute-src-block))
-      (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))))
+      (let ((org-confirm-babel-evaluate nil))
+        (with-current-buffer (find-file-noselect "~/org/beorg/habit.org")
+          (org-babel-goto-named-src-block "count-fn")
+          (org-babel-execute-src-block))
+        (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))))
 
 
 (setup org-attach
