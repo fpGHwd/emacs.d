@@ -47,11 +47,12 @@
     ;; Load `+wd/org-count-total-update' from the `count-fn' block in
     ;; habit.org, then refresh COUNT_* after each stored log note (e.g. the
     ;; count note added on TODO DONE).
+    (when (not (string= (system-name) "ubuntu2204"))
     (let ((org-confirm-babel-evaluate nil))
       (with-current-buffer (find-file-noselect "~/org/beorg/habit.org")
         (org-babel-goto-named-src-block "count-fn")
-        (org-babel-execute-src-block)))
-    (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))
+        (org-babel-execute-src-block))
+      (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))))
 
 
 (setup org-attach

@@ -1,7 +1,7 @@
 ;;; init-remote.el --- TRAMP and remote source/env configuration -*- lexical-binding: t; -*-
 
-(setup find-func
-  (:option find-function-C-source-directory "/sshx:wd@nixos-nuc:~/projects/github/2024/emacs/src")
+;; (setup find-func
+;;   (:option find-function-C-source-directory "/sshx:wd@nixos-nuc:~/projects/github/2024/emacs/src")
 
 (setup envrc
   (:option envrc-remote t))
