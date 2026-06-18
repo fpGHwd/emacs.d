@@ -7,6 +7,9 @@
   (:defer (telega t))
   (:when-loaded
     (:also-load lib-telega)
+    (dolist (mode '(telega-root-mode telega-chat-mode
+                    telega-image-mode telega-webpage-mode))
+      (add-to-list 'meow-mode-state-list (cons mode 'motion)))
     (:option
      telega-cache-dir (file-truename "~/.config/telega/cache")
      telega-directory (file-truename "~/.config/telega/")
