@@ -60,42 +60,6 @@
                     result)))))
 
 
-(setup org-super-agenda
-  ;; (:with-hook org-agenda (org-super-agenda-mode))
-  (:when-loaded
-    (:option
-     org-super-agenda-groups
-     '((:name "Today"
-        :time-grid t
-        :todo "TODAY")
-       ;; (:order-multi (1 (:todo ("HOLD" "IDEA" "[-]" "[?]") :order 2)
-       ;;                  (:todo ("PROJ") :order 4)
-       ;;                  (:todo ("STRT") :order 3)
-       ;;                  (:todo ("TODO" "[ ]") :order 0)
-       ;;                  (:todo ("WAIT") :order 1)))
-       (:order-multi (2
-                      ;; (:name "Important" :tag "bills" :priority "A")
-                      (:name "Reading & Courses" :tag ("book" "course"))
-                      (:name "Audio" :tag "audio")
-                      (:name "Develop" :tag ("dev" "emacs" "source"))
-                      (:name "Work" :tag ("jira" "work"))
-                      ;; (:name "Chore" :tag "chore")
-                      ;; (:name "Trading" :tag "trading")
-                      ;; (:name "Beorg" :tag "beorg")
-                      ))
-       ;; (:order-multi (5 (:name "Shopping in town"
-       ;;                   :and (:tag "shopping" :tag "@town"))
-       ;;                  (:name "Food-related"
-       ;;                   :tag ("food" "dinner"))
-       ;;                  (:name "Personal"
-       ;;                   :habit t
-       ;;                   :tag "personal")
-       ;;                  (:name "Space-related (non-moon-or-planet-related)"
-       ;;                   :and (:regexp ("space" "NASA")
-       ;;                         :not (:regexp "moon" :tag "planet")))))
-       (:priority<= "B" :order 1)))))
-
-
 (setup calendar
   (:when-loaded
     (:option
