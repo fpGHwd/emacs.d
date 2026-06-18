@@ -7,3 +7,5 @@ etc/gptel/gptel-crowdsourced-prompts.csv
 .codebuddy/
 
 .codex
+
+.gdb_history
