@@ -1,7 +1,8 @@
 ;;; init-org.el --- Org-mode core configuration -*- lexical-binding: t; -*-
 
+(setq org-directory "~/org/org/current")
+
 (setup org
-  (:option org-directory "~/org/org/current")
   (keymap-global-set "C-c i" #'org-insert-item)
   ;; (org-mode-hook . (lambda () (company-mode -1)))
   (:hooks

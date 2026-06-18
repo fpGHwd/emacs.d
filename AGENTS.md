@@ -24,7 +24,7 @@ This document defines the execution contract for AI agents working in this Doom 
 │   │  -- appearance & input --
 │   ├── init-fonts.el       # font constants, doom-font, CJK fontset/guardrails
 │   ├── init-ui.el          # theme face tweaks, frame, splash, gif-screencast
-│   ├── init-editor.el      # modal editing (meow), lispy, clipboard (xclip)
+│   ├── init-editor.el      # modal editing (meow), lispy
 │   ├── init-rime.el        # input method (Rime)
 │   │  -- dev tools --
 │   ├── init-langs.el       # small language modes without their own file
@@ -110,7 +110,7 @@ This Emacs configuration depends on external tools managed through Nix:
 
 ### Modify Editor Behavior
 
-1. Edit `lisp/init-editor.el` for editing-related settings (meow keybindings, cursor, lispy, clipboard)
+1. Edit `lisp/init-editor.el` for editing-related settings (meow keybindings, cursor, lispy)
 2. This config uses **meow** (not evil) as the modal system; configure it with `(setup meow (:when-loaded ...))`
 3. Evaluate with `M-x eval-buffer` or `M-x doom/reload`
 
