@@ -2,8 +2,8 @@
 
 (setup meow
   (:when-loaded
-    (meow-normal-define-key '("RET" . meow-line))
-    (meow-normal-define-key '("<return>" . meow-line))
+    (meow-normal-define-key '("RET" . ignore))
+    (meow-normal-define-key '("<return>" . ignore))
     (meow-normal-define-key '("DEL" . ignore))
     (meow-normal-define-key '("<backspace>" . ignore))
     (meow-normal-define-key '("C-o" . better-jumper-jump-backward))
