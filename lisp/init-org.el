@@ -103,7 +103,9 @@
                                         effective-default default-input args)))
                     (when (boundp 'org-time-was-given)
                       (setq org-time-was-given t))
-                    result)))))
+                    result))))
+
+  (add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link))
 
 
 (setup org-attach
@@ -116,11 +118,6 @@
 (setup dired
   (:hooks dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c C-x a")
                                                  #'org-attach-dired-to-subtree))))
-
-
-(setup deft
-  (:when-loaded
-    (:option deft-directory "~/org/deft")))
 
 
 (setup calendar
@@ -172,21 +169,13 @@
      org-latex-impatient-tex2svg-bin (executable-find "tex2svg"))))
 
 
-;; use spectacle on KDE, override doom config
-(setup org-download
-  (:when-loaded
-    (when (and (featurep :system 'linux)
-               (executable-find "spectacle"))
-      (setq org-download-screenshot-method (concat (executable-find "spectacle") " -br -o %s")))))
-
-
 (setup so-long
   (:when-loaded
     (add-to-list 'doom-file-lines-threshold-alist
                  '("\\.org\\'" . 50000))))
 
 
-(add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)
+
 
 (provide 'init-org)
 ;;; init-org.el ends here
