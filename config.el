@@ -31,7 +31,6 @@
 
 ;; org ecosystem
 (require 'init-org)
-(require 'init-org-agenda)
 (require 'init-biblio)
 (require 'init-roam)
 

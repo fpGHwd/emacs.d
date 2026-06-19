@@ -1,11 +1,12 @@
 ;;; init-org.el --- Org-mode core configuration -*- lexical-binding: t; -*-
 
 (setq org-directory "~/org/org/current")
+(setq +wd/seven-year-life 7) ;; 七年一生
 
 (setup org
   (keymap-global-set "C-c i" #'org-insert-item)
-  ;; (org-mode-hook . (lambda () (company-mode -1)))
   (:hooks
+   org-capture-mode-hook meow-insert
    org-mode-hook auto-revert-mode
    org-mode-hook mixed-pitch-mode
    org-mode-hook (lambda () (when (org-property-values "GPTEL_SYSTEM")
@@ -14,9 +15,7 @@
   (:when-loaded
     (:also-load lib-org)
     (:option
-     ;; week display in org-mode
      ;; https://emacs-china.org/t/topic/1551/15
-     ;; https://stackoverflow.com/questions/28913294/emacs-org-mode-language-of-time-stamps
      system-time-locale "C"
      org-log-done 'time
      org-archive-location "~/org/org/current/archive.org.bak::* From %s"
@@ -29,9 +28,31 @@
        :html-background "Transparent" :html-scale 1.0 :matchers
        ("begin" "$1" "$" "$$" "\\(" "\\["))
      org-journal-dir "~/org/journal"
-     rmh-elfeed-org-files '("~/org/elfeed/elfeed.org"))
-    (add-to-list 'org-tags-exclude-from-inheritance "roam-agenda")
+     rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")
+     ;; agenda
+     org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
+     diary-file (expand-file-name "etc/diary" doom-user-dir)
+     org-agenda-include-diary t
+     org-agenda-files (let* ((year-number (string-to-number (format-time-string "%Y")))
+                             (add-year year-number))
+                        (setq org-agenda-files nil)
+                        (while (<= (- year-number add-year) +wd/seven-year-life)
+                          (let ((add-year-str (number-to-string add-year)))
+                            (cl-pushnew (concat "~/org/org/" add-year-str) org-agenda-files)
+                            (cl-pushnew (concat "~/org/noter/" add-year-str) org-agenda-files))
+                          (cl-decf add-year))
+                        (cl-pushnew "~/org/beorg/" org-agenda-files)
+                        org-agenda-files)
+     org-agenda-start-day "-1d"
+     org-agenda-span 4
+     org-agenda-show-inherited-tags 'always
+     org-agenda-sorting-strategy
+     '((agenda habit-down time-up urgency-down category-keep)
+       (todo urgency-down category-keep)
+       (tags urgency-down timestamp-down category-keep) (search alpha-up))
+     org-refile-targets '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1)))
 
+    (add-to-list 'org-tags-exclude-from-inheritance "roam-agenda")
     (add-to-list 'org-file-apps '("\\.drawio\\'" . "/opt/drawio/drawio %s"))
     (add-to-list 'org-file-apps '("\\.minder\\'" . "/usr/bin/minder %s"))
 
@@ -45,14 +66,44 @@
     (setq org-babel-haskell-command "ghci")
 
     ;; Load `+wd/org-count-total-update' from the `count-fn' block in
-    ;; habit.org, then refresh COUNT_* after each stored log note (e.g. the
-    ;; count note added on TODO DONE).
+    ;; habit.org, then refresh COUNT_* after each stored log note.
     (when (not (string= (system-name) "ubuntu2204"))
       (let ((org-confirm-babel-evaluate nil))
         (with-current-buffer (find-file-noselect "~/org/beorg/habit.org")
           (org-babel-goto-named-src-block "count-fn")
           (org-babel-execute-src-block))
-        (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))))
+        (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))
+
+    (org-toggle-sticky-agenda 1)
+
+    ;; emacsclient "org-protocol://capture?template=mc&title=title2 :tag:&body=ok"
+    (defvar +wd/org-capture-file-for-ios (expand-file-name "notes_ios.org" org-directory))
+    (add-to-list 'org-capture-templates '("c" "Capture for external app or command"))
+    (add-to-list 'org-capture-templates
+                 '("cn" "Capture Notes" entry (file+headline +org-capture-notes-file "Inbox")
+                   "* %u %:description\n%:initial\n" :immediate-finish t :prepend t))
+    (add-to-list 'org-capture-templates
+                 '("ci" "Capture Bunch of Notes from iOS" entry (file+headline +wd/org-capture-file-for-ios "Inbox for iOS")
+                   "* %:description\n%:initial\n" :immediate-finish t :prepend t))
+    (add-to-list 'org-capture-templates
+                 '("ct" "Capture Todo" entry (file+headline +org-capture-todo-file "Inbox")
+                   "* [ ] %:description\n%:initial\n" :immediate-finish t :prepend t))
+    (add-to-list 'org-capture-templates
+                 '("cj" "Capture Journal" entry (file+olp+datetree +org-capture-journal-file)
+                   "* %U %:description\n%:initial\n" :immediate-finish t :prepend t))
+
+    ;; Default org-read-date to current time (not 00:00) when timestamp has no time component.
+    (advice-add 'org-read-date :around
+                (lambda (orig &optional with-time to-time from-string prompt default-time default-input &rest args)
+                  (let* ((effective-default
+                          (if (and default-time (not default-input))
+                              (org-current-time)
+                            default-time))
+                         (result (apply orig t to-time from-string prompt
+                                        effective-default default-input args)))
+                    (when (boundp 'org-time-was-given)
+                      (setq org-time-was-given t))
+                    result)))))
 
 
 (setup org-attach
@@ -71,50 +122,57 @@
   (:when-loaded
     (:option deft-directory "~/org/deft")))
 
+
+(setup calendar
+  (:when-loaded
+    (:option
+     calendar-mark-diary-entries-flag t
+     calendar-week-start-day 1
+     calendar-latitude 31.108024
+     calendar-longitude 121.372327)))
+
+
+(setup cal-china-x
+  (:when-loaded
+    (setq mark-holidays-in-calendar t)
+    (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
+    (setq cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节")))
+    (setq calendar-holidays
+          (append cal-china-x-important-holidays
+                  cal-china-x-general-holidays))))
+
+
 (setup ox-publish
   (:when-loaded
     (:also-load lib-org)
     (:option
      org-publish-project-alist
      '(("org-blog"
-        ;; Path to your org files.
         :base-directory "~/org/blog/current/posts/"
         :base-extension "org"
-        ;; Path to your Jekyll project.
         :publishing-directory "~/org/blog/current/outputs/"
         :recursive t
         :publishing-function org-md-publish-to-md
         :publishing-extension "markdown"
         :headline-levels 4
-        ;; :html-extension "html"
-        :body-only t )
-       ;; ("org-blog-static"
-       ;;  :base-directory "~/org/blog/jekyll"
-       ;;  :base-extension "css\\|js\\|png\\|jpg\\|jpeg\\|gif\\|pdf\\|mp3\\|ogg\\|swf\\|php"
-       ;;  :publishing-directory "~/blog/jekyll"
-       ;;  :recursive t
-       ;;  :publishing-function org-publish-attachment)
-       ;; ("jekyll" :components ("org-blog" "org-blog-static"))
-       ))
+        :body-only t)))
     (add-hook 'org-export-before-processing-hook #'my/org-insert-updated-timestamp)
     (add-hook 'org-publish-after-publishing-hook #'+wd/handle-image-in-markdown)
-
-    ;; 这个快捷键放在全局比较好
     (map! :leader
           (:prefix-map ("c" . "code")
            :desc "Write New Blog" "B" #'blog-post))
-
     (add-to-list 'file-coding-system-alist '("\\.bib" . utf-8))))
 
 
 (setup org-latex-impatient
-  (:hooks org-mode-hook org-latex-impatient-mode) ; 这个写法是常用的
+  (:hooks org-mode-hook org-latex-impatient-mode)
   (:when-loaded
     (:option
      max-image-size nil
      org-latex-impatient-tex2svg-bin (executable-find "tex2svg"))))
 
-;; use spectable on KDE, override doom config: /home/wd/.config/emacs/modules/lang/org/contrib/dragndrop.el
+
+;; use spectacle on KDE, override doom config
 (setup org-download
   (:when-loaded
     (when (and (featurep :system 'linux)
@@ -126,6 +184,9 @@
   (:when-loaded
     (add-to-list 'doom-file-lines-threshold-alist
                  '("\\.org\\'" . 50000))))
+
+
+(add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)
 
 (provide 'init-org)
 ;;; init-org.el ends here
