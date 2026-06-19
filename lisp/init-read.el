@@ -15,17 +15,39 @@
      calibredb-opds-download-dir "~/Downloads/calibredb"
      calibredb-download-dir "~/Downloads/calibredb"
      calibredb-format-nerd-icons t
-     calibredb-root-dir "/home/wd/Calibre Library")
+     calibredb-root-dir "http://nixos-nuc:8080/opds")
 
-    ;; for folder driver metadata: it should be .metadata.calibre
     (setq calibredb-library-alist
-          (when calibredb-root-dir (list (list calibredb-root-dir))))
-    (when (not (string= (system-name) "arch-nuc"))
-      (push `("http://nixos-nuc:8083/opds"
-              (name . "calibre-web")
-              (account . "wd")
-              (password . ,(password-store-get "calibre-web/wd")))
-            calibredb-library-alist))))
+          `(("http://nixos-nuc:8080/opds"
+             (name . "calibre")
+             (account . "wd")
+             (password . ,(password-store-get "calibre-lib/wd")))))
+
+    ;; calibredb hardcodes Basic auth; Calibre content server requires Digest.
+    (defun +wd/calibredb-opds-request-page--digest-auth (oldfn url &optional account password)
+      (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
+             (account (or account (alist-get 'account info)))
+             (password (or password (alist-get 'password info))))
+        (if (and account password)
+            (let* ((_ (defvar request-curl-options nil))
+                   (request-curl-options
+                    (list "--digest" "--user" (format "%s:%s" account password))))
+              (funcall oldfn url))
+          (funcall oldfn url account password))))
+    (advice-add 'calibredb-opds-request-page :around
+                #'+wd/calibredb-opds-request-page--digest-auth)
+    (defun +wd/calibredb-opds-download--digest-auth (oldfn title url fmt &optional account password)
+      (cl-letf* ((orig (symbol-function 'start-process-shell-command))
+                 ((symbol-function 'start-process-shell-command)
+                  (lambda (name buf cmd &rest args)
+                    (apply orig name buf
+                           (replace-regexp-in-string "curl -u" "curl --digest -u" cmd)
+                           args))))
+        (funcall oldfn title url fmt account password)))
+    (advice-add 'calibredb-opds-download :around
+                #'+wd/calibredb-opds-download--digest-auth)
+    (with-eval-after-load 'meow
+      (add-hook 'calibredb-search-mode-hook #'meow-motion-mode))))
 
 
 ;; nov.el
