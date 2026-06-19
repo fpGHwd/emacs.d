@@ -581,5 +581,109 @@ ORDER BY time DESC LIMIT 1"
       (message "org-noter: %s <- %d (from zathura)"
                org-noter-property-note-location page))))
 
+;;; calibre management
+
+(defun +wd/add-book-to-calibre ()
+  (interactive)
+  (let* ((postfix (list ".pdf" ".epub" ".mobi" ".azw" ".azw3"))
+         (path-list (mapcar #'file-truename '("~/Downloads"
+                                              "/mnt/nas/data-wd/book"
+                                              "/mnt/nas/datb-wd/book")))
+         (bin-path (executable-find "calibredb"))
+         (password (password-store-get "calibre-lib/wd"))
+         (bash-path (executable-find "bash")))
+    (dolist (pa path-list)
+      (dolist (pf postfix)
+        (when (file-directory-p pa)
+          (mapcar (lambda (path)
+                    (let* ((cmd (concat bin-path
+                                        " --with-library=http://nixos-nuc:8080"
+                                        " --username=wd"
+                                        " --password=" password
+                                        " --duplicates add " "'" path "'")))
+                      (set-process-sentinel
+                       (start-process "calibredb-add-book" nil bash-path "-c" cmd)
+                       (lambda (proc event)
+                         (when (string-equal event "finished\n")
+                           (delete-file path)
+                           (message "Add to calibre & delete origin: %s" path))))))
+                  (directory-files pa t pf)))))))
+
+;;; org-noter / calibre integration
+
+(defun +wd/org-noter--find-document-in-calibre (document)
+  "Resolve DOCUMENT by filename under `+wd/org-noter-calibre-library-root`."
+  (let* ((doc (and (stringp document) (string-trim document)))
+         (expanded (and doc (expand-file-name doc))))
+    (cond
+     ((or (null doc) (string-empty-p doc)) nil)
+     ((file-exists-p expanded) expanded)
+     ((not (file-directory-p +wd/org-noter-calibre-library-root)) nil)
+     (t
+      (let* ((filename (file-name-nondirectory expanded))
+             (matches (directory-files-recursively
+                       +wd/org-noter-calibre-library-root
+                       (concat "\\`" (regexp-quote filename) "\\'")))
+             (sorted (sort matches (lambda (a b) (< (length a) (length b))))))
+        (car sorted))))))
+
+(defun +wd/org-noter-parse-document-property-calibre (document &rest _)
+  "Hook for `org-noter-parse-document-property-hook' to resolve DOCUMENT path."
+  (+wd/org-noter--find-document-in-calibre document))
+
+(defun +wd/org-noter-calibre-note-name (document-path)
+  "Return notes filename for DOCUMENT-PATH by querying calibredb.
+File is named calibredb-{id}.org.  If it does not yet exist in
+`org-noter-notes-search-path', pre-create it with the correct heading
+and NOTER_DOCUMENT property so org-noter adopts it without inserting
+an auto-generated heading based on the transliterated PDF filename."
+  (when-let* ((_ (require 'calibredb nil t))
+              (id  (+wd/org-noter--calibre-id-from-path document-path))
+              (row (car (calibredb-query
+                         (format "SELECT b.title, group_concat(a.name, ' & ')
+FROM books b
+LEFT JOIN books_authors_link ba ON b.id = ba.book
+LEFT JOIN authors a ON ba.author = a.id
+WHERE b.id = %s GROUP BY b.id" id))))
+              (title  (or (nth 0 row) "Unknown"))
+              (author (mapconcat #'identity
+                                 (seq-take (split-string (or (nth 1 row) "Unknown") " & ") 2)
+                                 " & "))
+              (filename (format "CDB-%s.org" id))
+              (notes-dir (car org-noter-notes-search-path))
+              (notes-path (expand-file-name filename notes-dir)))
+    (unless (file-exists-p notes-path)
+      (with-temp-file notes-path
+        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:END:\n"
+                        title author document-path))))
+    filename))
+
+;;; zathura / pdf-view integration
+
+(defun +wd/zathura-open-current-pdf ()
+  "Open the current pdf-view buffer's file in zathura at the current page.
+When invoked inside an org-noter session, the page last viewed in zathura
+is written back to the root heading's NOTER_PAGE property once zathura is
+closed, so reading progress stays in sync across both viewers."
+  (interactive)
+  (unless (derived-mode-p 'pdf-view-mode)
+    (user-error "Not in a pdf-view buffer"))
+  (let* ((file buffer-file-name)
+         (session (+wd/org-noter--current-session))
+         (session (and (org-noter--session-p session)
+                       (eq (org-noter--session-doc-buffer session)
+                           (current-buffer))
+                       session)))
+    (make-process
+     :name "zathura"
+     :noquery t
+     :command (list "zathura" "-P" (number-to-string (pdf-view-current-page)) file)
+     :sentinel
+     (lambda (_proc event)
+       (when (and session (string-prefix-p "finished" event))
+         (when-let* ((page (+wd/zathura-last-page file)))
+           (+wd/org-noter-goto-doc-page session page)
+           (+wd/org-noter-set-root-page session page)))))))
+
 (provide 'lib-read)
 ;;; lib-read.el ends here
