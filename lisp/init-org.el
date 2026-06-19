@@ -76,6 +76,19 @@
 
     (org-toggle-sticky-agenda 1)
 
+    (:face org-block ((t (:inherit fixed-pitch))))
+    (:face org-code ((t (:inherit (shadow fixed-pitch)))))
+    (:face org-document-info ((t (:foreground "dark orange"))))
+    (:face org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+    (:face org-indent ((t (:inherit (org-hide fixed-pitch)))))
+    (:face org-link ((t (:foreground "royal blue" :underline t))))
+    (:face org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    (:face org-property-value ((t (:inherit fixed-pitch))))
+    (:face org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    (:face org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+    (:face org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+    (:face org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+
     ;; emacsclient "org-protocol://capture?template=mc&title=title2 :tag:&body=ok"
     (defvar +wd/org-capture-file-for-ios (expand-file-name "notes_ios.org" org-directory))
     (add-to-list 'org-capture-templates '("c" "Capture for external app or command"))
@@ -112,7 +125,8 @@
   (:when-loaded
     (:option
      org-attach-directory (file-truename "~/.local/org-attach")
-     org-attach-id-dir (file-truename "~/.local/org-attach"))))
+     org-attach-id-dir (file-truename "~/.local/org-attach")
+     org-attach-sync-delete-empty-dir t)))
 
 
 (setup dired

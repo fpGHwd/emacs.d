@@ -6,5 +6,8 @@
 (setup pine-script-mode
   (:require pine-script-mode))
 
+(setup sql
+  (:option sql-mysql-program "mariadb"))
+
 (provide 'init-langs)
 ;;; init-langs.el ends here

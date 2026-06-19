@@ -9,7 +9,7 @@
                         ("ssh" login-shell "/bin/zsh" "/bin/bash")
                         ("scp" login-shell "/bin/zsh" "/bin/bash")
                         ("docker" "/bin/bash" "/bin/sh")))
-  (:hook meow-insert))
+  (:hooks vterm-mode-hook meow-insert-mode))
 
 (provide 'init-term)
 ;;; init-term.el ends here
