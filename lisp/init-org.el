@@ -116,9 +116,8 @@
                                         effective-default default-input args)))
                     (when (boundp 'org-time-was-given)
                       (setq org-time-was-given t))
-                    result))))
-
-  (add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link))
+                    result)))
+    (add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)))
 
 
 (setup org-attach
