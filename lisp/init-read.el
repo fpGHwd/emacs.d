@@ -36,6 +36,14 @@
           (funcall oldfn url account password))))
     (advice-add 'calibredb-opds-request-page :around
                 #'+wd/calibredb-opds-request-page--digest-auth)
+    ;; calibredb-opds-request-search-page tries to GET the raw {searchTerms} template URL
+    ;; which Calibre returns 404 for. Bypass it: substitute the keyword directly and call
+    ;; calibredb-opds-request-page (which already handles Digest auth via its own advice).
+    (defun +wd/calibredb-opds-request-search-page--digest-auth (oldfn url keyword &rest _)
+      (let ((search-url (replace-regexp-in-string "{[^}]*}" (url-hexify-string keyword) url)))
+        (calibredb-opds-request-page search-url)))
+    (advice-add 'calibredb-opds-request-search-page :around
+                #'+wd/calibredb-opds-request-search-page--digest-auth)
     (defun +wd/calibredb-opds-download--digest-auth (oldfn title url fmt &optional account password)
       (cl-letf* ((orig (symbol-function 'start-process-shell-command))
                  ((symbol-function 'start-process-shell-command)
