@@ -97,7 +97,7 @@ This Emacs configuration depends on external tools managed through Nix:
 | `ledger` | Finance tracking | `~/.config/nix.d/modules/emacs.nix` |
 | `rime` | Input method | `~/.config/nix.d/modules/emacs.nix` |
 
-**To add external tool dependencies**: Edit `~/.config/nix.d/modules/emacs.nix`, then run `nix-sr` to apply.
+**To add external tool dependencies**: Edit `~/.config/nix.d/modules/emacs.nix`, then run `sudo darwin-rebuild switch --flake ~/.config/nix.d#macos-m1` to apply.
 
 ## Common Workflows
 
@@ -150,14 +150,14 @@ In `init.el`, flags modify module behavior:
 ### Workflow: Change External Tool Dependency
 
 1. Edit `~/.config/nix.d/modules/emacs.nix`
-2. Run `nix-sr` (home-manager switch)
+2. Run `sudo darwin-rebuild switch --flake ~/.config/nix.d#macos-m1` (home-manager switch)
 3. Verify tool is available: `which <tool>`
 4. Restart Emacs if needed
 
 ### Workflow: Add Emacs Package Requiring External Tool
 
 1. Add external tool to `~/.config/nix.d/modules/emacs.nix`
-2. Run `nix-sr`
+2. Run `sudo darwin-rebuild switch --flake ~/.config/nix.d#macos-m1`
 3. Add `(package! package-name)` to `packages.el`
 4. Add configuration in `lisp/`
 5. Run `doom sync`
@@ -208,7 +208,7 @@ server`, exits 1, and enters a `Restart=on-failure` loop.
 ### External Tool Not Found
 
 1. Check `~/.config/nix.d/modules/emacs.nix` has the tool
-2. Run `nix-sr` to apply Nix changes
+2. Run `sudo darwin-rebuild switch --flake ~/.config/nix.d#macos-m1` to apply Nix changes
 3. Verify with `which <tool>` in shell
 4. Check `exec-path` in Emacs: `C-h v exec-path`
 
