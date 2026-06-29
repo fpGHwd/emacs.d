@@ -10,9 +10,9 @@
            :branch "master"))
 
 ;; Productivity and tooling
-(package! bing-dict)
-(package! aidermacs)
-(package! pine-script-mode)
+;; (package! bing-dict)
+;; (package! aidermacs)
+;; (package! pine-script-mode)
 
 ;; Reading and personal knowledge
 (package! nov
@@ -23,7 +23,7 @@
 
 ;; Org ecosystem
 (package! cal-china-x)
-(package! org-super-agenda)
+;; (package! org-super-agenda)
 (package! org-roam-ui
   :recipe (:host github
            :repo "org-roam/org-roam-ui"
@@ -45,3 +45,6 @@
 ;; claude-code emacs integration
 (package! claude-code-ide
   :recipe (:host github :repo "manzaltu/claude-code-ide.el"))
+
+;; add android-mode for adb
+;; (package! android-mode)
