@@ -40,5 +40,12 @@
      meow-normal-mode-hook (lambda () (when meow-normal-mode (lispy-mode -1)))
      meow-insert-enter-hook (lambda () (when (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'scheme-mode 'clojure-mode) (lispy-mode 1))))))
 
+;; Under pgtk on Wayland, Emacs keeps believing it owns CLIPBOARD when it loses
+;; focus (Wayland only delivers selection-cancelled events to the focused
+;; surface), so yank returns its own stale value. Route cut/paste through
+;; wl-clipboard to bypass GTK selection ownership entirely.
+(setup xclip
+  (xclip-mode 1))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here
