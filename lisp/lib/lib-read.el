@@ -100,17 +100,22 @@ Uses Digest auth with the account/password stored in `calibredb-library-alist'."
                (file-exists-p file))
       file)))
 
-(defun +wd/calibre--ensure-note-file (id title author doc-path)
-  "Ensure CDB-ID.org exists in the notes dir; return its absolute path.
+(defun +wd/calibre--ensure-note-file (id title author doc-name)
+  "Ensure CDB-ID.org exists in the org-noter notes dir; return its path.
 When absent, pre-create it with a `* TITLE - AUTHOR' heading and
-`:NOTER_DOCUMENT: DOC-PATH', so org-noter adopts it verbatim.  This is
-the single place the unified notes format is written."
-  (let* ((notes-dir (car org-noter-notes-search-path))
+`:NOTER_DOCUMENT: DOC-NAME', where DOC-NAME is the calibre database
+filename (a bare basename, not an absolute path) so the notes file stays
+portable across machines; `+wd/org-noter-parse-document-property-calibre'
+resolves it to a real file at open time.  This is the single place the
+unified notes format is written."
+  (let* ((notes-dir (or (car org-noter-notes-search-path)
+                        (expand-file-name "~/org/noter")))
          (note (expand-file-name (format "CDB-%s.org" id) notes-dir)))
+    (make-directory notes-dir t)
     (unless (file-exists-p note)
       (with-temp-file note
-        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:END:\n"
-                        (or title "Unknown") (or author "Unknown") doc-path))))
+        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:END:\n"
+                        (or title "Unknown") (or author "Unknown") doc-name id))))
     note))
 
 (defun +wd/calibredb-get-file-path--local-first (oldfn entry &optional prompt)
@@ -144,27 +149,34 @@ format is identical regardless of how the document is obtained."
       (user-error "No calibre id for entry at point"))
     (unless doc-path
       (user-error "Could not resolve or download document for id %s" id))
-    (find-file (+wd/calibre--ensure-note-file id title author doc-path))
+    (find-file (+wd/calibre--ensure-note-file
+                id title author (file-name-nondirectory doc-path)))
     (org-noter)))
 
 ;;; org-noter document resolution fallback
 
 (defun +wd/org-noter-parse-document-property-calibre (document &rest _)
-  "Resolve DOCUMENT to a file under `+wd/calibre-local-library-root'.
+  "Resolve DOCUMENT (a bare calibre filename or a path) to an openable file.
 Hook for `org-noter-parse-document-property-hook': return DOCUMENT as-is
-when it exists, otherwise search the calibre library by basename and return
-the shortest match."
+when it exists, otherwise search the local calibre library and the OPDS
+download dir by basename and return the shortest match."
   (let* ((doc (and (stringp document) (string-trim document)))
          (expanded (and doc (expand-file-name doc))))
     (cond
      ((or (null doc) (string-empty-p doc)) nil)
      ((file-exists-p expanded) expanded)
-     ((not (file-directory-p +wd/calibre-local-library-root)) nil)
      (t
       (let* ((filename (file-name-nondirectory expanded))
-             (matches (directory-files-recursively
-                       +wd/calibre-local-library-root
-                       (concat "\\`" (regexp-quote filename) "\\'")))
+             (roots (seq-filter
+                     (lambda (d) (and (stringp d) (file-directory-p d)))
+                     (list +wd/calibre-local-library-root
+                           (and (boundp 'calibredb-opds-download-dir)
+                                (expand-file-name calibredb-opds-download-dir)))))
+             (matches (mapcan
+                       (lambda (root)
+                         (directory-files-recursively
+                          root (concat "\\`" (regexp-quote filename) "\\'")))
+                       roots))
              (sorted (sort matches (lambda (a b) (< (length a) (length b))))))
         (car sorted))))))
 
