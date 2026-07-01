@@ -127,6 +127,27 @@ This Emacs configuration depends on external tools managed through Nix:
 3. Bibliography / citations (citar/reftex): `lisp/init-biblio.el`
 4. Org-roam: `lisp/init-roam.el`
 
+### Reading Stack (calibredb / org-noter)
+
+Feature code lives in `lisp/init-read.el` (setup + hooks) and `lisp/lib/lib-read.el`
+(helpers). Core invariants — keep them, do not regress:
+
+- **Search always goes through OPDS.** `calibredb-root-dir` is the OPDS
+  content-server URL on every host; do not re-introduce local-vs-OPDS search
+  branching. The local library is used *only* to open the on-disk copy.
+- **The calibre numeric id is the single key across search → open → noter.**
+  Extract it from the OPDS entry `:file-path` URL (`/get/<fmt>/<id>/`); never
+  reverse-infer the id from a downloaded file path or a `Title (id)/` directory.
+- **Local-first open is one `:around` advice on `calibredb-get-file-path`.** When
+  it returns an `http` URL and `+wd/calibre-local-library-root` exists, resolve
+  the id to a local path via an independent `sqlite-open` on `metadata.db` — never
+  repoint the global `calibredb-db-dir`. All open commands inherit this.
+- **Notes use one unified `CDB-<id>.org`, written in exactly one place**
+  (`+wd/calibre--ensure-note-file`). Start org-noter from that org buffer (it reads
+  `NOTER_DOCUMENT`), not via `find-additional-notes-functions` path inference.
+- Helpers that call lazily-loaded calibredb/org-noter symbols must
+  `declare-function`/`defvar` them so `lib-read.el` byte-compiles clean.
+
 ## Doom Emacs Specifics
 
 ### Key Conventions

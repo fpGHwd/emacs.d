@@ -4,7 +4,7 @@
 (setup calibredb
   (:with-function calibredb)
   (:when-loaded
-    (:also-load lib-util)
+    (:also-load lib-util lib-read)
     (:option
      calibredb-search-page-max-rows 30
      calibredb-ref-default-bibliography "~/org/refs/calibre.bib"
@@ -12,16 +12,18 @@
      calibredb-size-show t
      calibredb-format-all-the-icons t
      calibredb-format-icons-in-terminal t
-     calibredb-opds-download-dir "~/Downloads/calibredb"
-     calibredb-download-dir "~/Downloads/calibredb"
-     calibredb-format-nerd-icons t
-     calibredb-root-dir "http://nixos-nuc:8080/opds")
+     calibredb-format-nerd-icons t)
 
-    (setq calibredb-library-alist
-          `(("http://nixos-nuc:8080/opds"
-             (name . "calibre")
-             (account . "wd")
-             (password . ,(password-store-get "calibre-lib/wd")))))
+    ;; Search/browse always go through the OPDS content server; the local
+    ;; library (if present) is used only to open the on-disk copy.
+    (setopt calibredb-root-dir "http://nixos-nuc:8080/opds"
+            calibredb-opds-download-dir "~/Downloads/calibredb"
+            calibredb-download-dir "~/Downloads/calibredb"
+            calibredb-library-alist
+            `(("http://nixos-nuc:8080/opds"
+               (name . "calibre")
+               (account . "wd")
+               (password . ,(password-store-get "calibre-lib/wd")))))
 
     ;; calibredb hardcodes Basic auth; Calibre content server requires Digest.
     (defun +wd/calibredb-opds-request-page--digest-auth (oldfn url &optional account password)
@@ -54,6 +56,16 @@
         (funcall oldfn title url fmt account password)))
     (advice-add 'calibredb-opds-download :around
                 #'+wd/calibredb-opds-download--digest-auth)
+
+    ;; Open the local library copy when the book exists on disk (global,
+    ;; applies to every open command via the shared path resolver).
+    (advice-add 'calibredb-get-file-path :around
+                #'+wd/calibredb-get-file-path--local-first)
+
+    ;; One-key: open the book at point in org-noter via a unified CDB-<id>.org.
+    (with-eval-after-load 'calibredb-search
+      (define-key calibredb-search-mode-map (kbd "n") #'+wd/calibredb-org-noter))
+
     (with-eval-after-load 'meow
       (add-hook 'calibredb-search-mode-hook #'meow-motion-mode))))
 
@@ -105,16 +117,8 @@
     (:also-load lib-read)
     (:option org-noter-doc-split-fraction '(0.618 . 0.382))
 
-    (when (string= (system-name) "ubuntu2204")
-      (setq +wd/org-noter-calibre-library-root
-            "/home/wd/windows_share_dir/reference/books"))
-
-    (add-hook 'org-noter-find-additional-notes-functions
-              #'+wd/org-noter-calibre-note-name)
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-parse-document-property-calibre)
-    (add-hook 'org-after-todo-state-change-hook
-              #'+wd/org-noter-auto-update-read-progress)
     (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current"))))
 
 
