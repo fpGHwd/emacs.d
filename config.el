@@ -35,6 +35,7 @@
 (require 'init-roam)
 
 ;; apps
+(require 'init-schedule)
 (require 'init-read)
 (require 'init-ledger)
 (require 'init-llm)
