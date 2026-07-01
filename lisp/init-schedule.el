@@ -62,7 +62,8 @@ If 17:30 has already passed today, schedule for tomorrow."
       (setq +wd/org-autocommit-timer nil))))
 
 ;; Enable by default
-(user-schedule-mode +1)
+(when (string= (system-name) "ubuntu2204")
+  (user-schedule-mode +1))
 
 (provide 'init-schedule)
 ;;; init-schedule.el ends here
