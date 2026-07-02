@@ -7,7 +7,6 @@
     (:also-load lib-util lib-read)
     (:option
      calibredb-search-page-max-rows 30
-     calibredb-ref-default-bibliography "~/org/refs/calibre.bib"
      calibredb-id-width 6
      calibredb-size-show t
      calibredb-format-all-the-icons t
@@ -16,12 +15,18 @@
 
     ;; Search/browse always go through the OPDS content server; the local
     ;; library (if present) is used only to open the on-disk copy.
-    (setopt calibredb-root-dir "http://nixos-nuc:8080/opds"
+    (setopt calibredb-root-dir (if (zerop (call-process "pgrep" nil nil nil "-x" "tailscaled"))
+                                   "http://nixos-nuc:8080/opds"
+                                 "https://opds.autove.dev/opds")
             calibredb-opds-download-dir "~/.cache/calibre/downloads/"
             calibredb-download-dir "~/.cache/calibre/downloads/"
             calibredb-library-alist
             `(("http://nixos-nuc:8080/opds"
                (name . "calibre")
+               (account . "wd")
+               (password . ,(password-store-get "calibre-lib/wd")))
+              ("https://opds.autove.dev/opds"
+               (name . "calibre-cloudflare")
                (account . "wd")
                (password . ,(password-store-get "calibre-lib/wd")))))
 
