@@ -19,7 +19,7 @@ After committing, reschedule for the next day at 17:30."
     (unless (file-directory-p (expand-file-name ".git" default-directory))
       (user-error "~/org is not a git repository"))
     (magit-with-toplevel
-      (magit-stage-modified)
+      (magit-stage-modified t)
       (when (magit-anything-staged-p)
         (magit-run-git "commit" "-m"
                        (format "auto-commit: %s" (format-time-string "%Y-%m-%d %H:%M")))
