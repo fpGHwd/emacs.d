@@ -38,14 +38,11 @@
 
 (defun +wd/calibre--entry-id (entry)
   "Return the calibre numeric id (string) for calibredb ENTRY, or nil.
-OPDS entries carry the id inside the acquisition URL
-`.../get/<fmt>/<id>/...'; local entries carry it in the parent directory
-`<Title> (<id>)'."
+The id lives inside the OPDS acquisition URL `.../get/<fmt>/<id>/...'."
   (let ((path (and entry (calibredb-getattr entry :file-path))))
-    (when (stringp path)
-      (cond
-       ((string-match "/get/[^/]+/\\([0-9]+\\)/" path) (match-string 1 path))
-       ((string-match "(\\([0-9]+\\))/[^/]*\\'" path) (match-string 1 path))))))
+    (when (and (stringp path)
+               (string-match "/get/[^/]+/\\([0-9]+\\)/" path))
+      (match-string 1 path))))
 
 (defun +wd/calibre--download (title url format)
   "Download URL to <download-dir>/TITLE.FORMAT and return the path, or nil.
@@ -87,25 +84,24 @@ format is written."
     note))
 
 (defun +wd/calibredb-org-noter ()
-  "Open the calibre book at point in org-noter via a unified CDB-<id>.org.
-Read the authoritative id/title/author and the OPDS acquisition URL from
-the calibredb entry, download the document (cached), then create/open
-`CDB-<id>.org' and start `org-noter'.  The notes file records the URL so
-the document can be re-downloaded on any machine."
+  "Create a unified CDB-<id>.org for the calibre book at point and open it.
+Read id/title/author and the OPDS acquisition URL from the calibredb entry
+and write the notes file directly from that metadata — the document is NOT
+downloaded here; it is fetched lazily by the resolvers on
+`org-noter-parse-document-property-hook' when the session opens."
   (interactive)
   (let* ((entry (car (calibredb-find-candidate-at-point)))
          (id (+wd/calibre--entry-id entry))
          (title (calibredb-getattr entry :book-title))
          (author (calibredb-getattr entry :author-sort))
-         (format (calibredb-getattr entry :book-format))
          (url (calibredb-getattr entry :file-path))
-         (doc-path (+wd/calibre--download title url format)))
+         (fmt (and (stringp url)
+                   (string-match "/get/\\([^/]+\\)/" url)
+                   (match-string 1 url)))
+         (doc-name (if fmt (format "%s.%s" title fmt) title)))
     (unless id
       (user-error "No calibre id for entry at point"))
-    (unless doc-path
-      (user-error "Could not download document for id %s" id))
-    (find-file (+wd/calibre--ensure-note-file
-                id title author (file-name-nondirectory doc-path) url))
+    (find-file (+wd/calibre--ensure-note-file id title author doc-name url))
     (org-noter)))
 
 ;;; org-noter document resolution — resolvers tried in order via
@@ -121,7 +117,7 @@ the document can be re-downloaded on any machine."
   "Return DOCUMENT as an existing file path, or nil.
 Primary resolver on `org-noter-parse-document-property-hook'."
   (when-let* ((doc (+wd/org-noter--clean-document document))
-              (expanded (expand-file-name doc)))
+              (expanded (expand-file-name doc calibredb-opds-download-dir)))
     (and (file-exists-p expanded) expanded)))
 
 (defun +wd/calibre--export-library-url (calibre-url)
@@ -138,32 +134,39 @@ CALIBRE-URL looks like `http://host/get/<fmt>/<id>/<library>'; return
   (and (file-directory-p dir)
        (car (directory-files dir t (format "\\`%s\\." (regexp-quote id))))))
 
-(defun +wd/org-noter-parse-document-calibredb (&optional _document &rest _)
+(defun +wd/org-noter-parse-document-calibredb (&optional document &rest _)
   "Fetch the document from calibre via `calibredb export' using `:CALIBRE_ID'.
-Return the exported path, or nil.
-Secondary resolver on `org-noter-parse-document-property-hook': export the
-book (by id) from the content server into `calibredb-opds-download-dir' as
-<id>.<ext> (cached).  The server + library are taken from `:CALIBRE_URL'."
-  (when-let* ((id (org-entry-get nil "CALIBRE_ID" t))
-              (lib (+wd/calibre--export-library-url
-                    (org-entry-get nil "CALIBRE_URL" t)))
+Return the exported path named `<DOCUMENT>.<ext>' (DOCUMENT is the book
+title in NOTER_DOCUMENT), or nil.  Secondary resolver on
+`org-noter-parse-document-property-hook': export the book by id from the
+content server into `calibredb-opds-download-dir', renaming it to the book
+title so the on-disk name matches NOTER_DOCUMENT (cached).  Server +
+library are taken from `:CALIBRE_URL'."
+  (when-let* ((doc (+wd/org-noter--clean-document document))
+              (id (org-entry-get nil "CALIBRE_ID" t))
+              (url (org-entry-get nil "CALIBRE_URL" t))
+              (lib (+wd/calibre--export-library-url url))
               (bin (executable-find "calibredb"))
-              (dir (expand-file-name calibredb-opds-download-dir)))
-    (or (+wd/calibre--exported-file id dir)
-        (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
-               (account (alist-get 'account info))
-               (password (alist-get 'password info)))
-          (make-directory dir t)
-          (message "org-noter: exporting calibre id %s via calibredb..." id)
-          (when (eq 0 (apply #'call-process bin nil nil nil
-                             "export" "--with-library" lib
-                             "--to-dir" dir "--single-dir"
-                             "--dont-write-opf" "--dont-save-cover"
-                             "--dont-update-metadata" "--template" "{id}"
-                             (append (when (and account password)
-                                       (list "--username" account "--password" password))
-                                     (list id))))
-            (+wd/calibre--exported-file id dir))))))
+              (dir (expand-file-name calibredb-opds-download-dir))
+              (target (expand-file-name doc dir)))
+    (if (file-exists-p target)
+        target
+      (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
+             (account (alist-get 'account info))
+             (password (alist-get 'password info)))
+        (make-directory dir t)
+        (message "org-noter: exporting calibre id %s via calibredb..." id)
+        (when (eq 0 (apply #'call-process bin nil nil nil
+                           "export" "--with-library" lib
+                           "--to-dir" dir "--single-dir"
+                           "--dont-write-opf" "--dont-save-cover"
+                           "--dont-update-metadata" "--template" "{id}"
+                           (append (when (and account password)
+                                     (list "--username" account "--password" password))
+                                   (list id))))
+          (when-let ((exported (+wd/calibre--exported-file id dir)))
+            (rename-file exported target t)
+            target))))))
 
 (defun +wd/org-noter-parse-document-download (document &rest _)
   "Re-download DOCUMENT via the heading's `:CALIBRE_URL' property, or nil.
@@ -173,11 +176,12 @@ Fallback resolver on `org-noter-parse-document-property-hook', tried after
 create-session path guarantees this)."
   (when-let* ((doc (+wd/org-noter--clean-document document))
               (url (org-entry-get nil "CALIBRE_URL" t))
-              (filename (file-name-nondirectory (expand-file-name doc))))
-    (message "org-noter: downloading %s from calibre OPDS..." filename)
-    (+wd/calibre--download (file-name-sans-extension filename)
-                           url
-                           (file-name-extension filename))))
+              (fmt (or (and (string-match "/get/\\([^/]+\\)/" url)
+                            (match-string 1 url))
+                       (file-name-extension doc))))
+    (message "org-noter: downloading %s from calibre OPDS..." doc)
+    (+wd/calibre--download (file-name-sans-extension (file-name-nondirectory doc))
+                           url fmt)))
 
 ;;; zathura <-> org-noter page sync
 

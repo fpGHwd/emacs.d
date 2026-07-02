@@ -144,13 +144,20 @@ Feature code lives in `lisp/init-read.el` (setup + hooks) and `lisp/lib/lib-read
   path without re-downloading if it already exists). The command and the parse hook
   share it.
 - **Notes use one unified `CDB-<id>.org`, written in exactly one place**
-  (`+wd/calibre--ensure-note-file`): `:NOTER_DOCUMENT:` (bare download filename),
-  `:CALIBRE_ID:`, `:CALIBRE_URL:` (full OPDS acquisition URL). Start org-noter from
-  that org buffer (A-mode), not via `find-additional-notes-functions`.
-- **Opening resolves via `org-noter-parse-document-property-hook` in two steps:**
-  use `NOTER_DOCUMENT` if the file exists, else re-download via the heading's
-  `:CALIBRE_URL:` (read with `(org-entry-get nil "CALIBRE_URL" t)`) — so a notes
-  file opens on any machine.
+  (`+wd/calibre--ensure-note-file`): `:NOTER_DOCUMENT:`, `:CALIBRE_ID:`,
+  `:CALIBRE_URL:` (full OPDS acquisition URL). Start org-noter from that org
+  buffer (A-mode), not via `find-additional-notes-functions`.
+- **`NOTER_DOCUMENT` is the bare download filename `<title>.<fmt>` (WITH the
+  extension), identical to what `+wd/calibre--download` lands on disk.** `fmt`
+  comes from the OPDS URL (`/get/<fmt>/<id>/`), never from the entry format
+  field. All three resolvers agree on this one name: keep them consistent — a
+  bare-name resolver must anchor it to `calibredb-opds-download-dir` (not the
+  cwd), and must not append the extension a second time.
+- **Opening resolves via `org-noter-parse-document-property-hook` in three
+  ordered resolvers** (existing file → `calibredb export` by `:CALIBRE_ID:` →
+  OPDS download by `:CALIBRE_URL:`), all landing/looking for the same
+  `<title>.<fmt>` in `calibredb-opds-download-dir`, so a notes file opens on any
+  machine. `:CALIBRE_URL:` is read with `(org-entry-get nil "CALIBRE_URL" t)`.
 - Helpers that call lazily-loaded calibredb/org-noter symbols must
   `declare-function`/`defvar` them so `lib-read.el` byte-compiles clean.
 
