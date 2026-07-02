@@ -17,8 +17,8 @@
     ;; Search/browse always go through the OPDS content server; the local
     ;; library (if present) is used only to open the on-disk copy.
     (setopt calibredb-root-dir "http://nixos-nuc:8080/opds"
-            calibredb-opds-download-dir "~/Downloads/calibredb"
-            calibredb-download-dir "~/Downloads/calibredb"
+            calibredb-opds-download-dir "~/.cache/calibre/downloads/"
+            calibredb-download-dir "~/.cache/calibre/downloads/"
             calibredb-library-alist
             `(("http://nixos-nuc:8080/opds"
                (name . "calibre")
