@@ -13,6 +13,9 @@
      calibredb-format-icons-in-terminal t
      calibredb-format-nerd-icons t)
 
+    (with-eval-after-load 'meow
+      (add-to-list 'meow-mode-state-list '(calibredb-search-mode . motion)))
+
     ;; Search/browse always go through the OPDS content server; the local
     ;; library (if present) is used only to open the on-disk copy.
     (setopt calibredb-root-dir (if (zerop (call-process "pgrep" nil nil nil "-x" "tailscaled"))
@@ -64,10 +67,7 @@
 
     ;; One-key: open the book at point in org-noter via a unified CDB-<id>.org.
     (with-eval-after-load 'calibredb-search
-      (define-key calibredb-search-mode-map (kbd "n") #'+wd/calibredb-org-noter))
-
-    (with-eval-after-load 'meow
-      (add-hook 'calibredb-search-mode-hook #'meow-motion-mode))))
+      (define-key calibredb-search-mode-map (kbd "n") #'+wd/calibredb-org-noter))))
 
 
 ;; nov.el

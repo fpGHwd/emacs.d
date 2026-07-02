@@ -6,7 +6,9 @@
 
 (setup magit
   (:also-load lib-git)
-  (:hooks git-commit-mode-hook meow-insert))
+  (:when-loaded
+   (with-eval-after-load 'meow
+     (add-to-list 'meow-mode-state-list '(git-commit-mode . motion)))))
 
 (provide 'init-vcs)
 ;;; init-vcs.el ends here
