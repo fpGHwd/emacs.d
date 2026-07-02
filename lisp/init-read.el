@@ -118,11 +118,11 @@
     (:option org-noter-doc-split-fraction '(0.618 . 0.382))
 
     ;; Resolvers tried in order (depth keeps the order stable across reloads):
-    ;; existing file -> local calibre library -> download by URL.
+    ;; existing download -> local calibre library (open in place) -> download by URL.
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-parse-document-existing 10)
     (add-hook 'org-noter-parse-document-property-hook
-              #'+wd/org-noter-parse-document-calibredb 50)
+              #'+wd/org-noter-parse-document-local 50)
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-parse-document-download 90)
     (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current"))))

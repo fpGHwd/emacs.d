@@ -132,10 +132,12 @@ This Emacs configuration depends on external tools managed through Nix:
 Feature code lives in `lisp/init-read.el` (setup + hooks) and `lisp/lib/lib-read.el`
 (helpers). Core invariants — keep them, do not regress:
 
-- **Everything goes through OPDS — no local library / sqlite.** `calibredb-root-dir`
-  is the OPDS content-server URL on every host; search, open and noter all use OPDS
-  download. Do not re-introduce local-vs-OPDS branching, `metadata.db` queries, or a
-  local-first open advice.
+- **Search / browse / download go through OPDS; never query `metadata.db`/sqlite.**
+  `calibredb-root-dir` is the OPDS content-server URL on every host. The only
+  local-disk access is fallback-2 opening a *mounted* calibre library file in place
+  by id (`+wd/calibre-local-library-root`); it is a readable-or-nil shortcut, not a
+  local-first branch — when the library is absent it must fall through to OPDS
+  download. Do not re-introduce `metadata.db` queries or a local-first open advice.
 - **The calibre id is the key; the OPDS acquisition URL is the portable handle.**
   Extract the id from the entry `:file-path` URL (`/get/<fmt>/<id>/`); never
   reverse-infer it from a filename or `Title (id)/` directory.
@@ -150,14 +152,14 @@ Feature code lives in `lisp/init-read.el` (setup + hooks) and `lisp/lib/lib-read
 - **`NOTER_DOCUMENT` is the bare download filename `<title>.<fmt>` (WITH the
   extension), identical to what `+wd/calibre--download` lands on disk.** `fmt`
   comes from the OPDS URL (`/get/<fmt>/<id>/`), never from the entry format
-  field. All three resolvers agree on this one name: keep them consistent — a
-  bare-name resolver must anchor it to `calibredb-opds-download-dir` (not the
-  cwd), and must not append the extension a second time.
+  field. The existing-file and download resolvers key off this exact name — anchor
+  the bare name to `calibredb-opds-download-dir` (not the cwd), and do not append
+  the extension a second time. (fallback-2 ignores the name and locates by id.)
 - **Opening resolves via `org-noter-parse-document-property-hook` in three
-  ordered resolvers** (existing file → `calibredb export` by `:CALIBRE_ID:` →
-  OPDS download by `:CALIBRE_URL:`), all landing/looking for the same
-  `<title>.<fmt>` in `calibredb-opds-download-dir`, so a notes file opens on any
-  machine. `:CALIBRE_URL:` is read with `(org-entry-get nil "CALIBRE_URL" t)`.
+  ordered resolvers**: existing download in `calibredb-opds-download-dir` → local
+  library opened in place by `:CALIBRE_ID:` glob `<root>/*/* (<id>)/*.<fmt>` →
+  OPDS download by `:CALIBRE_URL:`. So a notes file opens whether or not the
+  library is mounted locally. Properties are read with `(org-entry-get nil PROP t)`.
 - Helpers that call lazily-loaded calibredb/org-noter symbols must
   `declare-function`/`defvar` them so `lib-read.el` byte-compiles clean.
 

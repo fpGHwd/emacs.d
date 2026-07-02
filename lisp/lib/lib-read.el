@@ -120,53 +120,27 @@ Primary resolver on `org-noter-parse-document-property-hook'."
               (expanded (expand-file-name doc calibredb-opds-download-dir)))
     (and (file-exists-p expanded) expanded)))
 
-(defun +wd/calibre--export-library-url (calibre-url)
-  "Derive a `calibredb --with-library' URL from an OPDS CALIBRE-URL.
-CALIBRE-URL looks like `http://host/get/<fmt>/<id>/<library>'; return
-`http://host/#<library>', or nil."
-  (when (and (stringp calibre-url)
-             (string-match
-              "\\`\\(https?://[^/]+\\)/get/[^/]+/[0-9]+/\\([^/?]+\\)" calibre-url))
-    (format "%s/#%s" (match-string 1 calibre-url) (match-string 2 calibre-url))))
+(defvar +wd/calibre-local-library-root "/mnt/home/data/books/calibre-lib"
+  "Local calibre library root on this machine.
+The same data the content server exposes, reached through a local mount.
+Calibre stores each book at `<root>/<author>/<title> (<id>)/<file>', so
+`+wd/org-noter-parse-document-local' globs it by id to open in place.")
 
-(defun +wd/calibre--exported-file (id dir)
-  "Return the cached exported file for ID in DIR (named <ID>.<ext>), or nil."
-  (and (file-directory-p dir)
-       (car (directory-files dir t (format "\\`%s\\." (regexp-quote id))))))
-
-(defun +wd/org-noter-parse-document-calibredb (&optional document &rest _)
-  "Fetch the document from calibre via `calibredb export' using `:CALIBRE_ID'.
-Return the exported path named `<DOCUMENT>.<ext>' (DOCUMENT is the book
-title in NOTER_DOCUMENT), or nil.  Secondary resolver on
-`org-noter-parse-document-property-hook': export the book by id from the
-content server into `calibredb-opds-download-dir', renaming it to the book
-title so the on-disk name matches NOTER_DOCUMENT (cached).  Server +
-library are taken from `:CALIBRE_URL'."
-  (when-let* ((doc (+wd/org-noter--clean-document document))
-              (id (org-entry-get nil "CALIBRE_ID" t))
+(defun +wd/org-noter-parse-document-local (&optional document &rest _)
+  "Locate the document in the local calibre library by `:CALIBRE_ID', or nil.
+Secondary resolver on `org-noter-parse-document-property-hook': calibre
+stores each book at `<root>/<author>/<title> (<id>)/<file>', so glob that
+directory by id under `+wd/calibre-local-library-root' and open the file in
+place — no copy, no download.  Format comes from `:CALIBRE_URL' (falling
+back to DOCUMENT's extension)."
+  (when-let* ((id (org-entry-get nil "CALIBRE_ID" t))
               (url (org-entry-get nil "CALIBRE_URL" t))
-              (lib (+wd/calibre--export-library-url url))
-              (bin (executable-find "calibredb"))
-              (dir (expand-file-name calibredb-opds-download-dir))
-              (target (expand-file-name doc dir)))
-    (if (file-exists-p target)
-        target
-      (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
-             (account (alist-get 'account info))
-             (password (alist-get 'password info)))
-        (make-directory dir t)
-        (message "org-noter: exporting calibre id %s via calibredb..." id)
-        (when (eq 0 (apply #'call-process bin nil nil nil
-                           "export" "--with-library" lib
-                           "--to-dir" dir "--single-dir"
-                           "--dont-write-opf" "--dont-save-cover"
-                           "--dont-update-metadata" "--template" "{id}"
-                           (append (when (and account password)
-                                     (list "--username" account "--password" password))
-                                   (list id))))
-          (when-let ((exported (+wd/calibre--exported-file id dir)))
-            (rename-file exported target t)
-            target))))))
+              (fmt (or (and (string-match "/get/\\([^/]+\\)/" url) (match-string 1 url))
+                       (and (stringp document) (file-name-extension document))))
+              (pat (expand-file-name (format "*/* (%s)/*.%s" id fmt)
+                                     +wd/calibre-local-library-root))
+              (hit (car (file-expand-wildcards pat))))
+    (and (file-readable-p hit) hit)))
 
 (defun +wd/org-noter-parse-document-download (document &rest _)
   "Re-download DOCUMENT via the heading's `:CALIBRE_URL' property, or nil.
