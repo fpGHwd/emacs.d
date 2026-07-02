@@ -126,20 +126,24 @@ The same data the content server exposes, reached through a local mount.
 Calibre stores each book at `<root>/<author>/<title> (<id>)/<file>', so
 `+wd/org-noter-parse-document-local' globs it by id to open in place.")
 
-(defun +wd/org-noter-parse-document-local (&optional document &rest _)
+(defvar +wd/calibre-document-formats '("pdf" "epub" "mobi" "azw3" "azw" "djvu")
+  "Document formats to open, highest priority first.
+When a book directory holds several formats, the earliest match wins.")
+
+(defun +wd/org-noter-parse-document-local (&optional _document &rest _)
   "Locate the document in the local calibre library by `:CALIBRE_ID', or nil.
 Secondary resolver on `org-noter-parse-document-property-hook': calibre
 stores each book at `<root>/<author>/<title> (<id>)/<file>', so glob that
 directory by id under `+wd/calibre-local-library-root' and open the file in
-place — no copy, no download.  Format comes from `:CALIBRE_URL' (falling
-back to DOCUMENT's extension)."
+place — no copy, no download.  Depends only on `:CALIBRE_ID'; the format is
+chosen locally by `+wd/calibre-document-formats' priority."
   (when-let* ((id (org-entry-get nil "CALIBRE_ID" t))
-              (url (org-entry-get nil "CALIBRE_URL" t))
-              (fmt (or (and (string-match "/get/\\([^/]+\\)/" url) (match-string 1 url))
-                       (and (stringp document) (file-name-extension document))))
-              (pat (expand-file-name (format "*/* (%s)/*.%s" id fmt)
-                                     +wd/calibre-local-library-root))
-              (hit (car (file-expand-wildcards pat))))
+              (hit (seq-some
+                    (lambda (ext)
+                      (car (file-expand-wildcards
+                            (expand-file-name (format "*/* (%s)/*.%s" id ext)
+                                              +wd/calibre-local-library-root))))
+                    +wd/calibre-document-formats)))
     (and (file-readable-p hit) hit)))
 
 (defun +wd/org-noter-parse-document-download (document &rest _)
