@@ -132,19 +132,25 @@ This Emacs configuration depends on external tools managed through Nix:
 Feature code lives in `lisp/init-read.el` (setup + hooks) and `lisp/lib/lib-read.el`
 (helpers). Core invariants — keep them, do not regress:
 
-- **Search always goes through OPDS.** `calibredb-root-dir` is the OPDS
-  content-server URL on every host; do not re-introduce local-vs-OPDS search
-  branching. The local library is used *only* to open the on-disk copy.
-- **The calibre numeric id is the single key across search → open → noter.**
-  Extract it from the OPDS entry `:file-path` URL (`/get/<fmt>/<id>/`); never
-  reverse-infer the id from a downloaded file path or a `Title (id)/` directory.
-- **Local-first open is one `:around` advice on `calibredb-get-file-path`.** When
-  it returns an `http` URL and `+wd/calibre-local-library-root` exists, resolve
-  the id to a local path via an independent `sqlite-open` on `metadata.db` — never
-  repoint the global `calibredb-db-dir`. All open commands inherit this.
+- **Everything goes through OPDS — no local library / sqlite.** `calibredb-root-dir`
+  is the OPDS content-server URL on every host; search, open and noter all use OPDS
+  download. Do not re-introduce local-vs-OPDS branching, `metadata.db` queries, or a
+  local-first open advice.
+- **The calibre id is the key; the OPDS acquisition URL is the portable handle.**
+  Extract the id from the entry `:file-path` URL (`/get/<fmt>/<id>/`); never
+  reverse-infer it from a filename or `Title (id)/` directory.
+- **Downloads are cached and centralized in `+wd/calibre--download`** (curl
+  `--digest`, landing at `<calibredb-opds-download-dir>/<title>.<fmt>`; returns the
+  path without re-downloading if it already exists). The command and the parse hook
+  share it.
 - **Notes use one unified `CDB-<id>.org`, written in exactly one place**
-  (`+wd/calibre--ensure-note-file`). Start org-noter from that org buffer (it reads
-  `NOTER_DOCUMENT`), not via `find-additional-notes-functions` path inference.
+  (`+wd/calibre--ensure-note-file`): `:NOTER_DOCUMENT:` (bare download filename),
+  `:CALIBRE_ID:`, `:CALIBRE_URL:` (full OPDS acquisition URL). Start org-noter from
+  that org buffer (A-mode), not via `find-additional-notes-functions`.
+- **Opening resolves via `org-noter-parse-document-property-hook` in two steps:**
+  use `NOTER_DOCUMENT` if the file exists, else re-download via the heading's
+  `:CALIBRE_URL:` (read with `(org-entry-get nil "CALIBRE_URL" t)`) — so a notes
+  file opens on any machine.
 - Helpers that call lazily-loaded calibredb/org-noter symbols must
   `declare-function`/`defvar` them so `lib-read.el` byte-compiles clean.
 

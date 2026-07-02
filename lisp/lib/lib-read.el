@@ -3,6 +3,7 @@
 (require 'org)
 (require 'seq)
 (require 'subr-x)
+(require 'org-noter)
 
 ;; calibredb / org-noter are loaded lazily; declare what we call at runtime.
 (defvar calibredb-root-dir)
@@ -11,7 +12,6 @@
 (defvar org-noter-notes-search-path)
 (defvar org-noter-property-note-location)
 (declare-function calibredb-getattr "calibredb-core")
-(declare-function calibredb-get-file-path "calibredb-utils")
 (declare-function calibredb-find-candidate-at-point "calibredb-utils")
 (declare-function org-noter "org-noter")
 (declare-function org-noter--get-session "org-noter-core")
@@ -21,15 +21,6 @@
 (declare-function org-noter--parse-root "org-noter-core")
 (declare-function pdf-view-current-page "pdf-view")
 (declare-function pdf-view-goto-page "pdf-view")
-
-(defcustom +wd/calibre-local-library-root "/mnt/home/data/books/calibre-lib"
-  "Local Calibre library root.
-When it exists on this machine, a book id is resolved to a local file
-path here (see `+wd/calibre--local-file'), so books open from the local
-disk instead of being downloaded.  It is also the fallback search root
-when a `:NOTER_DOCUMENT:' path no longer exists."
-  :type 'directory
-  :group 'org-noter)
 
 ;;; org-noter session basics
 
@@ -43,7 +34,7 @@ when a `:NOTER_DOCUMENT:' path no longer exists."
       (ignore-errors (org-noter--get-session)))
      (t nil))))
 
-;;; calibre: id -> local file, unified CDB-<id>.org, open in org-noter
+;;; calibre: OPDS download, unified CDB-<id>.org, open in org-noter
 
 (defun +wd/calibre--entry-id (entry)
   "Return the calibre numeric id (string) for calibredb ENTRY, or nil.
@@ -56,35 +47,9 @@ OPDS entries carry the id inside the acquisition URL
        ((string-match "/get/[^/]+/\\([0-9]+\\)/" path) (match-string 1 path))
        ((string-match "(\\([0-9]+\\))/[^/]*\\'" path) (match-string 1 path))))))
 
-(defun +wd/calibre--local-file (id &optional format)
-  "Return the absolute path of calibre book ID under the local library, or nil.
-Query the local `metadata.db' directly, independent of calibredb's global
-connection.  When FORMAT is non-nil prefer that format."
-  (let ((db (expand-file-name "metadata.db" +wd/calibre-local-library-root)))
-    (when (and id (fboundp 'sqlite-available-p) (sqlite-available-p)
-               (file-readable-p db))
-      (let ((conn (sqlite-open db)))
-        (unwind-protect
-            (let* ((rows (sqlite-select
-                          conn
-                          "SELECT b.path, d.name, d.format FROM books b \
-JOIN data d ON d.book = b.id WHERE b.id = ?"
-                          (list (if (stringp id) (string-to-number id) id))))
-                   (row (or (and format
-                                 (seq-find (lambda (r)
-                                             (string-equal-ignore-case (nth 2 r) format))
-                                           rows))
-                            (car rows))))
-              (when row
-                (let ((path (expand-file-name
-                             (concat (file-name-as-directory (nth 0 row))
-                                     (nth 1 row) "." (downcase (nth 2 row)))
-                             +wd/calibre-local-library-root)))
-                  (when (file-exists-p path) path))))
-          (sqlite-close conn))))))
-
 (defun +wd/calibre--download (title url format)
-  "Synchronously download URL to <download-dir>/TITLE.FORMAT, return path or nil.
+  "Download URL to <download-dir>/TITLE.FORMAT and return the path, or nil.
+Cached: if the target already exists it is returned without re-downloading.
 Uses Digest auth with the account/password stored in `calibredb-library-alist'."
   (let* ((file (expand-file-name (format "%s.%s" title format)
                                  calibredb-opds-download-dir))
@@ -96,89 +61,73 @@ Uses Digest auth with the account/password stored in `calibredb-library-alist'."
                          (list "--user" (format "%s:%s" account password)))
                        (list url "-o" file))))
     (make-directory calibredb-opds-download-dir t)
-    (when (and (eq 0 (apply #'call-process "curl" nil nil nil args))
-               (file-exists-p file))
-      file)))
+    (cond
+     ((file-exists-p file) file)
+     ((and (eq 0 (apply #'call-process "curl" nil nil nil args))
+           (file-exists-p file))
+      file))))
 
-(defun +wd/calibre--ensure-note-file (id title author doc-name)
+(defun +wd/calibre--ensure-note-file (id title author doc-name url)
   "Ensure CDB-ID.org exists in the org-noter notes dir; return its path.
-When absent, pre-create it with a `* TITLE - AUTHOR' heading and
-`:NOTER_DOCUMENT: DOC-NAME', where DOC-NAME is the calibre database
-filename (a bare basename, not an absolute path) so the notes file stays
-portable across machines; `+wd/org-noter-parse-document-property-calibre'
-resolves it to a real file at open time.  This is the single place the
-unified notes format is written."
+When absent, pre-create it with a `* TITLE - AUTHOR' heading and the
+properties `:NOTER_DOCUMENT: DOC-NAME' (a bare download filename, not an
+absolute path, so the notes file stays portable), `:CALIBRE_ID: ID' and
+`:CALIBRE_URL: URL' (the OPDS acquisition URL used to re-download the
+document on any machine).  This is the single place the unified notes
+format is written."
   (let* ((notes-dir (or (car org-noter-notes-search-path)
-                        (expand-file-name "~/org/noter")))
+                        (expand-file-name "~/org/noter/current")))
          (note (expand-file-name (format "CDB-%s.org" id) notes-dir)))
     (make-directory notes-dir t)
     (unless (file-exists-p note)
       (with-temp-file note
-        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:END:\n"
-                        (or title "Unknown") (or author "Unknown") doc-name id))))
+        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:CALIBRE_URL: %s\n:END:\n"
+                        (or title "Unknown") (or author "Unknown")
+                        doc-name id url))))
     note))
-
-(defun +wd/calibredb-get-file-path--local-first (oldfn entry &optional prompt)
-  "Advice: prefer the local library file when calibredb resolves to a http URL.
-Keeps OPDS as the single search backend while opening the on-disk copy
-when the book exists in the local library."
-  (let ((path (funcall oldfn entry prompt)))
-    (if (and (stringp path) (string-prefix-p "http" path)
-             (file-directory-p +wd/calibre-local-library-root))
-        (or (+wd/calibre--local-file (+wd/calibre--entry-id entry)
-                                     (calibredb-getattr entry :book-format))
-            path)
-      path)))
 
 (defun +wd/calibredb-org-noter ()
   "Open the calibre book at point in org-noter via a unified CDB-<id>.org.
-Read the authoritative id/title/author from the calibredb entry, resolve
-the document to a local library file when present, else download it via
-OPDS, then create/open `CDB-<id>.org' and start `org-noter'.  The notes
-format is identical regardless of how the document is obtained."
+Read the authoritative id/title/author and the OPDS acquisition URL from
+the calibredb entry, download the document (cached), then create/open
+`CDB-<id>.org' and start `org-noter'.  The notes file records the URL so
+the document can be re-downloaded on any machine."
   (interactive)
   (let* ((entry (car (calibredb-find-candidate-at-point)))
          (id (+wd/calibre--entry-id entry))
          (title (calibredb-getattr entry :book-title))
          (author (calibredb-getattr entry :author-sort))
          (format (calibredb-getattr entry :book-format))
-         (doc-path (or (+wd/calibre--local-file id format)
-                       (+wd/calibre--download
-                        title (calibredb-getattr entry :file-path) format))))
+         (url (calibredb-getattr entry :file-path))
+         (doc-path (+wd/calibre--download title url format)))
     (unless id
       (user-error "No calibre id for entry at point"))
     (unless doc-path
-      (user-error "Could not resolve or download document for id %s" id))
+      (user-error "Could not download document for id %s" id))
     (find-file (+wd/calibre--ensure-note-file
-                id title author (file-name-nondirectory doc-path)))
+                id title author (file-name-nondirectory doc-path) url))
     (org-noter)))
 
 ;;; org-noter document resolution fallback
 
 (defun +wd/org-noter-parse-document-property-calibre (document &rest _)
-  "Resolve DOCUMENT (a bare calibre filename or a path) to an openable file.
+  "Resolve DOCUMENT (a bare download filename or a path) to an openable file.
 Hook for `org-noter-parse-document-property-hook': return DOCUMENT as-is
-when it exists, otherwise search the local calibre library and the OPDS
-download dir by basename and return the shortest match."
+when it exists, otherwise re-download it via the `:CALIBRE_URL' property of
+the current heading (cached in `calibredb-opds-download-dir').  Requires
+point on the heading (org-noter's create-session path guarantees this)."
   (let* ((doc (and (stringp document) (string-trim document)))
          (expanded (and doc (expand-file-name doc))))
     (cond
      ((or (null doc) (string-empty-p doc)) nil)
      ((file-exists-p expanded) expanded)
      (t
-      (let* ((filename (file-name-nondirectory expanded))
-             (roots (seq-filter
-                     (lambda (d) (and (stringp d) (file-directory-p d)))
-                     (list +wd/calibre-local-library-root
-                           (and (boundp 'calibredb-opds-download-dir)
-                                (expand-file-name calibredb-opds-download-dir)))))
-             (matches (mapcan
-                       (lambda (root)
-                         (directory-files-recursively
-                          root (concat "\\`" (regexp-quote filename) "\\'")))
-                       roots))
-             (sorted (sort matches (lambda (a b) (< (length a) (length b))))))
-        (car sorted))))))
+      (when-let* ((url (org-entry-get nil "CALIBRE_URL" t))
+                  (filename (file-name-nondirectory expanded)))
+        (message "org-noter: downloading %s from calibre OPDS..." filename)
+        (+wd/calibre--download (file-name-sans-extension filename)
+                               url
+                               (file-name-extension filename)))))))
 
 ;;; zathura <-> org-noter page sync
 

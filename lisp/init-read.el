@@ -57,11 +57,6 @@
     (advice-add 'calibredb-opds-download :around
                 #'+wd/calibredb-opds-download--digest-auth)
 
-    ;; Open the local library copy when the book exists on disk (global,
-    ;; applies to every open command via the shared path resolver).
-    (advice-add 'calibredb-get-file-path :around
-                #'+wd/calibredb-get-file-path--local-first)
-
     ;; One-key: open the book at point in org-noter via a unified CDB-<id>.org.
     (with-eval-after-load 'calibredb-search
       (define-key calibredb-search-mode-map (kbd "n") #'+wd/calibredb-org-noter))
