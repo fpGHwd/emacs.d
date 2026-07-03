@@ -8,7 +8,7 @@
   (:also-load lib-git)
   (:when-loaded
    (with-eval-after-load 'meow
-     (add-to-list 'meow-mode-state-list '(git-commit-mode . motion)))))
+     (add-to-list 'meow-mode-state-list '(git-commit-mode . insert)))))
 
 (provide 'init-vcs)
 ;;; init-vcs.el ends here
