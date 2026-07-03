@@ -13,6 +13,9 @@
 (defvar org-noter-property-note-location)
 (declare-function calibredb-getattr "calibredb-core")
 (declare-function calibredb-find-candidate-at-point "calibredb-utils")
+(declare-function calibredb-opds-request-page "calibredb-opds")
+(declare-function calibredb-opds-request-search-page "calibredb-opds")
+(declare-function calibredb-opds-download "calibredb-opds")
 (declare-function org-noter "org-noter")
 (declare-function org-noter--get-session "org-noter-core")
 (declare-function org-noter--session-p "org-noter-core")
@@ -21,6 +24,54 @@
 (declare-function org-noter--parse-root "org-noter-core")
 (declare-function pdf-view-current-page "pdf-view")
 (declare-function pdf-view-goto-page "pdf-view")
+
+;;; calibredb Digest auth advices
+;;
+;; Calibre content server requires HTTP Digest authentication, but calibredb
+;; hardcodes Basic auth (or no auth).  Three advices patch the OPDS workflow:
+;;
+;; 1. `calibredb-opds-request-page' — inject `curl --digest --user' via
+;;    `request-curl-options' so page listings authenticate correctly.
+;;
+;; 2. `calibredb-opds-request-search-page' — calibredb GETs the raw
+;;    {searchTerms} template URL (returns 404).  This advice substitutes
+;;    the actual keyword and delegates to `calibredb-opds-request-page'
+;;    (which already carries Digest auth).
+;;
+;; 3. `calibredb-opds-download' — calibredb shells out to `curl -u' (Basic);
+;;    this advice rewrites it to `curl --digest -u' so book downloads work.
+
+(defun +wd/calibredb-opds-request-page--digest-auth (oldfn url &optional account password)
+  "Advice around `calibredb-opds-request-page': use Digest auth.
+calibredb hardcodes Basic auth; Calibre content server requires Digest."
+  (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
+         (account (or account (alist-get 'account info)))
+         (password (or password (alist-get 'password info))))
+    (if (and account password)
+        (let* ((_ (defvar request-curl-options nil))
+               (request-curl-options
+                (list "--digest" "--user" (format "%s:%s" account password))))
+          (funcall oldfn url))
+      (funcall oldfn url account password))))
+
+(defun +wd/calibredb-opds-request-search-page--digest-auth (oldfn url keyword &rest _)
+  "Advice around `calibredb-opds-request-search-page': substitute keyword directly.
+calibredb tries to GET the raw {searchTerms} template URL which Calibre returns
+404 for.  Bypass it: substitute the keyword and call `calibredb-opds-request-page'
+(which already handles Digest auth via its own advice)."
+  (let ((search-url (replace-regexp-in-string "{[^}]*}" (url-hexify-string keyword) url)))
+    (calibredb-opds-request-page search-url)))
+
+(defun +wd/calibredb-opds-download--digest-auth (oldfn title url fmt &optional account password)
+  "Advice around `calibredb-opds-download': add --digest to curl.
+calibredb uses `curl -u' (Basic); Calibre requires `curl --digest -u'."
+  (cl-letf* ((orig (symbol-function 'start-process-shell-command))
+             ((symbol-function 'start-process-shell-command)
+              (lambda (name buf cmd &rest args)
+                (apply orig name buf
+                       (replace-regexp-in-string "curl -u" "curl --digest -u" cmd)
+                       args))))
+    (funcall oldfn title url fmt account password)))
 
 ;;; org-noter session basics
 

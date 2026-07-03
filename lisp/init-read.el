@@ -20,7 +20,7 @@
     ;; library (if present) is used only to open the on-disk copy.
     (setopt calibredb-root-dir (if (zerop (call-process "pgrep" nil nil nil "tailscaled"))
                                    "http://nixos-nuc:8080/opds"
-                                 "https://opds.autove.dev/opds")
+                                 "https://lib.autove.dev/opds")
             calibredb-opds-download-dir "~/.cache/calibre/downloads/"
             calibredb-download-dir "~/.cache/calibre/downloads/"
             calibredb-library-alist
@@ -28,40 +28,20 @@
                (name . "calibre")
                (account . "wd")
                (password . ,(password-store-get "calibre-lib/wd")))
-              ("https://opds.autove.dev/opds"
+              ("https://lib.autove.dev/opds"
                (name . "calibre-cloudflare")
                (account . "wd")
                (password . ,(password-store-get "calibre-lib/wd")))))
 
     ;; calibredb hardcodes Basic auth; Calibre content server requires Digest.
-    (defun +wd/calibredb-opds-request-page--digest-auth (oldfn url &optional account password)
-      (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
-             (account (or account (alist-get 'account info)))
-             (password (or password (alist-get 'password info))))
-        (if (and account password)
-            (let* ((_ (defvar request-curl-options nil))
-                   (request-curl-options
-                    (list "--digest" "--user" (format "%s:%s" account password))))
-              (funcall oldfn url))
-          (funcall oldfn url account password))))
     (advice-add 'calibredb-opds-request-page :around
                 #'+wd/calibredb-opds-request-page--digest-auth)
-    ;; calibredb-opds-request-search-page tries to GET the raw {searchTerms} template URL
-    ;; which Calibre returns 404 for. Bypass it: substitute the keyword directly and call
-    ;; calibredb-opds-request-page (which already handles Digest auth via its own advice).
-    (defun +wd/calibredb-opds-request-search-page--digest-auth (oldfn url keyword &rest _)
-      (let ((search-url (replace-regexp-in-string "{[^}]*}" (url-hexify-string keyword) url)))
-        (calibredb-opds-request-page search-url)))
+    ;; calibredb-opds-request-search-page tries to GET the raw {searchTerms}
+    ;; template URL which Calibre returns 404 for.  Bypass it: substitute the
+    ;; keyword directly and call calibredb-opds-request-page (which already
+    ;; handles Digest auth via its own advice).
     (advice-add 'calibredb-opds-request-search-page :around
                 #'+wd/calibredb-opds-request-search-page--digest-auth)
-    (defun +wd/calibredb-opds-download--digest-auth (oldfn title url fmt &optional account password)
-      (cl-letf* ((orig (symbol-function 'start-process-shell-command))
-                 ((symbol-function 'start-process-shell-command)
-                  (lambda (name buf cmd &rest args)
-                    (apply orig name buf
-                           (replace-regexp-in-string "curl -u" "curl --digest -u" cmd)
-                           args))))
-        (funcall oldfn title url fmt account password)))
     (advice-add 'calibredb-opds-download :around
                 #'+wd/calibredb-opds-download--digest-auth)
 
