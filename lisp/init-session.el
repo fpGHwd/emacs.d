@@ -16,9 +16,6 @@
 ;; workspaces
 (setq! +workspaces-data-file (concat (system-name) "_workspaces"))
 
-;; auto save saved workspaces
-(add-hook! 'doom-after-init-hook #'+wd/workspace-hourly-cleanup-start)
-
 ;; identity
 (setq user-full-name "Wang Ding"
       user-mail-address "ggwdwhu@gmail.com"
