@@ -108,7 +108,10 @@
               #'+wd/org-noter-parse-document-local 50)
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-parse-document-download 90)
-    (add-to-list 'org-noter-notes-search-path (file-truename "~/org/noter/current"))))
+    ;; Confine notes to the dedicated noter dir.  Do NOT keep `org-directory'
+    ;; in the search path: opening a raw document then `org-noter' would else
+    ;; fall back to the main notes.org and append book headings/skeletons there.
+    (:option org-noter-notes-search-path (list (file-truename "~/org/noter/current")))))
 
 
 (provide 'init-read)
