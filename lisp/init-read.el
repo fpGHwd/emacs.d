@@ -18,7 +18,10 @@
 
     ;; Search/browse always go through the OPDS content server; the local
     ;; library (if present) is used only to open the on-disk copy.
-    (setopt calibredb-root-dir (if (zerop (call-process "pgrep" nil nil nil "tailscaled"))
+    (setopt calibredb-root-dir (if (zerop (call-process "pgrep" nil nil nil
+                                                        (pcase (system-name)
+                                                          ("macos-m1" "Tailscale")
+                                                          (_ "tailscaled"))))
                                    "http://nixos-nuc:8080/opds"
                                  "https://lib.autove.dev/opds")
             calibredb-opds-download-dir "~/.cache/calibre/downloads/"
