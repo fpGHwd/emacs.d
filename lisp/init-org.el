@@ -10,7 +10,9 @@
    org-mode-hook mixed-pitch-mode
    org-mode-hook (lambda () (when (org-property-values "GPTEL_SYSTEM")
                               (progn (gptel-mode)
-                                     (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))))
+                                     (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name))))))
+   org-capture-mode-hook meow-insert-mode)
+
   (:when-loaded
     (:also-load lib-org)
     (:option
@@ -55,8 +57,6 @@
     (add-to-list 'org-file-apps '("\\.drawio\\'" . "/opt/drawio/drawio %s"))
     (add-to-list 'org-file-apps '("\\.minder\\'" . "/usr/bin/minder %s"))
 
-    (with-eval-after-load 'meow
-      (add-to-list 'meow-mode-state-list '(org-capture-mode . insert)))
 
     (org-babel-do-load-languages
      'org-babel-load-languages
