@@ -98,7 +98,9 @@
 (setup org-noter
   (:when-loaded
     (:also-load lib-read)
-    (:option org-noter-doc-split-fraction '(0.618 . 0.382))
+    (:option org-noter-doc-split-fraction '(0.618 . 0.382)
+             org-noter-find-additional-notes-functions
+             '(+wd/org-noter-find-note-by-document-name))
 
     ;; Resolvers tried in order (depth keeps the order stable across reloads):
     ;; existing download -> local calibre library (open in place) -> download by URL.
@@ -108,6 +110,8 @@
               #'+wd/org-noter-parse-document-local 50)
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-parse-document-download 90)
+    (add-hook 'org-noter-create-session-from-document-hook
+              #'+wd/org-noter-create-session-from-document-by-document-name 0)
     ;; Confine notes to the dedicated noter dir.  Do NOT keep `org-directory'
     ;; in the search path: opening a raw document then `org-noter' would else
     ;; fall back to the main notes.org and append book headings/skeletons there.

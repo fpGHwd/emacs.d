@@ -11,12 +11,16 @@
 (defvar calibredb-opds-download-dir)
 (defvar org-noter-notes-search-path)
 (defvar org-noter-property-note-location)
+(defvar org-noter-property-doc-file)
+(defvar org-noter-get-buffer-file-name-hook)
+(defvar org-noter--start-location-override)
 (declare-function calibredb-getattr "calibredb-core")
 (declare-function calibredb-find-candidate-at-point "calibredb-utils")
 (declare-function calibredb-opds-request-page "calibredb-opds")
 (declare-function calibredb-opds-request-search-page "calibredb-opds")
 (declare-function calibredb-opds-download "calibredb-opds")
 (declare-function org-noter "org-noter")
+(declare-function org-noter--doc-approx-location "org-noter-core")
 (declare-function org-noter--get-session "org-noter-core")
 (declare-function org-noter--session-p "org-noter-core")
 (declare-function org-noter--session-doc-buffer "org-noter-core")
@@ -158,6 +162,59 @@ downloaded here; it is fetched lazily by the resolvers on
 ;;; org-noter document resolution — resolvers tried in order via
 ;;; `org-noter-parse-document-property-hook' (run-hook-with-args-until-success).
 ;;; Each takes the NOTER_DOCUMENT string and returns an openable path or nil.
+
+(defun +wd/org-noter--document-file-name (&optional document-file-name)
+  "Return the current org-noter document file name."
+  (or (run-hook-with-args-until-success 'org-noter-get-buffer-file-name-hook
+                                        major-mode)
+      document-file-name
+      buffer-file-truename
+      buffer-file-name))
+
+(defun +wd/org-noter--matching-document-property-p (document-name)
+  "Return non-nil if point is on a matching `NOTER_DOCUMENT' property."
+  (let ((noter-document (string-trim (match-string 3))))
+    (string= document-name (file-name-nondirectory noter-document))))
+
+(defun +wd/org-noter-find-note-by-document-name (document-path)
+  "Find a notes file under `~/org/noter/' for DOCUMENT-PATH.
+Match by comparing DOCUMENT-PATH's file name with the file name part of each
+`NOTER_DOCUMENT' property, so both bare names and absolute paths work."
+  (when-let* ((document-path (and (stringp document-path) document-path))
+              (document-name (file-name-nondirectory document-path))
+              (notes-root (expand-file-name "~/org/noter/"))
+              (_ (file-directory-p notes-root)))
+    (catch 'done
+      (dolist (note (directory-files-recursively notes-root "\\.org\\'"))
+        (with-temp-buffer
+          (insert-file-contents note)
+          (goto-char (point-min))
+          (while (re-search-forward (org-re-property org-noter-property-doc-file) nil t)
+            (when (+wd/org-noter--matching-document-property-p document-name)
+              (throw 'done note))))))))
+
+(defun +wd/org-noter--goto-document-heading (document-path)
+  "Move point to the heading in the current notes buffer for DOCUMENT-PATH."
+  (let ((document-name (file-name-nondirectory document-path)))
+    (goto-char (point-min))
+    (catch 'found
+      (while (re-search-forward (org-re-property org-noter-property-doc-file) nil t)
+        (when (+wd/org-noter--matching-document-property-p document-name)
+          (org-back-to-heading t)
+          (throw 'found t))))))
+
+(defun +wd/org-noter-create-session-from-document-by-document-name
+    (arg document-file-name)
+  "Create an org-noter session by matching `NOTER_DOCUMENT' file names.
+This supports notes files stored anywhere under `~/org/noter/', including
+`CDB-<id>.org' files whose `NOTER_DOCUMENT' is a bare cached download name."
+  (when-let* ((document-path (+wd/org-noter--document-file-name document-file-name))
+              (note (+wd/org-noter-find-note-by-document-name document-path)))
+    (let ((location (org-noter--doc-approx-location)))
+      (with-current-buffer (find-file-noselect note)
+        (when (+wd/org-noter--goto-document-heading document-path)
+          (let ((org-noter--start-location-override location))
+            (org-noter arg)))))))
 
 (defun +wd/org-noter--clean-document (document)
   "Return DOCUMENT trimmed to a non-empty string, or nil."
