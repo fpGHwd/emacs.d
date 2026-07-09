@@ -30,7 +30,12 @@
                       (meow-normal-mode -1)
                       (local-set-key "q" #'quit-window)))))
     (:hooks
-     meow-insert-exit-hook #'deactivate-input-method
+     org-mode-hook (lambda ()
+                     (let ((map (make-sparse-keymap)))
+                       (keymap-set map "RET" #'+org/dwim-at-point)
+                       (keymap-set map "<return>" #'+org/dwim-at-point)
+                       (push (cons 'meow-normal-mode map) minor-mode-overriding-map-alist)))
+     meow-insert-exit-hook deactivate-input-method
      ;; lispy belongs only in insert mode.
      meow-normal-mode-hook (lambda () (when meow-normal-mode (lispy-mode -1)))
      meow-insert-enter-hook (lambda () (when (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'scheme-mode 'clojure-mode) (lispy-mode 1))))))
