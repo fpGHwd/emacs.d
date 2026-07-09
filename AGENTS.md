@@ -301,3 +301,4 @@ When instructions are ambiguous:
 - When investigating issues, always find the call stack of the problem or error first, then fix it. Do not try random workarounds.
 - Never modify code haphazardly before identifying the root cause. Before finding the root cause, only write temporary code — never make permanent changes.
 - If you write new Elisp functions, you can load and test them directly using emacsclient.
+- **Verify before writing to config files**: When modifying Emacs configuration, test the change via `emacsclient -e` first to confirm it actually works at runtime (keybindings resolve correctly, functions execute as expected, no errors). Only write the verified code into the config file. Emacs keymaps (especially meow's `emulation-mode-map-alists`) and package loading order can cause runtime behavior to differ significantly from what the source code appears to do.
