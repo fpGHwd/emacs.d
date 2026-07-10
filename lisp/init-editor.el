@@ -23,22 +23,13 @@
                       (meow-normal-mode -1)
                       (local-set-key "q" #'quit-window)))))))
 
-;; Under pgtk on Wayland, Emacs keeps believing it owns CLIPBOARD when it loses
-;; focus (Wayland only delivers selection-cancelled events to the focused
-;; surface), so yank returns its own stale value. Route cut/paste through
-;; wl-clipboard to bypass GTK selection ownership entirely.
-;;
-;; Only enable on a pgtk build with a real wl-clipboard backend present:
-;; `xclip-mode' with no backend program (no xclip/xsel/wl-copy) leaves
-;; cut/paste half-broken so yank can no longer reach the system CLIPBOARD.
-;; On X11 the built-in `gui-selection-value' already reads CLIPBOARD, so
-;; xclip is unnecessary there.
 (setup xclip
   (:when-loaded
     (when (and (featurep 'pgtk)
                (executable-find "wl-paste")
                (executable-find "wl-copy"))
       (xclip-mode 1))))
+
 
 (provide 'init-editor)
 ;;; init-editor.el ends here
