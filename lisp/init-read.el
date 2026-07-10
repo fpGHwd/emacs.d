@@ -48,6 +48,9 @@
     (advice-add 'calibredb-opds-download :around
                 #'+wd/calibredb-opds-download--digest-auth)
 
+    (add-hook 'calibredb-search-mode-hook
+              (lambda () (buffer-face-set :family "Sarasa Fixed SC")))
+
     ;; One-key: open the book at point in org-noter via a unified CDB-<id>.org.
     (with-eval-after-load 'calibredb-search
       (define-key calibredb-search-mode-map (kbd "n") #'+wd/calibredb-org-noter))))
