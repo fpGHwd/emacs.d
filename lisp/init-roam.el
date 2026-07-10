@@ -1,4 +1,4 @@
-;;; ../../Sync/dotfiles/doom.d/lisp/init-org-roam.el -*- lexical-binding: t; -*-
+;;; init-roam.el --- org-roam and org-roam-ui -*- lexical-binding: t; -*-
 
 
 (setup org-roam
@@ -13,17 +13,7 @@
   (when (vulpea-buffer-p)
     (add-hook 'before-save-hook #'vulpea-project-update-tag nil t)))
 
-;; (use-package! org-roam-capture
-;;   :defer t
-;;   :hook
-;;   (org-roam-capture-after-find-file-hook . org-roam-db-build-cache))
-
-;; https://org-roam.discourse.group/t/v2-ignore-headline-node-with-org-id/1793
-;; https://www.orgroam.com/manual.html#When-to-cache
-;; (setq org-roam-db-node-include-function
-;;       (lambda ()
-;;         (not (member "ATTACH" (org-get-tags))))) ;; 很多 attach 项目也需要用 roam 查看
-;; (setq +org-roam-open-buffer-on-find-file nil)
+;; refs: https://org-roam.discourse.group/t/v2-ignore-headline-node-with-org-id/1793 , https://www.orgroam.com/manual.html#When-to-cache
 
 (setup org-roam-ui
   (:when-loaded
@@ -36,3 +26,4 @@
 ;; todo: 如何在反向链接的 buffer 中区分显示完成和未完成的任务，并过滤分类
 
 (provide 'init-roam)
+;;; init-roam.el ends here

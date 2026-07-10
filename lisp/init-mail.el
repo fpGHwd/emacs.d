@@ -1,4 +1,4 @@
-;;; ../../Sync/dotfiles/doom.d/lisp/init-mail.el -*- lexical-binding: t; -*-
+;;; init-mail.el --- Email (mu4e) -*- lexical-binding: t; -*-
 
 ;; mu4e ships with the Nix-installed `mu`; setup has no :load-path, so register
 ;; it and the autoloads explicitly (the use-package! :load-path/:commands equivalent).
@@ -25,3 +25,4 @@
           mu4e-get-mail-command "true")))
 
 (provide 'init-mail)
+;;; init-mail.el ends here

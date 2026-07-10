@@ -1,4 +1,4 @@
-;;; ../../Sync/dotfiles/doom.d/lib/lib-telega.el -*- lexical-binding: t; -*-
+;;; lib-telega.el --- telega helpers -*- lexical-binding: t; -*-
 
 (defun get-value-by-key-sequence (plist keys)
   "根据键序列获取嵌套的 plist 中的值"
@@ -160,3 +160,4 @@ fields like \"交易时间：04月19日 19:11\"."
               (+wd/write-transactions transaction-text))))))))
 
 (provide 'lib-telega)
+;;; lib-telega.el ends here

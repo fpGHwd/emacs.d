@@ -1,4 +1,4 @@
-;;; ../../Sync/dotfiles/doom.d/lisp/init-ledger.el -*- lexical-binding: t; -*-
+;;; init-ledger.el --- Finance (ledger-mode) -*- lexical-binding: t; -*-
 
 (setup ledger-mode
   (:match-file "\\.ledger\\'")
@@ -26,3 +26,4 @@
    ledger-reconcile-default-date-format "%Y-%m-%d"))
 
 (provide 'init-ledger)
+;;; init-ledger.el ends here

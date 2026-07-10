@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# name: insert compile command for hikyuu
-# key: iccfh
-# --
-
-# Local Variables:
-# compile-command: "nix develop /home/wd/.config/nix.d#python -c /home/wd/.config/freqtrade/.venv/bin/python -u `(file-name-nondirectory buffer-file-name)`"
-# End:

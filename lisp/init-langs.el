@@ -3,9 +3,6 @@
 (setup eglot
   (:option eglot-max-file-watches 524288))
 
-(setup pine-script-mode
-  (:require pine-script-mode))
-
 (setup sql
   (:option sql-mysql-program "mariadb"))
 

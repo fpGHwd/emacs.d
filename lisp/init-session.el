@@ -5,11 +5,10 @@
 ;; credentials
 (setup auth-source
   (:option auth-source-save-behavior 'ask
-           auth-sources (list (concat doom-user-dir "/etc/authinfo.gpg"))))
+           auth-sources (list (expand-file-name "etc/authinfo.gpg" doom-user-dir))))
 
 ;; recent files
 (setup recentf
-  (:hooks doom-first-file-hook recentf-mode)
   (:when-loaded
     (:option recentf-max-saved-items 5000)))
 

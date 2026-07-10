@@ -23,24 +23,24 @@ This document defines the execution contract for AI agents working in this Doom 
 │   ├── init-session.el     # credentials (auth-source), recentf, workspaces, identity
 │   │  -- appearance & input --
 │   ├── init-fonts.el       # font constants, doom-font, CJK fontset/guardrails
-│   ├── init-ui.el          # theme face tweaks, frame, splash, gif-screencast
+│   ├── init-ui.el          # theme face tweaks, frame
 │   ├── init-editor.el      # modal editing (meow), lispy
 │   ├── init-rime.el        # input method (Rime)
 │   │  -- dev tools --
 │   ├── init-langs.el       # small language modes without their own file
 │   ├── init-vcs.el         # magit / git-commit
 │   ├── init-term.el        # vterm
-│   ├── init-tramp.el       # TRAMP, remote source-dir, envrc
+│   ├── init-remote.el      # TRAMP, remote source-dir, envrc
 │   ├── init-lookup.el      # lookup providers, dictionary, eldoc
 │   │  -- org ecosystem --
-│   ├── init-org.el         # org core (log/latex/babel/file-apps), attach, deft, publish
-│   ├── init-org-agenda.el  # agenda, capture, calendar/holidays, work-mode
+│   ├── init-org.el         # org core (log/latex/babel/file-apps), agenda, capture, calendar/holidays, attach, publish
 │   ├── init-biblio.el      # bibliography/citations (citar/reftex)
 │   ├── init-roam.el        # org-roam + org-roam-ui
 │   │  -- apps --
+│   ├── init-schedule.el    # user scheduled tasks (org auto-commit)
 │   ├── init-read.el        # reading (calibredb, nov, pdf-tools, org-noter)
 │   ├── init-ledger.el      # finance (ledger-mode)
-│   ├── init-llm.el         # AI (gptel, aidermacs, claude-code-ide)
+│   ├── init-llm.el         # AI (gptel, claude-code-ide)
 │   ├── init-mail.el        # email (mu4e, non-mac)
 │   ├── init-telega.el      # Telegram client
 │   └── lib/                # Helper libraries (lib-<area>.el, loaded via :also-load)
@@ -56,7 +56,7 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 
 - **Doom modules**: Changes in `init.el` (enable/disable modules)
 - **Package declarations**: Add `package!` forms in `packages.el`
-- **Feature configuration**: one cohesive responsibility per `lisp/init-<area>.el`. Names are descriptive (no category prefixes); the layout stays flat. Split a module only when it exceeds ~one screen or mixes more than one concern (e.g. org is split into `init-org` / `init-org-agenda` / `init-biblio`).
+- **Feature configuration**: one cohesive responsibility per `lisp/init-<area>.el`. Names are descriptive (no category prefixes); the layout stays flat. Split a module only when it exceeds ~one screen or mixes more than one concern (e.g. org is split into `init-org` / `init-roam` / `init-biblio`).
 - **Helper functions**: heavier helpers go in `lib/lib-<area>.el`, loaded inside the owning feature's setup via `(:also-load lib-<area>)`. Move a defun there once it is unreferenced from / incidental to the init module.
 - **Load order**: `config.el` requires modules in grouped order (infrastructure → appearance/input → dev tools → org ecosystem → apps). Global predicates/path constants (`*is-mac*`, `*org-path*`, …) stay at the top of `config.el`.
 
@@ -68,6 +68,7 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 - Prefer `setopt` over `setq` for user options
 - Add `(provide 'filename)` at end of files
 - **Prefer defaults over explicit config**: If a setting matches the package or Doom default, delete the explicit override and rely on the default. Only write configuration that actually differs from the default.
+- **Host gates**: active hosts are `nixos-nuc`, `macos-m1`, and `ubuntu2204`; `arch-nuc` and `macbook-m1-pro` are retired — remove their branches on sight, do not add new ones.
 - **Guard `pcase`-derived paths before using in lists**: When a variable is set via `pcase system-name` and not all hosts are covered, the value may be `nil` on unmatched hosts. Never put such a value directly into a list (e.g. `(list (list var))`); wrap it with `(when var ...)` to avoid inserting `(nil)` entries that cause `wrong-type-argument` errors downstream.
 
 ### Package Management
@@ -122,10 +123,9 @@ This Emacs configuration depends on external tools managed through Nix:
 
 ### Update Org Configuration
 
-1. Org core (log/latex/babel/file-apps, attach, deft, publish): `lisp/init-org.el`
-2. Agenda / capture / calendar / work-mode: `lisp/init-org-agenda.el`
-3. Bibliography / citations (citar/reftex): `lisp/init-biblio.el`
-4. Org-roam: `lisp/init-roam.el`
+1. Org core (log/latex/babel/file-apps), agenda / capture / calendar, attach, publish: `lisp/init-org.el`
+2. Bibliography / citations (citar/reftex): `lisp/init-biblio.el`
+3. Org-roam: `lisp/init-roam.el`
 
 ### Reading Stack (calibredb / org-noter)
 
@@ -264,7 +264,7 @@ This config uses `meow` (not evil). The active states and their roles:
 **Key bindings (qwerty layout, Normal state):** `h/j/k/l` move, `w/b/e` word motion, `x` select line, `d` delete, `s` kill, `c` change (→ Insert), `i`/`a` insert/append, `y` copy, `p` paste, `n` search, `f`/`t` find/till, `u` undo, `SPC` keypad/leader.
 
 **Known pitfalls fixed in `lisp/init-editor.el`:**
-- In GUI Emacs (macOS and Linux), Enter sends `<return>`, not `RET`. `RET` was bound to `meow-line` in Normal state but `<return>` was not, causing it to fall through to `newline`. Fixed by binding `<return>` → `meow-line` in Normal state.
+- In GUI Emacs (macOS and Linux), Enter sends `<return>`, not `RET`, so Normal-state bindings must cover both. Currently `RET`/`<return>` and `DEL`/`<backspace>` are each bound to `ignore` in Normal state (see `init-editor.el`).
 - Motion state is only used for special buffers (magit, dired, help); normal text files never enter Motion state, so no fixes are needed there.
 
 ## Skills

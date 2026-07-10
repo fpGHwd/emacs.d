@@ -1,6 +1,5 @@
-;;; ../Sync/dotfiles/doom.d/lisp/init-rime.el -*- lexical-binding: t; -*-
+;;; init-rime.el --- Input method (Rime) -*- lexical-binding: t; -*-
 
-;; Keep rime-emacs available, but let sis + system IME be the default path.
 (setq default-input-method "rime")
 
 (setup rime

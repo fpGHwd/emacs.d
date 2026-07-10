@@ -7,8 +7,7 @@
                           "~/org/refs/calibre.bib"
                           "~/org/refs/citar.bib")
      citar-library-paths (pcase (system-name)
-                           ("ubuntu2204" '("~/Sync/citar-lib/"))
-                           ("arch-nuc" '("/home/data/books/citar-library/")))
+                           ("ubuntu2204" '("~/Sync/citar-lib/")))
      citar-notes-paths '("~/org/roam/notes/"))))
 
 (setup reftex

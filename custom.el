@@ -1,4 +1,4 @@
-;;; ../Projects/doom.d/custom.el -*- lexical-binding: t; -*-
+;;; custom.el -*- lexical-binding: t; -*-
 
 (custom-set-variables
  ;; custom-set-variables was added by Custom.

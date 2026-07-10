@@ -1,4 +1,4 @@
-;;; /home/wd/.config/dotfiles/doom.d/lib/lib-init-roam.el -*- lexical-binding: t; -*-
+;;; lib-org.el --- org/roam/vulpea helpers -*- lexical-binding: t; -*-
 
 (require 'vulpea)
 
@@ -369,3 +369,4 @@ end of string are ignored."
   (+wd/org-agenda-work-mode-apply))
 
 (provide 'lib-org)
+;;; lib-org.el ends here

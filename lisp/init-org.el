@@ -34,16 +34,13 @@
      org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
      diary-file (expand-file-name "etc/diary" doom-user-dir)
      org-agenda-include-diary t
-     org-agenda-files (let* ((year-number (string-to-number (format-time-string "%Y")))
-                             (add-year year-number))
-                        (setq org-agenda-files nil)
-                        (while (<= (- year-number add-year) +wd/seven-year-life)
-                          (let ((add-year-str (number-to-string add-year)))
-                            (cl-pushnew (concat "~/org/org/" add-year-str) org-agenda-files)
-                            (cl-pushnew (concat "~/org/noter/" add-year-str) org-agenda-files))
-                          (cl-decf add-year))
-                        (cl-pushnew "~/org/beorg/" org-agenda-files)
-                        org-agenda-files)
+     org-agenda-files (let ((year-number (string-to-number (format-time-string "%Y")))
+                            (files '("~/org/beorg/")))
+                        (dotimes (offset (1+ +wd/seven-year-life))
+                          (let ((year-str (number-to-string (- year-number offset))))
+                            (push (concat "~/org/org/" year-str) files)
+                            (push (concat "~/org/noter/" year-str) files)))
+                        files)
      org-agenda-start-day "-1d"
      org-agenda-span 4
      org-agenda-show-inherited-tags 'always

@@ -19,9 +19,7 @@
      telega-server-libs-prefix (getenv "LIBTDLIB_ROOT"))
     ;; (:hooks telega-chat-mode-hook (lambda () (company-mode -1)))
 
-    (when (or (string= system-name "arch-nuc")
-              (string= system-name "nixos-nuc"))
-      (add-hook 'telega-chat-update-hook #'+wd/telega-chat-update-function))
+    (add-hook 'telega-chat-update-hook #'+wd/telega-chat-update-function)
     ;; telea font
     (when (member "Sarasa Mono SC" (font-family-list))
       (make-face 'telega-align-by-sarasa)
@@ -30,3 +28,4 @@
         (buffer-face-set 'telega-align-by-sarasa)))))
 
 (provide 'init-telega)
+;;; init-telega.el ends here
