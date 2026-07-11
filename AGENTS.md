@@ -22,7 +22,7 @@ This document defines the execution contract for AI agents working in this Doom 
 │   ├── init-setup.el       # setup.el macro extensions (:defer/:hooks/:option/...)
 │   ├── init-session.el     # credentials (auth-source), recentf, workspaces, identity
 │   │  -- appearance & input --
-│   ├── init-fonts.el       # font constants, doom-font, CJK fontset/guardrails
+│   ├── init-fonts.el       # required local fonts, doom-font, CJK fontset
 │   ├── init-ui.el          # theme face tweaks, frame
 │   ├── init-editor.el      # modal editing (meow), lispy
 │   ├── init-rime.el        # input method (Rime)
@@ -68,6 +68,7 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 - Prefer `setopt` over `setq` for user options
 - Add `(provide 'filename)` at end of files
 - **Prefer defaults over explicit config**: If a setting matches the package or Doom default, delete the explicit override and rely on the default. Only write configuration that actually differs from the default.
+- **Fonts are required local dependencies**: Font configuration in `lisp/init-fonts.el` should name the required installed fonts directly and fail loudly when they are absent. Do not add fallback font chains, download hints, or warning-only missing-font behavior.
 - **Host gates**: active hosts are `nixos-nuc`, `macos-m1`, and `ubuntu2204`; `arch-nuc` and `macbook-m1-pro` are retired — remove their branches on sight, do not add new ones.
 - **Guard `pcase`-derived paths before using in lists**: When a variable is set via `pcase system-name` and not all hosts are covered, the value may be `nil` on unmatched hosts. Never put such a value directly into a list (e.g. `(list (list var))`); wrap it with `(when var ...)` to avoid inserting `(nil)` entries that cause `wrong-type-argument` errors downstream.
 
