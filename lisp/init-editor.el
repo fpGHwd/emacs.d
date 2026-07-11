@@ -23,13 +23,5 @@
                       (meow-normal-mode -1)
                       (local-set-key "q" #'quit-window)))))))
 
-(setup xclip
-  (:when-loaded
-    (when (and (featurep 'pgtk)
-               (executable-find "wl-paste")
-               (executable-find "wl-copy"))
-      (xclip-mode 1))))
-
-
 (provide 'init-editor)
 ;;; init-editor.el ends here

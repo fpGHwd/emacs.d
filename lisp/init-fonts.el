@@ -5,9 +5,9 @@
 (defconst +wd/fixed-cjk-font "Sarasa Fixed SC")
 (defconst +wd/font-size (if (string= (system-name) "ubuntu2204") 16 15))
 
-(dolist (family (list +wd/code-font +wd/cjk-font +wd/fixed-cjk-font))
-  (unless (find-font (font-spec :family family))
-    (error "Required font is not installed: %s" family)))
+;(dolist (family (list +wd/code-font +wd/cjk-font +wd/fixed-cjk-font))
+;  (unless (find-font (font-spec :family family))
+;    (error "Required font is not installed: %s" family)))
 
 ;; override doom font setting
 (setq doom-font (font-spec :family +wd/code-font :weight 'regular :size +wd/font-size))
