@@ -42,6 +42,4 @@
 (if (not *is-mac*) (require 'init-mail))
 (require 'init-telega)
 
-(when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
-  (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
 ;; (require 'init-elfeed)
