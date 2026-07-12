@@ -71,6 +71,7 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 - **Fonts are required local dependencies**: Font configuration in `lisp/init-fonts.el` should name the required installed fonts directly and fail loudly when they are absent. Do not add fallback font chains, download hints, or warning-only missing-font behavior.
 - **Host gates**: active hosts are `nixos-nuc`, `macos-m1`, and `ubuntu2204`; `arch-nuc` and `macbook-m1-pro` are retired — remove their branches on sight, do not add new ones.
 - **Guard `pcase`-derived paths before using in lists**: When a variable is set via `pcase system-name` and not all hosts are covered, the value may be `nil` on unmatched hosts. Never put such a value directly into a list (e.g. `(list (list var))`); wrap it with `(when var ...)` to avoid inserting `(nil)` entries that cause `wrong-type-argument` errors downstream.
+- **Do not define config functions from personal Org Babel blocks at startup**: Functions used by Emacs configuration must live in `lisp/` or `lisp/lib/`; startup may hook or call them, but must not open personal org files and execute named source blocks just to define them.
 
 ### Package Management
 

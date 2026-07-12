@@ -64,14 +64,8 @@
        (makefile . t)))
     (setq org-babel-haskell-command "ghci")
 
-    ;; Load `+wd/org-count-total-update' from the `count-fn' block in
-    ;; habit.org, then refresh COUNT_* after each stored log note.
     (when (not (string= (system-name) "ubuntu2204"))
-      (let ((org-confirm-babel-evaluate nil))
-        (with-current-buffer (find-file-noselect "~/org/beorg/habit.org")
-          (org-babel-goto-named-src-block "count-fn")
-          (org-babel-execute-src-block))
-        (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update)))
+      (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update))
 
     (org-toggle-sticky-agenda 1)
 
@@ -187,9 +181,6 @@
   (:when-loaded
     (add-to-list 'doom-file-lines-threshold-alist
                  '("\\.org\\'" . 50000))))
-
-
-
 
 (provide 'init-org)
 ;;; init-org.el ends here

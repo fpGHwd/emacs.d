@@ -82,6 +82,65 @@ Return t if active SCHEDULED/DEADLINE in property within a headline."
   (let ((roam-agenda-files (delete-dups (my/org-roam-list-notes-by-tag "roam-agenda"))))
     (cl-union orig-val roam-agenda-files :test #'equal)))
 
+(defun +wd/org-count-total-update ()
+  "Recompute COUNT_* stats for the current entry into its properties.
+
+Acts only on entries carrying a `COUNT_TOTAL' property (opt-in), so it is
+safe from a global hook.  Scans the entry body, skipping src blocks and
+drawers (e.g. `:LOGBOOK:' CLOCK lines are metadata, not count entries):
+
+- COUNT_TOTAL: sum of count values.  A count is the first arithmetic token
+  on a line; `N*M' forms are evaluated with `calc-eval' (`x'/`×' accepted,
+  the part left of any `=' is used), a bare number is taken as-is.  Tokens
+  that calc cannot parse (e.g. \"...\") are skipped.
+- COUNT_TIMES: number of lines that contributed a count.
+- COUNT_DAYS: number of distinct `[YYYY-MM-DD]' days in the body.
+
+Timestamps are stripped before arithmetic so dates are not counted."
+  (interactive)
+  (require 'calc)
+  (when (derived-mode-p 'org-mode)
+    (save-excursion
+      (org-back-to-heading t)
+      (when (org-entry-get (point) "COUNT_TOTAL")
+        (let ((total 0) (times 0) (in-src nil) (in-drawer nil) (dates nil)
+              (heading (point))
+              (end (save-excursion (org-end-of-subtree t t) (point))))
+          (org-end-of-meta-data t)
+          (while (< (point) end)
+            (let ((raw (buffer-substring-no-properties
+                        (line-beginning-position) (line-end-position))))
+              (cond
+               ((string-match-p "^[ \t]*#\\+begin_src" raw) (setq in-src t))
+               ((string-match-p "^[ \t]*#\\+end_src" raw) (setq in-src nil))
+               ((and in-drawer (string-match-p "^[ \t]*:END:[ \t]*$" raw))
+                (setq in-drawer nil))
+               ((and (not in-drawer)
+                     (string-match-p "^[ \t]*:[A-Za-z][A-Za-z0-9_@#%-]*:[ \t]*$" raw))
+                (setq in-drawer t))
+               ((and (not in-src) (not in-drawer))
+                (when (string-match "\\[\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\)" raw)
+                  (let ((d (match-string 1 raw)))
+                    (unless (member d dates) (push d dates))))
+                (let ((line (replace-regexp-in-string
+                             "[x×]" "*"
+                             (replace-regexp-in-string
+                              "\\[[^]]*\\]\\|<[^>]*>" " " raw))))
+                  (when (string-match
+                         "[0-9.]+\\(?:[ \t]*[-+*/][ \t]*[0-9.]+\\)*" line)
+                    (let ((v (ignore-errors (calc-eval (match-string 0 line)))))
+                      (when (stringp v)
+                        (setq total (+ total (string-to-number v)))
+                        (setq times (1+ times)))))))))
+            (forward-line 1))
+          (org-entry-put heading "COUNT_TOTAL" (number-to-string total))
+          (org-entry-put heading "COUNT_TIMES" (number-to-string times))
+          (org-entry-put heading "COUNT_DAYS" (number-to-string (length dates)))
+          (when (called-interactively-p 'any)
+            (message "COUNT_TOTAL = %s, COUNT_TIMES = %s, COUNT_DAYS = %s"
+                     total times (length dates)))
+          (list total times (length dates)))))))
+
 (defun blog-post (title)
   (interactive "sEnter title: ")
   (let ((post-file (concat "~/org/blog/current/posts/"
