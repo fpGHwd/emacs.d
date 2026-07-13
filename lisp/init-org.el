@@ -5,9 +5,13 @@
 
 (setup org
   (keymap-global-set "C-c i" #'org-insert-item)
+
   (:hooks
    org-mode-hook auto-revert-mode
    org-mode-hook mixed-pitch-mode
+   org-mode-hook (lambda ()
+                   (define-key org-mode-map (kbd "RET") #'+org/dwim-at-point)
+                   (define-key org-mode-map (kbd "<return>") #'+org/dwim-at-point))
    org-mode-hook (lambda () (when (org-property-values "GPTEL_SYSTEM")
                               (progn (gptel-mode)
                                      (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name))))))
