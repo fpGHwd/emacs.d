@@ -15,13 +15,16 @@
      rime-disable-predicates '(rime-predicate-auto-english-p
                                ;; rime-predicate-space-after-cc-p
                                rime-predicate-current-uppercase-letter-p
-                               +pyim-probe-telega-msg)
+                               +pyim-probe-telega-msg
+                               +wd/rime-predicate-not-in-insert-p)
      rime-inline-ascii-trigger 'shift-l
      ;;  set LIBRIME_ROOT and EMACS_MODULE_HEADER_ROOT in emacs.nix already
      rime-emacs-module-header-root (concat (getenv "LIBEMACS_ROOT") "/include")
      rime-librime-root (getenv "LIBRIME_ROOT")
      module-file-suffix (getenv "MODULE_FILE_SUFFIX")
-     rime-user-data-dir (file-truename "~/.config/rime")))
+     rime-user-data-dir (file-truename "~/.config/rime"))
+    ;; Input method follows editing state: deactivate rime when leaving insert mode
+    (add-hook 'meow-insert-exit-hook #'deactivate-input-method))
 
   (defvar my/rime-compile-fallback-commands
     '("/home/wd/.config/dotfiles/local/scripts/2026/build-rime-module.sh"
@@ -49,6 +52,11 @@
 
   ;; 安装 advice（在 rime 被载入后执行）
   (advice-add 'rime-compile-module :around #'my/rime-compile-module-advice))
+
+(defun +wd/rime-predicate-not-in-insert-p ()
+  "Return t when meow is not in insert state.
+Used as a rime-disable-predicate so rime only produces candidates in insert mode."
+  (not meow-insert-mode))
 
 ;; Debug-only entrypoint: explicitly enable rime-emacs when needed.
 (defun +wd/rime-debug-enable ()
