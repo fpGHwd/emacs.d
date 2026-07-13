@@ -4,19 +4,19 @@
 ;; https://github.com/zevlg/telega.el
 (setup telega
   (:only-if (string= (system-name) "nixos-nuc"))
+  (:option
+   telega-cache-dir (file-truename "~/.config/telega/cache")
+   telega-directory (file-truename "~/.config/telega/")
+   telega-server-logfile (file-truename "~/.config/telega/telega-server.log")
+   telega-temp-dir (file-truename "~/.config/telega/temp")
+   telega-database-dir (file-truename "~/.config/telega/")
+   telega-server-libs-prefix (getenv "LIBTDLIB_ROOT"))
   (:defer (telega t))
   (:when-loaded
-    (:also-load lib-telega)
+    (require 'lib-telega)
     (dolist (mode '(telega-root-mode telega-chat-mode
                     telega-image-mode telega-webpage-mode))
       (add-to-list 'meow-mode-state-list (cons mode 'motion)))
-    (:option
-     telega-cache-dir (file-truename "~/.config/telega/cache")
-     telega-directory (file-truename "~/.config/telega/")
-     telega-server-logfile (file-truename "~/.config/telega/telega-server.log")
-     telega-temp-dir (file-truename "~/.config/telega/temp")
-     telega-database-dir (file-truename "~/.config/telega/")
-     telega-server-libs-prefix (getenv "LIBTDLIB_ROOT"))
     ;; (:hooks telega-chat-mode-hook (lambda () (company-mode -1)))
 
     (add-hook 'telega-chat-update-hook #'+wd/telega-chat-update-function)

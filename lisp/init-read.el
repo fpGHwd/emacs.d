@@ -4,7 +4,8 @@
 (setup calibredb
   (:with-function calibredb)
   (:when-loaded
-    (:also-load lib-util lib-read)
+    (require 'lib-util)
+    (require 'lib-read)
     (:option
      calibredb-search-page-max-rows 30
      calibredb-id-width 6
@@ -60,7 +61,7 @@
 ;; https://emacs-china.org/t/emacs-epub/4713/11
 ;; FIXME: errors while opening `nov' files with Unicode characters
 (setup nov
-  (:match-file "\\.epub\\'")
+  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
   (:when-loaded
     (with-no-warnings
       (defun my-nov-content-unique-identifier (content)
@@ -74,7 +75,7 @@
 
 (setup pdf-tools
   (:when-loaded
-    (:also-load lib-read)
+    (require 'lib-read)
 
     (setq pdf-annot-default-annotation-properties
           '((t         (label . "Wang Ding"))
@@ -99,11 +100,13 @@
 
 
 (setup org-noter
+  ;; Keep raw-document sessions from appending book headings to the main notes.
+  (:option org-noter-doc-split-fraction '(0.618 . 0.382)
+           org-noter-find-additional-notes-functions
+           '(+wd/org-noter-find-note-by-document-name)
+           org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:when-loaded
-    (:also-load lib-read)
-    (:option org-noter-doc-split-fraction '(0.618 . 0.382)
-             org-noter-find-additional-notes-functions
-             '(+wd/org-noter-find-note-by-document-name))
+    (require 'lib-read)
 
     ;; Resolvers tried in order (depth keeps the order stable across reloads):
     ;; existing download -> local calibre library (open in place) -> download by URL.
@@ -114,11 +117,7 @@
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-parse-document-download 90)
     (add-hook 'org-noter-create-session-from-document-hook
-              #'+wd/org-noter-create-session-from-document-by-document-name 0)
-    ;; Confine notes to the dedicated noter dir.  Do NOT keep `org-directory'
-    ;; in the search path: opening a raw document then `org-noter' would else
-    ;; fall back to the main notes.org and append book headings/skeletons there.
-    (:option org-noter-notes-search-path (list (file-truename "~/org/noter/current")))))
+              #'+wd/org-noter-create-session-from-document-by-document-name 0)))
 
 
 (provide 'init-read)

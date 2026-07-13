@@ -64,6 +64,7 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 
 - Use `;;; filename.el --- description` header comment
 - **Prefer `setup` macro**: Use `setup` macro from `init-setup.el` for configuration wherever possible; only fall back to `after!` or bare `setopt`/`setq` when `setup` cannot express the construct
+- **Keep `setup :when-loaded` narrow**: Put plain `:option`, hooks, autoloads, and top-level `:also-load` outside `:when-loaded` whenever possible. Use `:when-loaded` only for code that needs loaded package definitions such as keymaps, functions, advices, or mode internals. Never nest `:also-load` inside `:when-loaded`; if a helper must load after the package, use an explicit `(require 'lib-...)` as the first form in that block.
 - Use `after!` for package-specific configuration only when `setup` is insufficient
 - Prefer `setopt` over `setq` for user options
 - Add `(provide 'filename)` at end of files

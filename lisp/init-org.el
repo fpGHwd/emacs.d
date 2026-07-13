@@ -4,6 +4,8 @@
 (setq +wd/seven-year-life 7) ;; 七年一生
 
 (setup org
+  (:also-load lib-org)
+
   (keymap-global-set "C-c i" #'org-insert-item)
 
   (:hooks
@@ -17,43 +19,42 @@
                                      (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name))))))
    org-capture-mode-hook meow-insert-mode)
 
-  (:when-loaded
-    (:also-load lib-org)
-    (:option
-     ;; https://emacs-china.org/t/topic/1551/15
-     system-time-locale "C"
-     org-log-done 'time
-     org-archive-location "~/org/org/current/archive.org.bak::* From %s"
-     org-id-locations-file (expand-file-name "org-id-locations" doom-cache-dir)
-     org-crypt-key "ggwdwhu@gmail.com"
-     org-image-actual-width 600
-     org-deadline-warning-days 7
-     org-format-latex-options
-     '(:foreground auto :background default :scale 1.5 :html-foreground "Black"
-       :html-background "Transparent" :html-scale 1.0 :matchers
-       ("begin" "$1" "$" "$$" "\\(" "\\["))
-     org-journal-dir "~/org/journal"
-     rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")
-     ;; agenda
-     org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
-     diary-file (expand-file-name "etc/diary" doom-user-dir)
-     org-agenda-include-diary t
-     org-agenda-files (let ((year-number (string-to-number (format-time-string "%Y")))
-                            (files '("~/org/beorg/")))
-                        (dotimes (offset (1+ +wd/seven-year-life))
-                          (let ((year-str (number-to-string (- year-number offset))))
-                            (push (concat "~/org/org/" year-str) files)
-                            (push (concat "~/org/noter/" year-str) files)))
-                        files)
-     org-agenda-start-day "-1d"
-     org-agenda-span 4
-     org-agenda-show-inherited-tags 'always
-     org-agenda-sorting-strategy
-     '((agenda habit-down time-up urgency-down category-keep)
-       (todo urgency-down category-keep)
-       (tags urgency-down timestamp-down category-keep) (search alpha-up))
-     org-refile-targets '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1)))
+  (:option
+   ;; https://emacs-china.org/t/topic/1551/15
+   system-time-locale "C"
+   org-log-done 'time
+   org-archive-location "~/org/org/current/archive.org.bak::* From %s"
+   org-id-locations-file (expand-file-name "org-id-locations" doom-cache-dir)
+   org-crypt-key "ggwdwhu@gmail.com"
+   org-image-actual-width 600
+   org-deadline-warning-days 7
+   org-format-latex-options
+   '(:foreground auto :background default :scale 1.5 :html-foreground "Black"
+     :html-background "Transparent" :html-scale 1.0 :matchers
+     ("begin" "$1" "$" "$$" "\\(" "\\["))
+   org-journal-dir "~/org/journal"
+   rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")
+   ;; agenda
+   org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
+   diary-file (expand-file-name "etc/diary" doom-user-dir)
+   org-agenda-include-diary t
+   org-agenda-files (let ((year-number (string-to-number (format-time-string "%Y")))
+                          (files '("~/org/beorg/")))
+                      (dotimes (offset (1+ +wd/seven-year-life))
+                        (let ((year-str (number-to-string (- year-number offset))))
+                          (push (concat "~/org/org/" year-str) files)
+                          (push (concat "~/org/noter/" year-str) files)))
+                      files)
+   org-agenda-start-day "-1d"
+   org-agenda-span 4
+   org-agenda-show-inherited-tags 'always
+   org-agenda-sorting-strategy
+   '((agenda habit-down time-up urgency-down category-keep)
+     (todo urgency-down category-keep)
+     (tags urgency-down timestamp-down category-keep) (search alpha-up))
+   org-refile-targets '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1)))
 
+  (:when-loaded
     (add-to-list 'org-tags-exclude-from-inheritance "roam-agenda")
     (add-to-list 'org-file-apps '("\\.drawio\\'" . "/opt/drawio/drawio %s"))
     (add-to-list 'org-file-apps '("\\.minder\\'" . "/usr/bin/minder %s"))
@@ -120,11 +121,10 @@
 
 
 (setup org-attach
-  (:when-loaded
-    (:option
-     org-attach-directory (file-truename "~/.local/org-attach")
-     org-attach-id-dir (file-truename "~/.local/org-attach")
-     org-attach-sync-delete-empty-dir t)))
+  (:option
+   org-attach-directory (file-truename "~/.local/org-attach")
+   org-attach-id-dir (file-truename "~/.local/org-attach")
+   org-attach-sync-delete-empty-dir t))
 
 
 (setup dired
@@ -133,12 +133,11 @@
 
 
 (setup calendar
-  (:when-loaded
-    (:option
-     calendar-mark-diary-entries-flag t
-     calendar-week-start-day 1
-     calendar-latitude 31.108024
-     calendar-longitude 121.372327)))
+  (:option
+   calendar-mark-diary-entries-flag t
+   calendar-week-start-day 1
+   calendar-latitude 31.108024
+   calendar-longitude 121.372327))
 
 
 (setup cal-china-x
@@ -152,19 +151,18 @@
 
 
 (setup ox-publish
+  (:option
+   org-publish-project-alist
+   '(("org-blog"
+      :base-directory "~/org/blog/current/posts/"
+      :base-extension "org"
+      :publishing-directory "~/org/blog/current/outputs/"
+      :recursive t
+      :publishing-function org-md-publish-to-md
+      :publishing-extension "markdown"
+      :headline-levels 4
+      :body-only t)))
   (:when-loaded
-    (:also-load lib-org)
-    (:option
-     org-publish-project-alist
-     '(("org-blog"
-        :base-directory "~/org/blog/current/posts/"
-        :base-extension "org"
-        :publishing-directory "~/org/blog/current/outputs/"
-        :recursive t
-        :publishing-function org-md-publish-to-md
-        :publishing-extension "markdown"
-        :headline-levels 4
-        :body-only t)))
     (add-hook 'org-export-before-processing-hook #'my/org-insert-updated-timestamp)
     (add-hook 'org-publish-after-publishing-hook #'+wd/handle-image-in-markdown)
     (map! :leader
@@ -175,10 +173,9 @@
 
 (setup org-latex-impatient
   (:hooks org-mode-hook org-latex-impatient-mode)
-  (:when-loaded
-    (:option
-     max-image-size nil
-     org-latex-impatient-tex2svg-bin (executable-find "tex2svg"))))
+  (:option
+   max-image-size nil
+   org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
 
 (setup so-long

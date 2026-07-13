@@ -9,8 +9,7 @@
 
 ;; recent files
 (setup recentf
-  (:when-loaded
-    (:option recentf-max-saved-items 5000)))
+  (:option recentf-max-saved-items 5000))
 
 ;; workspaces
 (setq! +workspaces-data-file (concat (system-name) "_workspaces"))

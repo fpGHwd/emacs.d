@@ -1,7 +1,7 @@
 ;;; init-ledger.el --- Finance (ledger-mode) -*- lexical-binding: t; -*-
 
 (setup ledger-mode
-  (:match-file "\\.ledger\\'")
+  (add-to-list 'auto-mode-alist '("\\.ledger\\'" . ledger-mode))
   (:hook auto-revert-mode)
   (:option
    ledger-reports
