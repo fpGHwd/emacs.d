@@ -14,6 +14,9 @@
    org-mode-hook (lambda ()
                    (define-key org-mode-map (kbd "RET") #'+org/dwim-at-point)
                    (define-key org-mode-map (kbd "<return>") #'+org/dwim-at-point))
+   org-mode-hook (lambda ()
+                   (setq org-agenda-start-day "-1d"
+                         org-agenda-span 4))
    org-mode-hook (lambda () (when (org-property-values "GPTEL_SYSTEM")
                               (progn (gptel-mode)
                                      (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name))))))
@@ -45,8 +48,6 @@
                           (push (concat "~/org/org/" year-str) files)
                           (push (concat "~/org/noter/" year-str) files)))
                       files)
-   org-agenda-start-day "-1d"
-   org-agenda-span 4
    org-agenda-show-inherited-tags 'always
    org-agenda-sorting-strategy
    '((agenda habit-down time-up urgency-down category-keep)
