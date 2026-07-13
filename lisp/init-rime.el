@@ -26,45 +26,8 @@
     ;; Input method follows editing state: deactivate rime when leaving insert mode
     (add-hook 'meow-insert-exit-hook #'deactivate-input-method))
 
-  (defvar my/rime-compile-fallback-commands
-    '("/home/wd/.config/dotfiles/local/scripts/2026/build-rime-module.sh"
-      "make lib" "make" "make -C build" "cmake --build build")
-    "如果 `rime-compile-module' 失败时按顺序尝试的备选编译命令（在 rime--root 目录执行）。")
-
-  (defun my/rime-compile-module-advice (orig-fun &rest args)
-    "Around advice：先调用 ORIG-FUN，出错时按 `my/rime-compile-fallback-commands' 依次尝试编译。"
-    (condition-case err
-        (apply orig-fun args)
-      (error
-       (message "rime-compile-module failed: %S. Trying fallback commands..." err)
-       (let* ((root (or (and (boundp 'rime--root) rime--root) default-directory))
-              (result
-               (catch 'success
-                 (dolist (cmd my/rime-compile-fallback-commands)
-                   (let ((default-directory (file-name-as-directory (expand-file-name root))))
-                     (message "Running fallback: %s (in %s)" cmd default-directory)
-                     (when (zerop (shell-command cmd))
-                       (throw 'success cmd))))
-                 nil)))
-         (if result
-             (message "Fallback compile succeeded with: %s" result)
-           (error "All rime compile attempts failed"))))))
-
-  ;; 安装 advice（在 rime 被载入后执行）
-  (advice-add 'rime-compile-module :around #'my/rime-compile-module-advice))
-
-(defun +wd/rime-predicate-not-in-insert-p ()
-  "Return t when meow is not in insert state.
-Used as a rime-disable-predicate so rime only produces candidates in insert mode."
-  (not meow-insert-mode))
-
-;; Debug-only entrypoint: explicitly enable rime-emacs when needed.
-(defun +wd/rime-debug-enable ()
-  "Manually enable rime-emacs for debugging."
-  (interactive)
-  (if (fboundp 'rime-force-enable)
-      (call-interactively #'rime-force-enable)
-    (user-error "rime is not loaded")))
+  ;; 安装 advice（在 rime 被载入后执行，函数定义在 lib-rime）
+  (advice-add 'rime-compile-module :around #'+my/rime-compile-module-advice))
 
 (provide 'init-rime)
 ;;; init-rime.el ends here

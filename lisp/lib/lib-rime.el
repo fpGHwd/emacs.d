@@ -1,5 +1,32 @@
 ;;; lib-rime.el --- Rime IME helpers -*- lexical-binding: t; -*-
 
+(defvar my/rime-compile-fallback-commands
+  '("/home/wd/.config/dotfiles/local/scripts/2026/build-rime-module.sh"
+    "make lib" "make" "make -C build" "cmake --build build")
+  "如果 `rime-compile-module' 失败时按顺序尝试的备选编译命令（在 rime--root 目录执行）。")
+
+(defun +my/rime-compile-module-advice (orig-fun &rest _)
+  "Around advice：先调用 ORIG-FUN，出错时按 `my/rime-compile-fallback-commands' 依次尝试编译。"
+  (condition-case err
+      (funcall orig-fun)
+    (error
+     (let ((default-directory (file-name-as-directory rime--root)))
+       (cl-dolist (cmd my/rime-compile-fallback-commands)
+         (when (zerop (shell-command cmd))
+           (cl-return)))
+       (error "All rime compile attempts failed")))))
+
+(defun +wd/rime-predicate-not-in-insert-p ()
+  "Return t when meow is not in insert state.
+Used as a rime-disable-predicate so rime only produces candidates in insert mode."
+  (not meow-insert-mode))
+
+(defun +wd/rime-debug-enable ()
+  "Manually enable rime-emacs for debugging."
+  (interactive)
+  (if (fboundp 'rime-force-enable)
+      (call-interactively #'rime-force-enable)
+    (user-error "rime is not loaded")))
 
 (defun +pyim-probe-telega-msg ()
   "Return if current point is at a telega button."
