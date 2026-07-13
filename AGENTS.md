@@ -73,6 +73,7 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 - **Guard `pcase`-derived paths before using in lists**: When a variable is set via `pcase system-name` and not all hosts are covered, the value may be `nil` on unmatched hosts. Never put such a value directly into a list (e.g. `(list (list var))`); wrap it with `(when var ...)` to avoid inserting `(nil)` entries that cause `wrong-type-argument` errors downstream.
 - **Do not define config functions from personal Org Babel blocks at startup**: Functions used by Emacs configuration must live in `lisp/` or `lisp/lib/`; startup may hook or call them, but must not open personal org files and execute named source blocks just to define them.
 - **Input methods follow editing state, not the reverse**: Subsystems like input methods (rime) should register themselves on editing-state hooks (e.g. `meow-insert-exit-hook`) in their own module (`init-rime.el`), not have the editor module manage them. The editor module (`init-editor.el`) must not depend on input-method packages.
+- **Override Doom module defaults via `doom-after-modules-config-hook`**: Doom modules use `use-package! :config` which re-executes unconditionally on `doom/reload` — even after the package is already loaded. This means `setq`, `setup :option`, and `after!` in user config all run *before* the Doom module `:config` block and get overridden. To guarantee user values win, put the `setq` in `doom-after-modules-config-hook` (e.g. `(add-hook! 'doom-after-modules-config-hook (setq ...))`).
 
 ### Package Management
 
