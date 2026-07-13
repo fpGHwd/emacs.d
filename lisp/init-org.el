@@ -173,10 +173,11 @@
 
 
 (setup org-latex-impatient
-  (:hooks org-mode-hook org-latex-impatient-mode)
-  (:option
-   max-image-size nil
-   org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
+  (:when-loaded
+    (:hooks org-mode-hook org-latex-impatient-mode)
+    (:option
+     max-image-size nil
+     org-latex-impatient-tex2svg-bin (executable-find "tex2svg"))))
 
 
 (setup so-long
