@@ -2,13 +2,13 @@
 
 (setup meow
   (:when-loaded
-    (meow-normal-define-key '("RET" . ignore))
-    (meow-normal-define-key '("<return>" . ignore))
-    (meow-normal-define-key '("DEL" . ignore))
-    (meow-normal-define-key '("<backspace>" . ignore))
-    (meow-normal-define-key '("C-o" . better-jumper-jump-backward))
-    (meow-normal-define-key '("%" . lispy-different))
-    (meow-normal-define-key '("=" . indent-region))
+    ;; (meow-normal-define-key '("RET" . ignore))
+    ;; (meow-normal-define-key '("<return>" . ignore))
+    ;; (meow-normal-define-key '("DEL" . ignore))
+    ;; (meow-normal-define-key '("<backspace>" . ignore))
+    ;; (meow-normal-define-key '("C-o" . better-jumper-jump-backward))
+    ;; (meow-normal-define-key '("%" . lispy-different))
+    ;; (meow-normal-define-key '("=" . indent-region))
     (:option
      meow-cursor-type-normal 'box
      meow-cursor-type-motion 'box
