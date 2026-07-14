@@ -1,14 +1,15 @@
 ;;; init-editor.el --- Modal editing (meow), lispy, and clipboard -*- lexical-binding: t; -*-
 
 (setup meow
+  (:also-load lib-util)
   (:when-loaded
-    ;; (meow-normal-define-key '("RET" . ignore))
-    ;; (meow-normal-define-key '("<return>" . ignore))
-    ;; (meow-normal-define-key '("DEL" . ignore))
-    ;; (meow-normal-define-key '("<backspace>" . ignore))
-    ;; (meow-normal-define-key '("C-o" . better-jumper-jump-backward))
-    ;; (meow-normal-define-key '("%" . lispy-different))
-    ;; (meow-normal-define-key '("=" . indent-region))
+    (meow-normal-define-key
+     '("RET" . +wd/meow-normal-return)
+     '("DEL" . ignore)
+     '("C-o" . better-jumper-jump-backward)
+     '("%" . lispy-different)
+     '("=" . indent-region)
+     '("q" . quit-window))
     (:option
      meow-cursor-type-normal 'box
      meow-cursor-type-motion 'box
@@ -19,8 +20,7 @@
                 (lambda (&rest _)
                   (when-let ((buf (get-buffer "*Meow Cheatsheet*")))
                     (with-current-buffer buf
-                      (buffer-face-set :family "Sarasa Fixed SC")
-                      (meow-motion-overwrite-define-key '("q" . quit-window))))))))
+                      (buffer-face-set :family "Sarasa Fixed SC")))))))
 
 ;; Doom module :config re-executes on doom/reload, overriding the :option values
 ;; above. Re-apply after reload to ensure our cursor types win.

@@ -28,5 +28,11 @@ Leave point after open-quote."
     (dolist (ws intersection)
       (+workspace-save ws))))
 
+(defun +wd/meow-normal-return ()
+  (interactive)
+  (if (derived-mode-p 'org-mode)
+      (call-interactively #'+org/dwim-at-point)
+    (ignore)))
+
 (provide 'lib-util)
 ;;; lib-util.el ends here
