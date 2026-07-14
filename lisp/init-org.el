@@ -11,9 +11,9 @@
   (:hooks
    org-mode-hook auto-revert-mode
    org-mode-hook mixed-pitch-mode
-   org-mode-hook (lambda ()
-                   (define-key org-mode-map (kbd "RET") #'+org/dwim-at-point)
-                   (define-key org-mode-map (kbd "<return>") #'+org/dwim-at-point))
+   ;; org-mode-hook (lambda ()
+   ;;                 (define-key org-mode-map (kbd "RET") #'+org/dwim-at-point)
+   ;;                 (define-key org-mode-map (kbd "<return>") #'+org/dwim-at-point))
    org-mode-hook (lambda ()
                    (setq org-agenda-start-day "-1d"
                          org-agenda-span 4))
