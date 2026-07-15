@@ -1,5 +1,18 @@
 ;;; lib-rime.el --- Rime IME helpers -*- lexical-binding: t; -*-
 
+(defvar +wd/rime-was-active nil
+  "Whether rime was active before leaving insert state.")
+
+(defun +wd/rime-save-and-deactivate ()
+  "Save rime state and deactivate when leaving insert."
+  (setq +wd/rime-was-active (and (boundp 'current-input-method) current-input-method))
+  (deactivate-input-method))
+
+(defun +wd/rime-restore-on-insert ()
+  "Restore rime if it was active before leaving insert."
+  (when +wd/rime-was-active
+    (activate-input-method "rime")))
+
 (defvar my/rime-compile-fallback-commands
   '("/home/wd/.config/dotfiles/local/scripts/2026/build-rime-module.sh"
     "make lib" "make" "make -C build" "cmake --build build")

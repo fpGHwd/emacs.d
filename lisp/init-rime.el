@@ -23,8 +23,9 @@
    rime-user-data-dir (file-truename "~/.config/rime"))
   (:when-loaded
     (require 'lib-rime)
-    ;; Input method follows editing state: deactivate rime when leaving insert mode
-    (add-hook 'meow-insert-exit-hook #'deactivate-input-method)
+    ;; Input method follows editing state: save rime state on exit, restore on enter
+    (add-hook 'meow-insert-exit-hook #'+wd/rime-save-and-deactivate)
+    (add-hook 'meow-insert-enter-hook #'+wd/rime-restore-on-insert)
     ;; Install after rime is loaded; the advice function is defined in lib-rime.
     (advice-add 'rime-compile-module :around #'+my/rime-compile-module-advice)))
 
