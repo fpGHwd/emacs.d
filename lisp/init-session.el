@@ -9,10 +9,8 @@
 
 ;; recent files
 (setup recentf
-  (:option recentf-max-saved-items 5000))
-
-;; workspaces
-(setq! +workspaces-data-file (concat (system-name) "_workspaces"))
+  (:after recentf 
+   (setq recentf-max-saved-items 5000)))
 
 ;; identity
 (setq user-full-name "Wang Ding"

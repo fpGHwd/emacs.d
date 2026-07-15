@@ -17,17 +17,6 @@ Leave point after open-quote."
     (apply 'call-process "code" nil nil nil (list (concat buffer-file-name ":" line ":" column) "--goto"))))
 
 
-;; for workspace
-(defun +wd/update-current-workspaces-to-saved-ones ()
-  (interactive)
-  (let* ((+workspaces-data-file (concat (system-name) "_workspaces"))
-         (current-ws (+workspace-list-names))
-         (saved-ws (persp-list-persp-names-in-file
-                    (expand-file-name +workspaces-data-file persp-save-dir)))
-         (intersection (cl-intersection current-ws saved-ws :test 'equal)))
-    (dolist (ws intersection)
-      (+workspace-save ws))))
-
 (defun +wd/meow-normal-return ()
   (interactive)
   (cond
