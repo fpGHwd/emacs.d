@@ -10,6 +10,17 @@ This document defines the execution contract for AI agents working in this Doom 
 - This does not replace Doom Emacs or upstream package documentation.
 - This does not manage external tool dependencies (those are in the Nix configuration).
 
+## Documentation Boundary
+
+`AGENTS.md` is for durable agent execution contracts: repository structure,
+coding conventions, workflow requirements, safety rules, and project-wide
+invariants that should shape future automated edits.
+
+Ordinary documentation under `docs/` is for troubleshooting notes, incident
+records, command transcripts, version compatibility findings, and operational
+procedures. Link from `AGENTS.md` only when a document establishes an enduring
+rule agents must follow.
+
 ## Repository Structure
 
 ```
@@ -238,13 +249,6 @@ server`, exits 1, and enters a `Restart=on-failure` loop.
 - To reload config in the running server: `emacsclient -e '(doom/reload)'`.
 - Never run `emacs --daemon`, and never pair `(kill-emacs)` with a manual
   daemon relaunch.
-
-### Restart Emacs after tree-sitter grammar changes
-
-Tree-sitter grammar `.so` files remain loaded in the Emacs process. After
-reinstalling or replacing a grammar, restart the systemd-managed server with
-`systemctl --user restart emacs`; `doom/reload` or `load-file` is not enough to
-verify the new grammar.
 
 ### Package Not Loading
 
