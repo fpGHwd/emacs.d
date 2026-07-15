@@ -239,6 +239,13 @@ server`, exits 1, and enters a `Restart=on-failure` loop.
 - Never run `emacs --daemon`, and never pair `(kill-emacs)` with a manual
   daemon relaunch.
 
+### Restart Emacs after tree-sitter grammar changes
+
+Tree-sitter grammar `.so` files remain loaded in the Emacs process. After
+reinstalling or replacing a grammar, restart the systemd-managed server with
+`systemctl --user restart emacs`; `doom/reload` or `load-file` is not enough to
+verify the new grammar.
+
 ### Package Not Loading
 
 1. Verify in `packages.el`
