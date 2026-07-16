@@ -48,3 +48,5 @@
 
 ;; add android-mode for adb
 ;; (package! android-mode)
+
+(package! grip-mode)
