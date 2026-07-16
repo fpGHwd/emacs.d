@@ -10,7 +10,7 @@
 ;; recent files
 (setup recentf
   (:after recentf 
-   (setq recentf-max-saved-items 5000)))
+    (setq recentf-max-saved-items 5000)))
 
 ;; identity
 (setq user-full-name "Wang Ding"

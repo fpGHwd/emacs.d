@@ -15,9 +15,8 @@
 Skip if there are no changes.  Commit message includes timestamp.
 After committing, reschedule for the next day at 17:30."
   (interactive)
+  (require 'org)
   (let ((default-directory (expand-file-name +wd/org-autocommit-repo)))
-    (unless (file-directory-p (expand-file-name ".git" default-directory))
-      (user-error "~/org is not a git repository"))
     (magit-with-toplevel
       (magit-stage-modified t)
       (when (magit-anything-staged-p)
