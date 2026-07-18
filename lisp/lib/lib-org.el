@@ -94,7 +94,8 @@ drawers (e.g. `:LOGBOOK:' CLOCK lines are metadata, not count entries):
   the part left of any `=' is used), a bare number is taken as-is.  Tokens
   that calc cannot parse (e.g. \"...\") are skipped.
 - COUNT_TIMES: number of lines that contributed a count.
-- COUNT_DAYS: number of distinct `[YYYY-MM-DD]' days in the body.
+- COUNT_DAYS: number of distinct `[YYYY-MM-DD]' days on lines that
+  contributed a count.
 
 Timestamps are stripped before arithmetic so dates are not counted."
   (interactive)
@@ -119,10 +120,9 @@ Timestamps are stripped before arithmetic so dates are not counted."
                      (string-match-p "^[ \t]*:[A-Za-z][A-Za-z0-9_@#%-]*:[ \t]*$" raw))
                 (setq in-drawer t))
                ((and (not in-src) (not in-drawer))
-                (when (string-match "\\[\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\)" raw)
-                  (let ((d (match-string 1 raw)))
-                    (unless (member d dates) (push d dates))))
-                (let ((line (replace-regexp-in-string
+                (let ((date (and (string-match "\\[\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\)" raw)
+                                 (match-string 1 raw)))
+                      (line (replace-regexp-in-string
                              "[x×]" "*"
                              (replace-regexp-in-string
                               "\\[[^]]*\\]\\|<[^>]*>" " " raw))))
@@ -131,7 +131,9 @@ Timestamps are stripped before arithmetic so dates are not counted."
                     (let ((v (ignore-errors (calc-eval (match-string 0 line)))))
                       (when (stringp v)
                         (setq total (+ total (string-to-number v)))
-                        (setq times (1+ times)))))))))
+                        (setq times (1+ times))
+                        (when (and date (not (member date dates)))
+                          (push date dates)))))))))
             (forward-line 1))
           (org-entry-put heading "COUNT_TOTAL" (number-to-string total))
           (org-entry-put heading "COUNT_TIMES" (number-to-string times))
