@@ -1,14 +1,4 @@
-;;; init-editor.el --- Modal editing (meow), lispy, and clipboard -*- lexical-binding: t; -*-
-
-(when (and (eq window-system 'pgtk)
-           (getenv "WAYLAND_DISPLAY")
-           (executable-find "wl-paste"))
-  ;; pgtk can keep reporting Emacs as the CLIPBOARD owner after external copies.
-  (setq interprogram-paste-function
-        (lambda ()
-          (with-temp-buffer
-            (when (zerop (call-process "wl-paste" nil t nil "--no-newline"))
-              (buffer-string))))))
+;;; init-editor.el --- Modal editing (meow), lispy  -*- lexical-binding: t; -*-
 
 (setup meow
   (:also-load lib-util)
