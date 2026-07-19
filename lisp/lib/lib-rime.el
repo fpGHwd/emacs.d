@@ -34,7 +34,8 @@
 Used as a rime-disable-predicate so rime only produces candidates in insert mode.
 Minibuffer and terminal modes are exempted — text input there is always expected."
   (and (not meow-insert-mode)
-       (not (minibufferp))))
+       (not (minibufferp))
+       (not vterm-mode)))
 
 (defun +wd/rime-debug-enable ()
   "Manually enable rime-emacs for debugging."
