@@ -51,3 +51,5 @@
 
 ;; github markdown
 ;; (package! grip-mode)
+
+(package! csv-mode)
