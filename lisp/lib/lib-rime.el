@@ -1,17 +1,17 @@
 ;;; lib-rime.el --- Rime IME helpers -*- lexical-binding: t; -*-
 
-(defvar +wd/rime-was-active nil
+(defvar-local +wd/rime-was-active nil
   "Whether rime was active before leaving insert state.")
 
-(defun +wd/rime-save-and-deactivate ()
-  "Save rime state and deactivate when leaving insert."
-  (setq +wd/rime-was-active (and (boundp 'current-input-method) current-input-method))
-  (deactivate-input-method))
-
-(defun +wd/rime-restore-on-insert ()
-  "Restore rime if it was active before leaving insert."
-  (when +wd/rime-was-active
-    (activate-input-method "rime")))
+(defun +wd/rime-toggle-on-insert-change ()
+  "Toggle rime on meow insert state change.
+On insert exit: save state and deactivate.
+On insert enter: restore if previously active."
+  (if (meow-insert-mode-p)
+      (when +wd/rime-was-active
+        (activate-input-method "rime"))
+    (setq +wd/rime-was-active (and (boundp 'current-input-method) current-input-method))
+    (deactivate-input-method)))
 
 (defvar my/rime-compile-fallback-commands
   '("/home/wd/.config/dotfiles/local/scripts/2026/build-rime-module.sh"
@@ -28,14 +28,6 @@
          (when (zerop (shell-command cmd))
            (cl-return)))
        (error "All rime compile attempts failed")))))
-
-(defun +wd/rime-predicate-not-in-insert-p ()
-  "Return t when meow is not in insert state.
-Used as a rime-disable-predicate so rime only produces candidates in insert mode.
-Minibuffer and terminal modes are exempted — text input there is always expected."
-  (not (or meow-insert-mode
-           (minibufferp)
-           vterm-mode)))
 
 (defun +wd/rime-debug-enable ()
   "Manually enable rime-emacs for debugging."

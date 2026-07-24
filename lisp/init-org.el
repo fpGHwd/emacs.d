@@ -33,6 +33,7 @@
      :html-background "Transparent" :html-scale 1.0 :matchers
      ("begin" "$1" "$" "$$" "\\(" "\\["))
    org-journal-dir "~/org/journal"
+   ;; org-journal-enable-agenda-integration t  ;; not use now
    rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")
    ;; agenda
    org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)

@@ -13,8 +13,7 @@
    rime-disable-predicates '(rime-predicate-auto-english-p
                              ;; rime-predicate-space-after-cc-p
                              rime-predicate-current-uppercase-letter-p
-                             +pyim-probe-telega-msg
-                             +wd/rime-predicate-not-in-insert-p)
+                             +pyim-probe-telega-msg)
    rime-inline-ascii-trigger 'shift-l
    ;;  set LIBRIME_ROOT and EMACS_MODULE_HEADER_ROOT in emacs.nix already
    rime-emacs-module-header-root (concat (getenv "LIBEMACS_ROOT") "/include")
@@ -24,8 +23,8 @@
   (:when-loaded
     (require 'lib-rime)
     ;; Input method follows editing state: save rime state on exit, restore on enter
-    (add-hook 'meow-insert-exit-hook #'+wd/rime-save-and-deactivate)
-    (add-hook 'meow-insert-enter-hook #'+wd/rime-restore-on-insert)
+    (add-hook 'meow-insert-exit-hook #'+wd/rime-toggle-on-insert-change)
+    (add-hook 'meow-insert-enter-hook #'+wd/rime-toggle-on-insert-change)
     ;; Install after rime is loaded; the advice function is defined in lib-rime.
     (advice-add 'rime-compile-module :around #'+my/rime-compile-module-advice)))
 
