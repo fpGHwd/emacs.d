@@ -236,32 +236,29 @@ Timestamps are stripped before arithmetic so dates are not counted."
         (diary-chinese-anniversary lunar-month lunar-day y mark))
     (diary-chinese-anniversary lunar-month lunar-day year mark)))
 
-(defun +wd/org-split-string (string &optional separators)
-  "Splits STRING into substrings at SEPARATORS.
+(defun +wd/org-search-by-tags (org-match-string)
+  "Search org and roam files for entries matching ORG-MATCH-STRING.
 
-SEPARATORS is a regular expression.  When nil, it defaults to
-\"[ \f\t\n\r\v]+\".
+ORG-MATCH-STRING uses org tag match syntax (e.g. \"+tag1|tag2-tag3\").
+Entries with DONE-state TODO keywords (DONE, KILL, [X]) are excluded;
+entries without any TODO keyword are retained.  Tag inheritance is disabled.
 
-Unlike `split-string', matching SEPARATORS at the beginning and
-end of string are ignored."
-  (let ((separators (or separators "[ \f\t\n\r\v]+")))
-    (if (not (string-match separators string)) (list string)
-      (let ((i (match-end 0))
-            (results
-             (and (/= 0 (match-beginning 0)) ;skip leading separator
-                  (list (substring string 0 (match-beginning 0))))))
-        (while (string-match separators string i)
-          (push (substring string (- i 1) i) results) ; 将 seperator 添加进去
-          (push (substring string i (match-beginning 0))
-                results)
-          (setq i (match-end 0)))
-        (push (substring string (- i 1) i) results) ; 增加最后的 seperator
-        (nreverse (if (= i (length string))
-                      results         ;skip trailing separator
-                    (cons (substring string i) results)))))))
+Because `|' has lower priority than `+' in org match syntax,
+`tag1|tag2+TODO<>\"DONE\"' would only filter the second branch.
+We inject the TODO exclusion into every `|'-separated branch so it
+applies uniformly."
+  (interactive "sTags match: ")
+  (let ((org-use-tag-inheritance nil)
+        (todo-filter "+TODO<>\"DONE\"+TODO<>\"KILL\"+TODO<>\"[X]\""))
+    (org-tags-view nil
+                   (string-join
+                    (mapcar (lambda (branch)
+                              (concat branch todo-filter))
+                            (split-string org-match-string "|"))
+                    "|"))))
 
 ;; copy link from org-link
-;; https ://emacs.stackexchange.com/questions/3981/how-to-copy-links-out-of-org-mode
+;; https://emacs.stackexchange.com/questions/3981/how-to-copy-links-out-of-org-mode
 (defun +wd/org-link-copy (&optional arg)
   "Extract URL from org-mode link and add it to kill ring."
   (interactive "P")
@@ -271,33 +268,6 @@ end of string are ignored."
          (url (concat type ":" url)))
     (kill-new url)
     (message (concat "Copied URL: " url))))
-
-
-(defun +wd/org-search-by-tags (org-match-string)
-  "Use ORG-MATCH-STRING within org and roam files, via `org-search-view`."
-  (let* ((tag-operator-list (+wd/org-split-string org-match-string "[+|-]"))
-         (search-string "-{^\\\*+ \\(KILL\\|DONE\\|\\[X\\]\\).*}")
-         (last-operator nil)
-         (or-regex-str "+{\\(\\)}")
-         (or-str "")
-         (org-use-tag-inheritance nil))
-    (dolist (elt tag-operator-list org-match-string)
-      (if (or (string= elt "+") (string= elt "|") (string= elt "-"))
-          (setq last-operator elt)
-        (if (not (null last-operator))
-            (if (or (string= last-operator "+") (string= last-operator "-"))
-                (setq search-string (concat last-operator ":" elt ":"
-                                            " " search-string))
-              (if (string= or-str "")
-                  (setq or-str (concat or-str ":" elt ":"))
-                (setq or-str (concat or-str "\\|" ":" elt ":"))))
-          (if (string= or-str "")
-              (setq or-str (concat or-str ":" elt ":"))
-            (setq or-str (concat or-str "\\|" ":" elt ":"))))))
-    (setq or-regex-str (concat (substring or-regex-str 0 (- (length or-regex-str) (length "\\)}")))
-                               or-str
-                               (substring or-regex-str (- (length or-regex-str) (length "\\)}")))))
-    (org-search-view nil (concat or-regex-str " " search-string) nil)))
 
 
 ;;Sunrise and Sunset
