@@ -115,6 +115,7 @@
     (add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)
     (when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
       (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
+    (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
     (map! :map org-mode-map
           :localleader
           :desc "Insert a item"       "i" #'org-insert-item
@@ -128,11 +129,6 @@
    org-attach-directory (file-truename "~/.local/org-attach")
    org-attach-id-dir (file-truename "~/.local/org-attach")
    org-attach-sync-delete-empty-dir t))
-
-
-(setup dired
-  (:hooks dired-mode-hook (lambda () (define-key dired-mode-map (kbd "C-c C-x a")
-                                                 #'org-attach-dired-to-subtree))))
 
 
 (setup calendar

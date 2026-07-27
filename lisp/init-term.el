@@ -7,7 +7,7 @@
                         ("scp" login-shell "/bin/zsh" "/bin/bash")
                         ("docker" "/bin/bash" "/bin/sh")))
   (:when-loaded
-    (with-eval-after-load 'meow
+    (:after meow
       (add-to-list 'meow-mode-state-list '(vterm-mode . insert)))))
 
 (provide 'init-term)

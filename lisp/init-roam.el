@@ -5,6 +5,12 @@
   (:also-load lib-org)
   (:hooks org-mode-hook +wd/org-roam-maybe-track-project-tag)
   (:option org-roam-directory "~/org/roam")
+  (:with-feature org-roam-ui
+    (:option
+     org-roam-ui-sync-theme t
+     org-roam-ui-follow t
+     org-roam-ui-update-on-save t
+     org-roam-ui-open-on-start t))
   (:when-loaded
     (advice-add 'org-agenda-files :filter-return #'dynamic-agenda-files-advice)))
 
@@ -14,13 +20,6 @@
     (add-hook 'before-save-hook #'vulpea-project-update-tag nil t)))
 
 ;; refs: https://org-roam.discourse.group/t/v2-ignore-headline-node-with-org-id/1793 , https://www.orgroam.com/manual.html#When-to-cache
-
-(setup org-roam-ui
-  (:option
-   org-roam-ui-sync-theme t
-   org-roam-ui-follow t
-   org-roam-ui-update-on-save t
-   org-roam-ui-open-on-start t))
 
 ;; todo: 如何在反向链接的 buffer 中区分显示完成和未完成的任务，并过滤分类
 
