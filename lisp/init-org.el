@@ -117,7 +117,7 @@
       (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
     (map! :map org-mode-map
           :localleader
-          :desc "Insert a item"  "i" #'org-insert-item 
+          :desc "Insert a item"       "i" #'org-insert-item
           :desc "Write a new blog"    "B" #'blog-post
           :desc "Copy org link"      "y" #'+wd/org-link-copy
           :desc "Search org by tags" "Q" #'+wd/org-search-by-tags)))
