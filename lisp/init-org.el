@@ -116,13 +116,11 @@
     (when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
       (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
     (map! :map org-mode-map
-          "C-c i" #'org-insert-item
           :localleader
+          :desc "Insert a item"  "i" #'org-insert-item 
+          :desc "Write a new blog"    "B" #'blog-post
           :desc "Copy org link"      "y" #'+wd/org-link-copy
-          :desc "Search org by tags" "Q" #'+wd/org-search-by-tags
-          :leader
-          (:prefix-map ("c" . "code")
-           :desc "Write New Blog" "B" #'blog-post))))
+          :desc "Search org by tags" "Q" #'+wd/org-search-by-tags)))
 
 
 (setup org-attach
