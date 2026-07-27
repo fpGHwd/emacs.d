@@ -2,8 +2,6 @@
 
 (setup vterm
   (:option
-   ;; Prefer vendored libvterm to avoid depending on system curses/ncurses headers.
-   vterm-module-cmake-args "-DUSE_SYSTEM_LIBVTERM=Off"
    vterm-tramp-shells '(("sshx" login-shell "/bin/zsh" "/bin/bash")
                         ("ssh" login-shell "/bin/zsh" "/bin/bash")
                         ("scp" login-shell "/bin/zsh" "/bin/bash")
