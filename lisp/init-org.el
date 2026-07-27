@@ -51,6 +51,50 @@
      (tags urgency-down timestamp-down category-keep) (search alpha-up))
    org-refile-targets '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1)))
 
+  (:with-feature org-attach
+    (:option
+     org-attach-directory (file-truename "~/.local/org-attach")
+     org-attach-id-dir (file-truename "~/.local/org-attach")
+     org-attach-sync-delete-empty-dir t))
+
+  (:with-feature calendar
+    (:option
+     calendar-mark-diary-entries-flag t
+     calendar-week-start-day 1
+     calendar-latitude 31.108024
+     calendar-longitude 121.372327))
+
+  (:with-feature cal-china-x
+    (:when-loaded
+      (setq mark-holidays-in-calendar t)
+      (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
+      (setq cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节")))
+      (setq calendar-holidays
+            (append cal-china-x-important-holidays
+                    cal-china-x-general-holidays))))
+
+  (:with-feature ox-publish
+    (:option
+     org-publish-project-alist
+     '(("org-blog"
+        :base-directory "~/org/blog/current/posts/"
+        :base-extension "org"
+        :publishing-directory "~/org/blog/current/outputs/"
+        :recursive t
+        :publishing-function org-md-publish-to-md
+        :publishing-extension "markdown"
+        :headline-levels 4
+        :body-only t)))
+    (:when-loaded
+      (add-hook 'org-export-before-processing-hook #'my/org-insert-updated-timestamp)
+      (add-hook 'org-publish-after-publishing-hook #'+wd/handle-image-in-markdown)
+      (add-to-list 'file-coding-system-alist '("\\.bib" . utf-8))))
+
+  (:with-feature so-long
+    (:when-loaded
+      (add-to-list 'doom-file-lines-threshold-alist
+                   '("\\.org\\'" . 50000))))
+
   (:when-loaded
     (add-to-list 'org-tags-exclude-from-inheritance "roam-agenda")
     (add-to-list 'org-file-apps '("\\.drawio\\'" . "/opt/drawio/drawio %s"))
@@ -128,54 +172,6 @@
           :desc "Copy org link"      "y" #'+wd/org-link-copy
           :desc "Search org by tags" "Q" #'+wd/org-search-by-tags)))
 
-
-(setup org-attach
-  (:option
-   org-attach-directory (file-truename "~/.local/org-attach")
-   org-attach-id-dir (file-truename "~/.local/org-attach")
-   org-attach-sync-delete-empty-dir t))
-
-
-(setup calendar
-  (:option
-   calendar-mark-diary-entries-flag t
-   calendar-week-start-day 1
-   calendar-latitude 31.108024
-   calendar-longitude 121.372327))
-
-
-(setup cal-china-x
-  (:when-loaded
-    (setq mark-holidays-in-calendar t)
-    (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
-    (setq cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节")))
-    (setq calendar-holidays
-          (append cal-china-x-important-holidays
-                  cal-china-x-general-holidays))))
-
-
-(setup ox-publish
-  (:option
-   org-publish-project-alist
-   '(("org-blog"
-      :base-directory "~/org/blog/current/posts/"
-      :base-extension "org"
-      :publishing-directory "~/org/blog/current/outputs/"
-      :recursive t
-      :publishing-function org-md-publish-to-md
-      :publishing-extension "markdown"
-      :headline-levels 4
-      :body-only t)))
-  (:when-loaded
-    (add-hook 'org-export-before-processing-hook #'my/org-insert-updated-timestamp)
-    (add-hook 'org-publish-after-publishing-hook #'+wd/handle-image-in-markdown)
-    (add-to-list 'file-coding-system-alist '("\\.bib" . utf-8))))
-
-
-(setup so-long
-  (:when-loaded
-    (add-to-list 'doom-file-lines-threshold-alist
-                 '("\\.org\\'" . 50000))))
 
 (provide 'init-org)
 ;;; init-org.el ends here
