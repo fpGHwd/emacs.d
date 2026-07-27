@@ -1,5 +1,9 @@
 ;;; init-langs.el --- Language modes without dedicated files -*- lexical-binding: t; -*-
 
+;; flycheck's emacs-lisp checker spawns a bare emacs process without Doom macros loaded,
+;; producing false "free variable" warnings for config files. Just it out.
+(add-hook! 'emacs-lisp-mode-hook (flycheck-mode -1))
+
 (setup eglot
   (:option eglot-max-file-watches 524288))
 
