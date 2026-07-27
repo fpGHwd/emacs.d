@@ -166,7 +166,10 @@
     (add-hook 'org-publish-after-publishing-hook #'+wd/handle-image-in-markdown)
     (map! :leader
           (:prefix-map ("c" . "code")
-           :desc "Write New Blog" "B" #'blog-post))
+           :desc "Write New Blog" "B" #'blog-post)
+          (:prefix ("l" . "+localleader")
+           :desc "Copy org link"         "y" #'+wd/org-link-copy
+           :desc "Search org by tags"     "Q" #'+wd/org-search-by-tags))
     (add-to-list 'file-coding-system-alist '("\\.bib" . utf-8))))
 
 
