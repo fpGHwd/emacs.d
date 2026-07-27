@@ -116,6 +116,11 @@
     (when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
       (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
     (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
+    (:with-feature org-latex-impatient
+      (:hooks org-mode-hook org-latex-impatient-mode)
+      (:option
+       max-image-size nil
+       org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
     (map! :map org-mode-map
           :localleader
           :desc "Insert a item"       "i" #'org-insert-item
@@ -165,13 +170,6 @@
     (add-hook 'org-export-before-processing-hook #'my/org-insert-updated-timestamp)
     (add-hook 'org-publish-after-publishing-hook #'+wd/handle-image-in-markdown)
     (add-to-list 'file-coding-system-alist '("\\.bib" . utf-8))))
-
-
-(setup org-latex-impatient
-  (:hooks org-mode-hook org-latex-impatient-mode)
-  (:option
-   max-image-size nil
-   org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
 
 (setup so-long
