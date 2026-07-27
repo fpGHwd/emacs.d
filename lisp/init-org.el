@@ -118,8 +118,8 @@
     (map! :map org-mode-map
           "C-c i" #'org-insert-item
           :localleader
-          "y" #'+wd/org-link-copy
-          "Q" #'+wd/org-search-by-tags
+          :desc "Copy org link"      "y" #'+wd/org-link-copy
+          :desc "Search org by tags" "Q" #'+wd/org-search-by-tags
           :leader
           (:prefix-map ("c" . "code")
            :desc "Write New Blog" "B" #'blog-post))))
