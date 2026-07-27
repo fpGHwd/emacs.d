@@ -12,7 +12,6 @@
 
 ;; claude-code
 (setup claude-code-ide
-  (keymap-global-set "C-c C-'" #'claude-code-ide-menu)
   (:when-loaded
     (claude-code-ide-emacs-tools-setup))) ; Optionally enable Emacs MCP tools
 

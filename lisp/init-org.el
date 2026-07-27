@@ -6,8 +6,6 @@
 (setup org
   (:also-load lib-org)
 
-  (keymap-global-set "C-c i" #'org-insert-item)
-
   (:hooks
    org-mode-hook auto-revert-mode
    org-mode-hook mixed-pitch-mode
@@ -164,7 +162,9 @@
   (:when-loaded
     (add-hook 'org-export-before-processing-hook #'my/org-insert-updated-timestamp)
     (add-hook 'org-publish-after-publishing-hook #'+wd/handle-image-in-markdown)
-    (map! :leader
+    (map! :map org-mode-map
+          "C-c i" #'org-insert-item
+          :leader
           (:prefix-map ("c" . "code")
            :desc "Write New Blog" "B" #'blog-post)
           (:prefix ("l" . "+localleader")

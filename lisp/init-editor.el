@@ -7,9 +7,10 @@
      '("RET" . +wd/meow-normal-return)
      '("DEL" . ignore)
      '("C-o" . better-jumper-jump-backward)
-     '("%" . lispy-different)
      '("=" . indent-region)
      '("q" . quit-window))
+    (add-hook! 'prog-mode-hook
+      (meow-normal-define-key '("%" . lispy-different)))
     (:option
      meow-cursor-type-normal 'box
      meow-cursor-type-motion 'box
