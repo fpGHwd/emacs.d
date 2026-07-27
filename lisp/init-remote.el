@@ -4,8 +4,8 @@
   (:option envrc-remote t))
 
 (setup tramp
+  (:option tramp-default-remote-shell "zsh")
   (:when-loaded
-    (setq tramp-default-remote-shell "zsh")
     (add-to-list 'tramp-remote-path "/home/wd/.nix-profile/bin")))
 
 (provide 'init-remote)

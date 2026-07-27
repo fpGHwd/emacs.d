@@ -5,12 +5,6 @@
   (:also-load lib-org)
   (:hooks org-mode-hook +wd/org-roam-maybe-track-project-tag)
   (:option org-roam-directory "~/org/roam")
-  (:with-feature org-roam-ui
-    (:option
-     org-roam-ui-sync-theme t
-     org-roam-ui-follow t
-     org-roam-ui-update-on-save t
-     org-roam-ui-open-on-start t))
   (:when-loaded
     (advice-add 'org-agenda-files :filter-return #'dynamic-agenda-files-advice)))
 

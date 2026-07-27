@@ -8,8 +8,5 @@
     (add-to-list '+lookup-provider-url-alist
                  '("NixOS Package Search" "https://search.nixos.org/packages?channel=25.11&query=%s"))))
 
-(setup eldoc
-  (:option eldoc-idle-delay 2))
-
 (provide 'init-lookup)
 ;;; init-lookup.el ends here

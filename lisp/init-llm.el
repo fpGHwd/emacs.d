@@ -4,7 +4,6 @@
   (:option
    gptel-use-curl t
    gptel-default-mode 'org-mode
-   gptel-log-level nil
    gptel-crowdsourced-prompts-file
    (expand-file-name "etc/gptel/gptel-crowdsourced-prompts.csv" doom-user-dir)
    gptel-model "gpt-5-mini"

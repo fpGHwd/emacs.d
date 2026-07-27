@@ -3,16 +3,16 @@
 
 (setup calibredb
   (:with-function calibredb)
+  (:option
+   calibredb-search-page-max-rows 30
+   calibredb-id-width 6
+   calibredb-size-show t
+   calibredb-format-all-the-icons t
+   calibredb-format-icons-in-terminal t
+   calibredb-format-nerd-icons t)
   (:when-loaded
     (require 'lib-util)
     (require 'lib-read)
-    (:option
-     calibredb-search-page-max-rows 30
-     calibredb-id-width 6
-     calibredb-size-show t
-     calibredb-format-all-the-icons t
-     calibredb-format-icons-in-terminal t
-     calibredb-format-nerd-icons t)
 
     (:after meow
       (add-to-list 'meow-mode-state-list '(calibredb-search-mode . motion)))
@@ -60,7 +60,7 @@
 ;; https://emacs-china.org/t/emacs-epub/4713/11
 ;; FIXME: errors while opening `nov' files with Unicode characters
 (setup nov
-  (add-to-list 'auto-mode-alist '("\\.epub\\'" . nov-mode))
+  (:match-file "*.epub")
   (:when-loaded
     (with-no-warnings
       (defun my-nov-content-unique-identifier (content)

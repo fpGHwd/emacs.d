@@ -4,8 +4,7 @@
 
 ;; credentials
 (setup auth-source
-  (:option auth-source-save-behavior 'ask
-           auth-sources (list (expand-file-name "etc/authinfo.gpg" doom-user-dir))))
+  (:option auth-sources (list (expand-file-name "etc/authinfo.gpg" doom-user-dir))))
 
 ;; recent files
 (setup recentf
