@@ -164,8 +164,8 @@
             +pandoc +noter
             +roam +pretty) ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
-       ;; plantuml            ; diagrams for confusing people more
-       ;;graphviz          ; diagrams for confusing yourself even more
+       plantuml            ; diagrams for confusing people more
+       ;; graphviz          ; diagrams for confusing yourself even more
        ;;purescript        ; javascript, but functional
        (python +lsp +poetry +tree-sitter)
        ;;qt                ; the 'cutest' gui framework ever
