@@ -30,7 +30,7 @@
            (when (string-suffix-p ".arxml" (or buffer-file-name ""))
              (arxml-breadcrumb-mode 1))))
   (:with-map nxml-mode-map
-    (:bind "C-c b" #'+wd/arxml-breadcrumb-jump-to-ancestor)))
+    (:bind "C-c c f" #'+wd/arxml-breadcrumb-jump-to-ancestor)))
 
 (provide 'init-langs)
 ;;; init-langs.el ends here
