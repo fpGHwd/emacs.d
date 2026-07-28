@@ -8,5 +8,10 @@
 
 (setq imenu-auto-rescan t)
 
+(setup dirvish
+  (:when-loaded
+    (:with-map dirvish-mode-map
+      (:bind "TAB" dirvish-subtree-toggle))))
+
 (provide 'init-ui)
 ;;; init-ui.el ends here
