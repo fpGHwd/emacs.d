@@ -1,5 +1,14 @@
 ;;; lib-arxml.el --- ARXML breadcrumb helpers -*- lexical-binding: t; -*-
 
+;; Cache for debounced breadcrumb updates
+(defvar-local +wd/arxml--breadcrumb-cache nil
+  "Cached ancestor chain: (start-tag-pos . chain).
+chain is the list from `+wd/arxml-ancestor-chain'.
+nil means no cache.")
+
+(defvar-local +wd/arxml--breadcrumb-timer nil
+  "Idle timer for debounced breadcrumb update.")
+
 (defvar +wd/arxml-breadcrumb-map
   (let ((map (make-sparse-keymap)))
     (define-key map [header-line mouse-1] #'+wd/arxml-breadcrumb-click)
@@ -15,9 +24,42 @@
       (when (looking-at "<SHORT-NAME>\\([^<]+\\)</SHORT-NAME>")
         (match-string 1)))))
 
-(defun +wd/arxml-ancestor-chain ()
-  "Walk ancestors from point to root.
+;; ---- Tree-sitter path (primary, O(D) total) ----
+
+(defun +wd/arxml--stag-name (stag)
+  "Extract tag Name text from STag node STAG."
+  (let ((name-node nil)
+        (count (treesit-node-child-count stag)))
+    (dotimes (i count)
+      (let ((c (treesit-node-child stag i)))
+        (when (equal "Name" (treesit-node-type c))
+          (setq name-node c))))
+    (when name-node (treesit-node-text name-node))))
+
+(defun +wd/arxml--ancestor-chain-treesit ()
+  "Walk ancestors using tree-sitter xml grammar.
 Return list of (tag-name start-pos short-name)."
+  (let* ((node (treesit-node-at (point) 'xml))
+         result)
+    ;; Walk up to the nearest element node if point is on CharData/content
+    (while (and node (not (equal "element" (treesit-node-type node))))
+      (setq node (treesit-node-parent node)))
+    (while (and node (not (equal "document" (treesit-node-type node))))
+      (when (equal "element" (treesit-node-type node))
+        (let* ((stag (treesit-node-child node 0))
+               (tag-name (or (+wd/arxml--stag-name stag) ""))
+               (start-pos (treesit-node-start node))
+               (sn (+wd/arxml--get-short-name start-pos)))
+          (push (list tag-name start-pos sn) result)))
+      (setq node (treesit-node-parent node)))
+    (nreverse result)))
+
+;; ---- nxml path (fallback, O(D*N) total) ----
+
+(defun +wd/arxml--ancestor-chain-nxml ()
+  "Walk ancestors from point to root using nxml backward scanning.
+Return list of (tag-name start-pos short-name).
+O(D*N) total work -- use only as fallback when tree-sitter is not available."
   (require 'nxml-rap)
   (nxml-ensure-scan-up-to-date)
   (let (result pos)
@@ -35,6 +77,74 @@ Return list of (tag-name start-pos short-name)."
           (setq pos start))))
     (nreverse result)))
 
+;; ---- Dispatch ----
+
+(defun +wd/arxml-ancestor-chain ()
+  "Walk ancestors from point to root.
+Return list of (tag-name start-pos short-name).
+Uses tree-sitter when the xml grammar is available (O(D) total).
+Falls back to nxml backward scanning when not (O(D*N) total)."
+  (if (and (treesit-available-p)
+           (treesit-language-available-p 'xml))
+      (+wd/arxml--ancestor-chain-treesit)
+    (+wd/arxml--ancestor-chain-nxml)))
+
+;; ---- Cache helpers ----
+
+(defun +wd/arxml--current-element-start ()
+  "Return the start-tag position of the element containing point.
+Uses tree-sitter when available, otherwise nxml."
+  (if (and (treesit-available-p)
+           (treesit-language-available-p 'xml))
+      (let ((node (treesit-node-at (point) 'xml)))
+        (while (and node (not (equal "element" (treesit-node-type node))))
+          (setq node (treesit-node-parent node)))
+        (when node (treesit-node-start node)))
+    (save-excursion
+      (require 'nxml-rap)
+      (nxml-ensure-scan-up-to-date)
+      (when (nxml-scan-element-backward (point) t)
+        xmltok-start))))
+
+;; ---- Debounce & cache ----
+
+(defun +wd/arxml-breadcrumb-schedule ()
+  "Schedule a debounced breadcrumb update via idle timer.
+Only schedules if point has moved to a different element (cache miss).
+This is called from `post-command-hook'."
+  (when (derived-mode-p 'nxml-mode)
+    (let ((current-start (+wd/arxml--current-element-start)))
+      (unless (and +wd/arxml--breadcrumb-cache
+                   (equal current-start (car +wd/arxml--breadcrumb-cache)))
+        (when +wd/arxml--breadcrumb-timer
+          (cancel-timer +wd/arxml--breadcrumb-timer))
+        (setq +wd/arxml--breadcrumb-timer
+              (run-with-idle-timer 0.15 nil
+                                   #'+wd/arxml--breadcrumb-update-debounced
+                                   (current-buffer)))))))
+
+(defun +wd/arxml--breadcrumb-update-debounced (buffer)
+  "Perform the actual breadcrumb update in BUFFER.
+Called by the idle timer from `+wd/arxml-breadcrumb-schedule'."
+  (when (buffer-live-p buffer)
+    (with-current-buffer buffer
+      (when arxml-breadcrumb-mode
+        (let* ((chain (+wd/arxml-ancestor-chain))
+               (start (+wd/arxml--current-element-start))
+               (fmt (+wd/arxml-breadcrumb-format chain)))
+          (setq +wd/arxml--breadcrumb-cache (when start (cons start chain)))
+          (if (string= fmt "")
+              (setq header-line-format nil)
+            (setq header-line-format (concat "  " fmt))))))))
+
+(defun +wd/arxml-breadcrumb-invalidate-cache (_beg _end _len)
+  "Invalidate breadcrumb cache on buffer content changes.
+Registered on `after-change-functions' to handle edits that
+modify element structure."
+  (setq +wd/arxml--breadcrumb-cache nil))
+
+;; ---- Formatting ----
+
 (defun +wd/arxml-breadcrumb-format (chain)
   "Format CHAIN into a clickable breadcrumb string for the header-line."
   (if (not chain) ""
@@ -46,14 +156,7 @@ Return list of (tag-name start-pos short-name)."
                   'keymap +wd/arxml-breadcrumb-map
                   'mouse-face 'highlight))))
 
-(defun +wd/arxml-breadcrumb-update ()
-  "Update header-line with ancestor chain of XML element at point."
-  (when (derived-mode-p 'nxml-mode)
-    (let* ((chain (+wd/arxml-ancestor-chain))
-           (fmt (+wd/arxml-breadcrumb-format chain)))
-      (if (string= fmt "")
-          (setq header-line-format nil)
-        (setq header-line-format (concat "  " fmt))))))
+;; ---- Interactive ----
 
 (defun +wd/arxml-breadcrumb-click (event)
   "Handle mouse click on header-line breadcrumb. Jump to clicked segment."
@@ -61,7 +164,8 @@ Return list of (tag-name start-pos short-name)."
   (push-mark)
   (let* ((posn (event-start event))
          (offset (cdr (posn-string posn)))
-         (chain (+wd/arxml-ancestor-chain))
+         (chain (or (cdr +wd/arxml--breadcrumb-cache)
+                    (+wd/arxml-ancestor-chain)))
          (current-offset 0))
     (dolist (entry chain)
       (let* ((name (car entry))
@@ -78,7 +182,8 @@ Return list of (tag-name start-pos short-name)."
   "Jump to an ancestor element chosen via completing-read."
   (interactive)
   (push-mark)
-  (let* ((chain (+wd/arxml-ancestor-chain))
+  (let* ((chain (or (cdr +wd/arxml--breadcrumb-cache)
+                    (+wd/arxml-ancestor-chain)))
          (choices (mapcar (lambda (entry)
                             (let ((name (car entry)) (sn (caddr entry)))
                               (if sn (format "%s[%s]" name sn) name)))
