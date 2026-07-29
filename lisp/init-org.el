@@ -157,8 +157,8 @@
                       (setq org-time-was-given t))
                     result)))
     (add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)
-    (when (file-exists-p "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el")
-      (load "~/projects/2026/haskell-web/scripts/elisp/lib-org-capture.el"))
+    (when (file-exists-p "~/projects/2026/haskell-web/scripts/lib-org-capture.el")
+      (load "~/projects/2026/haskell-web/scripts/lib-org-capture.el"))
     (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
     (:with-feature org-latex-impatient
       (:hooks org-mode-hook org-latex-impatient-mode)
