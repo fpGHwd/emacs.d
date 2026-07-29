@@ -16,30 +16,11 @@
 (setup sql
   (:option sql-mysql-program "mariadb"))
 
-;; ARXML breadcrumb: show ancestor path of XML element at point in header-line
-(define-minor-mode arxml-breadcrumb-mode
-  "Toggle ARXML breadcrumb display in header-line."
-  :init-value nil
-  :lighter " Breadcrumb"
-  (if arxml-breadcrumb-mode
-      (progn
-        (add-hook 'post-command-hook #'+wd/arxml-breadcrumb-schedule nil t)
-        (add-hook 'after-change-functions #'+wd/arxml-breadcrumb-invalidate-cache nil t))
-    (remove-hook 'post-command-hook #'+wd/arxml-breadcrumb-schedule t)
-    (remove-hook 'after-change-functions #'+wd/arxml-breadcrumb-invalidate-cache t)
-    (when +wd/arxml--breadcrumb-timer
-      (cancel-timer +wd/arxml--breadcrumb-timer))
-    (setq +wd/arxml--breadcrumb-timer nil
-          +wd/arxml--breadcrumb-cache nil)
-    (setq header-line-format nil)))
-
 (setup nxml-mode
   (:also-load lib-arxml)
   (:hook (lambda ()
            (when (string-suffix-p ".arxml" (or buffer-file-name ""))
-             (arxml-breadcrumb-mode 1))))
-  (:with-map nxml-mode-map
-    (:bind "C-c c f" #'+wd/arxml-breadcrumb-jump-to-ancestor)))
+             (arxml-breadcrumb-mode 1)))))
 
 (provide 'init-langs)
 ;;; init-langs.el ends here
