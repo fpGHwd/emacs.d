@@ -1,4 +1,10 @@
-;;; init-editor.el --- Modal editing (meow), lispy  -*- lexical-binding: t; -*-
+;;; init-editor.el --- Modal editing (meow), lispy, and clipboard -*- lexical-binding: t; -*-
+
+(require 'xclip)
+(setopt xclip-method 'wl-copy
+        xclip-program "wl-copy")
+(setq interprogram-paste-function
+      (apply-partially #'xclip-get-selection 'CLIPBOARD))
 
 (setup meow
   (:also-load lib-util)
