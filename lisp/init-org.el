@@ -49,7 +49,8 @@
    '((agenda habit-down time-up urgency-down category-keep)
      (todo urgency-down category-keep)
      (tags urgency-down timestamp-down category-keep) (search alpha-up))
-   org-refile-targets '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1)))
+   org-refile-targets '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1))
+   org-timer-default-timer 25)
 
   (:with-feature org-attach
     (:option
