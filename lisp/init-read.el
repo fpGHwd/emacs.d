@@ -2,6 +2,8 @@
 ;;; Copyright (C) 2024 Wang Ding
 
 (setup calibredb
+  (:also-load lib-util)
+  (:also-load lib-read)
   (:with-function calibredb)
   (:option
    calibredb-search-page-max-rows 30
@@ -11,9 +13,6 @@
    calibredb-format-icons-in-terminal t
    calibredb-format-nerd-icons t)
   (:when-loaded
-    (require 'lib-util)
-    (require 'lib-read)
-
     (:after meow
       (add-to-list 'meow-mode-state-list '(calibredb-search-mode . motion)))
 
