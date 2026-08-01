@@ -57,3 +57,5 @@
 ;; Code folding with tree-sitter
 (package! treesit-fold
   :recipe (:host github :repo "emacs-tree-sitter/treesit-fold"))
+
+(package! emamux)
