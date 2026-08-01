@@ -18,23 +18,22 @@
 
     ;; Search/browse always go through the OPDS content server; the local
     ;; library (if present) is used only to open the on-disk copy.
-    (setopt calibredb-root-dir (if (zerop (call-process "pgrep" nil nil nil
-                                                        (pcase (system-name)
-                                                          ("macos-m1" "Tailscale")
-                                                          (_ "tailscaled"))))
-                                   "http://nixos-nuc:8080/opds"
-                                 "https://lib.autove.dev/opds")
-            calibredb-opds-download-dir "~/.cache/calibre/downloads/"
-            calibredb-download-dir "~/.cache/calibre/downloads/"
-            calibredb-library-alist
-            `(("http://nixos-nuc:8080/opds"
-               (name . "calibre")
-               (account . "wd")
-               (password . ,(password-store-get "calibre-lib/wd")))
-              ("https://lib.autove.dev/opds"
-               (name . "calibre-cloudflare")
-               (account . "wd")
-               (password . ,(password-store-get "calibre-lib/wd")))))
+    (let ((password (password-store-get "calibre-lib/wd")))
+      (setopt calibredb-root-dir
+              (if (zerop (call-process "pgrep" nil nil nil "Tailscale|tailscaled"))
+                  "http://nixos-nuc:8080/opds"
+                "https://lib.autove.dev/opds")
+              calibredb-opds-download-dir "~/.cache/calibre/downloads/"
+              calibredb-download-dir "~/.cache/calibre/downloads/"
+              calibredb-library-alist
+              `(("http://nixos-nuc:8080/opds"
+                 (name . "calibre")
+                 (account . "wd")
+                 (password . ,password))
+                ("https://lib.autove.dev/opds"
+                 (name . "calibre-cloudflare")
+                 (account . "wd")
+                 (password . ,password)))))
 
     ;; calibredb hardcodes Basic auth; Calibre content server requires Digest.
     (advice-add 'calibredb-opds-request-page :around
