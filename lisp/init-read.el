@@ -1,6 +1,27 @@
 ;;; init-read.el --- Settings for reading eBooks -*- lexical-binding: t; -*-
 ;;; Copyright (C) 2024 Wang Ding
 
+(declare-function password-store-get "password-store")
+
+(defun +wd/calibredb-configure-opds ()
+  "Configure shared Calibre OPDS variables used by calibredb and org-noter."
+  (let ((password (password-store-get "calibre-lib/wd")))
+    (setq calibredb-root-dir
+          (if (zerop (call-process "pgrep" nil nil nil "Tailscale|tailscaled"))
+              "http://nixos-nuc:8080/opds"
+            "https://lib.autove.dev/opds")
+          calibredb-opds-download-dir "~/.cache/calibre/downloads/"
+          calibredb-download-dir "~/.cache/calibre/downloads/"
+          calibredb-library-alist
+          `(("http://nixos-nuc:8080/opds"
+             (name . "calibre")
+             (account . "wd")
+             (password . ,password))
+            ("https://lib.autove.dev/opds"
+             (name . "calibre-cloudflare")
+             (account . "wd")
+             (password . ,password))))))
+
 (setup calibredb
   (:also-load lib-util)
   (:also-load lib-read)
@@ -17,22 +38,7 @@
 
     ;; Search/browse always go through the OPDS content server; the local
     ;; library (if present) is used only to open the on-disk copy.
-    (let ((password (password-store-get "calibre-lib/wd")))
-      (setopt calibredb-root-dir
-              (if (zerop (call-process "pgrep" nil nil nil "Tailscale|tailscaled"))
-                  "http://nixos-nuc:8080/opds"
-                "https://lib.autove.dev/opds")
-              calibredb-opds-download-dir "~/.cache/calibre/downloads/"
-              calibredb-download-dir "~/.cache/calibre/downloads/"
-              calibredb-library-alist
-              `(("http://nixos-nuc:8080/opds"
-                 (name . "calibre")
-                 (account . "wd")
-                 (password . ,password))
-                ("https://lib.autove.dev/opds"
-                 (name . "calibre-cloudflare")
-                 (account . "wd")
-                 (password . ,password)))))
+    (+wd/calibredb-configure-opds)
 
     ;; calibredb hardcodes Basic auth; Calibre content server requires Digest.
     (advice-add 'calibredb-opds-request-page :around
@@ -103,6 +109,7 @@
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:when-loaded
     (require 'lib-read)
+    (+wd/calibredb-configure-opds)
 
     ;; Resolvers tried in order (depth keeps the order stable across reloads):
     ;; existing download -> local calibre library (open in place) -> download by URL.

@@ -179,6 +179,9 @@ Feature code lives in `lisp/init-read.el` (setup + hooks) and `lisp/lib/lib-read
   library is mounted locally. Properties are read with `(org-entry-get nil PROP t)`.
 - Helpers that call lazily-loaded calibredb/org-noter symbols must
   `declare-function`/`defvar` them so `lib-read.el` byte-compiles clean.
+- Shared OPDS variables used by both calibredb and org-noter resolvers must be
+  configured through a shared function invoked by both lazy entry points; do not
+  bind them only inside `calibredb :when-loaded`.
 
 ## Doom Emacs Specifics
 
