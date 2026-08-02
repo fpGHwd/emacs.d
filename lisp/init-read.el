@@ -4,7 +4,6 @@
 (setup calibredb
   (:also-load lib-util)
   (:also-load lib-read)
-  (:with-function calibredb)
   (:option
    calibredb-search-page-max-rows 30
    calibredb-id-width 6
