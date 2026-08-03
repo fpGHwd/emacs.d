@@ -77,8 +77,6 @@
 
 (setup pdf-tools
   (:when-loaded
-    (require 'lib-read)
-
     (setq pdf-annot-default-annotation-properties
           '((t         (label . "Wang Ding"))
             (text       (color . "#FFD966") (icon . "Note"))
@@ -96,9 +94,7 @@
                    "s" #'pdf-annot-add-squiggly-markup-annotation
                    "x" #'pdf-annot-add-strikeout-markup-annotation
                    "l" #'pdf-annot-list-annotations
-                   "d" #'pdf-annot-delete)
-          (:prefix ("v" . "view")
-                   "z" #'+wd/zathura-open-current-pdf))))
+                   "d" #'pdf-annot-delete))))
 
 
 (setup org-noter
@@ -121,6 +117,13 @@
               #'+wd/org-noter-parse-document-download 90)
     (add-hook 'org-noter-create-session-from-document-hook
               #'+wd/org-noter-create-session-from-document-by-document-name 0)))
+
+(setup org
+  (:when-loaded
+    (require 'lib-read)
+    (+wd/calibredb-configure-opds)
+    (add-hook 'org-after-todo-state-change-hook
+              #'+wd/org-noter-update-calibre-progress)))
 
 
 (provide 'init-read)

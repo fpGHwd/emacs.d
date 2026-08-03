@@ -1,5 +1,7 @@
-;;; lib-read.el --- org-noter / calibre / zathura reading integration -*- lexical-binding: t; -*-
+;;; lib-read.el --- org-noter / calibre reading integration -*- lexical-binding: t; -*-
 
+(require 'cl-lib)
+(require 'json)
 (require 'org)
 (require 'seq)
 (require 'subr-x)
@@ -10,10 +12,10 @@
 (defvar calibredb-library-alist)
 (defvar calibredb-opds-download-dir)
 (defvar org-noter-notes-search-path)
-(defvar org-noter-property-note-location)
 (defvar org-noter-property-doc-file)
 (defvar org-noter-get-buffer-file-name-hook)
 (defvar org-noter--start-location-override)
+(declare-function password-store-get "password-store")
 (declare-function calibredb-getattr "calibredb-core")
 (declare-function calibredb-find-candidate-at-point "calibredb-utils")
 (declare-function calibredb-opds-request-page "calibredb-opds")
@@ -21,13 +23,6 @@
 (declare-function calibredb-opds-download "calibredb-opds")
 (declare-function org-noter "org-noter")
 (declare-function org-noter--doc-approx-location "org-noter-core")
-(declare-function org-noter--get-session "org-noter-core")
-(declare-function org-noter--session-p "org-noter-core")
-(declare-function org-noter--session-doc-buffer "org-noter-core")
-(declare-function org-noter--session-notes-buffer "org-noter-core")
-(declare-function org-noter--parse-root "org-noter-core")
-(declare-function pdf-view-current-page "pdf-view")
-(declare-function pdf-view-goto-page "pdf-view")
 
 ;;; calibredb Digest auth advices
 ;;
@@ -76,18 +71,6 @@ calibredb uses `curl -u' (Basic); Calibre requires `curl --digest -u'."
                        (replace-regexp-in-string "curl -u" "curl --digest -u" cmd)
                        args))))
     (funcall oldfn title url fmt account password)))
-
-;;; org-noter session basics
-
-(defun +wd/org-noter--current-session ()
-  "Return current org-noter session object, or nil if unavailable."
-  (when (require 'org-noter-core nil t)
-    (cond
-     ((boundp 'org-noter--session)
-      (and (org-noter--session-p org-noter--session) org-noter--session))
-     ((fboundp 'org-noter--get-session)
-      (ignore-errors (org-noter--get-session)))
-     (t nil))))
 
 ;;; calibre: OPDS download, unified CDB-<id>.org, open in org-noter
 
@@ -269,88 +252,112 @@ create-session path guarantees this)."
     (+wd/calibre--download (file-name-sans-extension (file-name-nondirectory doc))
                            url fmt)))
 
-;;; zathura <-> org-noter page sync
+;;; org-noter -> calibre reading progress
 
-(defun +wd/zathura-last-page (file)
-  "Return the last viewed 1-based page of FILE from zathura's database.
-zathura stores page numbers 0-based in its `fileinfo' table; this
-returns the 1-based page matching `pdf-view-current-page', or nil when
-unavailable.  Falls back to matching by basename when FILE is not stored
-verbatim (e.g. zathura canonicalised the path)."
-  (let ((db (expand-file-name "zathura/bookmarks.sqlite"
-                              (or (getenv "XDG_DATA_HOME")
-                                  (expand-file-name "~/.local/share")))))
-    (when (and (fboundp 'sqlite-available-p) (sqlite-available-p)
-               (stringp file) (file-readable-p db))
-      (let ((conn (sqlite-open db)))
-        (unwind-protect
-            (let ((row (or (car (sqlite-select
-                                 conn
-                                 "SELECT page FROM fileinfo WHERE file = ? \
-ORDER BY time DESC LIMIT 1"
-                                 (list file)))
-                           (car (sqlite-select
-                                 conn
-                                 "SELECT page FROM fileinfo WHERE file LIKE ? \
-ORDER BY time DESC LIMIT 1"
-                                 (list (concat "%/" (file-name-nondirectory file))))))))
-              (when (and row (numberp (car row)))
-                (1+ (car row))))
-          (sqlite-close conn))))))
-
-(defun +wd/org-noter-goto-doc-page (session page)
-  "Move SESSION's pdf-view document buffer to 1-based PAGE."
-  (let ((doc-buffer (and (org-noter--session-p session)
-                         (org-noter--session-doc-buffer session))))
-    (when (buffer-live-p doc-buffer)
-      (with-current-buffer doc-buffer
-        (when (and (derived-mode-p 'pdf-view-mode)
-                   (fboundp 'pdf-view-goto-page))
-          (let ((window (get-buffer-window doc-buffer t)))
-            (if window
-                (pdf-view-goto-page page window)
-              (pdf-view-goto-page page))))))))
-
-(defun +wd/org-noter-set-root-page (session page)
-  "Set NOTER_PAGE on SESSION's root heading to PAGE, then save the notes file."
-  (let ((notes-buffer (and (org-noter--session-p session)
-                           (org-noter--session-notes-buffer session))))
-    (when (buffer-live-p notes-buffer)
-      (with-current-buffer notes-buffer
-        (org-with-wide-buffer
-         (let ((inhibit-read-only t)
-               (ast (org-noter--parse-root session)))
-           (goto-char (org-element-property :begin ast))
-           (org-entry-put nil org-noter-property-note-location
-                          (number-to-string page))))
-        (when buffer-file-name (save-buffer)))
-      (message "org-noter: %s <- %d (from zathura)"
-               org-noter-property-note-location page))))
-
-(defun +wd/zathura-open-current-pdf ()
-  "Open the current pdf-view buffer's file in zathura at the current page.
-When invoked inside an org-noter session, the page last viewed in zathura
-is written back to the root heading's NOTER_PAGE property once zathura is
-closed, so reading progress stays in sync across both viewers."
+(defun +wd/org-noter-update-calibre-progress ()
+  "Update Calibre Read column from DONE/KILL org-noter page coverage."
   (interactive)
-  (unless (derived-mode-p 'pdf-view-mode)
-    (user-error "Not in a pdf-view buffer"))
-  (let* ((file buffer-file-name)
-         (session (+wd/org-noter--current-session))
-         (session (and (org-noter--session-p session)
-                       (eq (org-noter--session-doc-buffer session)
-                           (current-buffer))
-                       session)))
-    (make-process
-     :name "zathura"
-     :noquery t
-     :command (list "zathura" "-P" (number-to-string (pdf-view-current-page)) file)
-     :sentinel
-     (lambda (_proc event)
-       (when (and session (string-prefix-p "finished" event))
-         (when-let* ((page (+wd/zathura-last-page file)))
-           (+wd/org-noter-goto-doc-page session page)
-           (+wd/org-noter-set-root-page session page)))))))
+  (when (derived-mode-p 'org-mode)
+    (cl-labels
+        ((page-number
+          (value)
+          (cond
+           ((integerp value) value)
+           ((numberp value) (truncate value))
+           ((consp value) (page-number (car value)))
+           ((stringp value)
+            (condition-case nil
+                (page-number (read value))
+              (error nil)))))
+         (calibre-http
+          (server method path &optional data)
+          (let ((json-file (and data (make-temp-file "calibre-progress-" nil ".json")))
+                (output-buffer (generate-new-buffer " *calibre-http-output*")))
+            (unwind-protect
+                (with-temp-buffer
+                  (when json-file
+                    (with-temp-file json-file
+                      (insert (json-encode data))))
+                  (insert (format "url = \"%s\"\n" (concat server path)))
+                  (insert (format "request = \"%s\"\n" method))
+                  (insert "silent\nshow-error\nfail\ndigest\n")
+                  (insert (format "user = \"wd:%s\"\n" (password-store-get "calibre-lib/wd")))
+                  (when data
+                    (insert "header = \"Content-Type: application/json\"\n")
+                    (insert (format "data-binary = \"@%s\"\n" json-file)))
+                  (let ((exit (apply #'call-process-region
+                                     (point-min) (point-max)
+                                     "curl" nil output-buffer nil
+                                     '("-K" "-"))))
+                    (with-current-buffer output-buffer
+                      (let ((output (string-trim (buffer-string))))
+                        (unless (zerop exit)
+                          (user-error "calibre server request failed: %s" output))
+                        output))))
+              (when (and json-file (file-exists-p json-file))
+                (delete-file json-file))
+              (kill-buffer output-buffer)))))
+      (save-excursion
+        (catch 'no-calibre-id
+          (while (not (org-entry-get nil "CALIBRE_ID"))
+            (unless (org-up-heading-safe)
+              (throw 'no-calibre-id nil)))
+          (let* ((root (point-marker))
+                 (id (org-entry-get nil "CALIBRE_ID"))
+                 (server (progn
+                           (unless (and (boundp 'calibredb-root-dir)
+                                        (stringp calibredb-root-dir))
+                             (user-error "calibredb-root-dir is not configured"))
+                           (replace-regexp-in-string "/opds/?\\'" "" calibredb-root-dir)))
+                 (json-array-type 'list)
+                 (json-object-type 'alist)
+                 (book (json-read-from-string
+                        (calibre-http server "GET" (format "/ajax/book/%s/" id))))
+                 (pages-meta (alist-get (intern "#pages") (alist-get 'user_metadata book)))
+                 (total-pages (alist-get (intern "#value#") pages-meta))
+                 entries intervals)
+            (unless (and (integerp total-pages) (> total-pages 0))
+              (user-error "Missing positive Calibre Pages value for book %s" id))
+            (org-map-tree
+             (lambda ()
+               (when-let* ((page (page-number (org-entry-get nil "NOTER_PAGE"))))
+                 (push (list (org-outline-level) (org-get-todo-state) page)
+                       entries))))
+            (setq entries (nreverse entries))
+            (cl-loop for tail on entries
+                     for (level todo page) = (car tail)
+                     when (member todo '("DONE" "KILL"))
+                     do (let* ((next (seq-find
+                                      (lambda (entry)
+                                        (and (<= (nth 0 entry) level)
+                                             (nth 2 entry)))
+                                      (cdr tail)))
+                               (start (max 1 (min page total-pages)))
+                               (end (or (and next (nth 2 next))
+                                        (1+ total-pages)))
+                               (end (max 1 (min end (1+ total-pages)))))
+                          (when (< start end)
+                            (push (cons start end) intervals))))
+            (let ((completed-pages 0)
+                  (merged nil))
+              (dolist (interval (sort intervals
+                                       (lambda (a b) (< (car a) (car b)))))
+                (if (and merged (<= (car interval) (cdar merged)))
+                    (setcdr (car merged) (max (cdar merged) (cdr interval)))
+                  (push interval merged)))
+              (dolist (interval merged)
+                (cl-incf completed-pages (- (cdr interval) (car interval))))
+              (let* ((percentage (/ (* completed-pages 1000.0) total-pages))
+                     (percentage (/ (round percentage) 10.0))
+                     (read-date (format-time-string "%Y-%m-%dT%H:%M:%S+00:00" nil t)))
+                (goto-char root)
+                (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
+                (calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
+                              `((changes . ((,(intern "#percentage") . ,percentage)
+                                             (,(intern "#read_date") . ,read-date)))
+                                (loaded_book_ids . [,(string-to-number id)])))
+                (message "calibre: %s Read %.1f%% (%d/%d)"
+                         id percentage completed-pages total-pages)))))))))
 
 ;;; calibre bulk import
 
