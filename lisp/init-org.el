@@ -54,7 +54,6 @@
 
   (:with-feature org-attach
     (:option
-     org-attach-directory (file-truename "~/.local/org-attach")
      org-attach-id-dir (file-truename "~/.local/org-attach")
      org-attach-sync-delete-empty-dir t))
 
