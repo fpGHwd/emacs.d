@@ -349,7 +349,9 @@ create-session path guarantees this)."
                 (cl-incf completed-pages (- (cdr interval) (car interval))))
               (let* ((percentage (/ (* completed-pages 1000.0) total-pages))
                      (percentage (/ (round percentage) 10.0))
-                     (read-date (format-time-string "%Y-%m-%dT%H:%M:%S+00:00" nil t)))
+                     (read-date (format-time-string "%Y-%m-%dT%H:%M:%S+08:00"
+                                                    (current-time)
+                                                    "Asia/Shanghai")))
                 (goto-char root)
                 (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
                 (calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
