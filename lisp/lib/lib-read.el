@@ -74,53 +74,6 @@ calibredb uses `curl -u' (Basic); Calibre requires `curl --digest -u'."
 
 ;;; calibre: OPDS download, unified CDB-<id>.org, open in org-noter
 
-(defun +wd/calibre--entry-id (entry)
-  "Return the calibre numeric id (string) for calibredb ENTRY, or nil.
-The id lives inside the OPDS acquisition URL `.../get/<fmt>/<id>/...'."
-  (let ((path (and entry (calibredb-getattr entry :file-path))))
-    (when (and (stringp path)
-               (string-match "/get/[^/]+/\\([0-9]+\\)/" path))
-      (match-string 1 path))))
-
-(defun +wd/calibre--download (title url format)
-  "Download URL to <download-dir>/TITLE.FORMAT and return the path, or nil.
-Cached: if the target already exists it is returned without re-downloading.
-Uses Digest auth with the account/password stored in `calibredb-library-alist'."
-  (let* ((file (expand-file-name (format "%s.%s" title format)
-                                 calibredb-opds-download-dir))
-         (info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
-         (account (alist-get 'account info))
-         (password (alist-get 'password info))
-         (args (append '("--digest" "-fsL")
-                       (when (and account password)
-                         (list "--user" (format "%s:%s" account password)))
-                       (list url "-o" file))))
-    (make-directory calibredb-opds-download-dir t)
-    (cond
-     ((file-exists-p file) file)
-     ((and (eq 0 (apply #'call-process "curl" nil nil nil args))
-           (file-exists-p file))
-      file))))
-
-(defun +wd/calibre--ensure-note-file (id title author doc-name url)
-  "Ensure CDB-ID.org exists in the org-noter notes dir; return its path.
-When absent, pre-create it with a `* TITLE - AUTHOR' heading and the
-properties `:NOTER_DOCUMENT: DOC-NAME' (a bare download filename, not an
-absolute path, so the notes file stays portable), `:CALIBRE_ID: ID' and
-`:CALIBRE_URL: URL' (the OPDS acquisition URL used to re-download the
-document on any machine).  This is the single place the unified notes
-format is written."
-  (let* ((notes-dir (or (car org-noter-notes-search-path)
-                        (expand-file-name "~/org/noter/current")))
-         (note (expand-file-name (format "CDB-%s.org" id) notes-dir)))
-    (make-directory notes-dir t)
-    (unless (file-exists-p note)
-      (with-temp-file note
-        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:CALIBRE_URL: %s\n:END:\n"
-                        (or title "Unknown") (or author "Unknown")
-                        doc-name id url))))
-    note))
-
 (defun +wd/calibredb-org-noter ()
   "Create a unified CDB-<id>.org for the calibre book at point and open it.
 Read id/title/author and the OPDS acquisition URL from the calibredb entry
@@ -129,35 +82,33 @@ downloaded here; it is fetched lazily by the resolvers on
 `org-noter-parse-document-property-hook' when the session opens."
   (interactive)
   (let* ((entry (car (calibredb-find-candidate-at-point)))
-         (id (+wd/calibre--entry-id entry))
+         (url (calibredb-getattr entry :file-path))
+         (id (and (stringp url)
+                  (string-match "/get/[^/]+/\\([0-9]+\\)/" url)
+                  (match-string 1 url)))
          (title (calibredb-getattr entry :book-title))
          (author (calibredb-getattr entry :author-sort))
-         (url (calibredb-getattr entry :file-path))
          (fmt (and (stringp url)
                    (string-match "/get/\\([^/]+\\)/" url)
                    (match-string 1 url)))
-         (doc-name (if fmt (format "%s.%s" title fmt) title)))
+         (doc-name (if fmt (format "%s.%s" title fmt) title))
+         (notes-dir (or (car org-noter-notes-search-path)
+                        (expand-file-name "~/org/noter/current")))
+         (note (and id (expand-file-name (format "CDB-%s.org" id) notes-dir))))
     (unless id
       (user-error "No calibre id for entry at point"))
-    (find-file (+wd/calibre--ensure-note-file id title author doc-name url))
+    (make-directory notes-dir t)
+    (unless (file-exists-p note)
+      (with-temp-file note
+        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:CALIBRE_URL: %s\n:END:\n"
+                        (or title "Unknown") (or author "Unknown")
+                        doc-name id url))))
+    (find-file note)
     (org-noter)))
 
 ;;; org-noter document resolution — resolvers tried in order via
 ;;; `org-noter-parse-document-property-hook' (run-hook-with-args-until-success).
 ;;; Each takes the NOTER_DOCUMENT string and returns an openable path or nil.
-
-(defun +wd/org-noter--document-file-name (&optional document-file-name)
-  "Return the current org-noter document file name."
-  (or (run-hook-with-args-until-success 'org-noter-get-buffer-file-name-hook
-                                        major-mode)
-      document-file-name
-      buffer-file-truename
-      buffer-file-name))
-
-(defun +wd/org-noter--matching-document-property-p (document-name)
-  "Return non-nil if point is on a matching `NOTER_DOCUMENT' property."
-  (let ((noter-document (string-trim (match-string 3))))
-    (string= document-name (file-name-nondirectory noter-document))))
 
 (defun +wd/org-noter-find-note-by-document-name (document-path)
   "Find a notes file under `~/org/noter/' for DOCUMENT-PATH.
@@ -173,43 +124,42 @@ Match by comparing DOCUMENT-PATH's file name with the file name part of each
           (insert-file-contents note)
           (goto-char (point-min))
           (while (re-search-forward (org-re-property org-noter-property-doc-file) nil t)
-            (when (+wd/org-noter--matching-document-property-p document-name)
+            (when (string= document-name
+                           (file-name-nondirectory (string-trim (match-string 3))))
               (throw 'done note))))))))
-
-(defun +wd/org-noter--goto-document-heading (document-path)
-  "Move point to the heading in the current notes buffer for DOCUMENT-PATH."
-  (let ((document-name (file-name-nondirectory document-path)))
-    (goto-char (point-min))
-    (catch 'found
-      (while (re-search-forward (org-re-property org-noter-property-doc-file) nil t)
-        (when (+wd/org-noter--matching-document-property-p document-name)
-          (org-back-to-heading t)
-          (throw 'found t))))))
 
 (defun +wd/org-noter-create-session-from-document-by-document-name
     (arg document-file-name)
   "Create an org-noter session by matching `NOTER_DOCUMENT' file names.
 This supports notes files stored anywhere under `~/org/noter/', including
 `CDB-<id>.org' files whose `NOTER_DOCUMENT' is a bare cached download name."
-  (when-let* ((document-path (+wd/org-noter--document-file-name document-file-name))
+  (when-let* ((document-path (or (run-hook-with-args-until-success
+                                  'org-noter-get-buffer-file-name-hook
+                                  major-mode)
+                                 document-file-name
+                                 buffer-file-truename
+                                 buffer-file-name))
               (note (+wd/org-noter-find-note-by-document-name document-path)))
     (let ((location (org-noter--doc-approx-location)))
       (with-current-buffer (find-file-noselect note)
-        (when (+wd/org-noter--goto-document-heading document-path)
-          (let ((org-noter--start-location-override location))
-            (org-noter arg)))))))
-
-(defun +wd/org-noter--clean-document (document)
-  "Return DOCUMENT trimmed to a non-empty string, or nil."
-  (let ((doc (and (stringp document) (string-trim document))))
-    (and doc (not (string-empty-p doc)) doc)))
+        (let ((document-name (file-name-nondirectory document-path)))
+          (goto-char (point-min))
+          (catch 'found
+            (while (re-search-forward (org-re-property org-noter-property-doc-file) nil t)
+              (when (string= document-name
+                             (file-name-nondirectory (string-trim (match-string 3))))
+                (org-back-to-heading t)
+                (let ((org-noter--start-location-override location))
+                  (org-noter arg))
+                (throw 'found t)))))))))
 
 (defun +wd/org-noter-parse-document-existing (document &rest _)
   "Return DOCUMENT as an existing file path, or nil.
 Primary resolver on `org-noter-parse-document-property-hook'."
-  (when-let* ((doc (+wd/org-noter--clean-document document))
-              (expanded (expand-file-name doc calibredb-opds-download-dir)))
-    (and (file-exists-p expanded) expanded)))
+  (let ((doc (and (stringp document) (string-trim document))))
+    (when (and doc (not (string-empty-p doc)))
+      (let ((expanded (expand-file-name doc calibredb-opds-download-dir)))
+        (and (file-exists-p expanded) expanded)))))
 
 (defvar +wd/calibre-local-library-root "/mnt/home/data/books/calibre-lib"
   "Local calibre library root on this machine.
@@ -243,14 +193,31 @@ Fallback resolver on `org-noter-parse-document-property-hook', tried after
 `+wd/org-noter-parse-document-existing'.  The file is cached in
 `calibredb-opds-download-dir'.  Requires point on the heading (org-noter's
 create-session path guarantees this)."
-  (when-let* ((doc (+wd/org-noter--clean-document document))
-              (url (org-entry-get nil "CALIBRE_URL" t))
-              (fmt (or (and (string-match "/get/\\([^/]+\\)/" url)
-                            (match-string 1 url))
-                       (file-name-extension doc))))
-    (message "org-noter: downloading %s from calibre OPDS..." doc)
-    (+wd/calibre--download (file-name-sans-extension (file-name-nondirectory doc))
-                           url fmt)))
+  (let ((doc (and (stringp document) (string-trim document))))
+    (when (and doc (not (string-empty-p doc)))
+      (when-let* ((url (org-entry-get nil "CALIBRE_URL" t))
+                  (fmt (or (and (string-match "/get/\\([^/]+\\)/" url)
+                                (match-string 1 url))
+                           (file-name-extension doc)))
+                  (file (expand-file-name
+                         (format "%s.%s"
+                                 (file-name-sans-extension (file-name-nondirectory doc))
+                                 fmt)
+                         calibredb-opds-download-dir)))
+        (message "org-noter: downloading %s from calibre OPDS..." doc)
+        (make-directory calibredb-opds-download-dir t)
+        (if (file-exists-p file)
+            file
+          (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
+                 (account (alist-get 'account info))
+                 (password (alist-get 'password info))
+                 (args (append '("--digest" "-fsL")
+                               (when (and account password)
+                                 (list "--user" (format "%s:%s" account password)))
+                               (list url "-o" file))))
+            (and (eq 0 (apply #'call-process "curl" nil nil nil args))
+                 (file-exists-p file)
+                 file)))))))
 
 ;;; org-noter -> calibre reading progress
 
