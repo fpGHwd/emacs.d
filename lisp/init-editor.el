@@ -12,13 +12,9 @@
 
 (setup meow
   (:also-load lib-util)
-  (:hooks doom-after-reload-hook
-          (lambda ()
-            (setq meow-cursor-type-normal 'box
-                  meow-cursor-type-motion 'box
-                  meow-cursor-type-beacon 'box
-                  meow-cursor-type-insert 'bar
-                  blink-cursor-interval 0.618)))
+  (:hooks 
+   (lambda ()
+     ))
   (:when-loaded
     (meow-normal-define-key
      '("RET" . +wd/meow-normal-return)
@@ -34,6 +30,11 @@
      meow-cursor-type-beacon 'box
      meow-cursor-type-insert 'bar
      blink-cursor-interval 0.618)
+    (add-hook! doom-after-reload-hook (lambda () (setq meow-cursor-type-normal 'box
+                                                       meow-cursor-type-motion 'box
+                                                       meow-cursor-type-beacon 'box
+                                                       meow-cursor-type-insert 'bar
+                                                       blink-cursor-interval 0.618)))
     (advice-add 'meow-cheatsheet :after
                 (lambda (&rest _)
                   (when-let ((buf (get-buffer "*Meow Cheatsheet*")))
