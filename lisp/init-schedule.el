@@ -66,107 +66,107 @@ If 17:30 has already passed today, schedule for tomorrow."
 (when (string= (system-name) "ubuntu2204")
   (user-schedule-mode +1))
 
-(defvar wd/stock-ledger-timer nil)
+(defvar +wd/stock-ledger-focus-timer nil)
 
-(defun wd/stock-ledger-timer ()
-  "Install the daily stock ledger capture timer."
+(defun +wd/stock-ledger-run ()
+  "Capture stock state and append ledger diff."
   (interactive)
-  (when (timerp wd/stock-ledger-timer)
-    (cancel-timer wd/stock-ledger-timer))
-  (setq
-   wd/stock-ledger-timer
-   (run-at-time
-    "15:05" 86400
-    (lambda ()
-      (let* ((json (string-trim (shell-command-to-string "/Users/wd/bin/capture-ths-after-close")))
-             (data (json-parse-string json :object-type 'alist :array-type 'list))
-             (suffix (alist-get 'suffix data))
-             (holdings (alist-get 'holdings data))
-             (assets (alist-get 'assets data))
-             (ledger-file (expand-file-name "~/org/ledger/2026/stock.ledger"))
-             (captured-at (alist-get 'captured_at data))
-             old target seen rows old-cash new-cash cny-total)
-        (when (and suffix holdings)
-          (dolist (line (split-string
-                         (shell-command-to-string
-                          (format "ledger -f %s bal Assets:stock --flat"
-                                  (shell-quote-argument ledger-file)))
-                         "\n" t))
-            (when (string-match "^[ \t]*\\([-+]?[0-9.]+\\) \\([^ \t]+\\)[ \t]+Assets:[Ss]tock:\\(S[HZ][0-9]\\{6\\}\\)$" line)
-              (push (list (match-string 3 line)
-                          (string-to-number (match-string 1 line))
-                          (match-string 2 line)
-                          nil)
-                    old))
-            (when (string-match "^[ \t]*\\([-+]?[0-9.]+\\) CNY[ \t]+Assets:[Ss]tock:[Gg]uosheng$" line)
-              (setq old-cash (string-to-number (match-string 1 line)))))
-          (dolist (holding holdings)
-            (let* ((code (alist-get 'code holding))
-                   (trading-market (alist-get 'trading_market holding))
-                   (market (cond
-                            ((and trading-market (string-match-p "\\(沪\\|上海\\|SH\\)" trading-market)) "SH")
-                            ((and trading-market (string-match-p "\\(深\\|深圳\\|SZ\\)" trading-market)) "SZ")
-                            ((string-prefix-p "6" code) "SH")
-                            (t "SZ")))
-                   (account (concat market code))
-                   (qty (or (alist-get 'actual_quantity holding)
-                            (alist-get 'share_balance holding)
-                            (alist-get 'available_balance holding))))
-              (push (list account qty (alist-get 'name holding)
-                          (or (alist-get 'cost_price holding)
-                              (alist-get 'market_price holding)))
-                    target)))
-          (dolist (stock (append target old))
-            (let ((account (car stock)))
-              (unless (member account seen)
-                (push account seen)
-                (let* ((new (or (cadr (assoc account target)) 0))
-                       (old-qty (or (cadr (assoc account old)) 0))
-                       (delta (- new old-qty)))
-                  (when (/= delta 0)
-                    (let* ((holding (or (assoc account target)
-                                        (assoc account old)))
-                           (name (or (nth 2 holding) account))
-                           (price (nth 3 holding)))
-                      (push (format "    %-34s %10s %s%s\n"
-                                    (concat "Assets:Stock:" account)
-                                    delta
-                                    name
-                                    (if price (format " @ CNY %s" price) ""))
-                            rows)
-                      (when price
-                        (setq cny-total (+ (or cny-total 0) (* delta price))))))))))
-          (setq new-cash (or (alist-get 'available_cash assets)
-                             (alist-get 'cash_balance assets)))
-          (when new-cash
-            (let ((delta (- new-cash (or old-cash 0))))
+  (let* ((json (string-trim (shell-command-to-string "/Users/wd/bin/capture-ths-after-close")))
+         (data (json-parse-string json :object-type 'alist :array-type 'list))
+         (suffix (alist-get 'suffix data))
+         (holdings (alist-get 'holdings data))
+         (assets (alist-get 'assets data))
+         (ledger-file (expand-file-name "~/org/ledger/2026/stock.ledger"))
+         (captured-at (alist-get 'captured_at data))
+         old target seen rows old-cash new-cash cny-total)
+    (when (and suffix holdings)
+      (dolist (line (split-string
+                     (shell-command-to-string
+                      (format "ledger -f %s bal Assets:stock --flat"
+                              (shell-quote-argument ledger-file)))
+                     "\n" t))
+        (when (string-match "^[ \t]*\\([-+]?[0-9.]+\\) \\([^ \t]+\\)[ \t]+Assets:[Ss]tock:\\(S[HZ][0-9]\\{6\\}\\)$" line)
+          (push (list (match-string 3 line)
+                      (string-to-number (match-string 1 line))
+                      (match-string 2 line)
+                      nil)
+                old))
+        (when (string-match "^[ \t]*\\([-+]?[0-9.]+\\) CNY[ \t]+Assets:[Ss]tock:[Gg]uosheng$" line)
+          (setq old-cash (string-to-number (match-string 1 line)))))
+      (dolist (holding holdings)
+        (let* ((code (alist-get 'code holding))
+               (trading-market (alist-get 'trading_market holding))
+               (market (cond
+                        ((and trading-market (string-match-p "\\(沪\\|上海\\|SH\\)" trading-market)) "SH")
+                        ((and trading-market (string-match-p "\\(深\\|深圳\\|SZ\\)" trading-market)) "SZ")
+                        ((string-prefix-p "6" code) "SH")
+                        (t "SZ")))
+               (account (concat market code))
+               (qty (or (alist-get 'actual_quantity holding)
+                        (alist-get 'share_balance holding)
+                        (alist-get 'available_balance holding))))
+          (push (list account qty (alist-get 'name holding)
+                      (or (alist-get 'cost_price holding)
+                          (alist-get 'market_price holding)))
+                target)))
+      (dolist (stock (append target old))
+        (let ((account (car stock)))
+          (unless (member account seen)
+            (push account seen)
+            (let* ((new (or (cadr (assoc account target)) 0))
+                   (old-qty (or (cadr (assoc account old)) 0))
+                   (delta (- new old-qty)))
               (when (/= delta 0)
-                (push (format "    %-34s %10.2f CNY\n"
-                              "Assets:Stock:Guosheng"
-                              delta)
-                      rows)
-                (setq cny-total (+ (or cny-total 0) delta)))))
-          (with-current-buffer (find-file-noselect ledger-file)
-            (goto-char (point-min))
-            (unless (or (null rows) (search-forward suffix nil t))
-              (goto-char (point-max))
-              (unless (bolp) (insert "\n"))
-              (insert
-               (format "\n; AUTO capture-ths %s %s/%s\n%s \"A-share trade diff\"\n%s    %s\n\n"
-                       captured-at
-                       (alist-get 'remote_dir data)
-                       suffix
-                       (format-time-string "%Y/%m/%d %a %H:%M:%S" (date-to-time captured-at))
-                       (mapconcat #'identity (nreverse rows) "")
-                       (if (> (or cny-total 0) 0)
-                           "Income:Investment:Trade Adjustment"
-                         "Expenses:Investment:Trade Adjustment")))
-              (save-buffer))))
-        (message "%s" json)))))
-  wd/stock-ledger-timer)
+                (let* ((holding (or (assoc account target)
+                                    (assoc account old)))
+                       (name (or (nth 2 holding) account))
+                       (price (nth 3 holding)))
+                  (push (format "    %-34s %10s %s%s\n"
+                                (concat "Assets:Stock:" account)
+                                delta
+                                name
+                                (if price (format " @ CNY %s" price) ""))
+                        rows)
+                  (when price
+                    (setq cny-total (+ (or cny-total 0) (* delta price))))))))))
+      (setq new-cash (or (alist-get 'available_cash assets)
+                         (alist-get 'cash_balance assets)))
+      (when new-cash
+        (let ((delta (- new-cash (or old-cash 0))))
+          (when (/= delta 0)
+            (push (format "    %-34s %10.2f CNY\n"
+                          "Assets:Stock:Guosheng"
+                          delta)
+                  rows)
+            (setq cny-total (+ (or cny-total 0) delta)))))
+      (with-current-buffer (find-file-noselect ledger-file)
+        (goto-char (point-min))
+        (unless (or (null rows) (search-forward suffix nil t))
+          (goto-char (point-max))
+          (unless (bolp) (insert "\n"))
+          (insert
+           (format "\n; AUTO capture-ths %s %s/%s\n%s \"A-share trade diff\"\n%s    %s\n\n"
+                   captured-at
+                   (alist-get 'remote_dir data)
+                   suffix
+                   (format-time-string "%Y/%m/%d %a %H:%M:%S" (date-to-time captured-at))
+                   (mapconcat #'identity (nreverse rows) "")
+                   (if (> (or cny-total 0) 0)
+                       "Income:Investment:Trade Adjustment"
+                     "Expenses:Investment:Trade Adjustment")))
+          (save-buffer))))
+    (message "%s" json)))
 
 (when (eq system-type 'darwin)
-  (wd/stock-ledger-timer))
+  (add-hook
+   'focus-in-hook
+   (lambda ()
+     (when (timerp +wd/stock-ledger-focus-timer)
+       (cancel-timer +wd/stock-ledger-focus-timer))
+     (setq +wd/stock-ledger-focus-timer
+           (run-at-time
+            "1 min" nil
+            #'+wd/stock-ledger-run)))))
 
 (provide 'init-schedule)
 ;;; init-schedule.el ends here
