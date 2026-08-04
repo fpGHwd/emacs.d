@@ -18,13 +18,12 @@
 Skip if there are no changes.  Commit message includes timestamp.
 After committing, reschedule for the next day at 17:30."
   (interactive)
-  (require 'org)
+  (require 'magit)
   (let ((default-directory (expand-file-name +wd/org-autocommit-repo)))
-    (magit-with-toplevel
-      (magit-stage-modified t)
-      (when (magit-anything-staged-p)
-        (magit-run-git "commit" "-m" "auto-commit")
-        (magit-push-current-to-pushremote nil))))
+    (magit-call-git "add" "-A")
+    (unless (= 0 (magit-call-git "diff" "--cached" "--quiet"))
+      (magit-call-git "commit" "-m" "auto-commit")
+      (magit-call-git "push")))
   ;; Reschedule for tomorrow 17:30
   (+wd/org-autocommit-schedule))
 
