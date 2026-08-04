@@ -72,7 +72,11 @@ If 17:30 has already passed today, schedule for tomorrow."
   "Capture stock state and append ledger diff."
   (interactive)
   (let* ((json (string-trim (shell-command-to-string "/Users/wd/bin/capture-ths-after-close")))
-         (data (json-parse-string json :object-type 'alist :array-type 'list))
+         (data (condition-case nil
+                   (json-parse-string json :object-type 'alist :array-type 'list)
+                 (error
+                  (message "Stock capture returned non-json: %s" json)
+                  nil)))
          (suffix (alist-get 'suffix data))
          (holdings (alist-get 'holdings data))
          (assets (alist-get 'assets data))
@@ -155,18 +159,20 @@ If 17:30 has already passed today, schedule for tomorrow."
                        "Income:Investment:Trade Adjustment"
                      "Expenses:Investment:Trade Adjustment")))
           (save-buffer))))
-    (message "%s" json)))
+    (when suffix
+      (message "stock ledger: %s" suffix))))
 
 (when (eq system-type 'darwin)
   (add-hook
    'focus-in-hook
    (lambda ()
-     (when (timerp +wd/stock-ledger-focus-timer)
-       (cancel-timer +wd/stock-ledger-focus-timer))
-     (setq +wd/stock-ledger-focus-timer
-           (run-at-time
-            "1 min" nil
-            #'+wd/stock-ledger-run)))))
+     (when (>= (string-to-number (format-time-string "%H%M")) 1500)
+       (when (timerp +wd/stock-ledger-focus-timer)
+         (cancel-timer +wd/stock-ledger-focus-timer))
+       (setq +wd/stock-ledger-focus-timer
+             (run-at-time
+              "1 min" nil
+              #'+wd/stock-ledger-run))))))
 
 (provide 'init-schedule)
 ;;; init-schedule.el ends here
