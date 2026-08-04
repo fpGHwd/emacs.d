@@ -11,6 +11,14 @@
   (:after recentf 
     (setq recentf-max-saved-items 5000)))
 
+;; workspaces / persp-mode
+(setup persp-mode
+  (:when-loaded
+    (define-advice persp-delete-frame (:around (oldfn frame) +wd/live-frame-only)
+      "Skip `persp-delete-frame' when FRAME is already dead."
+      (when (frame-live-p frame)
+        (funcall oldfn frame)))))
+
 ;; identity
 (setq user-full-name "Wang Ding"
       user-mail-address "ggwdwhu@gmail.com"

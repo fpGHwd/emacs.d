@@ -384,6 +384,14 @@
   (:when-loaded
     (+wd/calibredb-configure-opds)
 
+    (define-advice org-noter--handle-delete-frame
+        (:around (oldfn frame) +wd/undedicate-frame-windows)
+      "Let org-noter clean sessions from frames with dedicated windows."
+      (let ((windows (and (frame-live-p frame) (window-list frame 'no-minibuf))))
+        (dolist (window windows)
+          (set-window-dedicated-p window nil))
+        (funcall oldfn frame)))
+
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-resolve-calibre-document 10)
     (add-hook 'org-noter-create-session-from-document-hook
