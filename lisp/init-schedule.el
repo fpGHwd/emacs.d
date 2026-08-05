@@ -2,6 +2,7 @@
 
 (require 'json)
 (require 'subr-x)
+(require 'seq)
 
 ;; ---------------------------------------------------------------------------
 ;; Auto-commit and push ~/org at scheduled time
@@ -72,16 +73,17 @@ If 17:30 has already passed today, schedule for tomorrow."
   (interactive)
   (let* ((json (string-trim (shell-command-to-string "/Users/wd/bin/capture-ths-after-close")))
          (data (condition-case nil
-                   (json-parse-string json :object-type 'alist :array-type 'list)
+                 (json-parse-string json :object-type 'alist :array-type 'list)
                  (error
-                  (message "Stock capture returned non-json: %s" json)
+                  (message "Stock capture returned non-json")
                   nil)))
          (suffix (alist-get 'suffix data))
          (holdings (alist-get 'holdings data))
          (assets (alist-get 'assets data))
          (ledger-file (expand-file-name "~/org/ledger/2026/stock.ledger"))
+         (price-file (expand-file-name "~/org/ledger/2026/price.ledger"))
          (captured-at (alist-get 'captured_at data))
-         old target seen rows old-cash new-cash cny-total)
+         old target seen rows old-cash new-cash cny-total price-date price-time)
     (when (and suffix holdings)
       (dolist (line (split-string
                      (shell-command-to-string
@@ -105,13 +107,40 @@ If 17:30 has already passed today, schedule for tomorrow."
                         ((string-prefix-p "6" code) "SH")
                         (t "SZ")))
                (account (concat market code))
+               (commodity (format "\"%s.%s\"" market code))
                (qty (or (alist-get 'actual_quantity holding)
                         (alist-get 'share_balance holding)
                         (alist-get 'available_balance holding))))
           (push (list account qty (alist-get 'name holding)
                       (or (alist-get 'cost_price holding)
-                          (alist-get 'market_price holding)))
+                          (alist-get 'market_price holding))
+                      commodity)
                 target)))
+      (setq price-date (format-time-string "%Y/%m/%d" (date-to-time captured-at))
+            price-time (format-time-string "%H:%M:%S" (date-to-time captured-at)))
+      (with-current-buffer (find-file-noselect price-file)
+        (dolist (stock target)
+          (let* ((account (car stock))
+                 (commodity (nth 4 stock))
+                 (price (alist-get 'market_price
+                                   (seq-find
+                                    (lambda (holding)
+                                      (let* ((code (alist-get 'code holding))
+                                             (trading-market (alist-get 'trading_market holding))
+                                             (market (cond
+                                                      ((and trading-market (string-match-p "\\(沪\\|上海\\|SH\\)" trading-market)) "SH")
+                                                      ((and trading-market (string-match-p "\\(深\\|深圳\\|SZ\\)" trading-market)) "SZ")
+                                                      ((string-prefix-p "6" code) "SH")
+                                                      (t "SZ"))))
+                                        (string= account (concat market code))))
+                                    holdings))))
+            (when price
+              (goto-char (point-min))
+              (unless (re-search-forward (format "^P %s .* %s CNY " price-date commodity) nil t)
+                (goto-char (point-max))
+                (unless (bolp) (insert "\n"))
+                (insert (format "P %s %s %s CNY %s\n" price-date price-time commodity price))))))
+        (save-buffer))
       (dolist (stock (append target old))
         (let ((account (car stock)))
           (unless (member account seen)
@@ -123,12 +152,14 @@ If 17:30 has already passed today, schedule for tomorrow."
                 (let* ((holding (or (assoc account target)
                                     (assoc account old)))
                        (name (or (nth 2 holding) account))
-                       (price (nth 3 holding)))
-                  (push (format "    %-34s %10s %s%s\n"
+                       (price (nth 3 holding))
+                       (commodity (or (nth 4 holding) account)))
+                  (push (format "    %-34s %10s %s%s%s\n"
                                 (concat "Assets:Stock:" account)
                                 delta
-                                name
-                                (if price (format " @ CNY %s" price) ""))
+                                commodity
+                                (if price (format " @ CNY %s" price) "")
+                                (if name (format "  ; %s" name) ""))
                         rows)
                   (when price
                     (setq cny-total (+ (or cny-total 0) (* delta price))))))))))
