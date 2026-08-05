@@ -66,7 +66,8 @@ If 17:30 has already passed today, schedule for tomorrow."
 (when (string= (system-name) "ubuntu2204")
   (user-schedule-mode +1))
 
-(defvar +wd/stock-ledger-focus-timer nil)
+(defvar +wd/stock-ledger-timer nil
+  "Timer for daily stock ledger capture.")
 
 (defun +wd/stock-ledger-run ()
   "Capture stock state and append ledger diff."
@@ -193,16 +194,10 @@ If 17:30 has already passed today, schedule for tomorrow."
       (message "stock ledger: %s" suffix))))
 
 (when (eq system-type 'darwin)
-  (add-hook
-   'focus-in-hook
-   (lambda ()
-     (when (>= (string-to-number (format-time-string "%H%M")) 1500)
-       (when (timerp +wd/stock-ledger-focus-timer)
-         (cancel-timer +wd/stock-ledger-focus-timer))
-       (setq +wd/stock-ledger-focus-timer
-             (run-at-time
-              "1 min" nil
-              #'+wd/stock-ledger-run))))))
+  (when (timerp +wd/stock-ledger-timer)
+    (cancel-timer +wd/stock-ledger-timer))
+  (setq +wd/stock-ledger-timer
+        (run-at-time "15:01" 86400 #'+wd/stock-ledger-run)))
 
 (provide 'init-schedule)
 ;;; init-schedule.el ends here
