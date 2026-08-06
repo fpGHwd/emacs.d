@@ -6,7 +6,9 @@
   (:option
    ledger-reports
    '(("month meal expense"
-      "ledger -f %(ledger-file) --monthly register ^Expenses:meal")
+      "ledger -f %(ledger-file) --monthly register ^Expenses:Living:Food")
+     ("stock current"
+      "ledger -f ~/org/ledger/2026/stock.ledger bal Assets:Stock -V")
      ("month period"
       "ledger -f %(ledger-file) balance --period %(month) ^Income ^Expenses")
      ("year budget"
