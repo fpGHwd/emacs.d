@@ -29,13 +29,6 @@ On insert enter: restore if previously active."
            (cl-return)))
        (error "All rime compile attempts failed")))))
 
-(defun +wd/rime-debug-enable ()
-  "Manually enable rime-emacs for debugging."
-  (interactive)
-  (if (fboundp 'rime-force-enable)
-      (call-interactively #'rime-force-enable)
-    (user-error "rime is not loaded")))
-
 (defun +pyim-probe-telega-msg ()
   "Return if current point is at a telega button."
   (s-contains? "telega" (symbol-name (get-text-property (point)
