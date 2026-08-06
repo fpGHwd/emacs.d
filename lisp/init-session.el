@@ -24,5 +24,9 @@
       user-mail-address "ggwdwhu@gmail.com"
       initial-scratch-message (concat ";; Happy hacking, " user-full-name " - Emacs ♥ you!\n\n"))
 
+(setup gud
+  (:when-loaded
+    (add-to-list 'meow-mode-state-list '(gud-mode . insert))))
+
 (provide 'init-session)
 ;;; init-session.el ends here
