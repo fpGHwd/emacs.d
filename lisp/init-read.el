@@ -327,6 +327,7 @@
 
 (setup pdf-tools
   (:when-loaded
+    (:option pdf-view-continuous t)
     (setq pdf-annot-default-annotation-properties
           '((t         (label . "Wang Ding"))
             (text       (color . "#FFD966") (icon . "Note"))
