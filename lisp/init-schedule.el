@@ -10,6 +10,9 @@
 (defvar +wd/org-autocommit-timer nil
   "Timer for scheduled org auto-commit.")
 
+(defvar +wd/calibre-import-timer nil
+  "Timer for scheduled Calibre import.")
+
 (defun +wd/org-autocommit ()
   "Stage all changes in `+wd/org-autocommit-repo', commit, and push.
 Skip if there are no changes.  Commit message includes timestamp.
@@ -42,6 +45,48 @@ If 17:30 has already passed today, schedule for tomorrow."
     (message "Org auto-commit scheduled at %s"
              (format-time-string "%Y-%m-%d %H:%M" next-run))))
 
+(defun +wd/add-book-to-calibre ()
+  "Import books from inbox directories into Calibre."
+  (interactive)
+  (let* ((calibredb (or (executable-find "calibredb")
+                       (user-error "calibredb executable not found")))
+         (password (password-store-get "calibre-lib/wd"))
+         (formats '(".pdf" ".epub" ".mobi" ".azw" ".azw3"))
+         (directories (mapcar #'file-truename
+                              '("~/Downloads"
+                                "/mnt/nas/data-wd/book"
+                                "/mnt/nas/datb-wd/book"))))
+    (dolist (directory directories)
+      (when (file-directory-p directory)
+        (dolist (format formats)
+          (dolist (path (directory-files directory t (concat (regexp-quote format) "\\'")))
+            (let ((process (start-process "calibredb-add-book" nil calibredb
+                                          "--with-library=http://nixos-nuc:8080"
+                                          "--username=wd"
+                                          (format "--password=%s" password)
+                                          "add"
+                                          "--duplicates"
+                                          path)))
+              (set-process-sentinel
+               process
+               (lambda (_proc event)
+                 (if (string-equal event "finished\n")
+                     (progn
+                       (delete-file path)
+                       (message "Add to calibre & delete origin: %s" path))
+                   (message "Failed to add book to calibre: %s (%s)"
+                            path (string-trim event))))))))))))
+
+(defun +wd/calibre-import-schedule ()
+  "Schedule `+wd/add-book-to-calibre' weekly."
+  (interactive)
+  (when (timerp +wd/calibre-import-timer)
+    (cancel-timer +wd/calibre-import-timer))
+  (let ((weekly (* 7 24 60 60)))
+    (setq +wd/calibre-import-timer
+          (run-at-time weekly weekly #'+wd/add-book-to-calibre))
+    (message "Calibre import scheduled every 7 days")))
+
 ;; ---------------------------------------------------------------------------
 ;; user-schedule-mode: minor mode to enable scheduled tasks
 ;; ---------------------------------------------------------------------------
@@ -53,10 +98,15 @@ If 17:30 has already passed today, schedule for tomorrow."
   :lighter " Sched"
   :group 'user-schedule
   (if user-schedule-mode
-      (+wd/org-autocommit-schedule)
+      (progn
+        (+wd/org-autocommit-schedule)
+        (+wd/calibre-import-schedule))
     (when (timerp +wd/org-autocommit-timer)
       (cancel-timer +wd/org-autocommit-timer)
-      (setq +wd/org-autocommit-timer nil))))
+      (setq +wd/org-autocommit-timer nil))
+    (when (timerp +wd/calibre-import-timer)
+      (cancel-timer +wd/calibre-import-timer)
+      (setq +wd/calibre-import-timer nil))))
 
 ;; Enable by default
 (when (string= (system-name) "ubuntu2204")

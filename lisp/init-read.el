@@ -28,43 +28,47 @@
 
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve org-noter DOCUMENT from cache, local calibre library, or OPDS."
-  (let ((doc (and (stringp document) (string-trim document))))
-    (when (and doc (not (string-empty-p doc)))
-      (or (let ((cached (expand-file-name doc calibredb-opds-download-dir)))
-            (and (file-exists-p cached) cached))
-          (when-let* ((id (org-entry-get nil "CALIBRE_ID" t))
-                      (hit (seq-some
-                            (lambda (ext)
-                              (car (file-expand-wildcards
-                                    (expand-file-name
-                                     (format "*/* (%s)/*.%s" id ext)
-                                     +wd/calibre-local-library-root))))
-                            +wd/calibre-document-formats)))
-            (and (file-readable-p hit) hit))
-          (when-let* ((url (org-entry-get nil "CALIBRE_URL" t))
-                      (fmt (or (and (string-match "/get/\\([^/]+\\)/" url)
-                                    (match-string 1 url))
-                               (file-name-extension doc)))
-                      (file (expand-file-name
-                             (format "%s.%s"
-                                     (file-name-sans-extension
-                                      (file-name-nondirectory doc))
-                                     fmt)
-                             calibredb-opds-download-dir)))
+  (when-let* ((id (org-entry-get nil "CALIBRE_ID" t)))
+    (let* ((doc (and (stringp document) (string-trim document)))
+           (url (org-entry-get nil "CALIBRE_URL" t))
+           (fmt (and (stringp url)
+                     (string-match "/get/\\([^/]+\\)/" url)
+                     (match-string 1 url)))
+           (file (and doc fmt
+                      (expand-file-name
+                       (format "%s.%s"
+                               (file-name-sans-extension
+                                (file-name-nondirectory doc))
+                               fmt)
+                       calibredb-opds-download-dir)))
+           (local-file
+            (seq-some
+             (lambda (ext)
+               (car (file-expand-wildcards
+                     (expand-file-name
+                      (format "*/* (%s)/*.%s" id ext)
+                      +wd/calibre-local-library-root))))
+             +wd/calibre-document-formats)))
+      (unless (and doc (not (string-empty-p doc)))
+        (user-error "Missing NOTER_DOCUMENT for Calibre book %s" id))
+      (unless (and url fmt file)
+        (user-error "Missing Calibre document URL for book %s" id))
+      (or (and (file-exists-p file) file)
+          (and local-file (file-readable-p local-file) local-file)
+          (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
+                 (account (alist-get 'account info))
+                 (password (alist-get 'password info))
+                 (args (append '("--digest" "-fsSL")
+                               (when (and account password)
+                                 (list "--user" (format "%s:%s" account password)))
+                               (list url "-o" file))))
             (message "org-noter: downloading %s from calibre OPDS..." doc)
             (make-directory calibredb-opds-download-dir t)
-            (if (file-exists-p file)
-                file
-              (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
-                     (account (alist-get 'account info))
-                     (password (alist-get 'password info))
-                     (args (append '("--digest" "-fsL")
-                                   (when (and account password)
-                                     (list "--user" (format "%s:%s" account password)))
-                                   (list url "-o" file))))
-                (and (eq 0 (apply #'call-process "curl" nil nil nil args))
-                     (file-exists-p file)
-                     file))))))))
+            (unless (eq 0 (apply #'call-process "curl" nil nil nil args))
+              (user-error "Failed to download Calibre document for book %s" id))
+            (unless (file-exists-p file)
+              (user-error "Calibre download produced no file for book %s" id))
+            file)))))
 
 (defun +wd/org-noter-update-calibre-progress ()
   "Update Calibre Read column from DONE/KILL org-noter page coverage."
@@ -175,31 +179,6 @@
                 (message "calibre: %s Read %.1f%% (%d/%d)"
                          id percentage completed-pages total-pages)))))))))
 
-(defun +wd/add-book-to-calibre ()
-  (interactive)
-  (let* ((postfix (list ".pdf" ".epub" ".mobi" ".azw" ".azw3"))
-         (path-list (mapcar #'file-truename '("~/Downloads"
-                                              "/mnt/nas/data-wd/book"
-                                              "/mnt/nas/datb-wd/book")))
-         (bin-path (executable-find "calibredb"))
-         (password (password-store-get "calibre-lib/wd"))
-         (bash-path (executable-find "bash")))
-    (dolist (pa path-list)
-      (dolist (pf postfix)
-        (when (file-directory-p pa)
-          (dolist (path (directory-files pa t pf))
-            (let* ((cmd (concat bin-path
-                                " --with-library=http://nixos-nuc:8080"
-                                " --username=wd"
-                                " --password=" password
-                                " --duplicates add " "'" path "'")))
-              (set-process-sentinel
-               (start-process "calibredb-add-book" nil bash-path "-c" cmd)
-               (lambda (_proc event)
-                 (when (string-equal event "finished\n")
-                   (delete-file path)
-                   (message "Add to calibre & delete origin: %s" path)))))))))))
-
 (setup calibredb
   (:also-load lib-util)
   (:option
@@ -216,16 +195,6 @@
              (account (or account (alist-get 'account info)))
              (password (or password (alist-get 'password info))))
         (and account password (cons account password))))
-
-    (when (fboundp '+wd/calibredb-opds-request-page--digest-auth)
-      (advice-remove 'calibredb-opds-request-page
-                     #'+wd/calibredb-opds-request-page--digest-auth))
-    (when (fboundp '+wd/calibredb-opds-request-search-page--digest-auth)
-      (advice-remove 'calibredb-opds-request-search-page
-                     #'+wd/calibredb-opds-request-search-page--digest-auth))
-    (when (fboundp '+wd/calibredb-opds-download--digest-auth)
-      (advice-remove 'calibredb-opds-download
-                     #'+wd/calibredb-opds-download--digest-auth))
 
     (define-advice calibredb-opds-request-page
         (:around (oldfn url &optional account password) +wd/digest-auth)
@@ -343,14 +312,7 @@
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:when-loaded
     (+wd/calibredb-configure-opds)
-
-    (define-advice org-noter--handle-delete-frame
-        (:around (oldfn frame) +wd/undedicate-frame-windows)
-      "Let org-noter clean sessions from frames with dedicated windows."
-      (let ((windows (and (frame-live-p frame) (window-list frame 'no-minibuf))))
-        (dolist (window windows)
-          (set-window-dedicated-p window nil))
-        (funcall oldfn frame)))
+    (setq org-noter-create-session-from-document-hook nil)
 
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-resolve-calibre-document 10)))
