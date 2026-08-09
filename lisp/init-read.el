@@ -282,7 +282,7 @@
 
 (setup org-noter
   (defun +wd/calibredb-org-noter ()
-    "Create a unified CDB-<id>.org for the calibre book at point."
+    "Create and show a unified CDB-<id>.org for the calibre book at point."
     (interactive)
     (let* ((entry (car (calibredb-find-candidate-at-point)))
            (url (calibredb-getattr entry :file-path))
@@ -305,7 +305,10 @@
         (with-temp-file note
           (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:CALIBRE_URL: %s\n:END:\n"
                           (or title "Unknown") (or author "Unknown")
-                          doc-name id url))))))
+                          doc-name id url))))
+      (display-buffer-in-side-window
+       (find-file-noselect note)
+       '((side . right) (slot . 0) (window-width . 0.4)))))
 
   ;; Keep raw-document sessions from appending book headings to the main notes.
   (:option org-noter-doc-split-fraction '(0.618 . 0.382)
