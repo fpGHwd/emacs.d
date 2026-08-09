@@ -283,8 +283,6 @@
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:when-loaded
     (+wd/calibredb-configure-opds)
-    (setq org-noter-create-session-from-document-hook nil)
-
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-resolve-calibre-document 10)))
 
