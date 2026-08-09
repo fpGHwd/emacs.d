@@ -23,7 +23,7 @@
 (package! calibredb
   :recipe (:host nil
            :type git
-           :repo "http://wd@nas.man:32775/wd/calibredb.el.git"
+           :repo "https://wd@ng.autove.dev/wd/calibredb.el.git"
            :branch "main"
            :local-repo "calibredb.el-gitea"))
 
