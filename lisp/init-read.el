@@ -26,45 +26,6 @@
              (account . "wd")
              (password . ,password))))))
 
-(defun +wd/org-noter-find-note-by-document-name (document-path)
-  "Find a notes file under `~/org/noter/' for DOCUMENT-PATH."
-  (when-let* ((document-path (and (stringp document-path) document-path))
-              (document-name (file-name-nondirectory document-path))
-              (notes-root (expand-file-name "~/org/noter/"))
-              (_ (file-directory-p notes-root)))
-    (catch 'done
-      (dolist (note (directory-files-recursively notes-root "\\.org\\'"))
-        (with-temp-buffer
-          (insert-file-contents note)
-          (goto-char (point-min))
-          (while (re-search-forward (org-re-property org-noter-property-doc-file) nil t)
-            (when (string= document-name
-                           (file-name-nondirectory (string-trim (match-string 3))))
-              (throw 'done note))))))))
-
-(defun +wd/org-noter-create-session-from-document-by-document-name
-    (arg document-file-name)
-  "Create an org-noter session by matching `NOTER_DOCUMENT' file names."
-  (when-let* ((document-path (or (run-hook-with-args-until-success
-                                  'org-noter-get-buffer-file-name-hook
-                                  major-mode)
-                                 document-file-name
-                                 buffer-file-truename
-                                 buffer-file-name))
-              (note (+wd/org-noter-find-note-by-document-name document-path)))
-    (let ((location (org-noter--doc-approx-location)))
-      (with-current-buffer (find-file-noselect note)
-        (let ((document-name (file-name-nondirectory document-path)))
-          (goto-char (point-min))
-          (catch 'found
-            (while (re-search-forward (org-re-property org-noter-property-doc-file) nil t)
-              (when (string= document-name
-                             (file-name-nondirectory (string-trim (match-string 3))))
-                (org-back-to-heading t)
-                (let ((org-noter--start-location-override location))
-                  (org-noter arg))
-                (throw 'found t)))))))))
-
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve org-noter DOCUMENT from cache, local calibre library, or OPDS."
   (let ((doc (and (stringp document) (string-trim document))))
@@ -205,6 +166,8 @@
                                                     "Asia/Shanghai")))
                 (goto-char root)
                 (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
+                (font-lock-flush (line-beginning-position) (line-end-position))
+                (font-lock-ensure (line-beginning-position) (line-end-position))
                 (calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
                               `((changes . ((,(intern "#percentage") . ,percentage)
                                              (,(intern "#read_date") . ,read-date)))
@@ -305,7 +268,7 @@
     (add-hook 'calibredb-search-mode-hook
               (lambda () (buffer-face-set :family "Sarasa Fixed SC")))
 
-    ;; One-key: open the book at point in org-noter via a unified CDB-<id>.org.
+    ;; One-key: create a unified CDB-<id>.org for the book at point.
     (:bind-into calibredb-search "n" #'+wd/calibredb-org-noter)))
 
 
@@ -350,7 +313,7 @@
 
 (setup org-noter
   (defun +wd/calibredb-org-noter ()
-    "Create a unified CDB-<id>.org for the calibre book at point and open it."
+    "Create a unified CDB-<id>.org for the calibre book at point."
     (interactive)
     (let* ((entry (car (calibredb-find-candidate-at-point)))
            (url (calibredb-getattr entry :file-path))
@@ -373,14 +336,10 @@
         (with-temp-file note
           (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:CALIBRE_URL: %s\n:END:\n"
                           (or title "Unknown") (or author "Unknown")
-                          doc-name id url))))
-      (find-file note)
-      (org-noter)))
+                          doc-name id url))))))
 
   ;; Keep raw-document sessions from appending book headings to the main notes.
   (:option org-noter-doc-split-fraction '(0.618 . 0.382)
-           org-noter-find-additional-notes-functions
-           '(+wd/org-noter-find-note-by-document-name)
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:when-loaded
     (+wd/calibredb-configure-opds)
@@ -394,9 +353,7 @@
         (funcall oldfn frame)))
 
     (add-hook 'org-noter-parse-document-property-hook
-              #'+wd/org-noter-resolve-calibre-document 10)
-    (add-hook 'org-noter-create-session-from-document-hook
-              #'+wd/org-noter-create-session-from-document-by-document-name 0)))
+              #'+wd/org-noter-resolve-calibre-document 10)))
 
 (setup org
   (:when-loaded
