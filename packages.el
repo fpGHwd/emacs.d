@@ -19,7 +19,13 @@
   :recipe (:host github
            :repo "wasamasa/nov.el"
            :branch "master"))
-(package! calibredb)
+
+(package! calibredb
+  :recipe (:host nil
+           :type git
+           :repo "http://wd@nas.man:32775/wd/calibredb.el.git"
+           :branch "main"
+           :local-repo "calibredb.el-gitea"))
 
 ;; Org ecosystem
 (package! cal-china-x)
