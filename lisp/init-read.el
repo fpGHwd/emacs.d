@@ -228,6 +228,16 @@
 (setup pdf-tools
   (:when-loaded
     (:option pdf-view-continuous t)
+    (defun +wd/pdf-view-enable-midnight-for-dark-theme ()
+      "Enable midnight mode for PDFs when the active theme is dark."
+      (require 'color)
+      (when-let* ((background (face-background 'default nil t))
+                  (rgb (color-name-to-rgb background)))
+        (when (color-dark-p rgb)
+          (pdf-view-midnight-minor-mode 1))))
+
+    (add-hook 'pdf-view-mode-hook #'+wd/pdf-view-enable-midnight-for-dark-theme)
+
     (setq pdf-annot-default-annotation-properties
           '((t         (label . "Wang Ding"))
             (text       (color . "#FFD966") (icon . "Note"))
