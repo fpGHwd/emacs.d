@@ -24,20 +24,22 @@
           `(("http://nixos-nuc:8080/opds"
              (name . "calibre")
              (account . "wd")
+             (auth . digest)
              (password . ,password))
             ("https://lib.autove.dev/opds"
              (name . "calibre-cloudflare")
              (account . "wd")
+             (auth . digest)
              (password . ,password))))))
 
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve org-noter DOCUMENT from cache, local calibre library, or OPDS."
   (when-let* ((id (org-entry-get nil "CALIBRE_ID" t)))
     (let* ((doc (and (stringp document) (string-trim document)))
-           (url (org-entry-get nil "CALIBRE_URL" t))
-           (fmt (and (stringp url)
-                     (string-match "/get/\\([^/]+\\)/" url)
-                     (match-string 1 url)))
+           (fmt (and doc (file-name-extension doc)))
+           (server (replace-regexp-in-string "/opds/?$" "" calibredb-root-dir))
+           (url (and fmt
+                     (format "%s/get/%s/%s/Calibre_Library" server fmt id)))
            (file (and doc fmt
                       (expand-file-name
                        (format "%s.%s"
@@ -55,8 +57,8 @@
              +wd/calibre-document-formats)))
       (unless (and doc (not (string-empty-p doc)))
         (user-error "Missing NOTER_DOCUMENT for Calibre book %s" id))
-      (unless (and url fmt file)
-        (user-error "Missing Calibre document URL for book %s" id))
+      (unless (and fmt url file)
+        (user-error "Cannot infer Calibre document URL for book %s" id))
       (or (and (file-exists-p file) file)
           (and local-file (file-readable-p local-file) local-file)
           (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
@@ -193,44 +195,6 @@
    calibredb-format-icons-in-terminal t
    calibredb-format-nerd-icons t)
   (:when-loaded
-    (defun +wd/calibredb-digest-auth (&optional account password)
-      "Return the Calibre OPDS account/password pair."
-      (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
-             (account (or account (alist-get 'account info)))
-             (password (or password (alist-get 'password info))))
-        (and account password (cons account password))))
-
-    (define-advice calibredb-opds-request-page
-        (:around (oldfn url &optional account password) +wd/digest-auth)
-      "Use Digest auth for Calibre OPDS page requests."
-      (if-let* ((auth (+wd/calibredb-digest-auth account password)))
-          (let ((account (car auth))
-                (password (cdr auth)))
-            (let* ((_ (defvar request-curl-options nil))
-                   (request-curl-options
-                    (list "--digest" "--user" (format "%s:%s" account password))))
-              (funcall oldfn url)))
-        (funcall oldfn url account password)))
-
-    (define-advice calibredb-opds-request-search-page
-        (:around (_oldfn url keyword &rest _) +wd/substitute-search-keyword)
-      "Substitute Calibre OPDS search keyword before requesting the page."
-      (calibredb-opds-request-page
-       (replace-regexp-in-string "{[^}]*}" (url-hexify-string keyword) url)))
-
-    (define-advice calibredb-opds-download
-        (:around (oldfn title url fmt &optional account password) +wd/digest-auth)
-      "Use Digest auth for Calibre OPDS downloads."
-      (if-let* ((auth (+wd/calibredb-digest-auth account password)))
-          (cl-letf* ((orig (symbol-function 'start-process-shell-command))
-                     ((symbol-function 'start-process-shell-command)
-                      (lambda (name buf cmd &rest args)
-                        (apply orig name buf
-                               (replace-regexp-in-string "curl -u" "curl --digest -u" cmd)
-                               args))))
-            (funcall oldfn title url fmt (car auth) (cdr auth)))
-        (funcall oldfn title url fmt account password)))
-
     (:after meow
       (add-to-list 'meow-mode-state-list '(calibredb-search-mode . motion)))
 
@@ -307,9 +271,9 @@
       (make-directory notes-dir t)
       (unless (file-exists-p note)
         (with-temp-file note
-          (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:CALIBRE_URL: %s\n:END:\n"
+          (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:END:\n"
                           (or title "Unknown") (or author "Unknown")
-                          doc-name id url))))
+                          doc-name id))))
       (display-buffer-in-side-window
        (find-file-noselect note)
        '((side . right) (slot . 0) (window-width . 0.4)))))
