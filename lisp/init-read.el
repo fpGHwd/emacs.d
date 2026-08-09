@@ -9,11 +9,15 @@
 
 (defun +wd/calibredb-configure-opds ()
   "Configure shared Calibre OPDS variables used by calibredb and org-noter."
+  (require 'dns)
   (let ((password (password-store-get "calibre-lib/wd")))
     (setq calibredb-root-dir
-          (if (zerop (call-process "pgrep" nil nil nil "Tailscale|tailscaled"))
-              "http://nixos-nuc:8080/opds"
-            "https://lib.autove.dev/opds")
+          (let ((dns-servers '("100.100.100.100"))
+                (dns-servers-valid-for-interfaces t)
+                (dns-timeout 2))
+            (if (dns-query "nixos-nuc" 'A)
+                "http://nixos-nuc:8080/opds"
+              "https://lib.autove.dev/opds"))
           calibredb-opds-download-dir "~/.cache/calibre/downloads/"
           calibredb-download-dir "~/.cache/calibre/downloads/"
           calibredb-library-alist
