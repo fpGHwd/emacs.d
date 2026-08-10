@@ -77,7 +77,7 @@
             file)))))
 
 (defun +wd/org-noter-update-calibre-progress ()
-  "Update Calibre Read column from DONE/KILL org-noter page coverage."
+  "Update Calibre Read column from org-noter or Calibre viewer progress."
   (interactive)
   (when (derived-mode-p 'org-mode)
     (cl-labels
@@ -118,20 +118,53 @@
                         output))))
               (when (and json-file (file-exists-p json-file))
                 (delete-file json-file))
-              (kill-buffer output-buffer)))))
-      (save-excursion
-        (catch 'no-calibre-id
-          (while (not (org-entry-get nil "CALIBRE_ID"))
-            (unless (org-up-heading-safe)
-              (throw 'no-calibre-id nil)))
-          (let* ((root (point-marker))
-                 (id (org-entry-get nil "CALIBRE_ID"))
-                 (server (progn
-                           (unless (and (boundp 'calibredb-root-dir)
-                                        (stringp calibredb-root-dir))
-                             (user-error "calibredb-root-dir is not configured"))
-                           (replace-regexp-in-string "/opds/?\\'" "" calibredb-root-dir)))
-                 (json-array-type 'list)
+              (kill-buffer output-buffer))))
+         (calibre-progress-date
+          (time)
+          (format-time-string "%Y-%m-%dT%H:%M:%S+08:00"
+                              time
+                              "Asia/Shanghai"))
+         (calibre-viewer-progress
+          (id format)
+          (unless (string-match-p "\\`[0-9]+\\'" id)
+            (user-error "Invalid Calibre book id: %s" id))
+          (unless (string-match-p "\\`[[:alnum:]]+\\'" format)
+            (user-error "Invalid Calibre format: %s" format))
+          (let* ((db (expand-file-name "metadata.db" +wd/calibre-local-library-root))
+                 (sqlite (or (executable-find "sqlite3")
+                             (user-error "sqlite3 executable not found")))
+                 (query (format (concat "SELECT pos_frac, epoch "
+                                        "FROM last_read_positions "
+                                        "WHERE book = %s AND upper(format) = '%s' "
+                                        "ORDER BY epoch DESC "
+                                        "LIMIT 1;")
+                                id (upcase format)))
+                 (output-buffer (generate-new-buffer " *calibre-progress-sqlite*")))
+            (unless (file-readable-p db)
+              (user-error "Calibre metadata database not readable: %s" db))
+            (unwind-protect
+                (let ((exit (call-process sqlite nil output-buffer nil
+                                          "-tabs" "-noheader" db query)))
+                  (with-current-buffer output-buffer
+                    (let* ((output (string-trim (buffer-string)))
+                           (fields (and (not (string-empty-p output))
+                                        (split-string output "\t")))
+                           (pos-frac (and (= (length fields) 2)
+                                          (string-to-number (car fields))))
+                           (epoch (and (= (length fields) 2)
+                                       (string-to-number (cadr fields)))))
+                      (unless (zerop exit)
+                        (user-error "Calibre progress query failed: %s" output))
+                      (unless (and pos-frac epoch)
+                        (user-error "Missing Calibre viewer progress for book %s %s"
+                                    id (upcase format)))
+                      (list (/ (round (* pos-frac 1000.0)) 10.0)
+                            (calibre-progress-date (seconds-to-time epoch))
+                            nil nil))))
+              (kill-buffer output-buffer))))
+         (org-noter-page-progress
+          (id server)
+          (let* ((json-array-type 'list)
                  (json-object-type 'alist)
                  (book (json-read-from-string
                         (calibre-http server "GET" (format "/ajax/book/%s/" id))))
@@ -169,21 +202,43 @@
                   (push interval merged)))
               (dolist (interval merged)
                 (cl-incf completed-pages (- (cdr interval) (car interval))))
-              (let* ((percentage (/ (* completed-pages 1000.0) total-pages))
-                     (percentage (/ (round percentage) 10.0))
-                     (read-date (format-time-string "%Y-%m-%dT%H:%M:%S+08:00"
-                                                    (current-time)
-                                                    "Asia/Shanghai")))
-                (goto-char root)
-                (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
-                (font-lock-flush (line-beginning-position) (line-end-position))
-                (font-lock-ensure (line-beginning-position) (line-end-position))
-                (calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
-                              `((changes . ((,(intern "#percentage") . ,percentage)
-                                             (,(intern "#read_date") . ,read-date)))
-                                (loaded_book_ids . [,(string-to-number id)])))
-                (message "calibre: %s Read %.1f%% (%d/%d)"
-                         id percentage completed-pages total-pages)))))))))
+              (list (/ (round (/ (* completed-pages 1000.0) total-pages)) 10.0)
+                    (calibre-progress-date (current-time))
+                    completed-pages
+                    total-pages)))))
+      (save-excursion
+        (catch 'no-calibre-id
+          (while (not (org-entry-get nil "CALIBRE_ID"))
+            (unless (org-up-heading-safe)
+              (throw 'no-calibre-id nil)))
+          (let* ((root (point-marker))
+                 (id (org-entry-get nil "CALIBRE_ID"))
+                 (document (org-entry-get nil "NOTER_DOCUMENT"))
+                 (format (and document (downcase (file-name-extension document))))
+                 (server (progn
+                           (unless (and (boundp 'calibredb-root-dir)
+                                        (stringp calibredb-root-dir))
+                             (user-error "calibredb-root-dir is not configured"))
+                           (replace-regexp-in-string "/opds/?\\'" "" calibredb-root-dir))))
+            (unless (and document format)
+              (user-error "Missing NOTER_DOCUMENT format for Calibre book %s" id))
+            (pcase-let ((`(,percentage ,read-date ,completed-pages ,total-pages)
+                         (if (string= format "pdf")
+                             (org-noter-page-progress id server)
+                           (calibre-viewer-progress id format))))
+              (goto-char root)
+              (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
+              (font-lock-flush (line-beginning-position) (line-end-position))
+              (font-lock-ensure (line-beginning-position) (line-end-position))
+              (calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
+                            `((changes . ((,(intern "#percentage") . ,percentage)
+                                           (,(intern "#read_date") . ,read-date)))
+                              (loaded_book_ids . [,(string-to-number id)])))
+              (if total-pages
+                  (message "calibre: %s Read %.1f%% (%d/%d)"
+                           id percentage completed-pages total-pages)
+                (message "calibre: %s %s Read %.1f%%"
+                         id (upcase format) percentage)))))))))
 
 (setup calibredb
   (:also-load lib-util)
