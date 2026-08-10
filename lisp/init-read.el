@@ -368,19 +368,6 @@
   (:option org-noter-doc-split-fraction '(0.618 . 0.382)
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:when-loaded
-    (define-advice org-noter--create-session
-        (:around (oldfn &rest args) +wd/fullboth-frame)
-      "Create org-noter session frames in fullboth fullscreen."
-      (let ((orig (symbol-function 'make-frame)))
-        (cl-letf (((symbol-function 'make-frame)
-                   (lambda (&optional parameters)
-                     (let ((parameters (copy-tree parameters)))
-                       (when-let ((fullscreen (assq 'fullscreen parameters)))
-                         (when (eq (cdr fullscreen) 'maximized)
-                           (setcdr fullscreen 'fullboth)))
-                       (funcall orig parameters)))))
-          (apply oldfn args))))
-
     (+wd/calibredb-configure-opds)
     (add-hook 'org-noter-parse-document-property-hook
               #'+wd/org-noter-resolve-calibre-document 10)))
