@@ -49,7 +49,7 @@
            (fmt (or (and doc (file-name-extension doc))
                     (and local-file (file-name-extension local-file))
                     (car +wd/calibre-document-formats)))
-           (doc-name (or doc
+           (doc-name (or (and doc (file-name-nondirectory doc))
                          (and local-file (file-name-nondirectory local-file))
                          (format "CDB-%s.%s" id fmt)))
            (server (replace-regexp-in-string "/opds/?$" "" calibredb-root-dir))
