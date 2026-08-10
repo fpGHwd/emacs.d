@@ -328,9 +328,22 @@
                      (string-match "/get/\\([^/]+\\)/" url)
                      (match-string 1 url)))
            (doc-name (if fmt (format "%s.%s" title fmt) title))
-           (notes-dir (or (car org-noter-notes-search-path)
-                          (expand-file-name "~/org/noter/current")))
-           (note (and id (expand-file-name (format "CDB-%s.org" id) notes-dir))))
+           (notes-dir (file-truename "~/org/noter/current"))
+           (noter-root (file-truename "~/org/noter/"))
+           (note (and id
+                      (or (when (file-directory-p noter-root)
+                            (require 'org)
+                            (catch 'found
+                              (dolist (file (directory-files-recursively noter-root "\\.org\\'"))
+                                (with-temp-buffer
+                                  (insert-file-contents file)
+                                  (delay-mode-hooks (org-mode))
+                                  (org-with-wide-buffer
+                                   (goto-char (point-min))
+                                   (while (re-search-forward org-heading-regexp nil t)
+                                     (when (string= (org-entry-get nil "CALIBRE_ID") id)
+                                       (throw 'found file))))))))
+                          (expand-file-name (format "CDB-%s.org" id) notes-dir)))))
       (unless id
         (user-error "No calibre id for entry at point"))
       (make-directory notes-dir t)
