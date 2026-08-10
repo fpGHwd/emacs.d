@@ -35,18 +35,9 @@
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve org-noter DOCUMENT from cache, local calibre library, or OPDS."
   (when-let* ((id (org-entry-get nil "CALIBRE_ID" t)))
-    (let* ((doc (and (stringp document) (string-trim document)))
-           (fmt (and doc (file-name-extension doc)))
-           (server (replace-regexp-in-string "/opds/?$" "" calibredb-root-dir))
-           (url (and fmt
-                     (format "%s/get/%s/%s/Calibre_Library" server fmt id)))
-           (file (and doc fmt
-                      (expand-file-name
-                       (format "%s.%s"
-                               (file-name-sans-extension
-                                (file-name-nondirectory doc))
-                               fmt)
-                       calibredb-opds-download-dir)))
+    (let* ((doc (and (stringp document)
+                     (not (string-empty-p (string-trim document)))
+                     (string-trim document)))
            (local-file
             (seq-some
              (lambda (ext)
@@ -54,13 +45,28 @@
                      (expand-file-name
                       (format "*/* (%s)/*.%s" id ext)
                       +wd/calibre-local-library-root))))
-             +wd/calibre-document-formats)))
-      (unless (and doc (not (string-empty-p doc)))
-        (user-error "Missing NOTER_DOCUMENT for Calibre book %s" id))
-      (unless (and fmt url file)
-        (user-error "Cannot infer Calibre document URL for book %s" id))
-      (or (and (file-exists-p file) file)
-          (and local-file (file-readable-p local-file) local-file)
+             +wd/calibre-document-formats))
+           (fmt (or (and doc (file-name-extension doc))
+                    (and local-file (file-name-extension local-file))
+                    (car +wd/calibre-document-formats)))
+           (doc-name (or doc
+                         (and local-file (file-name-nondirectory local-file))
+                         (format "CDB-%s.%s" id fmt)))
+           (server (replace-regexp-in-string "/opds/?$" "" calibredb-root-dir))
+           (url (and fmt
+                     (format "%s/get/%s/%s/Calibre_Library" server fmt id)))
+           (file (and fmt
+                      (expand-file-name doc-name calibredb-opds-download-dir))))
+      (or (and file (file-exists-p file)
+               (progn
+                 (unless doc
+                   (org-entry-put nil "NOTER_DOCUMENT" doc-name))
+                 file))
+          (and local-file (file-readable-p local-file)
+               (progn
+                 (unless doc
+                   (org-entry-put nil "NOTER_DOCUMENT" (file-name-nondirectory local-file)))
+                 local-file))
           (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
                  (account (alist-get 'account info))
                  (password (alist-get 'password info))
@@ -68,12 +74,14 @@
                                (when (and account password)
                                  (list "--user" (format "%s:%s" account password)))
                                (list url "-o" file))))
-            (message "org-noter: downloading %s from calibre OPDS..." doc)
+            (message "org-noter: downloading %s from calibre OPDS..." doc-name)
             (make-directory calibredb-opds-download-dir t)
             (unless (eq 0 (apply #'call-process "curl" nil nil nil args))
               (user-error "Failed to download Calibre document for book %s" id))
             (unless (file-exists-p file)
               (user-error "Calibre download produced no file for book %s" id))
+            (unless doc
+              (org-entry-put nil "NOTER_DOCUMENT" doc-name))
             file)))))
 
 (defun +wd/org-noter-update-calibre-progress ()
