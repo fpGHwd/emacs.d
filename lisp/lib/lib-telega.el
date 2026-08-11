@@ -1,12 +1,5 @@
 ;;; lib-telega.el --- telega helpers -*- lexical-binding: t; -*-
 
-(defun get-value-by-key-sequence (plist keys)
-  "根据键序列获取嵌套的 plist 中的值"
-  (let ((value plist))
-    (dolist (key keys value)
-      (setq value (plist-get value key)))
-    value))
-
 ;; update telega hook to accounting
 (defvar +wd/ledger-file-name "~/org/ledger/current.ledger")
 (defvar ledger-mutex (make-mutex "open ledger file"))
@@ -123,38 +116,16 @@ fields like \"交易时间：04月19日 19:11\"."
               "    " ledger-account "  " (number-to-string real-value) " CNY\n"
               "    Expenses:\n"))))
 
-(defun +wd/guanaitong-transaction (chat-text chat-date)
-  ;; (message "chat-text: %s" chat-text)
-  (let* ((value-regexp "变动金额：:? ?[-+]?\\([-0-9,.]*\\)")
-         (value (+wd/telega-match-group value-regexp chat-text 1))
-         (stripped-value (and value
-                              (replace-regexp-in-string (regexp-quote (string ?,)) "" value)))
-         (raw-value (and stripped-value
-                         (* -1 (string-to-number stripped-value))))
-         (real-value (+wd/telega-normalize-transaction-value chat-text raw-value))
-         (ledger-account "Assets:Virtual:Token")
-         (transaction-string (and stripped-value
-                                  (concat  "\n"
-                                           (format-time-string "%Y/%m/%d %a %H:%M:%S" chat-date)
-                                           " 关爱通消费\n"
-                                           "    " ledger-account "  " (number-to-string real-value) " CNY\n"
-                                           "    Expenses:\n"))))
-    transaction-string))
-
 (defvar +wd/telegram-cmb-chat-id (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
 (defun +wd/telega-chat-update-function (chat)
   "When CHAT update, then do something."
   (let ((+wd/cmb-chat-id (string-to-number +wd/telegram-cmb-chat-id)))
     (when (= +wd/cmb-chat-id (plist-get chat :id))
-      (let* ((chat-text (get-value-by-key-sequence chat '(:last_message :content :text :text)))
-             (chat-date (get-value-by-key-sequence chat '(:last_message :date)))
-             (guanaitong-p (string-match "余额变动提示" chat-text))
-             (account-need-p (or (string-match "交易金额" chat-text) guanaitong-p)))
-        (when (and account-need-p guanaitong-p)
-          (let ((transaction-text (+wd/guanaitong-transaction chat-text chat-date)))
-            (when transaction-text
-              (+wd/write-transactions transaction-text))))
-        (when (and account-need-p (not guanaitong-p))
+      (let* ((msg (plist-get chat :last_message))
+             (chat-text (plist-get (plist-get (plist-get msg :content) :text) :text))
+             (chat-date (plist-get msg :date))
+             (account-need-p (string-match "交易金额" chat-text)))
+        (when account-need-p
           (let ((transaction-text (+wd/creditcard-transaction chat-text chat-date)))
             (when transaction-text
               (+wd/write-transactions transaction-text))))))))
