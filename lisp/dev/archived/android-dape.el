@@ -1,15 +1,13 @@
-;;; android-dape.el --- Dape configuration for Android remote debugging  -*- lexical-binding: t -*-
+;;; android-dape.el --- Dape + GDB DAP for Android remote debugging  -*- lexical-binding: t -*-
 
-;; Dape configuration for SA8155P Android remote debugging.
+;; Attempt to use nix gdb 17.2 with --interpreter=dap for Android remote debugging.
 ;;
-;; Usage:
-;;   M-x dape RET vehiclehal-remote RET
+;; ⚠️ 已知限制：GDB DAP 的 :request "launch" 会尝试本地执行 :program，
+;;    aarch64 二进制在 x86_64 主机上会报 "Exec format error"。
+;;    :request "attach" 只支持本地 PID，无法连接远程 gdbserver。
+;;    这是 DAP 协议语义限制，非配置可绕。
 ;;
-;; Prerequisites before starting dape:
-;;   1. adb root
-;;   2. PID=$(adb shell pidof vendor.zone.vehiclehal@1.0-service)
-;;   3. adb shell "pkill -9 gdbserver64; nohup gdbserver64 :5039 --attach $PID &"
-;;   4. adb forward tcp:5039 tcp:5039
+;; 当前保留此文件用于实验，推荐日常使用 8155-debug.el (GUD)。
 
 (require 'dape)
 
@@ -21,28 +19,21 @@
                '("vendor/lib64" "vendor/lib"
                  "system/lib64" "system/lib")
                ":"))
-       (cpptools "/home/wd/.config/emacs.d/debug-adapters/cpptools-wrapper.sh"))
+       ;; nix gdb 17.2 支持 --interpreter=dap
+       (nix-gdb "/nix/store/fq5hd83bkipznh5n0m3zxcs4gk6hcbjc-gdb-17.2/bin/gdb"))
 
   (add-to-list 'dape-configs
-    `(vehiclehal-remote
+    `(vehiclehal-remote-gdb
       modes (c-mode c++-mode)
       ensure dape-ensure-command
       command-cwd ,root
-      command ,cpptools
-      fn
-      (lambda (config)
-        (let ((program (plist-get config :program)))
-          (if (file-name-absolute-p program) config
-            (thread-last
-              (tramp-file-local-name (dape--guess-root config))
-              (expand-file-name program) (plist-put config :program)))))
-      :type "cppdbg"
+      command ,nix-gdb
+      command-args ("--interpreter=dap")
       :request "launch"
-      :MIMode "gdb"
-      :miDebuggerPath "gdb-multiarch"
-      :miDebuggerServerAddress "localhost:5039"
       :program ,(concat sym "/vendor/bin/hw/vendor.zone.vehiclehal@1.0-service")
       :cwd ,root
+      :args []
+      :stopAtBeginningOfMainSubprogram nil
       :setupCommands
       [(:text "set architecture aarch64"
                :description "Set architecture"
@@ -52,6 +43,9 @@
                :ignoreFailures nil)
        (:text ,(concat "directory " root)
                :description "Set source directory"
+               :ignoreFailures nil)
+       (:text "set scheduler-locking step"
+               :description "Scheduler locking"
                :ignoreFailures nil)
        (:text "handle SIGPIPE nostop noprint"
                :description "Ignore SIGPIPE"
