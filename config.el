@@ -1,7 +1,7 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
 ;; Add path
-(add-load-path! "lisp/" "lisp/lib/")
+(add-load-path! "lisp/" "lisp/lib/" "lisp/dev")
 
 ;; From Lucius
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
@@ -39,7 +39,9 @@
 (require 'init-read)
 (require 'init-ledger)
 (require 'init-llm)
-(if (not *is-mac*) (require 'init-mail))
+(require 'init-mail)
 (require 'init-telega)
 
-;; (require 'init-elfeed)
+;; machine specific
+(when (string= (system-name) "ubuntu2204")
+  (require '8155-debug))
