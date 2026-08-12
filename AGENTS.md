@@ -92,6 +92,8 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 
 ### Package Management
 
+- Keep package recipes portable and declarative. For private Git package access, use `DOOMGITCONFIG` with cross-platform credential helpers such as `pass-git-helper`; do not encode credentials or macOS-only keychain helpers in synchronized package recipes.
+
 ```elisp
 ;; packages.el - Add new packages
 (package! package-name)
