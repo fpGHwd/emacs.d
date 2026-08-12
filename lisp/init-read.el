@@ -236,8 +236,6 @@
                            (calibre-viewer-progress id format))))
               (goto-char root)
               (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
-              (font-lock-flush (line-beginning-position) (line-end-position))
-              (font-lock-ensure (line-beginning-position) (line-end-position))
               (calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
                             `((changes . ((,(intern "#percentage") . ,percentage)
                                            (,(intern "#read_date") . ,read-date)))
