@@ -76,64 +76,49 @@ write the response there and return an empty string."
         (delete-file json-file))
       (kill-buffer output-buffer))))
 
-(defun +wd/calibre-book-file-info (id)
-  "Return preferred local file info for Calibre book ID.
-The return value is (FORMAT LOCAL-FILE), where FORMAT is lowercase."
+(defun +wd/calibre-book-format (id)
+  "Return the preferred document format for Calibre book ID."
   (unless (string-match-p "\\`[0-9]+\\'" id)
     (user-error "Invalid Calibre book id: %s" id))
-  (require 'calibredb)
-  (let* ((calibredb-root-dir +wd/calibre-local-library-root)
-         (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
-         (candidate (cdr (car (calibredb-candidate id)))))
-    (unless candidate
+  (let* ((json-array-type 'list)
+         (json-object-type 'alist)
+         (book (json-read-from-string
+                (+wd/calibre-http
+                 (+wd/calibre-content-server)
+                 "GET"
+                 (format "/ajax/book/%s/" id))))
+         (formats (alist-get 'formats book))
+         (format (or (seq-find (lambda (format)
+                                  (member format formats))
+                                +wd/calibre-document-formats)
+                     (car formats))))
+    (unless format
       (user-error "Missing Calibre file metadata for book %s" id))
-    (let* ((formats (split-string (or (calibredb-getattr candidate :book-format) "")
-                                  "," t "[[:space:]]+"))
-           (format (or (seq-find (lambda (format)
-                                    (member format formats))
-                                  +wd/calibre-document-formats)
-                       (car formats)))
-           (calibredb-preferred-format format)
-           (file (or (calibredb-get-file-path candidate)
-                     (and format
-                          (expand-file-name
-                           (concat (file-name-as-directory
-                                    (calibredb-getattr candidate :book-dir))
-                                   (calibredb-getattr candidate :book-name)
-                                   "." format)
-                           calibredb-root-dir)))))
-      (unless (and format file)
-        (user-error "Missing Calibre file metadata for book %s" id))
-      (list format file))))
+    format))
 
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve an empty or stale org-noter DOCUMENT from CALIBRE_ID."
   (when-let* ((id (org-entry-get nil "CALIBRE_ID" t)))
-    (let ((doc (and (stringp document)
-                    (not (string-empty-p (string-trim document)))
-                    (string-trim document))))
-      (if (and doc (file-readable-p doc))
-          doc
-        (pcase-let* ((`(,format ,local-file) (+wd/calibre-book-file-info id))
-                     (download-file (expand-file-name
-                                     (format "CDB-%s.%s" id format)
-                                     calibredb-opds-download-dir))
-                     (document-file
-                      (if (file-readable-p local-file)
-                          local-file
-                        (message "org-noter: downloading Calibre book %s..." id)
-                        (make-directory calibredb-opds-download-dir t)
-                        (+wd/calibre-http
-                         (+wd/calibre-content-server)
-                         "GET"
-                         (format "/get/%s/%s/Calibre_Library" format id)
-                         nil
-                         download-file)
-                        (unless (file-readable-p download-file)
-                          (user-error "Calibre download produced no readable file for book %s" id))
-                        download-file)))
-          (org-entry-put nil "NOTER_DOCUMENT" document-file)
-          document-file)))))
+    (let* ((format (+wd/calibre-book-format id))
+           (download-file (expand-file-name
+                           (format "CDB-%s.%s" id format)
+                           calibredb-opds-download-dir))
+           (document-file
+            (if (file-readable-p download-file)
+                download-file
+              (message "org-noter: downloading Calibre book %s..." id)
+              (make-directory calibredb-opds-download-dir t)
+              (+wd/calibre-http
+               (+wd/calibre-content-server)
+               "GET"
+               (format "/get/%s/%s/Calibre_Library" format id)
+               nil
+               download-file)
+              (unless (file-readable-p download-file)
+                (user-error "Calibre download produced no readable file for book %s" id))
+              download-file)))
+      (org-entry-put nil "NOTER_DOCUMENT" document-file)
+      document-file)))
 
 (defun +wd/org-noter-update-calibre-progress ()
   "Update Calibre Read column from org-noter or Calibre viewer progress."
@@ -250,7 +235,7 @@ The return value is (FORMAT LOCAL-FILE), where FORMAT is lowercase."
                                    (not (string-empty-p (string-trim document)))
                                    (when-let* ((extension (file-name-extension document)))
                                      (downcase extension)))
-                             (car (+wd/calibre-book-file-info id))))
+                             (+wd/calibre-book-format id)))
                  (server (+wd/calibre-content-server)))
             (unless format
               (user-error "Missing document format for Calibre book %s" id))
