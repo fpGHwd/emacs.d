@@ -32,62 +32,125 @@
              (auth . digest)
              (password . ,password))))))
 
+(defun +wd/calibre-content-server ()
+  "Return the configured Calibre content server URL without the OPDS suffix."
+  (unless (and (boundp 'calibredb-root-dir)
+               (stringp calibredb-root-dir))
+    (user-error "calibredb-root-dir is not configured"))
+  (replace-regexp-in-string "/opds/?\\'" "" calibredb-root-dir))
+
+(defun +wd/calibre-http (server method path &optional data output-file)
+  "Request Calibre SERVER with METHOD and PATH.
+When DATA is non-nil, send it as JSON.  When OUTPUT-FILE is non-nil,
+write the response there and return an empty string."
+  (let ((json-file (and data (make-temp-file "calibre-request-" nil ".json")))
+        (output-buffer (generate-new-buffer " *calibre-http-output*")))
+    (unwind-protect
+        (with-temp-buffer
+          (when json-file
+            (with-temp-file json-file
+              (insert (json-encode data))))
+          (insert (format "url = \"%s\"\n" (concat server path)))
+          (insert (format "request = \"%s\"\n" method))
+          (insert "silent\nshow-error\nfail\ndigest\n")
+          (insert (format "user = \"wd:%s\"\n" (password-store-get "calibre-lib/wd")))
+          (when data
+            (insert "header = \"Content-Type: application/json\"\n")
+            (insert (format "data-binary = \"@%s\"\n" json-file)))
+          (when output-file
+            (insert (format "output = \"%s\"\n" output-file)))
+          (let ((exit (apply #'call-process-region
+                             (point-min) (point-max)
+                             "curl" nil output-buffer nil
+                             '("-K" "-"))))
+            (with-current-buffer output-buffer
+              (let ((output (string-trim (buffer-string))))
+                (unless (zerop exit)
+                  (user-error "calibre server request failed: %s" output))
+                output))))
+      (when (and json-file (file-exists-p json-file))
+        (delete-file json-file))
+      (kill-buffer output-buffer))))
+
+(defun +wd/calibre-book-file-info (id)
+  "Return preferred local file info for Calibre book ID.
+The return value is (FORMAT LOCAL-FILE), where FORMAT is lowercase."
+  (unless (string-match-p "\\`[0-9]+\\'" id)
+    (user-error "Invalid Calibre book id: %s" id))
+  (let* ((db (expand-file-name "metadata.db" +wd/calibre-local-library-root))
+         (sqlite (or (executable-find "sqlite3")
+                     (user-error "sqlite3 executable not found")))
+         (format-order
+          (mapconcat
+           (lambda (format)
+             (format "WHEN upper(data.format) = '%s' THEN %d"
+                     (upcase format)
+                     (cl-position format +wd/calibre-document-formats
+                                  :test #'string=)))
+           +wd/calibre-document-formats
+           " "))
+         (query (format (concat "SELECT lower(data.format), books.path, data.name "
+                                "FROM books JOIN data ON data.book = books.id "
+                                "WHERE books.id = %s "
+                                "ORDER BY CASE %s ELSE 999 END "
+                                "LIMIT 1;")
+                        id format-order))
+         (output-buffer (generate-new-buffer " *calibre-book-file-sqlite*")))
+    (unless (file-readable-p db)
+      (user-error "Calibre metadata database not readable: %s" db))
+    (unwind-protect
+        (let ((exit (call-process sqlite nil output-buffer nil
+                                  "-tabs" "-noheader" db query)))
+          (with-current-buffer output-buffer
+            (let* ((output (string-trim (buffer-string)))
+                   (fields (and (not (string-empty-p output))
+                                (split-string output "\t"))))
+              (unless (zerop exit)
+                (user-error "Calibre book file query failed: %s" output))
+              (unless (= (length fields) 3)
+                (user-error "Missing Calibre file metadata for book %s" id))
+              (pcase-let ((`(,format ,book-path ,name) fields))
+                (list format
+                      (expand-file-name
+                       (concat (file-name-as-directory book-path)
+                               name "." format)
+                       +wd/calibre-local-library-root))))))
+      (kill-buffer output-buffer))))
+
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
-  "Resolve org-noter DOCUMENT from cache, local calibre library, or OPDS."
+  "Resolve an empty or stale org-noter DOCUMENT from CALIBRE_ID."
   (when-let* ((id (org-entry-get nil "CALIBRE_ID" t)))
-    (let* ((doc (and (stringp document)
-                     (not (string-empty-p (string-trim document)))
-                     (string-trim document)))
-           (local-file
-            (seq-some
-             (lambda (ext)
-               (car (file-expand-wildcards
-                     (expand-file-name
-                      (format "*/* (%s)/*.%s" id ext)
-                      +wd/calibre-local-library-root))))
-             +wd/calibre-document-formats))
-           (fmt (or (and doc (file-name-extension doc))
-                    (and local-file (file-name-extension local-file))
-                    (car +wd/calibre-document-formats)))
-           (doc-name (or (and doc (file-name-nondirectory doc))
-                         (and local-file (file-name-nondirectory local-file))
-                         (format "CDB-%s.%s" id fmt)))
-           (server (replace-regexp-in-string "/opds/?$" "" calibredb-root-dir))
-           (url (and fmt
-                     (format "%s/get/%s/%s/Calibre_Library" server fmt id)))
-           (file (and fmt
-                      (expand-file-name doc-name calibredb-opds-download-dir))))
-      (or (and file (file-exists-p file)
-               (progn
-                 (unless doc
-                   (org-entry-put nil "NOTER_DOCUMENT" doc-name))
-                 file))
-          (and local-file (file-readable-p local-file)
-               (progn
-                 (unless doc
-                   (org-entry-put nil "NOTER_DOCUMENT" (file-name-nondirectory local-file)))
-                 local-file))
-          (let* ((info (cdr (assoc calibredb-root-dir calibredb-library-alist)))
-                 (account (alist-get 'account info))
-                 (password (alist-get 'password info))
-                 (args (append '("--digest" "-fsSL")
-                               (when (and account password)
-                                 (list "--user" (format "%s:%s" account password)))
-                               (list url "-o" file))))
-            (message "org-noter: downloading %s from calibre OPDS..." doc-name)
-            (make-directory calibredb-opds-download-dir t)
-            (unless (eq 0 (apply #'call-process "curl" nil nil nil args))
-              (user-error "Failed to download Calibre document for book %s" id))
-            (unless (file-exists-p file)
-              (user-error "Calibre download produced no file for book %s" id))
-            (unless doc
-              (org-entry-put nil "NOTER_DOCUMENT" doc-name))
-            file)))))
+    (let ((doc (and (stringp document)
+                    (not (string-empty-p (string-trim document)))
+                    (string-trim document))))
+      (if (and doc (file-readable-p doc))
+          doc
+        (pcase-let* ((`(,format ,local-file) (+wd/calibre-book-file-info id))
+                     (download-file (expand-file-name
+                                     (format "CDB-%s.%s" id format)
+                                     calibredb-opds-download-dir))
+                     (document-file
+                      (if (file-readable-p local-file)
+                          local-file
+                        (message "org-noter: downloading Calibre book %s..." id)
+                        (make-directory calibredb-opds-download-dir t)
+                        (+wd/calibre-http
+                         (+wd/calibre-content-server)
+                         "GET"
+                         (format "/get/%s/%s/Calibre_Library" format id)
+                         nil
+                         download-file)
+                        (unless (file-readable-p download-file)
+                          (user-error "Calibre download produced no readable file for book %s" id))
+                        download-file)))
+          (org-entry-put nil "NOTER_DOCUMENT" document-file)
+          document-file)))))
 
 (defun +wd/org-noter-update-calibre-progress ()
   "Update Calibre Read column from org-noter or Calibre viewer progress."
   (interactive)
-  (when (derived-mode-p 'org-mode)
+  (when (and (derived-mode-p 'org-mode)
+             (member (and (boundp 'org-state) org-state) '("DONE" "KILL")))
     (cl-labels
         ((page-number
           (value)
@@ -99,34 +162,6 @@
             (condition-case nil
                 (page-number (read value))
               (error nil)))))
-         (calibre-http
-          (server method path &optional data)
-          (let ((json-file (and data (make-temp-file "calibre-progress-" nil ".json")))
-                (output-buffer (generate-new-buffer " *calibre-http-output*")))
-            (unwind-protect
-                (with-temp-buffer
-                  (when json-file
-                    (with-temp-file json-file
-                      (insert (json-encode data))))
-                  (insert (format "url = \"%s\"\n" (concat server path)))
-                  (insert (format "request = \"%s\"\n" method))
-                  (insert "silent\nshow-error\nfail\ndigest\n")
-                  (insert (format "user = \"wd:%s\"\n" (password-store-get "calibre-lib/wd")))
-                  (when data
-                    (insert "header = \"Content-Type: application/json\"\n")
-                    (insert (format "data-binary = \"@%s\"\n" json-file)))
-                  (let ((exit (apply #'call-process-region
-                                     (point-min) (point-max)
-                                     "curl" nil output-buffer nil
-                                     '("-K" "-"))))
-                    (with-current-buffer output-buffer
-                      (let ((output (string-trim (buffer-string))))
-                        (unless (zerop exit)
-                          (user-error "calibre server request failed: %s" output))
-                        output))))
-              (when (and json-file (file-exists-p json-file))
-                (delete-file json-file))
-              (kill-buffer output-buffer))))
          (calibre-progress-date
           (time)
           (format-time-string "%Y-%m-%dT%H:%M:%S+08:00"
@@ -175,7 +210,7 @@
           (let* ((json-array-type 'list)
                  (json-object-type 'alist)
                  (book (json-read-from-string
-                        (calibre-http server "GET" (format "/ajax/book/%s/" id))))
+                        (+wd/calibre-http server "GET" (format "/ajax/book/%s/" id))))
                  (pages-meta (alist-get (intern "#pages") (alist-get 'user_metadata book)))
                  (total-pages (alist-get (intern "#value#") pages-meta))
                  entries intervals)
@@ -222,24 +257,24 @@
           (let* ((root (point-marker))
                  (id (org-entry-get nil "CALIBRE_ID"))
                  (document (org-entry-get nil "NOTER_DOCUMENT"))
-                 (format (and document (downcase (file-name-extension document))))
-                 (server (progn
-                           (unless (and (boundp 'calibredb-root-dir)
-                                        (stringp calibredb-root-dir))
-                             (user-error "calibredb-root-dir is not configured"))
-                           (replace-regexp-in-string "/opds/?\\'" "" calibredb-root-dir))))
-            (unless (and document format)
-              (user-error "Missing NOTER_DOCUMENT format for Calibre book %s" id))
+                 (format (or (and (stringp document)
+                                   (not (string-empty-p (string-trim document)))
+                                   (when-let* ((extension (file-name-extension document)))
+                                     (downcase extension)))
+                             (car (+wd/calibre-book-file-info id))))
+                 (server (+wd/calibre-content-server)))
+            (unless format
+              (user-error "Missing document format for Calibre book %s" id))
             (pcase-let ((`(,percentage ,read-date ,completed-pages ,total-pages)
                          (if (string= format "pdf")
                              (org-noter-page-progress id server)
                            (calibre-viewer-progress id format))))
               (goto-char root)
               (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
-              (calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
-                            `((changes . ((,(intern "#percentage") . ,percentage)
-                                           (,(intern "#read_date") . ,read-date)))
-                              (loaded_book_ids . [,(string-to-number id)])))
+              (+wd/calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
+                                `((changes . ((,(intern "#percentage") . ,percentage)
+                                               (,(intern "#read_date") . ,read-date)))
+                                  (loaded_book_ids . [,(string-to-number id)])))
               (if total-pages
                   (message "calibre: %s Read %.1f%% (%d/%d)"
                            id percentage completed-pages total-pages)
@@ -325,15 +360,12 @@
     (interactive)
     (let* ((entry (car (calibredb-find-candidate-at-point)))
            (url (calibredb-getattr entry :file-path))
-           (id (and (stringp url)
-                    (string-match "/get/[^/]+/\\([0-9]+\\)/" url)
-                    (match-string 1 url)))
+           (id (or (and (stringp url)
+                        (string-match "/get/[^/]+/\\([0-9]+\\)/" url)
+                        (match-string 1 url))
+                   (calibredb-getattr entry :id)))
            (title (calibredb-getattr entry :book-title))
            (author (calibredb-getattr entry :author-sort))
-           (fmt (and (stringp url)
-                     (string-match "/get/\\([^/]+\\)/" url)
-                     (match-string 1 url)))
-           (doc-name (if fmt (format "%s.%s" title fmt) title))
            (notes-dir (file-truename "~/org/noter/current"))
            (noter-root (file-truename "~/org/noter/"))
            (note (and id
@@ -355,9 +387,9 @@
       (make-directory notes-dir t)
       (unless (file-exists-p note)
         (with-temp-file note
-          (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT: %s\n:CALIBRE_ID: %s\n:END:\n"
+          (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT:\n:CALIBRE_ID: %s\n:END:\n"
                           (or title "Unknown") (or author "Unknown")
-                          doc-name id))))
+                          id))))
       (display-buffer-in-side-window
        (find-file-noselect note)
        '((side . right) (slot . 0) (window-width . 0.4)))))
