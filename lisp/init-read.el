@@ -43,31 +43,35 @@
   "Request Calibre SERVER with METHOD and PATH.
 When DATA is non-nil, send it as JSON.  When OUTPUT-FILE is non-nil,
 write the response there and return an empty string."
+  (require 'calibredb-opds)
   (let ((json-file (and data (make-temp-file "calibre-request-" nil ".json")))
-        (output-buffer (generate-new-buffer " *calibre-http-output*")))
+        (output-buffer (generate-new-buffer " *calibre-http-output*"))
+        (url (concat server path)))
     (unwind-protect
-        (with-temp-buffer
-          (when json-file
-            (with-temp-file json-file
-              (insert (json-encode data))))
-          (insert (format "url = \"%s\"\n" (concat server path)))
-          (insert (format "request = \"%s\"\n" method))
-          (insert "silent\nshow-error\nfail\ndigest\n")
-          (insert (format "user = \"wd:%s\"\n" (password-store-get "calibre-lib/wd")))
-          (when data
-            (insert "header = \"Content-Type: application/json\"\n")
-            (insert (format "data-binary = \"@%s\"\n" json-file)))
-          (when output-file
-            (insert (format "output = \"%s\"\n" output-file)))
-          (let ((exit (apply #'call-process-region
-                             (point-min) (point-max)
-                             "curl" nil output-buffer nil
-                             '("-K" "-"))))
-            (with-current-buffer output-buffer
-              (let ((output (string-trim (buffer-string))))
-                (unless (zerop exit)
-                  (user-error "calibre server request failed: %s" output))
-                output))))
+        (let* ((auth-info (calibredb-opds-auth-info url))
+               (auth-headers (calibredb-opds-auth-headers auth-info))
+               (args (append '("-fsSL")
+                             (calibredb-opds-request-curl-options auth-info)
+                             (mapcan (lambda (header)
+                                       (list "-H" (format "%s: %s"
+                                                          (car header)
+                                                          (cdr header))))
+                                     auth-headers)
+                             (list "-X" method)
+                             (when data
+                               (with-temp-file json-file
+                                 (insert (json-encode data)))
+                               (list "-H" "Content-Type: application/json"
+                                     "--data-binary" (concat "@" json-file)))
+                             (when output-file
+                               (list "-o" output-file))
+                             (list url)))
+               (exit (apply #'call-process "curl" nil output-buffer nil args)))
+          (with-current-buffer output-buffer
+            (let ((output (string-trim (buffer-string))))
+              (unless (zerop exit)
+                (user-error "calibre server request failed: %s" output))
+              output)))
       (when (and json-file (file-exists-p json-file))
         (delete-file json-file))
       (kill-buffer output-buffer))))
@@ -77,45 +81,30 @@ write the response there and return an empty string."
 The return value is (FORMAT LOCAL-FILE), where FORMAT is lowercase."
   (unless (string-match-p "\\`[0-9]+\\'" id)
     (user-error "Invalid Calibre book id: %s" id))
-  (let* ((db (expand-file-name "metadata.db" +wd/calibre-local-library-root))
-         (sqlite (or (executable-find "sqlite3")
-                     (user-error "sqlite3 executable not found")))
-         (format-order
-          (mapconcat
-           (lambda (format)
-             (format "WHEN upper(data.format) = '%s' THEN %d"
-                     (upcase format)
-                     (cl-position format +wd/calibre-document-formats
-                                  :test #'string=)))
-           +wd/calibre-document-formats
-           " "))
-         (query (format (concat "SELECT lower(data.format), books.path, data.name "
-                                "FROM books JOIN data ON data.book = books.id "
-                                "WHERE books.id = %s "
-                                "ORDER BY CASE %s ELSE 999 END "
-                                "LIMIT 1;")
-                        id format-order))
-         (output-buffer (generate-new-buffer " *calibre-book-file-sqlite*")))
-    (unless (file-readable-p db)
-      (user-error "Calibre metadata database not readable: %s" db))
-    (unwind-protect
-        (let ((exit (call-process sqlite nil output-buffer nil
-                                  "-tabs" "-noheader" db query)))
-          (with-current-buffer output-buffer
-            (let* ((output (string-trim (buffer-string)))
-                   (fields (and (not (string-empty-p output))
-                                (split-string output "\t"))))
-              (unless (zerop exit)
-                (user-error "Calibre book file query failed: %s" output))
-              (unless (= (length fields) 3)
-                (user-error "Missing Calibre file metadata for book %s" id))
-              (pcase-let ((`(,format ,book-path ,name) fields))
-                (list format
-                      (expand-file-name
-                       (concat (file-name-as-directory book-path)
-                               name "." format)
-                       +wd/calibre-local-library-root))))))
-      (kill-buffer output-buffer))))
+  (require 'calibredb)
+  (let* ((calibredb-root-dir +wd/calibre-local-library-root)
+         (calibredb-db-dir (expand-file-name "metadata.db" calibredb-root-dir))
+         (candidate (cdr (car (calibredb-candidate id)))))
+    (unless candidate
+      (user-error "Missing Calibre file metadata for book %s" id))
+    (let* ((formats (split-string (or (calibredb-getattr candidate :book-format) "")
+                                  "," t "[[:space:]]+"))
+           (format (or (seq-find (lambda (format)
+                                    (member format formats))
+                                  +wd/calibre-document-formats)
+                       (car formats)))
+           (calibredb-preferred-format format)
+           (file (or (calibredb-get-file-path candidate)
+                     (and format
+                          (expand-file-name
+                           (concat (file-name-as-directory
+                                    (calibredb-getattr candidate :book-dir))
+                                   (calibredb-getattr candidate :book-name)
+                                   "." format)
+                           calibredb-root-dir)))))
+      (unless (and format file)
+        (user-error "Missing Calibre file metadata for book %s" id))
+      (list format file))))
 
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve an empty or stale org-noter DOCUMENT from CALIBRE_ID."
