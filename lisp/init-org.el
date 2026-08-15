@@ -164,6 +164,7 @@
       (:hooks org-mode-hook org-latex-impatient-mode)
       (:option
        max-image-size nil
+       org-latex-impatient-border-color "#666699"
        org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
     (map! :map org-mode-map
           :localleader
