@@ -98,27 +98,32 @@ write the response there and return an empty string."
 
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve an empty or stale org-noter DOCUMENT from CALIBRE_ID."
-  (when-let* ((id (org-entry-get nil "CALIBRE_ID" t)))
-    (let* ((format (+wd/calibre-book-format id))
-           (download-file (expand-file-name
-                           (format "CDB-%s.%s" id format)
-                           calibredb-opds-download-dir))
-           (document-file
-            (if (file-readable-p download-file)
-                download-file
-              (message "org-noter: downloading Calibre book %s..." id)
-              (make-directory calibredb-opds-download-dir t)
-              (+wd/calibre-http
-               (+wd/calibre-content-server)
-               "GET"
-               (format "/get/%s/%s/Calibre_Library" format id)
-               nil
-               download-file)
-              (unless (file-readable-p download-file)
-                (user-error "Calibre download produced no readable file for book %s" id))
-              download-file)))
-      (org-entry-put nil "NOTER_DOCUMENT" document-file)
-      document-file)))
+  (save-excursion
+    (catch 'resolved
+      (while t
+        (when-let* ((id (org-entry-get nil "CALIBRE_ID")))
+          (let* ((format (+wd/calibre-book-format id))
+                 (download-file (expand-file-name
+                                 (format "CDB-%s.%s" id format)
+                                 calibredb-opds-download-dir))
+                 (document-file
+                  (if (file-readable-p download-file)
+                      download-file
+                    (message "org-noter: downloading Calibre book %s..." id)
+                    (make-directory calibredb-opds-download-dir t)
+                    (+wd/calibre-http
+                     (+wd/calibre-content-server)
+                     "GET"
+                     (format "/get/%s/%s/Calibre_Library" format id)
+                     nil
+                     download-file)
+                    (unless (file-readable-p download-file)
+                      (user-error "Calibre download produced no readable file for book %s" id))
+                    download-file)))
+            (org-entry-put nil "NOTER_DOCUMENT" document-file)
+            (throw 'resolved document-file)))
+        (unless (org-up-heading-safe)
+          (throw 'resolved nil))))))
 
 (defun +wd/org-noter-update-calibre-progress ()
   "Update Calibre Read column from org-noter or Calibre viewer progress."
