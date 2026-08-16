@@ -4,7 +4,7 @@
 (setq +wd/seven-year-life 7) ;; 七年一生
 
 (setup org
-  (:also-load lib-org)
+  (:also-load lib-org uniquify)
 
   (:hooks
    org-mode-hook auto-revert-mode

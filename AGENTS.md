@@ -199,6 +199,8 @@ When debugging a problem, first find the call stack / error source before touchi
 
 **Query live state before reading files**: All current Emacs state — keybindings, variable values, loaded features, active modes, keymap lookups — can and should be obtained via `emacsclient` first. Prefer `emacsclient -e '(expression)'` over guessing from source files, since runtime state may differ from what the code suggests (e.g. hooks may have modified things, packages may not have loaded, or advices may be in effect).
 
+**Trace setting writers before patching symptoms**: When a variable or behavior changes unexpectedly across startup, reload, or mode activation, first search every relevant layer that can write it — this config, Doom modules/source, package source, Custom, hooks, and advices. Distinguish the upstream writer/order issue from downstream symptoms such as stale buffer names or unmanaged runtime state; patch the earliest confirmed override point, not the later symptom.
+
 ### Emacs Won't Start
 
 1. Check `*Messages*` buffer: `emacs --debug-init`

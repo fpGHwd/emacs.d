@@ -11,13 +11,25 @@
   (:after recentf 
     (setq recentf-max-saved-items 5000)))
 
+(setup uniquify
+  (:option uniquify-buffer-name-style 'forward
+           uniquify-separator "/"))
+
+(defun +wd/setup-uniquify-buffer-names ()
+  (setup uniquify
+    (:option uniquify-buffer-name-style 'forward
+             uniquify-separator "/")))
+
 ;; workspaces / persp-mode
 (setup persp-mode
   (:when-loaded
     (define-advice persp-delete-frame (:around (oldfn frame) +wd/live-frame-only)
       "Skip `persp-delete-frame' when FRAME is already dead."
       (when (frame-live-p frame)
-        (funcall oldfn frame)))))
+        (funcall oldfn frame)))
+    (add-hook 'persp-mode-hook #'+wd/setup-uniquify-buffer-names t)
+    (when persp-mode
+      (+wd/setup-uniquify-buffer-names))))
 
 ;; identity
 (setq user-full-name "Wang Ding"
