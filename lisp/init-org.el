@@ -145,17 +145,7 @@
                    "* %U %:description\n%:initial\n" :immediate-finish t :prepend t))
 
     ;; Default org-read-date to current time (not 00:00) when timestamp has no time component.
-    (advice-add 'org-read-date :around
-                (lambda (orig &optional with-time to-time from-string prompt default-time default-input &rest args)
-                  (let* ((effective-default
-                          (if (and default-time (not default-input))
-                              (org-current-time)
-                            default-time))
-                         (result (apply orig t to-time from-string prompt
-                                        effective-default default-input args)))
-                    (when (boundp 'org-time-was-given)
-                      (setq org-time-was-given t))
-                    result)))
+    (advice-add 'org-read-date :around #'+wd/org-read-date-default-current-time)
     (add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)
     (when (file-exists-p "~/projects/2026/haskell-web/scripts/lib-org-capture.el")
       (load "~/projects/2026/haskell-web/scripts/lib-org-capture.el"))

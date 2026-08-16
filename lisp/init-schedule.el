@@ -1,5 +1,7 @@
 ;;; init-schedule.el --- User scheduled tasks -*- lexical-binding: t; -*-
 
+(require 'lib-calibre)
+
 ;; ---------------------------------------------------------------------------
 ;; Auto-commit and push ~/org at scheduled time
 ;; ---------------------------------------------------------------------------
@@ -44,38 +46,6 @@ If 17:30 has already passed today, schedule for tomorrow."
           (run-at-time next-run nil #'+wd/org-autocommit))
     (message "Org auto-commit scheduled at %s"
              (format-time-string "%Y-%m-%d %H:%M" next-run))))
-
-(defun +wd/add-book-to-calibre ()
-  "Import books from inbox directories into Calibre."
-  (interactive)
-  (let* ((calibredb (or (executable-find "calibredb")
-                       (user-error "calibredb executable not found")))
-         (password (password-store-get "calibre-lib/wd"))
-         (formats '(".pdf" ".epub" ".mobi" ".azw" ".azw3"))
-         (directories (mapcar #'file-truename
-                              '("~/Downloads"
-                                "/mnt/nas/data-wd/book"
-                                "/mnt/nas/datb-wd/book"))))
-    (dolist (directory directories)
-      (when (file-directory-p directory)
-        (dolist (format formats)
-          (dolist (path (directory-files directory t (concat (regexp-quote format) "\\'")))
-            (let ((process (start-process "calibredb-add-book" nil calibredb
-                                          "--with-library=http://nixos-nuc:8080"
-                                          "--username=wd"
-                                          (format "--password=%s" password)
-                                          "add"
-                                          "--duplicates"
-                                          path)))
-              (set-process-sentinel
-               process
-               (lambda (_proc event)
-                 (if (string-equal event "finished\n")
-                     (progn
-                       (delete-file path)
-                       (message "Add to calibre & delete origin: %s" path))
-                   (message "Failed to add book to calibre: %s (%s)"
-                            path (string-trim event))))))))))))
 
 (defun +wd/calibre-import-schedule ()
   "Schedule `+wd/add-book-to-calibre' weekly."

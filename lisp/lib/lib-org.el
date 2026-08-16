@@ -381,6 +381,20 @@ applies uniformly."
     (when (file-symlink-p link)
       (delete-file link))))
 
+(defun +wd/org-read-date-default-current-time (orig &optional with-time to-time
+                                                   from-string prompt default-time
+                                                   default-input &rest args)
+  "Call ORIG with current time when `org-read-date' receives a date-only default."
+  (let* ((effective-default
+          (if (and default-time (not default-input))
+              (org-current-time)
+            default-time))
+         (result (apply orig t to-time from-string prompt
+                        effective-default default-input args)))
+    (when (boundp 'org-time-was-given)
+      (setq org-time-was-given t))
+    result))
+
 (defun +wd/org-agenda-work-mode-apply ()
   "Apply the current `org-agenda-work-mode' state."
   (+wd/org-agenda-work-mode-update-agenda-files)
