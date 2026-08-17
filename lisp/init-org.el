@@ -147,8 +147,7 @@
     ;; Default org-read-date to current time (not 00:00) when timestamp has no time component.
     (advice-add 'org-read-date :around #'+wd/org-read-date-default-current-time)
     (add-hook 'kill-emacs-hook #'+wd/org-agenda-work-mode-cleanup-roam-link)
-    (when (file-exists-p "~/projects/2026/haskell-web/scripts/lib-org-capture.el")
-      (load "~/projects/2026/haskell-web/scripts/lib-org-capture.el"))
+    (load "~/projects/2026/haskell-web/scripts/lib-org-capture.el" t)
     (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
     (:with-feature org-latex-impatient
       (:hooks org-mode-hook org-latex-impatient-mode)
