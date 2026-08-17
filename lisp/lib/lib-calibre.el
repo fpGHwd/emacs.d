@@ -133,7 +133,10 @@ write the response there and return an empty string."
   "Update Calibre Read column from org-noter or Calibre viewer progress."
   (interactive)
   (when (and (derived-mode-p 'org-mode)
-             (member (and (boundp 'org-state) org-state) '("DONE" "KILL")))
+             (member (and (boundp 'org-state) org-state) '("DONE" "KILL"))
+             ;; This hook runs before `org-auto-repeat-maybe', so do not let
+             ;; Calibre progress updates block recurring scheduled tasks.
+             (not (org-get-repeat)))
     (cl-labels
         ((page-number
           (value)
