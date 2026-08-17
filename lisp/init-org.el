@@ -158,9 +158,7 @@
     (map! :map org-mode-map
           :localleader
           :desc "Insert a item"       "i" #'org-insert-item
-          :desc "Write a new blog"    "B" #'blog-post
           :desc "Copy org link"      "y" #'+wd/org-link-copy
-          :desc "Search org by tags" "Q" #'+wd/org-search-by-tags
           :desc "Toggle narrow to subtree" "N" #'org-toggle-narrow-to-subtree)))
 
 
