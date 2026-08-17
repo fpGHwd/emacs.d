@@ -28,6 +28,8 @@
     (add-hook! 'prog-mode-hook
       (meow-normal-define-key '("%" . lispy-different)))
     (:option
+     meow-use-clipboard t
+     
      meow-cursor-type-normal 'box
      meow-cursor-type-motion 'box
      meow-cursor-type-beacon 'box
