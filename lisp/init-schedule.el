@@ -79,7 +79,7 @@ If 17:30 has already passed today, schedule for tomorrow."
       (setq +wd/calibre-import-timer nil))))
 
 ;; Enable by default
-(when (string= (system-name) "nixos-nuc")
+(when (string= (system-name) "ubuntu2204")
   (user-schedule-mode +1))
 
 (provide 'init-schedule)
