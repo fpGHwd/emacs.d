@@ -22,5 +22,16 @@
            (when (string-suffix-p ".arxml" (or buffer-file-name ""))
              (arxml-breadcrumb-mode 1)))))
 
+(setup haskell-ts-mode
+  (:when-loaded
+    (map! :map haskell-ts-mode-map
+          :localleader
+          "b" #'haskell-interactive-bring
+          "B" #'haskell-process-cabal-build
+          "c" #'haskell-process-cabal
+          "i" #'haskell-process-do-info
+          "r" #'haskell-process-load-file
+          "t" #'haskell-process-do-type)))
+
 (provide 'init-langs)
 ;;; init-langs.el ends here
