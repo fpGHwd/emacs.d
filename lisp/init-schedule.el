@@ -16,7 +16,8 @@
   '(("~/org" . "auto-commit")
     ("~/.config/dotfiles" . "auto-commit")
     ("~/.config/nix.d" . "auto-commit")
-    ("~/.config/emacs.d" . "auto-commit"))
+    ("~/.config/emacs.d" . "auto-commit")
+    ("~/projects/real-world-haskell" . "auto-commit"))
   "List of (REPO-DIR . COMMIT-MSG) pairs for auto-commit.
 Each entry is a cons cell:
   REPO-DIR    — absolute or home-relative path to the git repository
