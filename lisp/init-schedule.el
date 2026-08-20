@@ -1,13 +1,10 @@
-;;; init-schedule.el --- User scheduled tasks -*- lexical-binding: t; -*-
+;;; init-schedule.el --- Host-aware scheduled tasks -*- lexical-binding: t; -*-
 
 (require 'lib-calibre)
 
 ;; ---------------------------------------------------------------------------
-;; Auto-commit and push ~/org at scheduled time
+;; Auto-commit: configurable repo list
 ;; ---------------------------------------------------------------------------
-
-(defvar +wd/org-autocommit-repo "~/org"
-  "Directory to auto-commit and push.")
 
 (defvar +wd/org-autocommit-timer nil
   "Timer for scheduled org auto-commit.")
@@ -15,23 +12,41 @@
 (defvar +wd/calibre-import-timer nil
   "Timer for scheduled Calibre import.")
 
-(defun +wd/org-autocommit ()
-  "Stage all changes in `+wd/org-autocommit-repo', commit, and push.
-Skip if there are no changes.  Commit message includes timestamp.
-After committing, reschedule for the next day at 17:30."
-  (interactive)
+(defcustom +wd/org-autocommit-repos
+  '(("~/org" . "auto-commit"))
+  "List of (REPO-DIR . COMMIT-MSG) pairs for auto-commit.
+Each entry is a cons cell:
+  REPO-DIR    — absolute or home-relative path to the git repository
+  COMMIT-MSG  — commit message string
+
+Example:
+  ((\"~/org\" . \"auto-commit\")
+   (\"~/projects/dotfiles\" . \"sync\"))"
+  :type '(repeat (cons string string))
+  :group 'user-schedule)
+
+(defun +wd/org-autocommit--commit-one (repo msg)
+  "Stage, commit, and push REPO with commit message MSG.
+Skip if no changes.  Return t if a commit was made."
   (require 'magit)
-  (let ((default-directory (expand-file-name +wd/org-autocommit-repo)))
+  (let ((default-directory (expand-file-name repo)))
     (magit-call-git "add" "-A")
     (unless (= 0 (magit-call-git "diff" "--cached" "--quiet"))
-      (magit-call-git "commit" "-m" "auto-commit")
-      (magit-call-git "push")))
-  ;; Reschedule for tomorrow 17:30
+      (magit-call-git "commit" "-m" msg)
+      (magit-call-git "push")
+      (message "Auto-committed %s" repo)
+      t)))
+
+(defun +wd/org-autocommit ()
+  "Auto-commit all repos in `+wd/org-autocommit-repos'.
+After committing, reschedule for the next day at 17:30."
+  (interactive)
+  (dolist (spec +wd/org-autocommit-repos)
+    (+wd/org-autocommit--commit-one (car spec) (cdr spec)))
   (+wd/org-autocommit-schedule))
 
 (defun +wd/org-autocommit-schedule ()
-  "Schedule `+wd/org-autocommit' for the next 17:30.
-If 17:30 has already passed today, schedule for tomorrow."
+  "Schedule `+wd/org-autocommit' for the next 17:30."
   (interactive)
   (when (timerp +wd/org-autocommit-timer)
     (cancel-timer +wd/org-autocommit-timer))
@@ -58,29 +73,73 @@ If 17:30 has already passed today, schedule for tomorrow."
     (message "Calibre import scheduled every 7 days")))
 
 ;; ---------------------------------------------------------------------------
-;; user-schedule-mode: minor mode to enable scheduled tasks
+;; Host-aware task registry
 ;; ---------------------------------------------------------------------------
 
-(define-minor-mode user-schedule-mode
-  "Toggle user scheduled tasks (e.g. daily org auto-commit)."
-  :init-value t
-  :global t
-  :lighter " Sched"
-  :group 'user-schedule
-  (if user-schedule-mode
-      (progn
-        (+wd/org-autocommit-schedule)
-        (+wd/calibre-import-schedule))
-    (when (timerp +wd/org-autocommit-timer)
-      (cancel-timer +wd/org-autocommit-timer)
-      (setq +wd/org-autocommit-timer nil))
-    (when (timerp +wd/calibre-import-timer)
-      (cancel-timer +wd/calibre-import-timer)
-      (setq +wd/calibre-import-timer nil))))
+(defcustom +wd/user-schedule-tasks
+  '((:name "Org auto-commit"
+     :timer +wd/org-autocommit-timer
+     :schedule +wd/org-autocommit-schedule
+     :hosts ("ubuntu2204"))
+    (:name "Calibre import"
+     :timer +wd/calibre-import-timer
+     :schedule +wd/calibre-import-schedule
+     :hosts t))
+  "Scheduled task registry.
+Each element is a plist:
+  :name     — human-readable name
+  :timer    — variable symbol holding the timer object
+  :schedule — function symbol to call to start scheduling
+  :hosts    — list of host names (matching `system-name') where this
+task runs, or `t' to run on all hosts.
 
-;; Enable by default
-(when (string= (system-name) "ubuntu2204")
-  (user-schedule-mode +1))
+Add new tasks by pushing to this list."
+  :type '(repeat
+          (plist :options
+                 ((:name string)
+                  (:timer symbol)
+                  (:schedule function)
+                  (:hosts (choice (const :tag "All hosts" t)
+                                  (repeat string))))))
+  :group 'user-schedule)
+
+;; ---------------------------------------------------------------------------
+;; Task control
+;; ---------------------------------------------------------------------------
+
+(defun +wd/user-schedule--current-host-p (hosts)
+  "Return t if HOSTS includes the current host.
+HOSTS may be `t' (all hosts) or a list of host name strings."
+  (or (eq hosts t)
+      (and (listp hosts)
+           (member (system-name) hosts))))
+
+(defun +wd/user-schedule-start ()
+  "Start all tasks in `+wd/user-schedule-tasks' matching the current host."
+  (dolist (task +wd/user-schedule-tasks)
+    (let ((name (plist-get task :name))
+          (schedule-fn (plist-get task :schedule))
+          (hosts (plist-get task :hosts)))
+      (when (+wd/user-schedule--current-host-p hosts)
+        (funcall schedule-fn)
+        (message "Scheduled: %s" name)))))
+
+(defun +wd/user-schedule-stop ()
+  "Cancel all running scheduled tasks."
+  (interactive)
+  (dolist (task +wd/user-schedule-tasks)
+    (let* ((timer-var (plist-get task :timer))
+           (timer (symbol-value timer-var)))
+      (when (timerp timer)
+        (cancel-timer timer)
+        (set timer-var nil))))
+  (message "All scheduled tasks stopped"))
+
+;; ---------------------------------------------------------------------------
+;; Init
+;; ---------------------------------------------------------------------------
+
+(+wd/user-schedule-start)
 
 (provide 'init-schedule)
 ;;; init-schedule.el ends here
