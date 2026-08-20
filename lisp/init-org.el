@@ -130,6 +130,9 @@
 
     ;; emacsclient "org-protocol://capture?template=mc&title=title2 :tag:&body=ok"
     (defvar +wd/org-capture-file-for-ios (expand-file-name "notes_ios.org" org-directory))
+    (defvar +wd/scheduled-capture-args nil
+      "Plist holding :title, :scheduled, :body for the `cs' capture template.
+Set before calling `org-capture' with template key `cs'.")
     (add-to-list 'org-capture-templates '("c" "Capture for external app or command"))
     (add-to-list 'org-capture-templates
                  '("cn" "Capture Notes" entry (file+headline +org-capture-notes-file "Inbox")
@@ -143,6 +146,10 @@
     (add-to-list 'org-capture-templates
                  '("cj" "Capture Journal" entry (file+olp+datetree +org-capture-journal-file)
                    "* %U %:description\n%:initial\n" :immediate-finish t :prepend t))
+    (add-to-list 'org-capture-templates
+                 '("cs" "Scheduled Capture" entry (file+headline +org-capture-todo-file "Inbox")
+                   "* %u %(or (plist-get +wd/scheduled-capture-args :title) \"无标题\")\nSCHEDULED: %(plist-get +wd/scheduled-capture-args :scheduled)\n%(or (plist-get +wd/scheduled-capture-args :body) \"\")"
+                   :immediate-finish t :prepend t))
 
     ;; Default org-read-date to current time (not 00:00) when timestamp has no time component.
     (advice-add 'org-read-date :around #'+wd/org-read-date-default-current-time)
