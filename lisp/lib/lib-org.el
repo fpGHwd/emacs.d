@@ -301,7 +301,8 @@ applies uniformly."
       (buffer-substring start end))))
 
 (defun +wd/org-prepend-inactive-timestamp-to-heading ()
-  "在当前 Org headline 中，在 TODO keyword 后插入 inactive timestamp（带 []）。"
+  "Insert an inactive timestamp (wrapped in square brackets [])
+right after the TODO keyword on the current Org headline."
   (interactive)
   (save-excursion
     (org-back-to-heading t)
