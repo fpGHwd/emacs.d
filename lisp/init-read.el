@@ -55,6 +55,7 @@
           (pdf-view-midnight-minor-mode 1))))
 
     (add-hook 'pdf-view-mode-hook #'+wd/pdf-view-enable-midnight-for-dark-theme)
+    (add-hook 'pdf-view-mode-hook #'+wd/pdf-sync-enable-query-on-kill)
 
     (setq pdf-annot-default-annotation-properties
           '((t         (label . "Wang Ding"))

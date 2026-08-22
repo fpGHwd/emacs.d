@@ -140,5 +140,17 @@ CALIBRE-ID defaults to the id in a CDB-<id>.pdf file name."
       (when (file-exists-p json-file)
         (delete-file json-file)))))
 
+(defun +wd/pdf-sync-query-on-kill ()
+  "Ask whether to sync annotations before killing the current PDF buffer."
+  (when (and (derived-mode-p 'pdf-view-mode)
+             (+wd/pdf-sync--calibre-id-from-file (pdf-view-buffer-file-name))
+             (yes-or-no-p "Sync PDF annotations before closing? "))
+    (+wd/pdf-annot-sync))
+  t)
+
+(defun +wd/pdf-sync-enable-query-on-kill ()
+  "Enable annotation sync prompt for the current PDF buffer."
+  (add-hook 'kill-buffer-query-functions #'+wd/pdf-sync-query-on-kill nil t))
+
 (provide 'lib-pdf-sync)
 ;;; lib-pdf-sync.el ends here
