@@ -1,75 +1,144 @@
-;;; lib-pdf-sync.el --- Remote PDF annotation sync -*- lexical-binding: t; -*-
+;;; lib-pdf-sync.el --- Sync PDF annotations to Calibre -*- lexical-binding: t; -*-
 
-;; Transfer only annotations (JSON). Skip duplicates on remote PDF.
+(require 'json)
+(require 'seq)
+(require 'subr-x)
+(require 'lib-calibre)
 
-(defvar +wd/pdf-sync-python-code
-  "import fitz,sqlite3,sys,os,glob,json
-A=json.load(open(sys.argv[1]))
-if not A:os.unlink(sys.argv[1]);sys.exit(0)
-r=sqlite3.connect(sys.argv[2]+'/metadata.db').execute('SELECT path FROM books WHERE id=?',(sys.argv[3],)).fetchone()
-if not r:sys.exit(1)
-f=glob.glob(sys.argv[2]+'/'+r[0]+'/*.pdf')[0]
-d=fitz.open(f)
-# dedup by (page, type, rounded rect)
-seen=set((i,a.type[1],tuple(round(v,1)for v in a.rect))for i in range(len(d))for a in d[i].annots())
-for a in A:
- e=a['edges'];t=a['type'];R=fitz.Rect(e if isinstance(e[0],(int,float))else e[0])
- k=(a['page']-1,t,tuple(round(v,1)for v in R))
- if k in seen:continue
- p=d[a['page']-1]
- if t=='Text':p.add_text_annot(R.tl,a.get('contents',''))
- else:getattr(p,{'Highlight':'add_highlight_annot','Underline':'add_underline_annot','StrikeOut':'add_strikeout_annot','Squiggly':'add_squiggly_annot'}.get(t,'add_highlight_annot'))(R)
-d.save(f);d.close();os.unlink(sys.argv[1])")
+(defvar +wd/pdf-sync-ssh-host "nixos-nuc"
+  "SSH host that can access the Calibre library files.")
 
-(defun +wd/pdf-annot-iter (pdf-file fn)
-  "Iterate over all annotations in PDF-FILE, calling FN for each.
-FN is called with (PAGE TYPE EDGES CONTENTS)."
-  (let ((pages (pdf-info-number-of-pages pdf-file)))
-    (dotimes (i pages)
-      (dolist (a (pdf-info-getannots (1+ i) pdf-file))
-        (funcall fn (1+ i)
-                 (alist-get 'type a)
-                 (alist-get 'edges a)
-                 (alist-get 'contents a))))))
+(defvar +wd/pdf-sync-remote-library-root +wd/calibre-local-library-root
+  "Calibre library root on `+wd/pdf-sync-ssh-host'.")
 
-(defun +wd/pdf-annot-export (pdf-file json-file)
+(defvar +wd/pdf-sync-remote-python-file
+  (expand-file-name "pdf-sync/replay.py"
+                    (file-name-directory (or load-file-name buffer-file-name)))
+  "Local Python script sent to `+wd/pdf-sync-ssh-host' for annotation replay.")
+
+(defun +wd/pdf-sync--remote-python-code ()
+  "Return the remote annotation replay Python script."
+  (unless (file-readable-p +wd/pdf-sync-remote-python-file)
+    (user-error "PDF sync script is not readable: %s"
+                +wd/pdf-sync-remote-python-file))
+  (with-temp-buffer
+    (insert-file-contents +wd/pdf-sync-remote-python-file)
+    (buffer-string)))
+
+(defun +wd/pdf-sync--calibre-id-from-file (file)
+  "Extract a Calibre book id from FILE named like CDB-1234.pdf."
+  (when-let* ((base (and file (file-name-base file))))
+    (when (string-match "\\`CDB-\\([0-9]+\\)\\'" base)
+      (match-string 1 base))))
+
+(defun +wd/pdf-sync--calibre-id (&optional calibre-id)
+  "Return CALIBRE-ID or derive it from the current PDF buffer."
+  (or (and calibre-id (format "%s" calibre-id))
+      (+wd/pdf-sync--calibre-id-from-file (buffer-file-name))
+      (user-error "Cannot derive Calibre id from current PDF file name")))
+
+(defun +wd/pdf-sync--annotation (annotation)
+  "Return ANNOTATION without pdf-tools' process-local id."
+  (seq-keep
+   (lambda (cell)
+     (unless (eq (car cell) 'id)
+       (cons (car cell)
+             (+wd/pdf-sync--json-value
+              (pcase (car cell)
+                ((or 'created 'modified)
+                 (+wd/pdf-sync--pdf-date (cdr cell)))
+                (_ (cdr cell)))))))
+   annotation))
+
+(defun +wd/pdf-sync--pdf-date (value)
+  "Return VALUE as a PDF date string, or nil when VALUE is empty."
+  (when value
+    (condition-case nil
+        (let* ((time (apply #'encode-time (decode-time value)))
+               (zone (format-time-string "%z" time))
+               (sign (substring zone 0 1))
+               (hours (substring zone 1 3))
+               (minutes (substring zone 3 5)))
+          (format "%s%s%s'%s'"
+                  (format-time-string "D:%Y%m%d%H%M%S" time)
+                  sign hours minutes))
+      (error
+       (format "%s" value)))))
+
+(defun +wd/pdf-sync--json-value (value)
+  "Return VALUE in a shape `json-encode' serializes predictably."
+  (cond
+   ((null value) nil)
+   ((vectorp value)
+    (vconcat (mapcar #'+wd/pdf-sync--json-value (append value nil))))
+   ((listp value) (vconcat (mapcar #'+wd/pdf-sync--json-value value)))
+   (t value)))
+
+(defun +wd/pdf-sync-export-annotations (pdf-file json-file)
   "Export annotations from PDF-FILE to JSON-FILE."
-  (let (annots)
-    (+wd/pdf-annot-iter pdf-file
-      (lambda (page type edges contents)
-        (push (list :page page :type type :edges edges :contents contents) annots)))
-    (with-temp-file json-file (insert (json-encode (nreverse annots))))
+  (let ((annots nil)
+        (pages (pdf-info-number-of-pages pdf-file)))
+    (dotimes (index pages)
+      (dolist (annotation (pdf-info-getannots (1+ index) pdf-file))
+        (push (+wd/pdf-sync--annotation annotation) annots)))
+    (with-temp-file json-file
+      (let ((json-encoding-pretty-print t))
+        (insert (json-encode (nreverse annots)))))
     json-file))
 
-(defun +wd/pdf-calibre-id-from-file (file)
-  "Extract Calibre ID from FILE name like CDB-1234.pdf."
-  (let ((base (file-name-base file)))
-    (if (string-match "CDB-\\([0-9]+\\)" base)
-        (match-string 1 base)
-      (user-error "Cannot derive Calibre ID from %s" file))))
+(defun +wd/pdf-sync--call (program &rest args)
+  "Run PROGRAM with ARGS and return trimmed stdout."
+  (let ((buffer (generate-new-buffer (format " *%s*" program))))
+    (unwind-protect
+        (let ((exit (apply #'call-process program nil buffer nil args)))
+          (with-current-buffer buffer
+            (let ((output (string-trim (buffer-string))))
+              (unless (zerop exit)
+                (user-error "%s failed: %s" program output))
+              output)))
+      (kill-buffer buffer))))
 
+(defun +wd/pdf-sync--call-region (start end program &rest args)
+  "Run PROGRAM with region START to END as stdin and return trimmed stdout."
+  (let ((buffer (generate-new-buffer (format " *%s*" program))))
+    (unwind-protect
+        (let ((exit (apply #'call-process-region
+                           start end program nil buffer nil args)))
+          (with-current-buffer buffer
+            (let ((output (string-trim (buffer-string))))
+              (unless (zerop exit)
+                (user-error "%s failed: %s" program output))
+              output)))
+      (kill-buffer buffer))))
+
+;;;###autoload
 (defun +wd/pdf-annot-sync (&optional calibre-id)
-  "Sync current PDF annotations to remote Calibre book.
-CALIBRE-ID is optional; if omitted, derived from buffer file name (CDB-NNNN.pdf)."
+  "Sync current PDF annotations to the remote Calibre PDF.
+CALIBRE-ID defaults to the id in a CDB-<id>.pdf file name."
   (interactive)
-  (unless (derived-mode-p 'pdf-view-mode) (user-error "Not a PDF buffer"))
-  (let* ((id (or calibre-id
-                 (and (buffer-file-name)
-                      (+wd/pdf-calibre-id-from-file (buffer-file-name)))
-                 (user-error "No CALIBRE-ID and file name doesn't match CDB-NNNN")))
-         (json (make-temp-file "annots" nil ".json"))
-         (remote-json (format "/dev/shm/annots-%s.json" id))
-         (lib +wd/calibre-local-library-root))
+  (unless (derived-mode-p 'pdf-view-mode)
+    (user-error "Not a PDF buffer"))
+  (let* ((id (+wd/pdf-sync--calibre-id calibre-id))
+         (pdf-file (pdf-view-buffer-file-name))
+         (json-file (make-temp-file (format "pdf-annots-%s-" id) nil ".json"))
+         (remote-json (format "/dev/shm/pdf-annots-%s-%s.json"
+                              id (format-time-string "%s%N"))))
     (unwind-protect
         (progn
-          (+wd/pdf-annot-export (pdf-view-buffer-file-name) json)
-          (call-process "scp" nil nil nil json (format "nixos-nuc:%s" remote-json))
-          (with-temp-buffer
-            (insert +wd/pdf-sync-python-code)
-            (let ((e (call-process-region (point-min) (point-max) "ssh" nil nil nil
-                                           "nixos-nuc" "python3" "-" remote-json lib id)))
-              (if (zerop e) (message "Synced %s" id) (error "Sync failed")))))
-      (when (file-exists-p json) (delete-file json)))))
+          (+wd/pdf-sync-export-annotations pdf-file json-file)
+          (+wd/pdf-sync--call "scp" json-file
+                              (format "%s:%s" +wd/pdf-sync-ssh-host remote-json))
+          (let ((added (with-temp-buffer
+                         (insert (+wd/pdf-sync--remote-python-code))
+                         (+wd/pdf-sync--call-region
+                          (point-min) (point-max)
+                          "ssh" +wd/pdf-sync-ssh-host
+                          "python3" "-" remote-json
+                          +wd/pdf-sync-remote-library-root id))))
+            (message "PDF annotation sync: book %s, added %s annotations"
+                     id added)))
+      (when (file-exists-p json-file)
+        (delete-file json-file)))))
 
 (provide 'lib-pdf-sync)
 ;;; lib-pdf-sync.el ends here

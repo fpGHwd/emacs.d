@@ -43,6 +43,7 @@
       (advice-add #'nov-content-unique-identifier :override #'my-nov-content-unique-identifier))))
 
 (setup pdf-tools
+  (:also-load lib-pdf-sync)
   (:when-loaded
     (:option pdf-view-continuous t)
     (defun +wd/pdf-view-enable-midnight-for-dark-theme ()
@@ -72,7 +73,8 @@
                    "s" #'pdf-annot-add-squiggly-markup-annotation
                    "x" #'pdf-annot-add-strikeout-markup-annotation
                    "l" #'pdf-annot-list-annotations
-                   "d" #'pdf-annot-delete))))
+                   "d" #'pdf-annot-delete
+                   "S" #'+wd/pdf-annot-sync))))
 
 
 (setup org-noter
