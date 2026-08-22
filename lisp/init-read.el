@@ -59,11 +59,11 @@
 
     (setq pdf-annot-default-annotation-properties
           '((t         (label . "Wang Ding"))
-            (text       (color . "#FFD966") (icon . "Note"))
-            (highlight  (color . "#FFD966"))
-            (underline  (color . "#93C47D"))
-            (squiggly   (color . "#E06C75"))
-            (strike-out (color . "#76A5AF"))))
+            (text       (color . "#D7BA7D") (opacity . 0.9) (icon . "Note"))
+            (highlight  (color . "#E5C07B") (opacity . 0.35))
+            (underline  (color . "#98BE65") (opacity . 0.85))
+            (squiggly   (color . "#FF6C6B") (opacity . 0.85))
+            (strike-out (color . "#4DB5BD") (opacity . 0.75))))
 
     (map! :map pdf-view-mode-map
           :localleader
