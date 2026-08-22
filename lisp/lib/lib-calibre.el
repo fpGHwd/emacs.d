@@ -178,18 +178,28 @@ write the response there and return an empty string."
                     (let* ((output (string-trim (buffer-string)))
                            (fields (and (not (string-empty-p output))
                                         (split-string output "\t")))
-                           (pos-frac (and (= (length fields) 2)
-                                          (string-to-number (car fields))))
-                           (epoch (and (= (length fields) 2)
-                                       (string-to-number (cadr fields)))))
+                           (pos-frac-text (and (= (length fields) 2)
+                                               (car fields)))
+                           (epoch-text (and (= (length fields) 2)
+                                            (cadr fields))))
                       (unless (zerop exit)
                         (user-error "Calibre progress query failed: %s" output))
-                      (unless (and pos-frac epoch)
+                      (unless (and pos-frac-text
+                                   epoch-text
+                                   (string-match-p "\\`[0-9]+\\(?:\\.[0-9]+\\)?\\'"
+                                                   pos-frac-text)
+                                   (string-match-p "\\`[0-9]+\\(?:\\.[0-9]+\\)?\\'"
+                                                   epoch-text))
                         (user-error "Missing Calibre viewer progress for book %s %s"
                                     id (upcase format)))
-                      (list (/ (round (* pos-frac 1000.0)) 10.0)
-                            (calibre-progress-date (seconds-to-time epoch))
-                            nil nil))))
+                      (let ((pos-frac (string-to-number pos-frac-text))
+                            (epoch (string-to-number epoch-text)))
+                        (unless (<= 0.0 pos-frac 1.0)
+                          (user-error "Invalid Calibre viewer progress %.4f for book %s %s"
+                                      pos-frac id (upcase format)))
+                        (list (/ (round (* pos-frac 1000.0)) 10.0)
+                              (calibre-progress-date (seconds-to-time epoch))
+                              nil nil)))))
               (kill-buffer output-buffer))))
          (org-noter-page-progress
           (id server)
