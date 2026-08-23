@@ -154,53 +154,43 @@ write the response there and return an empty string."
                               time
                               "Asia/Shanghai"))
          (calibre-viewer-progress
-          (id format)
+          (id format server)
           (unless (string-match-p "\\`[0-9]+\\'" id)
             (user-error "Invalid Calibre book id: %s" id))
           (unless (string-match-p "\\`[[:alnum:]]+\\'" format)
             (user-error "Invalid Calibre format: %s" format))
-          (let* ((db (expand-file-name "metadata.db" +wd/calibre-local-library-root))
-                 (sqlite (or (executable-find "sqlite3")
-                             (user-error "sqlite3 executable not found")))
-                 (query (format (concat "SELECT pos_frac, epoch "
-                                        "FROM last_read_positions "
-                                        "WHERE book = %s AND upper(format) = '%s' "
-                                        "ORDER BY epoch DESC "
-                                        "LIMIT 1;")
-                                id (upcase format)))
-                 (output-buffer (generate-new-buffer " *calibre-progress-sqlite*")))
-            (unless (file-readable-p db)
-              (user-error "Calibre metadata database not readable: %s" db))
-            (unwind-protect
-                (let ((exit (call-process sqlite nil output-buffer nil
-                                          "-tabs" "-noheader" db query)))
-                  (with-current-buffer output-buffer
-                    (let* ((output (string-trim (buffer-string)))
-                           (fields (and (not (string-empty-p output))
-                                        (split-string output "\t")))
-                           (pos-frac-text (and (= (length fields) 2)
-                                               (car fields)))
-                           (epoch-text (and (= (length fields) 2)
-                                            (cadr fields))))
-                      (unless (zerop exit)
-                        (user-error "Calibre progress query failed: %s" output))
-                      (unless (and pos-frac-text
-                                   epoch-text
-                                   (string-match-p "\\`[0-9]+\\(?:\\.[0-9]+\\)?\\'"
-                                                   pos-frac-text)
-                                   (string-match-p "\\`[0-9]+\\(?:\\.[0-9]+\\)?\\'"
-                                                   epoch-text))
-                        (user-error "Missing Calibre viewer progress for book %s %s"
-                                    id (upcase format)))
-                      (let ((pos-frac (string-to-number pos-frac-text))
-                            (epoch (string-to-number epoch-text)))
-                        (unless (<= 0.0 pos-frac 1.0)
-                          (user-error "Invalid Calibre viewer progress %.4f for book %s %s"
-                                      pos-frac id (upcase format)))
-                        (list (/ (round (* pos-frac 1000.0)) 10.0)
-                              (calibre-progress-date (seconds-to-time epoch))
-                              nil nil)))))
-              (kill-buffer output-buffer))))
+          (let* ((json-array-type 'list)
+                 (json-object-type 'alist)
+                 (library-id (alist-get 'default_library_id
+                                        (json-read-from-string
+                                         (+wd/calibre-http server "GET"
+                                                           "/interface-data/update/"))))
+                 (data (json-read-from-string
+                        (+wd/calibre-http
+                         server "GET"
+                         (format "/book-get-last-read-position/%s/%s-%s"
+                                 library-id id format))))
+                 (positions (alist-get (intern (format "%s:%s" id format)) data))
+                 (latest (car (sort (copy-sequence positions)
+                                    (lambda (a b)
+                                      (> (or (alist-get 'epoch a) 0)
+                                         (or (alist-get 'epoch b) 0)))))))
+            (unless library-id
+              (user-error "Missing Calibre content server library id"))
+            (unless latest
+              (user-error "Missing Calibre viewer progress for book %s %s"
+                          id (upcase format)))
+            (let ((pos-frac (alist-get 'pos_frac latest))
+                  (epoch (alist-get 'epoch latest)))
+              (unless (and (numberp pos-frac) (<= 0.0 pos-frac 1.0))
+                (user-error "Invalid Calibre viewer progress %S for book %s %s"
+                            pos-frac id (upcase format)))
+              (unless (numberp epoch)
+                (user-error "Missing Calibre viewer progress time for book %s %s"
+                            id (upcase format)))
+              (list (/ (round (* pos-frac 1000.0)) 10.0)
+                    (calibre-progress-date (seconds-to-time epoch))
+                    nil nil))))
          (org-noter-page-progress
           (id server)
           (let* ((json-array-type 'list)
@@ -252,19 +242,14 @@ write the response there and return an empty string."
               (throw 'no-calibre-id nil)))
           (let* ((root (point-marker))
                  (id (org-entry-get nil "CALIBRE_ID"))
-                 (document (org-entry-get nil "NOTER_DOCUMENT"))
-                 (format (or (and (stringp document)
-                                   (not (string-empty-p (string-trim document)))
-                                   (when-let* ((extension (file-name-extension document)))
-                                     (downcase extension)))
-                             (+wd/calibre-book-format id)))
+                 (format (+wd/calibre-book-format id))
                  (server (+wd/calibre-content-server)))
             (unless format
               (user-error "Missing document format for Calibre book %s" id))
             (pcase-let ((`(,percentage ,read-date ,completed-pages ,total-pages)
                          (if (string= format "pdf")
                              (org-noter-page-progress id server)
-                           (calibre-viewer-progress id format))))
+                           (calibre-viewer-progress id format server))))
               (goto-char root)
               (org-entry-put nil "NOTER_READ" (format "%.1f%%" percentage))
               (+wd/calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
