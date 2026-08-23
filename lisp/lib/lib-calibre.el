@@ -329,16 +329,18 @@ write the response there and return an empty string."
       (when (file-directory-p directory)
         (dolist (format formats)
           (dolist (path (directory-files directory t (concat (regexp-quote format) "\\'")))
-            (let ((process (apply #'start-process
-                                  "calibredb-add-book" nil calibredb
-                                  (append
-                                   (list (format "--with-library=%s" server)
-                                         (format "--username=%s" account)
-                                         (format "--password=%s" password)
-                                         "add")
-                                   (when calibredb-add-duplicate
-                                     '("--duplicates"))
-                                   (list path)))))
+            (let* ((title (file-name-base path))
+                   (process (apply #'start-process
+                                   "calibredb-add-book" nil calibredb
+                                   (append
+                                    (list (format "--with-library=%s" server)
+                                          (format "--username=%s" account)
+                                          (format "--password=%s" password)
+                                          "add")
+                                    (when calibredb-add-duplicate
+                                      '("--duplicates"))
+                                    (list (format "--title=%s" title)
+                                          path)))))
               (set-process-sentinel
                process
                (lambda (_proc event)
