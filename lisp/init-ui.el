@@ -15,8 +15,6 @@
                   (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))))
   (add-to-list 'default-frame-alist '(fullscreen . fullboth)))
 
-(setq imenu-auto-rescan t)
-
 (setup dirvish
   (:when-loaded
     (:with-map dirvish-mode-map

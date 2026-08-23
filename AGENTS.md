@@ -203,6 +203,14 @@ When debugging a problem, first find the call stack / error source before touchi
 
 **Trace setting writers before patching symptoms**: When a variable or behavior changes unexpectedly across startup, reload, or mode activation, first search every relevant layer that can write it — this config, Doom modules/source, package source, Custom, hooks, and advices. Distinguish the upstream writer/order issue from downstream symptoms such as stale buffer names or unmanaged runtime state; patch the earliest confirmed override point, not the later symptom.
 
+**Reproduce the user's exact path first**: When the user provides a concrete reproduction sequence, run that sequence directly before substituting adjacent checks. A successful lower-level sanity check does not disprove a workflow bug unless it exercises the same buffers, frames, hooks, timers, threads, and command path.
+
+**Root cause before repair**: For bug reports, finding the confirmed root cause is mandatory before considering repairs. Until the root cause is proven by the user's exact reproduction path, a controlled minimal reproduction, a call stack, logs, or runtime state inspection, all code changes are suspect and must be treated as temporary diagnostic scaffolding only. Do not write production fixes, install bypasses, or "block" the failure path before explaining why the failure happens.
+
+**Instrument to explain, not to avoid**: Temporary runtime advice, hooks, or variable changes used during diagnosis must observe and record the failing path. They must not prevent the failure, skip the suspicious code path, or change behavior in a way that makes the original cause disappear before it is understood. Remove temporary instrumentation after use, and do not convert it into configuration until the root cause and fix have been verified.
+
+**Separate triggers from root causes**: For Emacs bugs involving hooks, redisplay, process filters, timers, frames, or threads, identify both the local configuration that makes the bug reproducible and the lower-level package/Emacs interaction that actually fails. Do not call a configuration setting the root cause when it only exposes a compatibility bug.
+
 ### Emacs Won't Start
 
 1. Check `*Messages*` buffer: `emacs --debug-init`
@@ -288,8 +296,8 @@ When instructions are ambiguous:
 - Test changes with `M-x eval-buffer` before full reload
 - After modifying an Elisp file, automatically reload it via `emacsclient -e '(load-file "path/to/file.el")'` and run relevant tests or sanity checks where possible.
 - You can use emacsclient to observe the current Emacs state, execute commands, etc. When investigating issues, check Emacs execution results via emacsclient.
-- When investigating issues, always find the call stack of the problem or error first, then fix it. Do not try random workarounds.
-- Never modify code haphazardly before identifying the root cause. Before finding the root cause, only write temporary code — never make permanent changes.
+- When investigating issues, always find the call stack or equivalent runtime evidence first, then decide whether any fix is appropriate. Do not try random workarounds.
+- Apply **Root cause before repair** strictly: before the root cause is confirmed, do not write production code, do not install bypasses, and do not block the failing path. Temporary code is allowed only when it exists to gather evidence and is removed after diagnosis.
 - If you write new Elisp functions, you can load and test them directly using emacsclient.
-- **Test before writing config**: Never write Elisp changes directly into config files. First test the code via `emacsclient -e` to confirm it works at runtime — keybindings resolve correctly, functions execute as expected, no errors. Only write the verified code into the config file. Emacs keymaps (especially meow's `emulation-mode-map-alists`), `setup` macro expansion, and package loading order can cause runtime behavior to differ significantly from what the source code appears to do.
+- **Verify loadable code before editing files**: Never write Elisp changes directly into config files. First test the new or changed function in the live runtime via `emacsclient -e` or another direct load/eval path, then call it with representative inputs and confirm the feature works. Only write the verified code into the config file. Apply the same rule to Python and any other language/runtime with a REPL or direct load mechanism: validate the function and behavior in the runtime first, then edit the production source. Emacs keymaps (especially meow's `emulation-mode-map-alists`), `setup` macro expansion, and package loading order can cause runtime behavior to differ significantly from what the source code appears to do.
 - **Documentation target**: Unless the user explicitly says "update the project docs" or names a specific file under `docs/`, add troubleshooting notes and incident records to the relevant skill's `references/` directory (e.g. `.codebuddy/skills/emacs-utils/references/`). Do not write them into `docs/troubleshooting.md` or other project-level documentation without explicit direction.
