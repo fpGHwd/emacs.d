@@ -304,25 +304,41 @@ write the response there and return an empty string."
 (defun +wd/add-book-to-calibre ()
   "Import books from inbox directories into Calibre."
   (interactive)
-  (let* ((calibredb (or (executable-find "calibredb")
+  (require 'calibredb)
+  (+wd/calibredb-configure-opds)
+  (let* ((calibredb (or (executable-find calibredb-program)
+                       (and (file-executable-p calibredb-program)
+                            calibredb-program)
                        (user-error "calibredb executable not found")))
-         (password (password-store-get "calibre-lib/wd"))
-         (formats '(".pdf" ".epub" ".mobi" ".azw" ".azw3"))
+         (library (or (assoc calibredb-root-dir calibredb-library-alist)
+                      (user-error "Current Calibre library is not configured")))
+         (account (alist-get 'account (cdr library)))
+         (password (alist-get 'password (cdr library)))
+         (server (+wd/calibre-content-server))
+         (formats (mapcar (lambda (format) (concat "." format))
+                          +wd/calibre-document-formats))
          (directories (mapcar #'file-truename
                               '("~/Downloads"
                                 "/mnt/nas/data-wd/book"
                                 "/mnt/nas/datb-wd/book"))))
+    (unless (and (stringp account) (not (string-empty-p account)))
+      (user-error "Current Calibre library account is not configured"))
+    (unless (and (stringp password) (not (string-empty-p password)))
+      (user-error "Current Calibre library password is not configured"))
     (dolist (directory directories)
       (when (file-directory-p directory)
         (dolist (format formats)
           (dolist (path (directory-files directory t (concat (regexp-quote format) "\\'")))
-            (let ((process (start-process "calibredb-add-book" nil calibredb
-                                          "--with-library=http://nixos-nuc:8080"
-                                          "--username=wd"
-                                          (format "--password=%s" password)
-                                          "add"
-                                          "--duplicates"
-                                          path)))
+            (let ((process (apply #'start-process
+                                  "calibredb-add-book" nil calibredb
+                                  (append
+                                   (list (format "--with-library=%s" server)
+                                         (format "--username=%s" account)
+                                         (format "--password=%s" password)
+                                         "add")
+                                   (when calibredb-add-duplicate
+                                     '("--duplicates"))
+                                   (list path)))))
               (set-process-sentinel
                process
                (lambda (_proc event)
