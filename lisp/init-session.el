@@ -9,7 +9,7 @@
 ;; recent files
 (setup recentf
   (:after recentf 
-    (setq recentf-max-saved-items 5000)))
+    (setq recentf-max-saved-items 2000)))
 
 (setup uniquify
   (:option uniquify-buffer-name-style 'forward
