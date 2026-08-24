@@ -81,7 +81,7 @@
 (setup org-noter
   (:also-load lib-calibre)
   ;; Keep raw-document sessions from appending book headings to the main notes.
-  (:option org-noter-doc-split-fraction '(0.618 . 0.382)
+  (:option org-noter-doc-split-fraction '(0.7 . 0.3)
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:when-loaded
     (+wd/calibredb-configure-opds)
