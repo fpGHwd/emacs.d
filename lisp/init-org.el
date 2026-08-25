@@ -3,11 +3,12 @@
 (setq org-directory "~/org/org/current")
 (setq +wd/seven-year-life 7) ;; 七年一生
 
+(add-hook! 'org-mode-hook (flycheck-mode -1))
+
 (setup org
   (:also-load lib-org uniquify)
 
   (:hooks
-   org-mode-hook auto-revert-mode
    org-mode-hook mixed-pitch-mode
    org-mode-hook (lambda ()
                    (setq org-agenda-start-day "-1d"
