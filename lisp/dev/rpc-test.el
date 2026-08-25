@@ -74,21 +74,22 @@ Parse a single Elisp form, dispatch it, and send the result back."
 (defun my-rpc-call (host port cmd)
   "Send CMD to RPC server at HOST:PORT and return the response.
 Blocks until output is received or 5-second timeout."
-  (let ((proc (open-network-stream "rpc-client" " *rpc-client*" host port))
-        (deadline (+ (float-time) 5.0)))
+  (let* ((buf (get-buffer-create " *rpc-client*"))
+         (proc (open-network-stream "rpc-client" buf host port))
+         (start-size (with-current-buffer buf (buffer-size))))
     (unwind-protect
         (progn
           (process-send-string proc (format "%S\n" cmd))
-          ;; Wait until buffer has content or timeout
-          (while (and (< (float-time) deadline)
-                      (with-current-buffer (process-buffer proc)
-                        (= (buffer-size) 0)))
-            (accept-process-output proc 0.1))
-          (with-current-buffer (process-buffer proc)
-            (goto-char (point-min))
-            (condition-case nil
-                (read (current-buffer))
-              (error (buffer-string)))))
+          (let ((start-time (float-time)))
+            (while (and (< (- (float-time) start-time) 5.0)
+                        (= (with-current-buffer buf (buffer-size)) start-size))
+              (accept-process-output proc 0.1)))
+          (with-current-buffer buf
+            (let ((data-start (+ (point-min) start-size)))
+              (goto-char data-start)
+              (condition-case nil
+                  (read (current-buffer))
+                (error (buffer-substring data-start (point-max)))))))
       (delete-process proc))))
 
 (defun my-rpc-local-call (cmd)
