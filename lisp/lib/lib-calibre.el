@@ -102,30 +102,28 @@ write the response there and return an empty string."
 
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve an empty or stale org-noter DOCUMENT from CALIBRE_ID."
-  (save-excursion
+  (if (and document (file-readable-p document))
+      document
     (catch 'resolved
       (while t
-        (when-let* ((id (org-entry-get nil "CALIBRE_ID")))
-          (let* ((format (+wd/calibre-book-format id))
-                 (download-file (expand-file-name
-                                 (format "CDB-%s.%s" id format)
-                                 calibredb-opds-download-dir))
-                 (document-file
-                  (if (file-readable-p download-file)
-                      download-file
-                    (message "org-noter: downloading Calibre book %s..." id)
-                    (make-directory calibredb-opds-download-dir t)
-                    (+wd/calibre-http
-                     (+wd/calibre-content-server)
-                     "GET"
-                     (format "/get/%s/%s/Calibre_Library" format id)
-                     nil
-                     download-file)
-                    (unless (file-readable-p download-file)
-                      (user-error "Calibre download produced no readable file for book %s" id))
-                    download-file)))
-            (org-entry-put nil "NOTER_DOCUMENT" document-file)
-            (throw 'resolved document-file)))
+        (when-let* ((id (org-entry-get nil "CALIBRE_ID"))
+                    (format (+wd/calibre-book-format id))
+                    (download-file (expand-file-name
+                                    (format "CDB-%s.%s" id format)
+                                    calibredb-opds-download-dir)))
+          (unless (file-readable-p download-file)
+            (message "org-noter: downloading Calibre book %s..." id)
+            (make-directory calibredb-opds-download-dir t)
+            (+wd/calibre-http
+             (+wd/calibre-content-server)
+             "GET"
+             (format "/get/%s/%s/Calibre_Library" format id)
+             nil
+             download-file)
+            (unless (file-readable-p download-file)
+              (user-error "Calibre download produced no readable file for book %s" id)))
+          (org-entry-put nil "NOTER_DOCUMENT" download-file)
+          (throw 'resolved download-file))
         (unless (org-up-heading-safe)
           (throw 'resolved nil))))))
 
@@ -321,10 +319,6 @@ write the response there and return an empty string."
                               '("~/Downloads"
                                 "/mnt/nas/data-wd/book"
                                 "/mnt/nas/datb-wd/book"))))
-    (unless (and (stringp account) (not (string-empty-p account)))
-      (user-error "Current Calibre library account is not configured"))
-    (unless (and (stringp password) (not (string-empty-p password)))
-      (user-error "Current Calibre library password is not configured"))
     (dolist (directory directories)
       (when (file-directory-p directory)
         (dolist (format formats)
@@ -348,7 +342,7 @@ write the response there and return an empty string."
                      (progn
                        (delete-file path)
                        (message "Add to calibre & delete origin: %s" path))
-                   (message "Failed to add book to calibre: %s (%s)"
+                   (user-error "Failed to add book to calibre: %s (%s)"
                             path (string-trim event))))))))))))
 
 (provide 'lib-calibre)
