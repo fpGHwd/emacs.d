@@ -15,8 +15,7 @@
                          org-agenda-span 4))
    org-mode-hook (lambda () (when (org-property-values "GPTEL_SYSTEM")
                               (progn (gptel-mode)
-                                     (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name))))))
-   org-capture-mode-hook meow-insert-mode)
+                                     (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))))
 
   (:option
    ;; https://emacs-china.org/t/topic/1551/15
@@ -97,6 +96,10 @@
                    '("\\.org\\'" . 50000))))
 
   (:when-loaded
+    (:after meow
+      (add-hook 'org-capture-mode-hook #'meow-insert-mode))
+    (add-hook 'org-capture-mode-hook (lambda () (eldoc-mode -1)))
+
     (add-to-list 'org-tags-exclude-from-inheritance "roam-agenda")
     (add-to-list 'org-file-apps '("\\.drawio\\'" . "/opt/drawio/drawio %s"))
     (add-to-list 'org-file-apps '("\\.minder\\'" . "/usr/bin/minder %s"))
