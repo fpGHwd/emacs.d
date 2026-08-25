@@ -27,6 +27,7 @@
      '("q" . quit-window))
     (add-hook! 'prog-mode-hook
       (meow-normal-define-key '("%" . lispy-different)))
+    (add-to-list 'meow-mode-state-list '(inferior-emacs-lisp-mode . insert))
     (:option
      meow-use-clipboard t
      
