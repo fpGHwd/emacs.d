@@ -132,14 +132,14 @@ CALIBRE-ID defaults to the id in a CDB-<id>.pdf file name."
                          (insert (+wd/pdf-sync--remote-python-code))
                          (+wd/pdf-sync--call-region
                           (point-min) (point-max)
-                          "ssh" +wd/pdf-sync-ssh-host ; TODO: automatically write options
-      ;;                     ssh -t -p 22 \
-      ;; -l wd \
-      ;; -o ProxyCommand="cloudflared access ssh --hostname %h" \
-      ;; -i /run/user/1000/gnupg/S.gpg-agent.ssh \
-      ;; -o ControlMaster=auto \
-      ;; -o ControlPath=~/.ssh/cm-%r@%h:%p \
-      ;; -o ControlPersist=1h \
+                          "ssh" +wd/pdf-sync-ssh-host ;; TODO: automatically write options
+                          ;; ssh -t -p 22 \
+                          ;; -l wd \
+                          ;; -o ProxyCommand="cloudflared access ssh --hostname %h" \
+                          ;; -i /run/user/1000/gnupg/S.gpg-agent.ssh \
+                          ;; -o ControlMaster=auto \
+                          ;; -o ControlPath=~/.ssh/cm-%r@%h:%p \
+                          ;; -o ControlPersist=1h \
                           ;; nixos.autove.dev
                           "python3" "-" remote-json
                           +wd/pdf-sync-remote-library-root id))))
