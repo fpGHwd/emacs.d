@@ -203,7 +203,7 @@ try:
             added += 1
         if added:
             tmp = pdf_file + ".pdf-sync-tmp"
-            doc.save(tmp)
+            doc.save(tmp, garbage=4, deflate=True)
             doc.close()
             os.replace(tmp, pdf_file)
             os.utime(pdf_file, (stat.st_atime, stat.st_mtime))

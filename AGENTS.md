@@ -94,6 +94,7 @@ has a single cohesive responsibility. `config.el` requires them in the grouped o
 - **Preserve source Calibre metadata on import**: Calibre import overrides should be field-scoped. Override only the fields needed for local workflow correctness, such as title, and preserve source metadata such as identifiers, authors, languages, and publication data whenever Calibre can extract them.
 - **Keep Calibre progress independent of `NOTER_DOCUMENT`**: `NOTER_DOCUMENT` is only for quickly opening the document file. Reading progress sync must never read it; derive source data from org-noter page markers for PDFs or from remote Calibre server progress for non-PDF formats.
 - **Patch PDF annotations only on annotated copies**: Calibre source PDFs must not be modified in place by annotation sync. Create or update a sibling annotated copy (for example, ` - annotated.pdf`) in the same book directory and merge annotations only into that copy.
+- **Compact annotated PDFs on writeback**: PDF annotation sync must save annotated copies with object garbage collection and stream compression enabled. Do not rely on default PDF writer behavior, because repeated font/resource streams can make Calibre PDFs grow by hundreds of megabytes.
 
 ### Package Management
 
