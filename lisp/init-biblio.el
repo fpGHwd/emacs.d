@@ -1,17 +1,13 @@
 ;;; init-biblio.el --- Bibliography and citations (citar) -*- lexical-binding: t; -*-
 
+;; file:/home/wd/.config/emacs/sources/doom+/modules/tools/biblio/README.org
 (setup citar
   (:option
    citar-bibliography '("~/org/refs/zotero.bib"
-                        "~/org/refs/calibre.bib"
-                        "~/org/refs/citar.bib")
-   citar-library-paths (pcase (system-name)
-                         ("ubuntu2204" '("~/Sync/citar-lib/")))
-   citar-notes-paths '("~/org/roam/notes/"))
-  (:with-feature reftex
-    (:option reftex-default-bibliography citar-bibliography))
-  (:with-feature citar-org-roam
-    (:option citar-org-roam-subdir "notes/")))
+                        "~/org/refs/calibredb.bib"
+                        "~/org/refs/user.bib")
+   citar-library-paths '("~/.cache/calibre/downloads/")
+   citar-notes-paths '("~/org/roam/notes/")))
 
 (provide 'init-biblio)
 ;;; init-biblio.el ends here
