@@ -16,8 +16,7 @@
    module-file-suffix (getenv "MODULE_FILE_SUFFIX")
    rime-user-data-dir (file-truename "~/.config/rime"))
   (:when-loaded
-    (defvar +wd/rime--was-active-p nil)
-    (make-variable-buffer-local '+wd/rime--was-active-p)
+    (defvar-local +wd/rime--was-active-p nil)
     (add-hook 'meow-insert-exit-hook
               (cmd! (setq +wd/rime--was-active-p
                           (equal current-input-method "rime"))
