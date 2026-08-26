@@ -16,6 +16,8 @@
 (require 'init-setup)
 (require 'init-session)
 
+(setq default-input-method "rime")
+
 ;; appearance & input
 (require 'init-fonts)
 (require 'init-ui)
