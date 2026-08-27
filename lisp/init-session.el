@@ -40,5 +40,8 @@
   (:when-loaded
     (add-to-list 'meow-mode-state-list '(gud-mode . insert))))
 
+
+(add-to-list 'auto-mode-alist '("Android\\.bp\\'" . json-mode))
+
 (provide 'init-session)
 ;;; init-session.el ends here
