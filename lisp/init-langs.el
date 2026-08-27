@@ -27,7 +27,8 @@
           "c" #'haskell-process-cabal
           "i" #'haskell-process-do-info
           "r" #'haskell-process-load-file
-          "t" #'haskell-process-do-type)))
+          "t" #'haskell-process-do-type)
+    (add-to-list 'meow-mode-state-list '(haskell-interactive-mode . insert))))
 
 (provide 'init-langs)
 ;;; init-langs.el ends here
