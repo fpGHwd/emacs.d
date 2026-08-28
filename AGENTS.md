@@ -20,6 +20,7 @@ Ordinary documentation under `docs/` and `.codebuddy/skills/emacs-utils/referenc
 ## Core Principles
 
 - **Flat module layout**: `lisp/` has no subdirectories. Each `init-<area>.el` has a single cohesive responsibility. When a module grows too broad, add focused sibling `init-*.el` files instead of nested directories.
+- **Orthogonal module boundaries**: Organize each `init-*.el` around one independently understandable responsibility or one explicit cross-feature integration. Define boundaries by feature ownership, dependencies, and lifecycle rather than file length. Name integrations `init-<source>-<target>.el`; avoid generic catch-all modules, package-per-file fragmentation, and helper-only modules created merely to reduce file size.
 - **Runtime validation before file writes**: For Elisp and other interpreted configuration, proposed behavior must be tested in the live runtime first via `emacsclient -e` or another direct temporary eval path. Confirm the behavior works before editing the persistent configuration file.
 - **Root cause before repair**: Do not write production code, install bypasses, or block the failing path before the root cause is confirmed by call stack, logs, or runtime state inspection.
 - **Prefer defaults over explicit config**: If a setting matches the package or Doom default, delete the explicit override.
