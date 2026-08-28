@@ -42,6 +42,8 @@
 
 
 (add-to-list 'auto-mode-alist '("Android\\.bp\\'" . json-mode))
+(add-to-list 'auto-mode-alist '("Makefile\\..*\\'" . makefile-mode))
+
 
 (provide 'init-session)
 ;;; init-session.el ends here
