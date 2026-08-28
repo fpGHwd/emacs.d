@@ -2,15 +2,21 @@
 
 ;; flycheck's emacs-lisp checker spawns a bare emacs process without Doom macros loaded,
 ;; producing false "free variable" warnings for config files. Just it out.
-(add-hook! 'emacs-lisp-mode-hook (flycheck-mode -1))
+(setup emacs-lisp-mode
+  (:hook (lambda () (flycheck-mode -1))))
 
-(add-to-list 'auto-mode-alist '("Kbuild\\'" . makefile-mode))
+(setup makefile-mode
+  (:match-file "Kbuild"))
 
 (setup eglot
   (:option eglot-max-file-watches 524288))
 
 (setup sql
   (:option sql-mysql-program "mariadb"))
+
+(setup nix-mode
+  (:when-loaded
+    (require 'nix-format)))
 
 (setup nxml-mode
   (:also-load lib-arxml)

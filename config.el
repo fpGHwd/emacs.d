@@ -1,7 +1,7 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
 ;; Add path
-(add-load-path! "lisp/" "lisp/lib/" "lisp/dev")
+(add-load-path! "lisp/" "lisp/dev")
 
 ;; From Lucius
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
@@ -16,13 +16,11 @@
 (require 'init-setup)
 (require 'init-session)
 
-(setq default-input-method "rime")
-
 ;; appearance & input
 (require 'init-fonts)
 (require 'init-ui)
 (require 'init-editor)
-(require 'init-rime)                    ;; rime font-size = (+1 init-fonts)
+(require 'init-rime)
 
 ;; dev tools
 (require 'init-langs)
@@ -33,12 +31,20 @@
 
 ;; org ecosystem
 (require 'init-org)
+(require 'init-org-agenda)
+(require 'init-org-capture)
+(require 'init-org-publish)
 (require 'init-biblio)
 (require 'init-roam)
 
+;; reading
+(require 'init-calibre)
+(require 'init-ebooks)
+(require 'init-pdf)
+(require 'init-org-noter)
+
 ;; apps
 (require 'init-schedule)
-(require 'init-read)
 (require 'init-ledger)
 (require 'init-llm)
 (require 'init-mail)

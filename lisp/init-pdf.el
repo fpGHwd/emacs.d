@@ -1,9 +1,9 @@
-;;; lib-pdf-sync.el --- Sync PDF annotations to Calibre -*- lexical-binding: t; -*-
+;;; init-pdf.el --- PDF reading and annotation sync -*- lexical-binding: t; -*-
 
 (require 'json)
 (require 'seq)
 (require 'subr-x)
-(require 'lib-calibre)
+(require 'init-calibre)
 
 (defvar +wd/pdf-sync-ssh-host "nixos-nuc"
   "SSH host that can access the Calibre library files.")
@@ -11,10 +11,10 @@
 (defvar +wd/pdf-sync-remote-library-root +wd/calibre-local-library-root
   "Calibre library root on `+wd/pdf-sync-ssh-host'.")
 
-(defvar +wd/pdf-sync-remote-python-file
-  (expand-file-name "pdf-sync/replay.py"
-                    (file-name-directory (or load-file-name buffer-file-name)))
+(defvar +wd/pdf-sync-remote-python-file nil
   "Local Python script sent to `+wd/pdf-sync-ssh-host' for annotation replay.")
+(setq +wd/pdf-sync-remote-python-file
+      (expand-file-name "etc/pdf-sync/replay.py" doom-user-dir))
 
 (defun +wd/pdf-sync--remote-python-code ()
   "Return the remote annotation replay Python script."
@@ -113,8 +113,7 @@
 
 ;;;###autoload
 (defun +wd/pdf-annot-sync (&optional calibre-id)
-  "Sync current PDF annotations to the remote Calibre PDF.
-CALIBRE-ID defaults to the id in a CDB-<id>.pdf file name."
+  "Sync current PDF annotations to the remote Calibre PDF."
   (interactive)
   (unless (derived-mode-p 'pdf-view-mode)
     (user-error "Not a PDF buffer"))
@@ -132,15 +131,7 @@ CALIBRE-ID defaults to the id in a CDB-<id>.pdf file name."
                          (insert (+wd/pdf-sync--remote-python-code))
                          (+wd/pdf-sync--call-region
                           (point-min) (point-max)
-                          "ssh" +wd/pdf-sync-ssh-host ;; TODO: automatically write options
-                          ;; ssh -t -p 22 \
-                          ;; -l wd \
-                          ;; -o ProxyCommand="cloudflared access ssh --hostname %h" \
-                          ;; -i /run/user/1000/gnupg/S.gpg-agent.ssh \
-                          ;; -o ControlMaster=auto \
-                          ;; -o ControlPath=~/.ssh/cm-%r@%h:%p \
-                          ;; -o ControlPersist=1h \
-                          ;; nixos.autove.dev
+                          "ssh" +wd/pdf-sync-ssh-host
                           "python3" "-" remote-json
                           +wd/pdf-sync-remote-library-root id))))
             (message "PDF annotation sync: book %s, added %s annotations"
@@ -160,5 +151,39 @@ CALIBRE-ID defaults to the id in a CDB-<id>.pdf file name."
   "Enable annotation sync prompt for the current PDF buffer."
   (add-hook 'kill-buffer-query-functions #'+wd/pdf-sync-query-on-kill nil t))
 
-(provide 'lib-pdf-sync)
-;;; lib-pdf-sync.el ends here
+(defun +wd/pdf-view-enable-midnight-for-dark-theme ()
+  "Enable midnight mode for PDFs when the active theme is dark."
+  (require 'color)
+  (when-let* ((background (face-background 'default nil t))
+              (rgb (color-name-to-rgb background)))
+    (when (color-dark-p rgb)
+      (pdf-view-midnight-minor-mode 1))))
+
+(setup pdf-tools
+  (:option
+   pdf-view-continuous t
+   pdf-annot-default-annotation-properties
+   '((t         (label . "Wang Ding"))
+     (text       (color . "#D7BA7D") (opacity . 0.9) (icon . "Note"))
+     (highlight  (color . "#E5C07B") (opacity . 0.35))
+     (underline  (color . "#98BE65") (opacity . 0.85))
+     (squiggly   (color . "#FF6C6B") (opacity . 0.85))
+     (strike-out (color . "#4DB5BD") (opacity . 0.75))))
+  (:hooks
+   pdf-view-mode-hook +wd/pdf-view-enable-midnight-for-dark-theme
+   pdf-view-mode-hook +wd/pdf-sync-enable-query-on-kill)
+  (:when-loaded
+    (map! :map pdf-view-mode-map
+          :localleader
+          (:prefix ("a" . "annotate")
+                   "t" #'pdf-annot-add-text-annotation
+                   "h" #'pdf-annot-add-highlight-markup-annotation
+                   "u" #'pdf-annot-add-underline-markup-annotation
+                   "s" #'pdf-annot-add-squiggly-markup-annotation
+                   "x" #'pdf-annot-add-strikeout-markup-annotation
+                   "l" #'pdf-annot-list-annotations
+                   "d" #'pdf-annot-delete
+                   "S" #'+wd/pdf-annot-sync))))
+
+(provide 'init-pdf)
+;;; init-pdf.el ends here

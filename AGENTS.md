@@ -19,14 +19,15 @@ Ordinary documentation under `docs/` and `.codebuddy/skills/emacs-utils/referenc
 
 ## Core Principles
 
-- **Flat module layout**: `lisp/` has no subdirectories. Each `init-<area>.el` has a single cohesive responsibility.
+- **Flat module layout**: `lisp/` has no subdirectories. Each `init-<area>.el` has a single cohesive responsibility. When a module grows too broad, add focused sibling `init-*.el` files instead of nested directories.
 - **Runtime validation before file writes**: For Elisp and other interpreted configuration, proposed behavior must be tested in the live runtime first via `emacsclient -e` or another direct temporary eval path. Confirm the behavior works before editing the persistent configuration file.
 - **Root cause before repair**: Do not write production code, install bypasses, or block the failing path before the root cause is confirmed by call stack, logs, or runtime state inspection.
 - **Prefer defaults over explicit config**: If a setting matches the package or Doom default, delete the explicit override.
 - **Host-aware configuration**: Active hosts are `nixos-nuc`, `macos-m1`, and `ubuntu2204`; `arch-nuc` and `macbook-m1-pro` are retired.
 - **Separation of concerns**: Input methods register themselves on editing-state hooks in their own module; the editor module must not depend on input-method packages.
 - **Doom module override discipline**: Doom modules use `use-package! :config` which re-executes unconditionally on `doom/reload`. User config runs *before* the Doom `:config` block and gets overridden. To guarantee user values win, use `doom-after-modules-config-hook`.
-- **Helper placement**: Heavier helpers go in `lib/lib-<area>.el`, loaded via `(:also-load lib-<area>)`. Move a defun there once it is unreferenced from / incidental to the init module.
+- **Helper placement**: Keep single-use helpers in the owning `init-*.el`. Extract a helper library only for substantial logic shared by multiple modules.
+- **Runtime assets**: Non-Elisp files required by loaded features belong under `etc/`, not `lisp/dev/`. Reserve `lisp/dev/` for development/debug Elisp that is not part of normal startup.
 
 ## Configuration Rules
 
@@ -35,8 +36,8 @@ Ordinary documentation under `docs/` and `.codebuddy/skills/emacs-utils/referenc
 - **Doom modules**: Changes in `init.el` (enable/disable modules)
 - **Package declarations**: Add `package!` forms in `packages.el`
 - **Feature configuration**: one cohesive responsibility per `lisp/init-<area>.el`
-- **Helper functions**: `lib/lib-<area>.el`, loaded inside the owning feature's setup
-- **Load order**: `config.el` requires modules in grouped order (infrastructure → appearance/input → dev tools → org ecosystem → apps). Global predicates/path constants stay at the top of `config.el`.
+- **Helper functions**: keep single-use helper functions in the owning `init-*.el`; extract shared helper libraries only when multiple modules need them
+- **Load order**: `config.el` requires modules in grouped order (infrastructure → appearance/input → dev tools → org ecosystem → reading → apps). Global predicates/path constants stay at the top of `config.el`.
 
 ### Code Style
 
@@ -49,7 +50,7 @@ Ordinary documentation under `docs/` and `.codebuddy/skills/emacs-utils/referenc
 - **Named hook and advice targets**: Keep package connection points in `init-*.el`, but make targets named functions when they need stable reload, removal, or debugging.
 - **Do not pre-remove `define-advice` reload targets**: `define-advice` replaces existing advice with the same name on reload. No manual `advice-remove` before `define-advice` unless intentionally removing an existing advice.
 - **Fonts are required local dependencies**: Font configuration should name required installed fonts directly and fail loudly when absent. No fallback chains or warning-only missing-font behavior.
-- **Do not define config functions from personal Org Babel blocks at startup**: Functions used by Emacs configuration must live in `lisp/` or `lisp/lib/`.
+- **Do not define config functions from personal Org Babel blocks at startup**: Functions used by Emacs configuration must live in `lisp/`.
 - **Calibre rules** (field-scoped overrides, annotated copies, independent progress tracking): See `.codebuddy/skills/emacs-utils/references/emacs_config_coding_rules.org`
 
 ### Package Management

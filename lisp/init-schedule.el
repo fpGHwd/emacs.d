@@ -1,6 +1,6 @@
 ;;; init-schedule.el --- Host-aware scheduled tasks -*- lexical-binding: t; -*-
 
-(require 'lib-calibre)
+(require 'init-calibre)
 
 ;; ---------------------------------------------------------------------------
 ;; Auto-commit: configurable repo list

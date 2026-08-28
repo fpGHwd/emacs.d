@@ -9,3 +9,5 @@ etc/gptel/gptel-crowdsourced-prompts.csv
 .codex
 
 .gdb_history
+
+.learnings/

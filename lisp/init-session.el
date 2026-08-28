@@ -1,15 +1,12 @@
 ;;; init-session.el --- Credentials, persistence, and identity -*- lexical-binding: t; -*-
 
-(require 'lib-util)
-
 ;; credentials
 (setup auth-source
   (:option auth-sources (list (expand-file-name "etc/authinfo.gpg" doom-user-dir))))
 
 ;; recent files
 (setup recentf
-  (:after recentf 
-    (setq recentf-max-saved-items 2000)))
+  (:option recentf-max-saved-items 2000))
 
 (setup uniquify
   (:option uniquify-buffer-name-style 'forward
@@ -41,8 +38,11 @@
     (add-to-list 'meow-mode-state-list '(gud-mode . insert))))
 
 
-(add-to-list 'auto-mode-alist '("Android\\.bp\\'" . json-mode))
-(add-to-list 'auto-mode-alist '("Makefile\\..*\\'" . makefile-mode))
+(setup json-mode
+  (:match-file "Android.bp"))
+
+(setup makefile-mode
+  (:match-file "Makefile.*"))
 
 
 (provide 'init-session)

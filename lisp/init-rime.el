@@ -1,5 +1,7 @@
 ;;; init-rime.el --- Input method (Rime) -*- lexical-binding: t; -*-
 
+(setq default-input-method "rime")
+
 (setup rime
   (:bind "M-\\" rime-force-enable)
   (:option
@@ -38,8 +40,8 @@
          (let ((default-directory (file-name-as-directory rime--root)))
            (unless (zerop (shell-command "nix-shell -p gcc gnumake --run \"make clean && make lib\""))
              (user-error "Rime fallback compile failed"))))))
-    
-    (advice-add 'rime-compile-module :around #'+my/rime-compile-module-advice)))
+
+    (:advice rime-compile-module :around #'+my/rime-compile-module-advice)))
 
 (provide 'init-rime)
 ;;; init-rime.el ends here

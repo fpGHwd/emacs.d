@@ -28,8 +28,10 @@
     (set-fontset-font t '(#x2500 . #x257F) (font-spec :family +wd/fixed-cjk-font))
     (set-fontset-font t '(#x2190 . #x21FF) (font-spec :family +wd/fixed-cjk-font))))
 
-(add-hook! 'after-setting-font-hook #'+wd/apply-cjk-fontset)
-(add-hook! 'server-after-make-frame-hook #'+wd/apply-cjk-fontset)
+(setup fonts
+  (:hooks
+   after-setting-font-hook +wd/apply-cjk-fontset
+   server-after-make-frame-hook +wd/apply-cjk-fontset))
 
 (provide 'init-fonts)
 ;;; init-fonts.el ends here
