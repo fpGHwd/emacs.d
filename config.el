@@ -1,9 +1,10 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
-;; Bootstrap setup before loading the project-local setup extensions.
-(require 'setup)
+;; Bootstrap project-local setup directives before using them.
+(load (expand-file-name "lisp/init-setup" doom-user-dir))
+
 (setup emacs
-  (:option (prepend* load-path)
+  (:setopt (prepend* load-path)
            (list (expand-file-name "lisp" doom-user-dir)
                  (expand-file-name "lisp/dev" doom-user-dir))))
 
@@ -15,7 +16,6 @@
 (defconst *golden-ratio* (/ (- (sqrt 5) 1) 2))
 
 ;; infrastructure
-(require 'init-setup)
 (require 'init-session)
 
 ;; appearance & input

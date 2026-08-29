@@ -98,7 +98,7 @@ With ARG 1, prompt for a remote branch; otherwise use the current branch."
      (concat "git push " gerrit-url " HEAD:refs/for/" remote-branch))))
 
 (setup magit-clone
-  (:option magit-clone-default-directory (concat (file-truename "~/projects/github/current") "/")))
+  (:setopt magit-clone-default-directory (concat (file-truename "~/projects/github/current") "/")))
 
 (setup magit
   (:after meow

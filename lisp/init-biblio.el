@@ -2,7 +2,7 @@
 
 ;; file:/home/wd/.config/emacs/sources/doom+/modules/tools/biblio/README.org
 (setup citar
-  (:option
+  (:setopt
    citar-bibliography '("~/org/refs/zotero.bib"
                         "~/org/refs/calibredb.bib"
                         "~/org/refs/user.bib")

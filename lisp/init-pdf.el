@@ -15,7 +15,7 @@
   "Local Python script sent to `+wd/pdf-sync-ssh-host' for annotation replay.")
 
 (setup pdf-sync
-  (:option +wd/pdf-sync-remote-python-file
+  (:setopt +wd/pdf-sync-remote-python-file
            (expand-file-name "etc/pdf-sync/replay.py" doom-user-dir)))
 
 (defun +wd/pdf-sync--remote-python-code ()
@@ -162,7 +162,7 @@
       (pdf-view-midnight-minor-mode 1))))
 
 (setup pdf-tools
-  (:option
+  (:setopt
    pdf-view-continuous t
    pdf-annot-default-annotation-properties
    '((t         (label . "Wang Ding"))

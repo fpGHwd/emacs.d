@@ -8,7 +8,7 @@
     (defvar +wd/org-capture-file-for-ios (expand-file-name "notes_ios.org" org-directory))
     (defvar +wd/scheduled-capture-args nil
       "Plist holding :title, :scheduled, :body for the `cs' capture template.")
-    (:option
+    (:setopt
      (prepend* org-capture-templates)
      '(("cs" "Scheduled Capture" entry (file+headline +org-capture-todo-file "Inbox")
         "* %u %(or (plist-get +wd/scheduled-capture-args :title) \"无标题\")\nSCHEDULED: %(plist-get +wd/scheduled-capture-args :scheduled)\n%(or (plist-get +wd/scheduled-capture-args :body) \"\")"

@@ -184,7 +184,7 @@
                                path (string-trim event))))))))))))
 
 (setup calibredb
-  (:option
+  (:setopt
    calibredb-search-page-max-rows 30
    calibredb-id-width 6
    calibredb-size-show t
@@ -192,7 +192,7 @@
    calibredb-format-icons-in-terminal t
    calibredb-format-nerd-icons t)
   (:after meow
-    (:option (prepend meow-mode-state-list)
+    (:setopt (prepend meow-mode-state-list)
              '(calibredb-search-mode . motion)))
   (:hooks calibredb-search-mode-hook
           (lambda () (buffer-face-set :family "Sarasa Fixed SC")))

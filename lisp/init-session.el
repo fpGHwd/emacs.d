@@ -2,19 +2,19 @@
 
 ;; credentials
 (setup auth-source
-  (:option auth-sources (list (expand-file-name "etc/authinfo.gpg" doom-user-dir))))
+  (:setopt auth-sources (list (expand-file-name "etc/authinfo.gpg" doom-user-dir))))
 
 ;; recent files
 (setup recentf
-  (:option recentf-max-saved-items 2000))
+  (:setopt recentf-max-saved-items 2000))
 
 (setup uniquify
-  (:option uniquify-buffer-name-style 'forward
+  (:setopt uniquify-buffer-name-style 'forward
            uniquify-separator "/"))
 
 (defun +wd/setup-uniquify-buffer-names ()
   (setup uniquify
-    (:option uniquify-buffer-name-style 'forward
+    (:setopt uniquify-buffer-name-style 'forward
              uniquify-separator "/")))
 
 ;; workspaces / persp-mode
@@ -33,7 +33,7 @@
 
 ;; identity
 (setup emacs
-  (:option
+  (:setopt
    user-full-name "Wang Ding"
    user-mail-address "ggwdwhu@gmail.com"
    initial-scratch-message
@@ -41,7 +41,7 @@
 
 (setup gud
   (:after meow
-    (:option (prepend meow-mode-state-list) '(gud-mode . insert))))
+    (:setopt (prepend meow-mode-state-list) '(gud-mode . insert))))
 
 
 (setup json-mode

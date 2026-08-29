@@ -23,7 +23,7 @@
     (set-fontset-font t '(#x2190 . #x21FF) (font-spec :family +wd/fixed-cjk-font))))
 
 (setup fonts
-  (:option
+  (:setopt
    doom-font (font-spec :family +wd/code-font :weight 'regular :size +wd/font-size)
    doom-variable-pitch-font (font-spec :family +wd/cjk-font :weight 'regular)
    ;; Keep symbol fallback in a true monospace family for line-drawing tables.

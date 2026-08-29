@@ -84,7 +84,7 @@
 
 (setup org
   (:with-feature ox-publish
-    (:option
+    (:setopt
      org-publish-project-alist
      '(("org-blog"
         :base-directory "~/org/blog/current/posts/"
@@ -98,7 +98,7 @@
     (:hooks
      org-export-before-processing-hook my/org-insert-updated-timestamp
      org-publish-after-publishing-hook +wd/handle-image-in-markdown)
-    (:option (prepend file-coding-system-alist) '("\\.bib" . utf-8))))
+    (:setopt (prepend file-coding-system-alist) '("\\.bib" . utf-8))))
 
 (provide 'init-org-publish)
 ;;; init-org-publish.el ends here

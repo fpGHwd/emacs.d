@@ -3,7 +3,7 @@
 (setup ledger
   (:match-file "*.ledger")
   (:hook auto-revert-mode)
-  (:option
+  (:setopt
    ledger-reports
    '(("month meal expense"
       "ledger -f %(ledger-file) --monthly register ^Expenses:Living:Food")

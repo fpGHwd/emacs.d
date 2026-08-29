@@ -10,7 +10,7 @@
 
 (if (eq system-type 'darwin)
     (setup frame
-      (:option mac-frame-tabbing nil)
+      (:setopt mac-frame-tabbing nil)
       (:hooks
        emacs-startup-hook
        (lambda ()
@@ -19,7 +19,7 @@
        (lambda (_frame)
          (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))))
   (setup frame
-    (:option (prepend default-frame-alist) '(fullscreen . fullboth))))
+    (:setopt (prepend default-frame-alist) '(fullscreen . fullboth))))
 
 (setup dirvish
   (:when-loaded

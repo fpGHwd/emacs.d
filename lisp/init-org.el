@@ -32,7 +32,7 @@
                      (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))
    org-mode-hook (lambda () (flycheck-mode -1)))
 
-  (:option
+  (:setopt
    org-directory "~/org/org/current"
    org-log-done 'time
    org-archive-location "~/org/org/current/archive.org.bak::* From %s"
@@ -51,20 +51,20 @@
                       files))
 
   (:with-feature org-id
-    (:option org-id-locations-file
+    (:setopt org-id-locations-file
              (expand-file-name "org-id-locations" doom-cache-dir)))
 
   (:with-feature org-crypt
-    (:option org-crypt-key "ggwdwhu@gmail.com"))
+    (:setopt org-crypt-key "ggwdwhu@gmail.com"))
 
   (:with-feature org-journal
-    (:option org-journal-dir "~/org/journal"))
+    (:setopt org-journal-dir "~/org/journal"))
 
   (:with-feature elfeed-org
-    (:option rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")))
+    (:setopt rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")))
 
   (:with-feature org-agenda
-    (:option
+    (:setopt
      org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
      org-agenda-include-diary t
      org-agenda-show-inherited-tags 'always
@@ -92,19 +92,19 @@
                      #'org-toggle-narrow-to-subtree)))))
 
   (:with-feature org-refile
-    (:option org-refile-targets
+    (:setopt org-refile-targets
              '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1))))
 
   (:with-feature org-timer
-    (:option org-timer-default-timer 25))
+    (:setopt org-timer-default-timer 25))
 
   (:with-feature org-attach
-    (:option
+    (:setopt
      org-attach-id-dir (file-truename "~/.local/org-attach")
      org-attach-sync-delete-empty-dir t))
 
   (:with-feature calendar
-    (:option
+    (:setopt
      ;; https://emacs-china.org/t/topic/1551/15
      system-time-locale "C"
      diary-file (expand-file-name "etc/diary" doom-user-dir)
@@ -115,7 +115,7 @@
 
   (:with-feature cal-china-x
     (:when-loaded
-      (:option
+      (:setopt
        mark-holidays-in-calendar t
        cal-china-x-important-holidays cal-china-x-chinese-holidays
        cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节"))
@@ -123,15 +123,15 @@
                                  cal-china-x-general-holidays))))
 
   (:with-feature so-long
-    (:option (prepend doom-file-lines-threshold-alist)
+    (:setopt (prepend doom-file-lines-threshold-alist)
              '("\\.org\\'" . 50000)))
 
   (:with-feature ob-haskell
-    (:option org-babel-haskell-command "ghci"))
+    (:setopt org-babel-haskell-command "ghci"))
 
   (:with-feature org-latex-impatient
     (:hooks org-mode-hook org-latex-impatient-mode)
-    (:option
+    (:setopt
      org-latex-impatient-border-color "#666699"
      org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
@@ -151,7 +151,7 @@
   (:face org-verbatim ((t (:inherit (shadow fixed-pitch)))))
 
   (:when-loaded
-    (:option
+    (:setopt
      (prepend org-tags-exclude-from-inheritance) "roam-agenda"
      (prepend org-file-apps) '("\\.drawio\\'" . "/opt/drawio/drawio %s")
      (prepend org-file-apps) '("\\.minder\\'" . "/usr/bin/minder %s"))

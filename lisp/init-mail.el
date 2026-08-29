@@ -3,7 +3,7 @@
 (defvar +wd/mu4e-index-timer nil "Timer for auto-updating mu4e index.")
 
 (setup mu4e
-  (:option (prepend load-path)
+  (:setopt (prepend load-path)
            (expand-file-name
             "~/.nix-profile/share/emacs/site-lisp/elpa/mu4e-1.12.13"))
   (:with-function (mu4e mu4e-compose-new)
@@ -14,15 +14,15 @@
               (setq +wd/mu4e-index-timer
                     (run-at-time nil (* 5 60) #'mu4e-update-index)))))
   (:when-loaded
-    (:option
+    (:setopt
      mu4e-mu-binary (executable-find "mu")
      mu4e-get-mail-command "true")
     (:with-feature sendmail
-      (:option
+      (:setopt
        sendmail-program (executable-find "msmtp")
        send-mail-function #'smtpmail-send-it))
     (:with-feature message
-      (:option
+      (:setopt
        message-sendmail-f-is-evil t
        message-sendmail-extra-arguments '("--read-envelope-from")
        message-send-mail-function #'message-send-mail-with-sendmail))))

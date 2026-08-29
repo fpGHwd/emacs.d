@@ -4,7 +4,7 @@
 
 (setup rime
   (:bind "M-\\" rime-force-enable)
-  (:option
+  (:setopt
    default-input-method "rime"
    rime-posframe-properties (list :background-color "#666699"
                                   :foreground-color "#dcdccc"

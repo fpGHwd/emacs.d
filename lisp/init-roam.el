@@ -6,7 +6,7 @@
 
 (setup org-roam
   (:hooks org-mode-hook +wd/org-roam-maybe-track-project-tag)
-  (:option org-roam-directory "~/org/roam")
+  (:setopt org-roam-directory "~/org/roam")
   (:advice org-agenda-files :filter-return #'dynamic-agenda-files-advice))
 
 (defun vulpea-buffer-p ()

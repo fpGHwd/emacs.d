@@ -129,7 +129,7 @@
 ;; https://github.com/zevlg/telega.el
 (setup telega
   (:only-if (string= (system-name) "nixos-nuc"))
-  (:option
+  (:setopt
    telega-cache-dir (file-truename "~/.config/telega/cache")
    telega-directory (file-truename "~/.config/telega/")
    telega-server-logfile (file-truename "~/.config/telega/telega-server.log")
@@ -138,10 +138,10 @@
    telega-server-libs-prefix (getenv "LIBTDLIB_ROOT"))
   (:defer (telega t))
   (:when-loaded
-    (:option +wd/telegram-cmb-chat-id
+    (:setopt +wd/telegram-cmb-chat-id
              (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
     (:with-feature meow
-      (:option
+      (:setopt
        (prepend* meow-mode-state-list)
        '((telega-webpage-mode . motion)
          (telega-image-mode . motion)

@@ -9,10 +9,10 @@
   (:match-file "Kbuild"))
 
 (setup eglot
-  (:option eglot-max-file-watches 524288))
+  (:setopt eglot-max-file-watches 524288))
 
 (setup sql
-  (:option sql-mysql-program "mariadb"))
+  (:setopt sql-mysql-program "mariadb"))
 
 (setup nix-mode
   (:when-loaded
@@ -26,7 +26,7 @@
 
 (setup haskell-ts-mode
   (:after meow
-    (:option (prepend meow-mode-state-list)
+    (:setopt (prepend meow-mode-state-list)
              '(haskell-interactive-mode . insert)))
   (:bind
    (kbd (concat doom-localleader-alt-key " b")) #'haskell-interactive-bring

@@ -20,10 +20,10 @@
 
 (when (eq system-type 'gnu/linux)
   (setup (:require xclip)
-    (:option xclip-method 'wl-copy
+    (:setopt xclip-method 'wl-copy
              xclip-program "wl-copy")
     (:when-loaded
-      (:option
+      (:setopt
        interprogram-cut-function
        (apply-partially #'xclip-set-selection 'CLIPBOARD)
        interprogram-paste-function
@@ -37,7 +37,7 @@
                   meow-cursor-type-insert 'bar
                   blink-cursor-interval 0.618)))
   (:when-loaded
-    (:option
+    (:setopt
      meow-use-clipboard t
      meow-cursor-type-normal 'box
      meow-cursor-type-motion 'box
@@ -45,7 +45,7 @@
      meow-cursor-type-insert 'bar
      (prepend meow-mode-state-list) '(inferior-emacs-lisp-mode . insert))
     (:with-feature frame
-      (:option blink-cursor-interval 0.618))
+      (:setopt blink-cursor-interval 0.618))
     (meow-normal-define-key
      '("RET" . +wd/meow-normal-return)
      '("DEL" . ignore)

@@ -1,7 +1,7 @@
 ;;; init-llm.el --- AI assistant configuration (gptel, claude-code-ide) -*- lexical-binding: t; -*-
 
 (setup gptel
-  (:option
+  (:setopt
    gptel-use-curl t
    gptel-default-mode 'org-mode
    gptel-crowdsourced-prompts-file

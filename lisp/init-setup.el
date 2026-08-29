@@ -7,6 +7,17 @@
 
 (require 'setup)
 
+(setup-define :setopt
+  (setup-make-setter
+   (lambda (name)
+     `(symbol-value ',name))
+   (lambda (name val)
+     `(setopt ,name ,val)))
+  :documentation "Set option NAME to VAL with `setopt'.
+Supports setup's append/prepend/remove list modifiers."
+  :debug '(sexp form)
+  :repeatable t)
+
 (setup-define :defer
   (lambda (features)
     `(run-with-idle-timer 1 nil

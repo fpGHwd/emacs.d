@@ -161,7 +161,7 @@
                          id (upcase format) percentage)))))))))
 
 (setup org-noter
-  (:option org-noter-doc-split-fraction '(0.7 . 0.3)
+  (:setopt org-noter-doc-split-fraction '(0.7 . 0.3)
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:hooks org-noter-parse-document-property-hook
           (:hook-options +wd/org-noter-resolve-calibre-document :depth 10))
