@@ -23,10 +23,11 @@
     (:option xclip-method 'wl-copy
              xclip-program "wl-copy")
     (:when-loaded
-      (setq interprogram-cut-function
-            (apply-partially #'xclip-set-selection 'CLIPBOARD)
-            interprogram-paste-function
-            (apply-partially #'xclip-get-selection 'CLIPBOARD)))))
+      (:option
+       interprogram-cut-function
+       (apply-partially #'xclip-set-selection 'CLIPBOARD)
+       interprogram-paste-function
+       (apply-partially #'xclip-get-selection 'CLIPBOARD)))))
 
 (setup meow
   (:hooks doom-after-reload-hook (lambda ()
@@ -36,6 +37,15 @@
                   meow-cursor-type-insert 'bar
                   blink-cursor-interval 0.618)))
   (:when-loaded
+    (:option
+     meow-use-clipboard t
+     meow-cursor-type-normal 'box
+     meow-cursor-type-motion 'box
+     meow-cursor-type-beacon 'box
+     meow-cursor-type-insert 'bar
+     (prepend meow-mode-state-list) '(inferior-emacs-lisp-mode . insert))
+    (:with-feature frame
+      (:option blink-cursor-interval 0.618))
     (meow-normal-define-key
      '("RET" . +wd/meow-normal-return)
      '("DEL" . ignore)
@@ -45,15 +55,6 @@
     (:hooks prog-mode-hook
             (lambda ()
               (meow-normal-define-key '("%" . lispy-different))))
-    (add-to-list 'meow-mode-state-list '(inferior-emacs-lisp-mode . insert))
-    (:option
-     meow-use-clipboard t
-     
-     meow-cursor-type-normal 'box
-     meow-cursor-type-motion 'box
-     meow-cursor-type-beacon 'box
-     meow-cursor-type-insert 'bar
-     blink-cursor-interval 0.618)
     (:advice meow-cheatsheet :after
              (lambda (&rest _)
                (when-let ((buf (get-buffer "*Meow Cheatsheet*")))

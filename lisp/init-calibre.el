@@ -192,12 +192,13 @@
    calibredb-format-icons-in-terminal t
    calibredb-format-nerd-icons t)
   (:after meow
-    (add-to-list 'meow-mode-state-list '(calibredb-search-mode . motion)))
+    (:option (prepend meow-mode-state-list)
+             '(calibredb-search-mode . motion)))
+  (:hooks calibredb-search-mode-hook
+          (lambda () (buffer-face-set :family "Sarasa Fixed SC")))
+  (:bind-into calibredb-search "n" #'+wd/calibredb-org-noter)
   (:when-loaded
-    (+wd/calibredb-configure-opds)
-    (:hooks calibredb-search-mode-hook
-            (lambda () (buffer-face-set :family "Sarasa Fixed SC")))
-    (:bind-into calibredb-search "n" #'+wd/calibredb-org-noter)))
+    (+wd/calibredb-configure-opds)))
 
 (provide 'init-calibre)
 ;;; init-calibre.el ends here

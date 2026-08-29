@@ -8,7 +8,7 @@
    tramp-default-method "sshx"
    tramp-default-remote-shell "zsh")
   (:when-loaded
-    (add-to-list 'tramp-remote-path "/home/wd/.nix-profile/bin")))
+    (:option (prepend tramp-remote-path) "/home/wd/.nix-profile/bin")))
 
 (provide 'init-remote)
 ;;; init-remote.el ends here

@@ -11,3 +11,4 @@ etc/gptel/gptel-crowdsourced-prompts.csv
 .gdb_history
 
 .learnings/
+*.elc

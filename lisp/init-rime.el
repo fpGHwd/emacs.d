@@ -1,10 +1,11 @@
 ;;; init-rime.el --- Input method (Rime) -*- lexical-binding: t; -*-
 
-(setq default-input-method "rime")
+(defvar-local +wd/rime--was-active-p nil)
 
 (setup rime
   (:bind "M-\\" rime-force-enable)
   (:option
+   default-input-method "rime"
    rime-posframe-properties (list :background-color "#666699"
                                   :foreground-color "#dcdccc"
                                   :font (format "Sarasa Gothic SC-%d" (1+ (font-get doom-font :size))))
@@ -18,14 +19,15 @@
    module-file-suffix (getenv "MODULE_FILE_SUFFIX")
    rime-user-data-dir (file-truename "~/.config/rime"))
   (:when-loaded
-    (defvar-local +wd/rime--was-active-p nil)
-    (add-hook 'meow-insert-exit-hook
-              (cmd! (setq +wd/rime--was-active-p
-                          (equal current-input-method "rime"))
-                    (deactivate-input-method)))
-    (add-hook 'meow-insert-enter-hook
-              (cmd! (if +wd/rime--was-active-p
-                        (activate-input-method "rime"))))
+    (:hooks
+     meow-insert-exit-hook
+     (lambda ()
+       (setq +wd/rime--was-active-p (equal current-input-method "rime"))
+       (deactivate-input-method))
+     meow-insert-enter-hook
+     (lambda ()
+       (when +wd/rime--was-active-p
+         (activate-input-method "rime"))))
     
     (defun +pyim-probe-telega-msg ()
       "Return if current point is at a telega button."

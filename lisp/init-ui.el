@@ -9,15 +9,17 @@
   (:hooks doom-load-theme-hook +wd/italicize-theme-faces))
 
 (if (eq system-type 'darwin)
-    (progn
-      (setq mac-frame-tabbing nil)
-      (add-hook 'emacs-startup-hook
-                (lambda ()
-                  (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen)))
-      (add-hook 'after-make-frame-functions
-                (lambda (_frame)
-                  (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))))
-  (add-to-list 'default-frame-alist '(fullscreen . fullboth)))
+    (setup frame
+      (:option mac-frame-tabbing nil)
+      (:hooks
+       emacs-startup-hook
+       (lambda ()
+         (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))
+       after-make-frame-functions
+       (lambda (_frame)
+         (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))))
+  (setup frame
+    (:option (prepend default-frame-alist) '(fullscreen . fullboth))))
 
 (setup dirvish
   (:when-loaded

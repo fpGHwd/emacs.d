@@ -180,9 +180,9 @@
 (setup org
   (:advice org-read-date :around #'+wd/org-read-date-default-current-time)
   (:hooks kill-emacs-hook +wd/org-agenda-work-mode-cleanup-roam-link)
+  (when (not (string= (system-name) "ubuntu2204"))
+    (:hooks org-after-note-stored-hook +wd/org-count-total-update))
   (:when-loaded
-    (when (not (string= (system-name) "ubuntu2204"))
-      (add-hook 'org-after-note-stored-hook #'+wd/org-count-total-update))
     (org-toggle-sticky-agenda 1)))
 
 (provide 'init-org-agenda)

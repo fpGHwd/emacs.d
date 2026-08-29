@@ -19,23 +19,29 @@
 
 ;; workspaces / persp-mode
 (setup persp-mode
+  (:hooks persp-mode-hook
+          (:hook-options +wd/setup-uniquify-buffer-names :depth t))
+  (:advice persp-delete-frame :around
+           (:named +wd/live-frame-only
+             (lambda (oldfn frame)
+               "Skip `persp-delete-frame' when FRAME is already dead."
+               (when (frame-live-p frame)
+                 (funcall oldfn frame)))))
   (:when-loaded
-    (define-advice persp-delete-frame (:around (oldfn frame) +wd/live-frame-only)
-      "Skip `persp-delete-frame' when FRAME is already dead."
-      (when (frame-live-p frame)
-        (funcall oldfn frame)))
-    (add-hook 'persp-mode-hook #'+wd/setup-uniquify-buffer-names t)
     (when persp-mode
       (+wd/setup-uniquify-buffer-names))))
 
 ;; identity
-(setq user-full-name "Wang Ding"
-      user-mail-address "ggwdwhu@gmail.com"
-      initial-scratch-message (concat ";; Happy hacking, " user-full-name " - Emacs ♥ you!\n\n"))
+(setup emacs
+  (:option
+   user-full-name "Wang Ding"
+   user-mail-address "ggwdwhu@gmail.com"
+   initial-scratch-message
+   (concat ";; Happy hacking, " user-full-name " - Emacs ♥ you!\n\n")))
 
 (setup gud
-  (:when-loaded
-    (add-to-list 'meow-mode-state-list '(gud-mode . insert))))
+  (:after meow
+    (:option (prepend meow-mode-state-list) '(gud-mode . insert))))
 
 
 (setup json-mode

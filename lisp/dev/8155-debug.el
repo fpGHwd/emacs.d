@@ -369,25 +369,28 @@ Bind this to a prefix key in your init file, e.g.:
 Or use individual bindings directly.")
 
 ;; GUD-mode specific bindings
-(with-eval-after-load 'gud
-  (define-key gud-mode-map (kbd "C-c C-c") #'8155-gud-continue)
-  (define-key gud-mode-map (kbd "C-c C-n") #'8155-gud-next)
-  (define-key gud-mode-map (kbd "C-c C-s") #'8155-gud-step)
-  (define-key gud-mode-map (kbd "C-c C-b") #'8155-gud-break-here)
-  (define-key gud-mode-map (kbd "C-c C-p") #'8155-gud-print-var)
-  (define-key gud-mode-map (kbd "C-c C-t") #'8155-gud-backtrace)
-  (define-key gud-mode-map (kbd "C-c C-l") #'8155-gud-info-locals)
-  (define-key gud-mode-map (kbd "C-c C-z") #'8155-gud-set-scheduler-locking))
+(setup gud
+  (:bind
+   "C-c C-c" #'8155-gud-continue
+   "C-c C-n" #'8155-gud-next
+   "C-c C-s" #'8155-gud-step
+   "C-c C-b" #'8155-gud-break-here
+   "C-c C-p" #'8155-gud-print-var
+   "C-c C-t" #'8155-gud-backtrace
+   "C-c C-l" #'8155-gud-info-locals
+   "C-c C-z" #'8155-gud-set-scheduler-locking))
 
 ;; Dired bindings
-(with-eval-after-load 'dired
-  (define-key dired-mode-map (kbd "C-c P") #'8155-dired-adb-push)
-  (define-key dired-mode-map (kbd "C-c p") #'8155-dired-adb-push-nativetest))
+(setup dired
+  (:bind
+   "C-c P" #'8155-dired-adb-push
+   "C-c p" #'8155-dired-adb-push-nativetest))
 
 ;; C/C++ mode bindings for compilation
-(add-hook 'c-mode-common-hook
+(setup cc-mode
+  (:hooks c-mode-common-hook
           (lambda ()
-            (local-set-key (kbd "C-c c") #'8155-compile-module)))
+            (local-set-key (kbd "C-c c") #'8155-compile-module))))
 
 ;; ---------------------------------------------------------------------------
 ;; 7. Optional: gdb-many-windows setup

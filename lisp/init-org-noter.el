@@ -163,10 +163,10 @@
 (setup org-noter
   (:option org-noter-doc-split-fraction '(0.7 . 0.3)
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
+  (:hooks org-noter-parse-document-property-hook
+          (:hook-options +wd/org-noter-resolve-calibre-document :depth 10))
   (:when-loaded
-    (+wd/calibredb-configure-opds)
-    (add-hook 'org-noter-parse-document-property-hook
-              #'+wd/org-noter-resolve-calibre-document 10)))
+    (+wd/calibredb-configure-opds)))
 
 (setup org
   (:hooks org-after-todo-state-change-hook +wd/org-noter-update-calibre-progress)

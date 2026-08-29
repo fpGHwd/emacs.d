@@ -1,12 +1,12 @@
 ;;; init-lookup.el --- Search and dictionary configuration -*- lexical-binding: t; -*-
 
 (setup doom
-  (:when-loaded
-    (map! :leader
-          (:prefix ("z" . "Wang Ding defining")
-           :desc "Reading via Calibre" "r" #'calibredb
-           :desc "Write a new blog"    "B" #'blog-post
-           :desc "Search org by tags" "Q" #'+wd/org-search-by-tags))))
+  (:with-map doom-leader-map
+    (:bind
+     "z" (cons "Wang Ding defining" (make-sparse-keymap))
+     "z r" (cons "Reading via Calibre" #'calibredb)
+     "z B" (cons "Write a new blog" #'blog-post)
+     "z Q" (cons "Search org by tags" #'+wd/org-search-by-tags))))
 
 (provide 'init-lookup)
 ;;; init-lookup.el ends here

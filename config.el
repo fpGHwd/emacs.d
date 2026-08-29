@@ -1,16 +1,18 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
-;; Add path
-(add-load-path! "lisp/" "lisp/dev")
+;; Bootstrap setup before loading the project-local setup extensions.
+(require 'setup)
+(setup emacs
+  (:option (prepend* load-path)
+           (list (expand-file-name "lisp" doom-user-dir)
+                 (expand-file-name "lisp/dev" doom-user-dir))))
 
 ;; From Lucius
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
 ;; (setq debug-on-error t)
 (defconst *is-mac* (eq system-type 'darwin))
 (defconst *is-linux* (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
-(defconst *org-path* "~/org/")
 (defconst *golden-ratio* (/ (- (sqrt 5) 1) 2))
-;; Font family constants live in init-fonts.el.
 
 ;; infrastructure
 (require 'init-setup)
@@ -49,7 +51,3 @@
 (require 'init-llm)
 (require 'init-mail)
 (require 'init-telega)
-
-;; machine specific
-(when (string= (system-name) "ubuntu2204")
-  (require '8155-debug))

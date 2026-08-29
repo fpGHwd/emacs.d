@@ -1,7 +1,6 @@
 ;;; init-org.el --- Org-mode core configuration -*- lexical-binding: t; -*-
 
-(setq org-directory "~/org/org/current")
-(setq +wd/seven-year-life 7) ;; 七年一生
+(defconst +wd/seven-year-life 7) ;; 七年一生
 
 (defun my--diary-chinese-anniversary (lunar-month lunar-day &optional year mark)
   (if year
@@ -28,46 +27,76 @@
   (:hooks
    org-mode-hook mixed-pitch-mode
    org-mode-hook (lambda ()
-                   (setq org-agenda-start-day "-1d"
-                         org-agenda-span 4))
-   org-mode-hook (lambda ()
                    (when (org-property-values "GPTEL_SYSTEM")
                      (gptel-mode)
                      (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))
    org-mode-hook (lambda () (flycheck-mode -1)))
 
   (:option
-   ;; https://emacs-china.org/t/topic/1551/15
-   system-time-locale "C"
+   org-directory "~/org/org/current"
    org-log-done 'time
    org-archive-location "~/org/org/current/archive.org.bak::* From %s"
-   org-id-locations-file (expand-file-name "org-id-locations" doom-cache-dir)
-   org-crypt-key "ggwdwhu@gmail.com"
    org-image-actual-width 600
    org-deadline-warning-days 7
    org-format-latex-options
    '(:foreground auto :background default :scale 1.5 :html-foreground "Black"
      :html-background "Transparent" :html-scale 1.0 :matchers
      ("begin" "$1" "$" "$$" "\\(" "\\["))
-   org-journal-dir "~/org/journal"
-   rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")
-   org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
-   diary-file (expand-file-name "etc/diary" doom-user-dir)
-   org-agenda-include-diary t
    org-agenda-files (let ((year-number (string-to-number (format-time-string "%Y")))
                           (files '("~/org/beorg/")))
                       (dotimes (offset (1+ +wd/seven-year-life))
                         (let ((year-str (number-to-string (- year-number offset))))
                           (push (concat "~/org/org/" year-str) files)
                           (push (concat "~/org/noter/" year-str) files)))
-                      files)
-   org-agenda-show-inherited-tags 'always
-   org-agenda-sorting-strategy
-   '((agenda habit-down time-up urgency-down category-keep)
-     (todo urgency-down category-keep)
-     (tags urgency-down timestamp-down category-keep) (search alpha-up))
-   org-refile-targets '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1))
-   org-timer-default-timer 25)
+                      files))
+
+  (:with-feature org-id
+    (:option org-id-locations-file
+             (expand-file-name "org-id-locations" doom-cache-dir)))
+
+  (:with-feature org-crypt
+    (:option org-crypt-key "ggwdwhu@gmail.com"))
+
+  (:with-feature org-journal
+    (:option org-journal-dir "~/org/journal"))
+
+  (:with-feature elfeed-org
+    (:option rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")))
+
+  (:with-feature org-agenda
+    (:option
+     org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
+     org-agenda-include-diary t
+     org-agenda-show-inherited-tags 'always
+     org-agenda-sorting-strategy
+     '((agenda habit-down time-up urgency-down category-keep)
+       (todo urgency-down category-keep)
+       (tags urgency-down timestamp-down category-keep) (search alpha-up))))
+
+  ;; FIX: need to be fixed
+  (:hooks doom-after-modules-config-hook
+          (lambda ()
+            (setq org-journal-dir "~/org/journal"
+                  rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")
+                  ;; org-agenda-start-day "-1d"
+                  ;; org-agenda-span 4
+                  )
+            (:with-map org-mode-map
+              (:bind
+               (kbd (concat doom-localleader-alt-key " i"))
+               (cons "Insert a item" #'org-insert-item)
+               (kbd (concat doom-localleader-alt-key " y"))
+               (cons "Copy org link" #'+wd/org-link-copy)
+               (kbd (concat doom-localleader-alt-key " N"))
+               (cons "Toggle narrow to subtree"
+                     #'org-toggle-narrow-to-subtree)))))
+
+  (:with-feature org-refile
+    (:option org-refile-targets
+             '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1))))
+
+  (:with-feature org-timer
+    (:option org-timer-default-timer 25))
 
   (:with-feature org-attach
     (:option
@@ -76,6 +105,9 @@
 
   (:with-feature calendar
     (:option
+     ;; https://emacs-china.org/t/topic/1551/15
+     system-time-locale "C"
+     diary-file (expand-file-name "etc/diary" doom-user-dir)
      calendar-mark-diary-entries-flag t
      calendar-week-start-day 1
      calendar-latitude 31.108024
@@ -83,17 +115,27 @@
 
   (:with-feature cal-china-x
     (:when-loaded
-      (setq mark-holidays-in-calendar t)
-      (setq cal-china-x-important-holidays cal-china-x-chinese-holidays)
-      (setq cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节")))
-      (setq calendar-holidays
-            (append cal-china-x-important-holidays
-                    cal-china-x-general-holidays))))
+      (:option
+       mark-holidays-in-calendar t
+       cal-china-x-important-holidays cal-china-x-chinese-holidays
+       cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节"))
+       calendar-holidays (append cal-china-x-important-holidays
+                                 cal-china-x-general-holidays))))
 
   (:with-feature so-long
-    (:when-loaded
-      (add-to-list 'doom-file-lines-threshold-alist
-                   '("\\.org\\'" . 50000))))
+    (:option (prepend doom-file-lines-threshold-alist)
+             '("\\.org\\'" . 50000)))
+
+  (:with-feature ob-haskell
+    (:option org-babel-haskell-command "ghci"))
+
+  (:with-feature org-latex-impatient
+    (:hooks org-mode-hook org-latex-impatient-mode)
+    (:option
+     org-latex-impatient-border-color "#666699"
+     org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
+
+  (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
 
   (:face org-block ((t (:inherit fixed-pitch))))
   (:face org-code ((t (:inherit (shadow fixed-pitch)))))
@@ -109,29 +151,17 @@
   (:face org-verbatim ((t (:inherit (shadow fixed-pitch)))))
 
   (:when-loaded
-    (add-to-list 'org-tags-exclude-from-inheritance "roam-agenda")
-    (add-to-list 'org-file-apps '("\\.drawio\\'" . "/opt/drawio/drawio %s"))
-    (add-to-list 'org-file-apps '("\\.minder\\'" . "/usr/bin/minder %s"))
+    (:option
+     (prepend org-tags-exclude-from-inheritance) "roam-agenda"
+     (prepend org-file-apps) '("\\.drawio\\'" . "/opt/drawio/drawio %s")
+     (prepend org-file-apps) '("\\.minder\\'" . "/usr/bin/minder %s"))
     (org-babel-do-load-languages
      'org-babel-load-languages
      '((jupyter . t)
        (gnuplot . t)
        (plantuml . t)
        (haskell . t)
-       (makefile . t)))
-    (setq org-babel-haskell-command "ghci")
-    (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
-    (:with-feature org-latex-impatient
-      (:hooks org-mode-hook org-latex-impatient-mode)
-      (:option
-       max-image-size nil
-       org-latex-impatient-border-color "#666699"
-       org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
-    (map! :map org-mode-map
-          :localleader
-          :desc "Insert a item"       "i" #'org-insert-item
-          :desc "Copy org link"      "y" #'+wd/org-link-copy
-          :desc "Toggle narrow to subtree" "N" #'org-toggle-narrow-to-subtree)))
+       (makefile . t)))))
 
 (provide 'init-org)
 ;;; init-org.el ends here

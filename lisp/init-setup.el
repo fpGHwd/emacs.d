@@ -17,18 +17,49 @@
 
 (setup-define :advice
   (lambda (symbol where function)
-    `(advice-add ',symbol ,where ,function))
+    (let (name)
+      (when (eq (car-safe function) :named)
+        (unless (= (length function) 3)
+          (error "Invalid named advice: %S" function))
+        (setq name (cadr function)
+              function (caddr function)))
+      (setq function
+            (cond ((eq (car-safe function) 'function) function)
+                  ((eq (car-safe function) 'quote) `#',(cadr function))
+                  ((symbolp function) `#',function)
+                  (t function)))
+      `(advice-add ',symbol ,where ,function
+                   ,@(when name `('((name . ,name)))))))
   :documentation "Add a piece of advice on a function.
+Use `(:named NAME FUNCTION)' to give anonymous advice a stable reload identity.
 See `advice-add' for more details."
   :after-loaded t
-  :debug '(sexp sexp function-form)
-  :ensure '(nil nil func)
+  :debug '(sexp sexp sexp)
   :repeatable t)
 
 (setup-define :hooks
   (lambda (hook func)
-    `(add-hook ',hook #',func))
-  :documentation "Add pairs of hooks."
+    (let (depth local)
+      (when (eq (car-safe func) :hook-options)
+        (let ((options (cddr func)))
+          (unless (cadr func)
+            (error "Missing hook function: %S" func))
+          (let ((tail options))
+            (while tail
+              (unless (and (memq (car tail) '(:depth :local)) (cdr tail))
+                (error "Invalid hook options: %S" options))
+              (setq tail (cddr tail))))
+          (setq depth (plist-get options :depth)
+                local (plist-get options :local)
+                func (cadr func))))
+      (setq func
+            (cond ((eq (car-safe func) 'function) func)
+                  ((eq (car-safe func) 'quote) `#',(cadr func))
+                  ((symbolp func) `#',func)
+                  (t func)))
+      `(add-hook ',hook ,func ,depth ,local)))
+  :documentation "Add pairs of hooks.
+Use `(:hook-options FUNCTION :depth DEPTH :local LOCAL)' for optional arguments."
   :repeatable t)
 
 (setup-define :after

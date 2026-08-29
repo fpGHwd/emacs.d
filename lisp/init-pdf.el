@@ -13,8 +13,10 @@
 
 (defvar +wd/pdf-sync-remote-python-file nil
   "Local Python script sent to `+wd/pdf-sync-ssh-host' for annotation replay.")
-(setq +wd/pdf-sync-remote-python-file
-      (expand-file-name "etc/pdf-sync/replay.py" doom-user-dir))
+
+(setup pdf-sync
+  (:option +wd/pdf-sync-remote-python-file
+           (expand-file-name "etc/pdf-sync/replay.py" doom-user-dir)))
 
 (defun +wd/pdf-sync--remote-python-code ()
   "Return the remote annotation replay Python script."
@@ -172,18 +174,24 @@
   (:hooks
    pdf-view-mode-hook +wd/pdf-view-enable-midnight-for-dark-theme
    pdf-view-mode-hook +wd/pdf-sync-enable-query-on-kill)
-  (:when-loaded
-    (map! :map pdf-view-mode-map
-          :localleader
-          (:prefix ("a" . "annotate")
-                   "t" #'pdf-annot-add-text-annotation
-                   "h" #'pdf-annot-add-highlight-markup-annotation
-                   "u" #'pdf-annot-add-underline-markup-annotation
-                   "s" #'pdf-annot-add-squiggly-markup-annotation
-                   "x" #'pdf-annot-add-strikeout-markup-annotation
-                   "l" #'pdf-annot-list-annotations
-                   "d" #'pdf-annot-delete
-                   "S" #'+wd/pdf-annot-sync))))
+  (:with-map pdf-view-mode-map
+    (:bind
+     (kbd (concat doom-localleader-alt-key " a"))
+     (cons "annotate" (make-sparse-keymap))
+     (kbd (concat doom-localleader-alt-key " a t"))
+     #'pdf-annot-add-text-annotation
+     (kbd (concat doom-localleader-alt-key " a h"))
+     #'pdf-annot-add-highlight-markup-annotation
+     (kbd (concat doom-localleader-alt-key " a u"))
+     #'pdf-annot-add-underline-markup-annotation
+     (kbd (concat doom-localleader-alt-key " a s"))
+     #'pdf-annot-add-squiggly-markup-annotation
+     (kbd (concat doom-localleader-alt-key " a x"))
+     #'pdf-annot-add-strikeout-markup-annotation
+     (kbd (concat doom-localleader-alt-key " a l"))
+     #'pdf-annot-list-annotations
+     (kbd (concat doom-localleader-alt-key " a d")) #'pdf-annot-delete
+     (kbd (concat doom-localleader-alt-key " a S")) #'+wd/pdf-annot-sync)))
 
 (provide 'init-pdf)
 ;;; init-pdf.el ends here

@@ -135,17 +135,21 @@
    telega-server-logfile (file-truename "~/.config/telega/telega-server.log")
    telega-temp-dir (file-truename "~/.config/telega/temp")
    telega-database-dir (file-truename "~/.config/telega/")
-  telega-server-libs-prefix (getenv "LIBTDLIB_ROOT"))
+   telega-server-libs-prefix (getenv "LIBTDLIB_ROOT"))
   (:defer (telega t))
   (:when-loaded
-    (setq +wd/telegram-cmb-chat-id
-          (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
-    (dolist (mode '(telega-root-mode telega-chat-mode
-                    telega-image-mode telega-webpage-mode))
-      (add-to-list 'meow-mode-state-list (cons mode 'motion)))
+    (:option +wd/telegram-cmb-chat-id
+             (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
+    (:with-feature meow
+      (:option
+       (prepend* meow-mode-state-list)
+       '((telega-webpage-mode . motion)
+         (telega-image-mode . motion)
+         (telega-chat-mode . motion)
+         (telega-root-mode . motion))))
     ;; (:hooks telega-chat-mode-hook (lambda () (company-mode -1)))
 
-    (add-hook 'telega-chat-update-hook #'+wd/telega-chat-update-function)
+    (:hooks telega-chat-update-hook +wd/telega-chat-update-function)
     ;; telea font
     (when (member "Sarasa Mono SC" (font-family-list))
       (make-face 'telega-align-by-sarasa)

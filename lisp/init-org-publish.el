@@ -98,8 +98,7 @@
     (:hooks
      org-export-before-processing-hook my/org-insert-updated-timestamp
      org-publish-after-publishing-hook +wd/handle-image-in-markdown)
-    (:when-loaded
-      (add-to-list 'file-coding-system-alist '("\\.bib" . utf-8)))))
+    (:option (prepend file-coding-system-alist) '("\\.bib" . utf-8))))
 
 (provide 'init-org-publish)
 ;;; init-org-publish.el ends here

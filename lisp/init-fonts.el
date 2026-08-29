@@ -9,12 +9,6 @@
 ;  (unless (find-font (font-spec :family family))
 ;    (error "Required font is not installed: %s" family)))
 
-;; override doom font setting
-(setq doom-font (font-spec :family +wd/code-font :weight 'regular :size +wd/font-size))
-(setq doom-variable-pitch-font (font-spec :family +wd/cjk-font :weight 'regular))
-;; Keep symbol fallback in a true monospace family for line-drawing tables.
-(setq doom-unicode-font (font-spec :family +wd/fixed-cjk-font))
-
 (defun +wd/apply-cjk-fontset (&optional frame)
   "Apply configured CJK fonts to FRAME."
   (with-selected-frame (or frame (selected-frame))
@@ -29,6 +23,11 @@
     (set-fontset-font t '(#x2190 . #x21FF) (font-spec :family +wd/fixed-cjk-font))))
 
 (setup fonts
+  (:option
+   doom-font (font-spec :family +wd/code-font :weight 'regular :size +wd/font-size)
+   doom-variable-pitch-font (font-spec :family +wd/cjk-font :weight 'regular)
+   ;; Keep symbol fallback in a true monospace family for line-drawing tables.
+   doom-unicode-font (font-spec :family +wd/fixed-cjk-font))
   (:hooks
    after-setting-font-hook +wd/apply-cjk-fontset
    server-after-make-frame-hook +wd/apply-cjk-fontset))
