@@ -6,8 +6,7 @@
    gptel-default-mode 'org-mode
    gptel-crowdsourced-prompts-file
    (expand-file-name "etc/gptel/gptel-crowdsourced-prompts.csv" doom-user-dir)
-   gptel-model "gpt-5-mini"
-   gptel-api-key #'gptel-api-key-from-auth-source))
+   gptel-model 'gpt-5.5))
 
 ;; claude-code
 (setup claude-code-ide

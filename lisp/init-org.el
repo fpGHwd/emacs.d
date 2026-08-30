@@ -103,7 +103,7 @@
              '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1))))
 
   (:with-feature org-timer
-    (:setopt org-timer-default-timer 25))
+    (:setopt org-timer-default-timer "25"))
 
   (:with-feature org-attach
     (:setopt

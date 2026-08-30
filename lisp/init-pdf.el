@@ -162,7 +162,7 @@
       (pdf-view-midnight-minor-mode 1))))
 
 (setup pdf-tools
-  (:setopt
+  (:option
    pdf-view-continuous t
    pdf-annot-default-annotation-properties
    '((t         (label . "Wang Ding"))
