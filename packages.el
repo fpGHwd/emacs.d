@@ -65,3 +65,6 @@
   :recipe (:host github :repo "emacs-tree-sitter/treesit-fold"))
 
 (package! emamux)
+
+(package! codex-ide
+  :recipe (:host github :repo "dgillis/emacs-codex-ide"))
