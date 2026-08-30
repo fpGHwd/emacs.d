@@ -1,4 +1,4 @@
-;;; init-editor.el --- Modal editing (meow), lispy, and clipboard -*- lexical-binding: t; -*-
+;;; init-editor.el --- Editing, keymaps, and clipboard -*- lexical-binding: t; -*-
 
 (defun surround-quotes (&optional arg)
   "Enclose following ARG sexps in quotes."
@@ -28,6 +28,17 @@
        (apply-partially #'xclip-set-selection 'CLIPBOARD)
        interprogram-paste-function
        (apply-partially #'xclip-get-selection 'CLIPBOARD)))))
+
+(defvar-keymap +wd/leader-map
+  :doc "Personal Doom leader commands."
+  "r" (cons "Reading via Calibre" #'calibredb)
+  "B" (cons "Write a new blog" #'blog-post)
+  "Q" (cons "Search org by tags" #'+wd/org-search-by-tags)
+  "e" (cons "Elfeed" #'elfeed))
+
+(setup doom
+  (:with-map doom-leader-map
+    (:bind "z" (cons "melt's-utils" +wd/leader-map))))
 
 (setup meow
   (:hooks doom-after-reload-hook (lambda ()

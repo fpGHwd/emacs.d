@@ -29,7 +29,6 @@
 (require 'init-vcs)
 (require 'init-term)
 (require 'init-remote)
-(require 'init-lookup)
 
 ;; org ecosystem
 (require 'init-org)
