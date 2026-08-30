@@ -19,6 +19,8 @@
   :recipe (:host github
            :repo "wasamasa/nov.el"
            :branch "master"))
+(package! mpv)
+(package! elfeed-tube-mpv)
 
 (package! calibredb
   :recipe (:host nil

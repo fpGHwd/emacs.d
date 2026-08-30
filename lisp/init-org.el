@@ -32,6 +32,13 @@
                      (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))
    org-mode-hook (lambda () (flycheck-mode -1)))
 
+  (when (string= (system-name) "nixos-nuc")
+    (:hooks org-mode-hook
+            (lambda ()
+              (when (and buffer-file-name
+                         (string= (file-name-extension buffer-file-name) "org"))
+                (auto-revert-mode 1)))))
+
   (:setopt
    org-directory "~/org/org/current"
    org-log-done 'time
