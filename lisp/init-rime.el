@@ -38,7 +38,7 @@
       "Around advice: call ORIG-FUN, on error fall back to `make lib' via nix-shell."
       (condition-case nil
           (funcall orig-fun)
-        (user-error
+        (error
          (let ((default-directory (file-name-as-directory rime--root)))
            (unless (zerop (shell-command "nix-shell -p gcc gnumake --run \"make clean && make lib\""))
              (user-error "Rime fallback compile failed"))))))
