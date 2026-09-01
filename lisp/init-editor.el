@@ -18,17 +18,6 @@
    ((derived-mode-p 'org-mode) (call-interactively #'+org/dwim-at-point))
    (t (ignore))))
 
-(when (eq system-type 'gnu/linux)
-  (setup (:require xclip)
-    (:setopt xclip-method 'wl-copy
-             xclip-program "wl-copy")
-    (:when-loaded
-      (:setopt
-       interprogram-cut-function
-       (apply-partially #'xclip-set-selection 'CLIPBOARD)
-       interprogram-paste-function
-       (apply-partially #'xclip-get-selection 'CLIPBOARD)))))
-
 (defvar-keymap +wd/leader-map
   :doc "Personal Doom leader commands."
   "r" (cons "Reading via Calibre" #'calibredb)
