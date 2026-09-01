@@ -54,12 +54,7 @@
      '("q" . quit-window))
     (:hooks prog-mode-hook
             (lambda ()
-              (meow-normal-define-key '("%" . lispy-different))))
-    (:advice meow-cheatsheet :after
-             (lambda (&rest _)
-               (when-let ((buf (get-buffer "*Meow Cheatsheet*")))
-                 (with-current-buffer buf
-                   (buffer-face-set :family "Sarasa Fixed SC")))))))
+              (meow-normal-define-key '("%" . lispy-different))))))
 
 (provide 'init-editor)
 ;;; init-editor.el ends here

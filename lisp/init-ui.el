@@ -3,7 +3,8 @@
 (setup doom
   (:hooks doom-load-theme-hook
           (lambda ()
-            (set-face-attribute 'font-lock-comment-face t :slant 'italic))))
+            (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
+            (set-face-attribute 'font-lock-keyword-face nil :slant 'italic))))
 
 (if (eq system-type 'darwin)
     (setup frame
