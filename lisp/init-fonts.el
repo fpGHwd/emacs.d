@@ -1,6 +1,6 @@
 ;;; init-fonts.el --- Fonts and CJK fontset -*- lexical-binding: t; -*-
 
-(defconst +wd/code-font "Fira Code")
+(defconst +wd/code-font "Sarasa Fixed SC")
 (defconst +wd/cjk-font "Sarasa Gothic SC")
 (defconst +wd/fixed-cjk-font "Sarasa Fixed SC")
 (defconst +wd/font-size (if (string= (system-name) "ubuntu2204") 16 15))
