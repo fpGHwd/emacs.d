@@ -161,8 +161,23 @@
     (when (color-dark-p rgb)
       (pdf-view-midnight-minor-mode 1))))
 
+(defun +wd/pdf-tools-build-server-with-nix-env (orig-fun &rest args)
+  "Call ORIG-FUN with the Nix profile build environment for epdfinfo."
+  (let* ((profile (file-truename "~/.nix-profile/"))
+         (process-environment (copy-sequence process-environment)))
+    (setenv "AUTOBUILD_NIX_SHELL" "true")
+    (setenv "CC" "cc")
+    (setenv "CPATH" nil)
+    (setenv "ACLOCAL_PATH" (expand-file-name "share/aclocal" profile))
+    (setenv "PKG_CONFIG_PATH"
+            (mapconcat #'identity
+                       (list (expand-file-name "lib/pkgconfig" profile)
+                             (expand-file-name "share/pkgconfig" profile))
+                       path-separator))
+    (apply orig-fun args)))
+
 (setup pdf-tools
-  (:option
+  (:setopt
    pdf-view-continuous t
    pdf-annot-default-annotation-properties
    '((t         (label . "Wang Ding"))
@@ -191,7 +206,9 @@
      (kbd (concat doom-localleader-alt-key " a l"))
      #'pdf-annot-list-annotations
      (kbd (concat doom-localleader-alt-key " a d")) #'pdf-annot-delete
-     (kbd (concat doom-localleader-alt-key " a S")) #'+wd/pdf-annot-sync)))
+     (kbd (concat doom-localleader-alt-key " a S")) #'+wd/pdf-annot-sync))
+  (:advice pdf-tools-build-server :around
+           #'+wd/pdf-tools-build-server-with-nix-env))
 
 (provide 'init-pdf)
 ;;; init-pdf.el ends here

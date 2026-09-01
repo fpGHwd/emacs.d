@@ -4,7 +4,7 @@
 
 (setup rime
   (:bind "M-\\" rime-force-enable)
-  (:option
+  (:setopt
    default-input-method "rime"
    rime-posframe-properties (list :background-color "#666699"
                                   :foreground-color "#dcdccc"
@@ -14,9 +14,8 @@
                              rime-predicate-current-uppercase-letter-p
                              +pyim-probe-telega-msg)
    rime-inline-ascii-trigger 'shift-l
-   rime-emacs-module-header-root (concat (getenv "LIBEMACS_ROOT") "/include")
-   rime-librime-root (getenv "LIBRIME_ROOT")
-   module-file-suffix (getenv "MODULE_FILE_SUFFIX")
+   rime-emacs-module-header-root (expand-file-name "../../../../include" data-directory)
+   rime-librime-root (file-truename "~/.nix-profile/")
    rime-user-data-dir (file-truename "~/.config/rime"))
   (:when-loaded
     (:hooks
@@ -32,18 +31,7 @@
     (defun +pyim-probe-telega-msg ()
       "Return if current point is at a telega button."
       (s-contains? "telega" (symbol-name (get-text-property (point)
-                                                            'category))))
-
-    (defun +my/rime-compile-module-advice (orig-fun &rest _)
-      "Around advice: call ORIG-FUN, on error fall back to `make lib' via nix-shell."
-      (condition-case nil
-          (funcall orig-fun)
-        (error
-         (let ((default-directory (file-name-as-directory rime--root)))
-           (unless (zerop (shell-command "nix-shell -p gcc gnumake --run \"make clean && make lib\""))
-             (user-error "Rime fallback compile failed"))))))
-
-    (:advice rime-compile-module :around #'+my/rime-compile-module-advice)))
+                                                            'category))))))
 
 (provide 'init-rime)
 ;;; init-rime.el ends here

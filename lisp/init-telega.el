@@ -135,7 +135,7 @@
    telega-server-logfile (file-truename "~/.config/telega/telega-server.log")
    telega-temp-dir (file-truename "~/.config/telega/temp")
    telega-database-dir (file-truename "~/.config/telega/")
-   telega-server-libs-prefix (getenv "LIBTDLIB_ROOT"))
+   telega-server-libs-prefix (file-truename "~/.nix-profile/"))
   (:defer (telega t))
   (:when-loaded
     (:setopt +wd/telegram-cmb-chat-id
