@@ -44,6 +44,24 @@
      meow-cursor-type-beacon 'box
      meow-cursor-type-insert 'bar
      (prepend meow-mode-state-list) '(inferior-emacs-lisp-mode . insert))
+    (:with-feature vterm
+      (:setopt (prepend meow-mode-state-list) '(vterm-mode . insert)))
+    (:with-feature gud
+      (:setopt (prepend meow-mode-state-list) '(gud-mode . insert)))
+    (:with-feature haskell-interactive-mode
+      (:setopt (prepend meow-mode-state-list)
+               '(haskell-interactive-mode . insert)))
+    (:with-feature calibredb-search
+      (:setopt (prepend meow-mode-state-list)
+               '(calibredb-search-mode . motion)))
+    (:with-feature telega-modes
+      (when (string= (system-name) "nixos-nuc")
+        (:setopt
+         (prepend* meow-mode-state-list)
+         '((telega-webpage-mode . motion)
+           (telega-image-mode . motion)
+           (telega-chat-mode . motion)
+           (telega-root-mode . motion)))))
     (:with-feature frame
       (:setopt blink-cursor-interval 0.618))
     (meow-normal-define-key

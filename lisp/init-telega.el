@@ -140,13 +140,6 @@
   (:when-loaded
     (:setopt +wd/telegram-cmb-chat-id
              (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
-    (:with-feature meow
-      (:setopt
-       (prepend* meow-mode-state-list)
-       '((telega-webpage-mode . motion)
-         (telega-image-mode . motion)
-         (telega-chat-mode . motion)
-         (telega-root-mode . motion))))
     ;; (:hooks telega-chat-mode-hook (lambda () (company-mode -1)))
 
     (:hooks telega-chat-update-hook +wd/telega-chat-update-function)

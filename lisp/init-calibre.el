@@ -191,9 +191,6 @@
    calibredb-format-all-the-icons t
    calibredb-format-icons-in-terminal t
    calibredb-format-nerd-icons t)
-  (:after meow
-    (:setopt (prepend meow-mode-state-list)
-             '(calibredb-search-mode . motion)))
   (:hooks calibredb-search-mode-hook
           (lambda () (buffer-face-set :family "Sarasa Fixed SC")))
   (:bind-into calibredb-search "n" #'+wd/calibredb-org-noter)

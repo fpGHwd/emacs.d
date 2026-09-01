@@ -25,9 +25,6 @@
              (arxml-breadcrumb-mode 1)))))
 
 (setup haskell-ts-mode
-  (:after meow
-    (:setopt (prepend meow-mode-state-list)
-             '(haskell-interactive-mode . insert)))
   (:bind
    (kbd (concat doom-localleader-alt-key " b")) #'haskell-interactive-bring
    (kbd (concat doom-localleader-alt-key " B")) #'haskell-process-cabal-build

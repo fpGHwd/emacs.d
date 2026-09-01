@@ -39,11 +39,6 @@
    initial-scratch-message
    (concat ";; Happy hacking, " user-full-name " - Emacs ♥ you!\n\n")))
 
-(setup gud
-  (:after meow
-    (:setopt (prepend meow-mode-state-list) '(gud-mode . insert))))
-
-
 (setup json-mode
   (:match-file "Android.bp"))
 

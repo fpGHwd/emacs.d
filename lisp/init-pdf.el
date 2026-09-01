@@ -177,7 +177,7 @@
     (apply orig-fun args)))
 
 (setup pdf-tools
-  (:setopt
+  (:option
    pdf-view-continuous t
    pdf-annot-default-annotation-properties
    '((t         (label . "Wang Ding"))

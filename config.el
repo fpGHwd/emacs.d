@@ -3,6 +3,12 @@
 ;; Bootstrap project-local setup directives before using them.
 (load (expand-file-name "lisp/init-setup" doom-user-dir))
 
+;; Cache the contents of `load-path' directories so library loading can skip
+;; directories that cannot contain the requested file (Emacs 31+).
+(when (boundp 'load-path-filter-function)
+  (setq load-path-filter-function
+        #'load-path-filter-cache-directory-files))
+
 (setup emacs
   (:setopt (prepend* load-path)
            (list (expand-file-name "lisp" doom-user-dir)
@@ -27,7 +33,6 @@
 ;; dev tools
 (require 'init-langs)
 (require 'init-vcs)
-(require 'init-term)
 (require 'init-remote)
 
 ;; org ecosystem

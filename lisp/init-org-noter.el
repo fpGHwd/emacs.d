@@ -162,7 +162,6 @@
 
 (setup org-noter
   (:setopt org-noter-doc-split-fraction '(0.7 . 0.3)
-           org-noter-always-create-frame 'reuse-if-free
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:hooks org-noter-parse-document-property-hook
           (:hook-options +wd/org-noter-resolve-calibre-document :depth 10))
