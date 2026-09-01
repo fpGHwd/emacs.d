@@ -9,6 +9,10 @@
       "ledger -f %(ledger-file) --monthly register ^Expenses:Living:Food")
      ("stock current"
       "ledger -f %(ledger-file) bal ^Assets:Stock -V")
+     ("stock net return"
+      "ledger -f %(ledger-file) bal -V Assets:Stock Assets:Investment:Cash")
+     ("stock monthly return"
+      "ledger -f %(ledger-file) reg -V Assets:Stock Assets:Investment:Cash --monthly --collapse")
      ("month period"
       "ledger -f %(ledger-file) balance --period %(month) ^Income ^Expenses")
      ("year budget"
