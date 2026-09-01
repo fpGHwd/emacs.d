@@ -80,23 +80,15 @@
        (todo urgency-down category-keep)
        (tags urgency-down timestamp-down category-keep) (search alpha-up))))
 
-  ;; FIX: need to be fixed
-  (:hooks doom-after-modules-config-hook
-          (lambda ()
-            (setq org-journal-dir "~/org/journal"
-                  rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")
-                  ;; org-agenda-start-day "-1d"
-                  ;; org-agenda-span 4
-                  )
-            (:with-map org-mode-map
-              (:bind
-               (kbd (concat doom-localleader-alt-key " i"))
-               (cons "Insert a item" #'org-insert-item)
-               (kbd (concat doom-localleader-alt-key " y"))
-               (cons "Copy org link" #'+wd/org-link-copy)
-               (kbd (concat doom-localleader-alt-key " N"))
-               (cons "Toggle narrow to subtree"
-                     #'org-toggle-narrow-to-subtree)))))
+  (:with-map org-mode-map
+    (:bind
+     (kbd (concat doom-localleader-alt-key " i"))
+     (cons "Insert a item" #'org-insert-item)
+     (kbd (concat doom-localleader-alt-key " y"))
+     (cons "Copy org link" #'+wd/org-link-copy)
+     (kbd (concat doom-localleader-alt-key " N"))
+     (cons "Toggle narrow to subtree"
+           #'org-toggle-narrow-to-subtree)))
 
   (:with-feature org-refile
     (:setopt org-refile-targets
