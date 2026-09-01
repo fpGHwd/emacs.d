@@ -1,12 +1,12 @@
 ;;; init-ui.el --- Theme, frame, and visual appearance -*- lexical-binding: t; -*-
 
-(defun +wd/italicize-theme-faces ()
-  "Italicize comment and keyword faces after theme load."
-  (set-face-attribute 'font-lock-comment-face t :slant 'italic)
-  (set-face-attribute 'font-lock-keyword-face t :slant 'italic))
-
 (setup doom
-  (:hooks doom-load-theme-hook +wd/italicize-theme-faces))
+  (:hooks doom-load-theme-hook
+          (lambda ()
+            (set-face-attribute 'font-lock-comment-face t :slant 'italic) ;; keyword need not to be italic
+            ;; gnus-group-news-low-empty → gnus-group-news-low → gnus-group-news-low-empty
+            ;; cycle breaks `make-frame' in Emacs 31
+            (set-face-attribute 'gnus-group-news-low-empty t :inherit nil))))
 
 (if (eq system-type 'darwin)
     (setup frame
