@@ -189,24 +189,16 @@
   (:hooks
    pdf-view-mode-hook +wd/pdf-view-enable-midnight-for-dark-theme
    pdf-view-mode-hook +wd/pdf-sync-enable-query-on-kill)
-  (:with-map pdf-view-mode-map
-    (:bind
-     (kbd (concat doom-localleader-alt-key " a"))
-     (cons "annotate" (make-sparse-keymap))
-     (kbd (concat doom-localleader-alt-key " a t"))
-     #'pdf-annot-add-text-annotation
-     (kbd (concat doom-localleader-alt-key " a h"))
-     #'pdf-annot-add-highlight-markup-annotation
-     (kbd (concat doom-localleader-alt-key " a u"))
-     #'pdf-annot-add-underline-markup-annotation
-     (kbd (concat doom-localleader-alt-key " a s"))
-     #'pdf-annot-add-squiggly-markup-annotation
-     (kbd (concat doom-localleader-alt-key " a x"))
-     #'pdf-annot-add-strikeout-markup-annotation
-     (kbd (concat doom-localleader-alt-key " a l"))
-     #'pdf-annot-list-annotations
-     (kbd (concat doom-localleader-alt-key " a d")) #'pdf-annot-delete
-     (kbd (concat doom-localleader-alt-key " a S")) #'+wd/pdf-annot-sync))
+  (:bind-into pdf-view
+    "a" (cons "annotate" (make-sparse-keymap))
+    "a t" (cons "text" #'pdf-annot-add-text-annotation)
+    "a h" (cons "hilight" #'pdf-annot-add-highlight-markup-annotation)
+    "a u" (cons "underline" #'pdf-annot-add-underline-markup-annotation)
+    "a s" (cons "squiggly" #'pdf-annot-add-squiggly-markup-annotation)
+    "a x" (cons "strikeout" #'pdf-annot-add-strikeout-markup-annotation)
+    "a l" (cons "list" #'pdf-annot-list-annotations)
+    "a d" (cons "delete" #'pdf-annot-delete)
+    "a S" (cons "sync" #'+wd/pdf-annot-sync))
   (:advice pdf-tools-build-server :around
            #'+wd/pdf-tools-build-server-with-nix-env))
 
