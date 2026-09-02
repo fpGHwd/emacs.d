@@ -19,6 +19,8 @@
 ;; (setq debug-on-error t)
 (defconst *is-mac* (eq system-type 'darwin))
 (defconst *is-linux* (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
+(defconst *is-home* (string= (system-name) "nixos-nuc"))
+(defconst *is-work* (string= (system-name) "ubuntu2204"))
 (defconst *golden-ratio* (/ (- (sqrt 5) 1) 2))
 
 ;; infrastructure

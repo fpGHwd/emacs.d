@@ -3,11 +3,11 @@
 (defconst +wd/code-font "Sarasa Fixed SC")
 (defconst +wd/cjk-font "Sarasa Gothic SC")
 (defconst +wd/fixed-cjk-font "Sarasa Fixed SC")
-(defconst +wd/font-size (if (string= (system-name) "ubuntu2204") 16 15))
+(defconst +wd/font-size (if *is-work* 18 15))
 
-;(dolist (family (list +wd/code-font +wd/cjk-font +wd/fixed-cjk-font))
-;  (unless (find-font (font-spec :family family))
-;    (error "Required font is not installed: %s" family)))
+(dolist (family (list +wd/code-font +wd/cjk-font +wd/fixed-cjk-font))
+ (unless (find-font (font-spec :family family))
+   (error "Required font is not installed: %s" family)))
 
 (defun +wd/apply-cjk-fontset (&optional frame)
   "Apply configured CJK fonts to FRAME."
