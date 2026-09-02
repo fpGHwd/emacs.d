@@ -30,18 +30,58 @@
           (throw 'resolved nil))))))
 
 (defun +wd/org-noter-current-node-operation ()
-  "Run the operation selected under the PDF Org localleader map."
+  "Run an Org operation on the node at the PDF viewport center."
   (interactive)
-  (let ((operation last-command-event)
-        (session (and (boundp 'org-noter--session) org-noter--session)))
+  (let* ((operation last-command-event)
+         (session (and (boundp 'org-noter--session) org-noter--session))
+         doc-window center-location target target-location ignore-until-level)
     (unless (and session
                  (org-noter--valid-session session)
                  (eq (org-noter--session-doc-buffer session) (current-buffer)))
       (user-error "No active Org-noter session for this document"))
+    (setq doc-window
+          (get-buffer-window (org-noter--session-doc-buffer session)
+                             (org-noter--session-frame session)))
+    (unless (window-live-p doc-window)
+      (user-error "Org-noter document window is not visible"))
     (save-selected-window
+      (with-selected-window doc-window
+        (let ((percentage
+               (org-noter--conv-page-scroll-percentage
+                (+ (window-vscroll) (/ (window-body-height) 2.0))
+                (+ (window-hscroll) (/ (window-body-width) 2.0)))))
+          (setq center-location
+                (cons (image-mode-window-get 'page) percentage))))
       (with-current-buffer (org-noter--session-notes-buffer session)
         (save-excursion
-          (org-back-to-heading t)
+          (org-element-map
+              (org-element-contents (org-noter--parse-root))
+              org-noter--note-search-element-type
+            (lambda (element)
+              (let ((level (org-element-property :level element))
+                    (doc-file (org-noter--doc-file-property element))
+                    (location (org-noter--parse-location-property element)))
+                (when (and ignore-until-level
+                           (<= level ignore-until-level))
+                  (setq ignore-until-level nil))
+                (cond
+                 (ignore-until-level)
+                 ((and doc-file
+                       (not (string= doc-file
+                                     (org-noter--session-property-text session))))
+                  (setq ignore-until-level level))
+                 ((and location
+                       (org-noter--compare-locations
+                        '<= location center-location)
+                       (or (not target-location)
+                           (org-noter--compare-locations
+                            '>= location target-location)))
+                  (setq target element
+                        target-location location)))))
+            nil nil org-noter--note-search-no-recurse)
+          (unless target
+            (user-error "No Org-noter node at or before PDF viewport center"))
+          (goto-char (org-element-property :begin target))
           (when (memq operation '(?o ?x))
             (unless (and (org-clocking-p)
                          (marker-buffer org-clock-hd-marker)
