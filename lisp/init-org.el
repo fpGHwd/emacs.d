@@ -65,7 +65,8 @@
     (:setopt org-crypt-key "ggwdwhu@gmail.com"))
 
   (:with-feature org-journal
-    (:setopt org-journal-dir "~/org/journal"))
+    (:setopt org-journal-dir "~/org/journal"
+             org-journal-enable-agenda-integration t))
 
   (:with-feature elfeed-org
     (:setopt rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")))
