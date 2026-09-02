@@ -29,6 +29,37 @@
         (unless (org-up-heading-safe)
           (throw 'resolved nil))))))
 
+(defun +wd/org-noter-current-node-operation ()
+  "Run the operation selected under the PDF Org localleader map."
+  (interactive)
+  (let ((operation last-command-event)
+        (session (and (boundp 'org-noter--session) org-noter--session)))
+    (unless (and session
+                 (org-noter--valid-session session)
+                 (eq (org-noter--session-doc-buffer session) (current-buffer)))
+      (user-error "No active Org-noter session for this document"))
+    (save-selected-window
+      (with-current-buffer (org-noter--session-notes-buffer session)
+        (save-excursion
+          (org-back-to-heading t)
+          (when (memq operation '(?o ?x))
+            (unless (and (org-clocking-p)
+                         (marker-buffer org-clock-hd-marker)
+                         (eq (marker-buffer org-clock-hd-marker)
+                             (or (buffer-base-buffer) (current-buffer)))
+                         (= (marker-position org-clock-hd-marker) (point)))
+              (user-error "Current node is not clocked in%s"
+                          (if (org-clocking-p)
+                              (format "; active clock: %s" org-clock-heading)
+                            ""))))
+          (pcase operation
+            (?i (org-clock-in))
+            (?o (org-clock-out))
+            (?d (org-todo 'done))
+            (?t (call-interactively #'org-todo))
+            (?x (org-clock-cancel))
+            (_ (error "Unsupported Org-noter operation: %S" operation))))))))
+
 (defun +wd/org-noter-update-calibre-progress ()
   "Update Calibre Read column from org-noter or Calibre viewer progress."
   (interactive)
@@ -163,6 +194,13 @@
 (setup org-noter
   (:setopt org-noter-doc-split-fraction '(0.7 . 0.3)
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
+  (:bind-into pdf-view
+    "z" (cons "Melt's Sugar for PDF" (make-sparse-keymap))
+    "z i" (cons "clock in" #'+wd/org-noter-current-node-operation)
+    "z o" (cons "clock out" #'+wd/org-noter-current-node-operation)
+    "z d" (cons "done" #'+wd/org-noter-current-node-operation)
+    "z t" (cons "todo" #'+wd/org-noter-current-node-operation)
+    "z x" (cons "cancel clock" #'+wd/org-noter-current-node-operation))
   (:hooks org-noter-parse-document-property-hook
           (:hook-options +wd/org-noter-resolve-calibre-document :depth 10))
   (:when-loaded
