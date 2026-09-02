@@ -18,17 +18,6 @@
    ((derived-mode-p 'org-mode) (call-interactively #'+org/dwim-at-point))
    (t (ignore))))
 
-(defvar-keymap +wd/leader-map
-  :doc "Personal Doom leader commands."
-  "r" (cons "Reading via Calibre" #'calibredb)
-  "B" (cons "Write a new blog" #'blog-post)
-  "Q" (cons "Search org by tags" #'+wd/org-search-by-tags)
-  "e" (cons "Elfeed" #'elfeed))
-
-(setup doom
-  (:with-map doom-leader-map
-    (:bind "z" (cons "melt's-utils" +wd/leader-map))))
-
 (setup meow
   (:hooks doom-after-reload-hook (lambda ()
             (setq meow-cursor-type-normal 'box
