@@ -72,14 +72,17 @@
     (:setopt rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")))
 
   (:with-feature org-agenda
-    (:setopt
-     org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
-     org-agenda-include-diary t
-     org-agenda-show-inherited-tags 'always
-     org-agenda-sorting-strategy
-     '((agenda habit-down time-up urgency-down category-keep)
-       (todo urgency-down category-keep)
-       (tags urgency-down timestamp-down category-keep) (search alpha-up))))
+    (:when-loaded
+      (:only-if
+       *is-home*
+       (:setopt org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
+                org-agenda-include-diary t))
+      (:setopt
+       org-agenda-show-inherited-tags 'always
+       org-agenda-sorting-strategy
+       '((agenda habit-down time-up urgency-down category-keep)
+         (todo urgency-down category-keep)
+         (tags urgency-down timestamp-down category-keep) (search alpha-up)))))
 
   (:with-map org-mode-map
     (:bind
@@ -104,14 +107,15 @@
      org-attach-sync-delete-empty-dir t))
   
   (:with-feature calendar
-    (:setopt
-     ;; https://emacs-china.org/t/topic/1551/15
-     system-time-locale "C"
-     diary-file (expand-file-name "etc/diary" doom-user-dir)
-     calendar-mark-diary-entries-flag t
-     calendar-week-start-day 1
-     calendar-latitude 31.108024
-     calendar-longitude 121.372327))
+    (:when-loaded
+      (:setopt
+       ;; https://emacs-china.org/t/topic/1551/15
+       system-time-locale "C"
+       diary-file (expand-file-name "etc/diary" doom-user-dir)
+       calendar-mark-diary-entries-flag t
+       calendar-week-start-day 1
+       calendar-latitude 31.108024
+       calendar-longitude 121.372327)))
 
   (:with-feature cal-china-x
     (:when-loaded
