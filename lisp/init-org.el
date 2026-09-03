@@ -73,16 +73,14 @@
 
   (:with-feature org-agenda
     (:when-loaded
-      (:only-if
-       *is-home*
-       (:setopt org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
-                org-agenda-include-diary t))
-      (:setopt
-       org-agenda-show-inherited-tags 'always
-       org-agenda-sorting-strategy
-       '((agenda habit-down time-up urgency-down category-keep)
-         (todo urgency-down category-keep)
-         (tags urgency-down timestamp-down category-keep) (search alpha-up)))))
+       (:setopt
+        org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
+        org-agenda-include-diary t
+        org-agenda-show-inherited-tags 'always
+        org-agenda-sorting-strategy
+        '((agenda habit-down time-up urgency-down category-keep)
+          (todo urgency-down category-keep)
+          (tags urgency-down timestamp-down category-keep) (search alpha-up)))))
 
   (:with-map org-mode-map
     (:bind
