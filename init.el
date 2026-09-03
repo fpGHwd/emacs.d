@@ -79,7 +79,7 @@
        vc                  ; version-control and Emacs, sitting in a tree
 
        :term
-       ;; eshell              ; the elisp shell that works everywhere
+       ;;eshell            ; the elisp shell that works everywhere
        ;;shell             ; simple shell REPL for Emacs
        ;;term              ; basic terminal emulator for Emacs
        vterm               ; the best terminal emulation in Emacs
@@ -195,7 +195,7 @@
        calendar
        ;;emms
        everywhere          ; *leave* Emacs!? You must be joking
-       ;;irc               ; how neckbeards socialize
+       irc                 ; how neckbeards socialize
        (rss +org +youtube)          ; emacs as an RSS reader
 
        :config

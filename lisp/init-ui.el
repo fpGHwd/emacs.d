@@ -33,5 +33,34 @@
     (:with-map dirvish-mode-map
       (:bind "TAB" dirvish-subtree-toggle))))
 
+;; identity
+(setup emacs
+  (:setopt
+   user-full-name "Wang Ding"
+   user-mail-address "ggwdwhu@gmail.com"
+   initial-scratch-message
+   (concat ";; Happy hacking, " user-full-name " - Emacs ♥ you!\n\n")))
+
+
+(setup auth-source
+  (:setopt auth-sources (list (expand-file-name "etc/authinfo.gpg" doom-user-dir))))
+
+(setup recentf
+  (:when-loaded ;; use `:when-loaded` to override doom's configuration
+    (:setopt recentf-max-saved-items 2000)))
+
+(setup uniquify
+  (:also-load persp-mode)
+  (:when-loaded
+    (:setopt uniquify-buffer-name-style 'forward
+             uniquify-separator "/")
+    ;; override persp config uniquify and set priority
+    (:hooks persp-mode-hook
+            (:hook-options
+             (lambda ()
+               (setq uniquify-buffer-name-style 'forward
+                     uniquify-separator "/"))
+             :depth t))))
+
 (provide 'init-ui)
 ;;; init-ui.el ends here

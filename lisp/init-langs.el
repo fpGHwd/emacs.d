@@ -18,11 +18,17 @@
   (:when-loaded
     (require 'nix-format)))
 
-(setup nxml-mode
-  (:also-load lib-arxml)
-  (:hook (lambda ()
-           (when (string-suffix-p ".arxml" (or buffer-file-name ""))
-             (arxml-breadcrumb-mode 1)))))
+;; (setup nxml-mode
+;;   (:also-load lib-arxml)
+;;   (:hook (lambda ()
+;;            (when (string-suffix-p ".arxml" (or buffer-file-name ""))
+;;              (arxml-breadcrumb-mode 1)))))
+
+(setup json-mode
+  (:match-file "Android.bp"))
+
+(setup makefile-mode
+  (:match-file "Makefile.*"))
 
 (setup haskell-ts-mode
   (:bind

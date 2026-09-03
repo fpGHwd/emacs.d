@@ -1,18 +1,14 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
-;; Bootstrap project-local setup directives before using them.
-(load (expand-file-name "lisp/init-setup" doom-user-dir))
-
 ;; Cache the contents of `load-path' directories so library loading can skip
 ;; directories that cannot contain the requested file (Emacs 31+).
 (when (boundp 'load-path-filter-function)
   (setq load-path-filter-function
         #'load-path-filter-cache-directory-files))
 
-(setup emacs
-  (:setopt (prepend* load-path)
-           (list (expand-file-name "lisp" doom-user-dir)
-                 (expand-file-name "lisp/dev" doom-user-dir))))
+(dolist (dir (list (expand-file-name "lisp" doom-user-dir)
+                   (expand-file-name "lisp/dev" doom-user-dir)))
+  (add-to-list 'load-path dir))
 
 ;; From Lucius
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
@@ -23,8 +19,8 @@
 (defconst *is-work* (string= (system-name) "ubuntu2204"))
 (defconst *golden-ratio* (/ (- (sqrt 5) 1) 2))
 
-;; infrastructure
-(require 'init-session)
+;; Bootstrap project-local setup directives before using them.
+(load (expand-file-name "lisp/init-setup" doom-user-dir))
 
 ;; appearance & input
 (require 'init-fonts)
