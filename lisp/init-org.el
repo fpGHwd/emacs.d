@@ -102,7 +102,7 @@
     (:setopt
      org-attach-id-dir (file-truename "~/.local/org-attach")
      org-attach-sync-delete-empty-dir t))
-
+  
   (:with-feature calendar
     (:setopt
      ;; https://emacs-china.org/t/topic/1551/15
@@ -136,8 +136,11 @@
      org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
   (:with-feature org-download
-    (:only-if *is-work*
-              (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s")))
+    (:only-if
+     *is-work*
+     (:when-loaded
+       ;; use keyword `:when-loaded` to override doom's config
+       (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s")))) 
   
   (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
 

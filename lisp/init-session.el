@@ -6,7 +6,9 @@
 
 ;; recent files
 (setup recentf
-  (:setopt recentf-max-saved-items 2000))
+  (:when-loaded
+    ;; use `:when-loaded` to override doom's config
+    (:setopt recentf-max-saved-items 2000)))
 
 (setup uniquify
   (:setopt uniquify-buffer-name-style 'forward
