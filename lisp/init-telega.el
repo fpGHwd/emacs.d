@@ -128,28 +128,28 @@
 
 ;; https://github.com/zevlg/telega.el
 (setup telega
-  (:only-if (string= (system-name) "nixos-nuc"))
-  (:setopt
-   telega-cache-dir (file-truename "~/.config/telega/cache")
-   telega-directory (file-truename "~/.config/telega/")
-   telega-server-logfile (file-truename "~/.config/telega/telega-server.log")
-   telega-temp-dir (file-truename "~/.config/telega/temp")
-   telega-database-dir (file-truename "~/.config/telega/")
-   telega-server-libs-prefix (file-truename "~/.nix-profile/"))
-  (:defer (telega t))
-  (:when-loaded
-    (:setopt +wd/telegram-cmb-chat-id
-             (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
-    ;; (:hooks telega-chat-mode-hook (lambda () (company-mode -1)))
+  (when *is-home*
+    (:setopt
+     telega-cache-dir (file-truename "~/.config/telega/cache")
+     telega-directory (file-truename "~/.config/telega/")
+     telega-server-logfile (file-truename "~/.config/telega/telega-server.log")
+     telega-temp-dir (file-truename "~/.config/telega/temp")
+     telega-database-dir (file-truename "~/.config/telega/")
+     telega-server-libs-prefix (file-truename "~/.nix-profile/"))
+    (:defer (telega t))
+    (:when-loaded
+      (:setopt +wd/telegram-cmb-chat-id
+               (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
+      ;; (:hooks telega-chat-mode-hook (lambda () (company-mode -1)))
 
-    (:hooks telega-chat-update-hook +wd/telega-chat-update-function)
-    ;; telea font
-    (when (member "Sarasa Mono SC" (font-family-list))
-      (make-face 'telega-align-by-sarasa)
-      (set-face-font 'telega-align-by-sarasa (font-spec :family "Sarasa Mono SC"))
-      (:hooks
-       telega-chat-mode-hook (lambda () (buffer-face-set 'telega-align-by-sarasa))
-       telega-root-mode-hook (lambda () (buffer-face-set 'telega-align-by-sarasa))))))
+      (:hooks telega-chat-update-hook +wd/telega-chat-update-function)
+      ;; telea font
+      (when (member "Sarasa Mono SC" (font-family-list))
+        (make-face 'telega-align-by-sarasa)
+        (set-face-font 'telega-align-by-sarasa (font-spec :family "Sarasa Mono SC"))
+        (:hooks
+         telega-chat-mode-hook (lambda () (buffer-face-set 'telega-align-by-sarasa))
+         telega-root-mode-hook (lambda () (buffer-face-set 'telega-align-by-sarasa)))))))
 
 (provide 'init-telega)
 ;;; init-telega.el ends here

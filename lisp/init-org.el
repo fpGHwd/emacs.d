@@ -73,14 +73,17 @@
 
   (:with-feature org-agenda
     (:when-loaded
-       (:setopt
-        org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
-        org-agenda-include-diary t
-        org-agenda-show-inherited-tags 'always
-        org-agenda-sorting-strategy
-        '((agenda habit-down time-up urgency-down category-keep)
-          (todo urgency-down category-keep)
-          (tags urgency-down timestamp-down category-keep) (search alpha-up)))))
+      (when *is-home*
+        (:setopt
+         org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
+         org-agenda-include-diary t))
+      (:setopt
+       org-agenda-show-inherited-tags 'always
+       org-agenda-sorting-strategy
+       '((agenda habit-down time-up urgency-down category-keep)
+         (todo urgency-down category-keep)
+         (tags urgency-down timestamp-down category-keep)
+         (search alpha-up)))))
 
   (:with-map org-mode-map
     (:bind
@@ -138,10 +141,9 @@
      org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
   (:with-feature org-download
-    (:when-loaded ;; use keyword `:when-loaded` to override doom's config
-      (:only-if
-       *is-work*
-       (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s")))) 
+    (when *is-work*
+      (:when-loaded    ;; use keyword `:when-loaded` to override doom's config
+        (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s")))) 
 
   (:with-feature dired
     (:when-loaded

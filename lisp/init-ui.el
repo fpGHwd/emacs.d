@@ -18,15 +18,15 @@
 
 (setup frame
   (:setopt (prepend default-frame-alist) '(fullscreen . fullboth))
-  (:only-if *is-mac*)
-  (:hooks
-   emacs-startup-hook
-   (lambda ()
-     (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))
-   after-make-frame-functions
-   (lambda (_frame)
-     (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen)))
-  (:setopt mac-frame-tabbing nil))
+  (when *is-mac*
+    (:hooks
+     emacs-startup-hook
+     (lambda ()
+       (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))
+     after-make-frame-functions
+     (lambda (_frame)
+       (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen)))
+    (:setopt mac-frame-tabbing nil)))
 
 (setup dirvish
   (:when-loaded
