@@ -55,7 +55,7 @@ Ordinary documentation under `docs/` and `.codebuddy/skills/emacs-utils/referenc
 - **Guard `pcase`-derived paths**: When a variable is set via `pcase system-name` and not all hosts are covered, wrap it with `(when var ...)` before inserting into lists.
 - **Named hook and advice targets**: Keep package connection points in `init-*.el`, but make targets named functions when they need stable removal or debugging. Do not introduce named functions solely for static option assignments; use an anonymous `:hooks` callback. Give anonymous reload-sensitive advice a stable identity with `:advice` and `(:named NAME FUNCTION)`.
 - **Use setup list and key primitives**: Replace declarative `add-to-list` calls with `:setopt` plus `prepend`/`prepend*`, preserving order. Express Doom leader maps with `:with-map` and localleader prefixes with `:bind` key expressions so key descriptions remain intact without `map!`.
-- **Fonts are required local dependencies**: Font configuration should name required installed fonts directly and fail loudly when absent. No fallback chains or warning-only missing-font behavior.
+- **Fonts are required local dependencies**: Font configuration should name required installed fonts directly and fail loudly when absent. Validate availability only in a graphical frame, where `find-font` has a font backend; a daemon or terminal frame returning nil is not evidence that a font is missing. No fallback chains or warning-only missing-font behavior.
 - **Do not define config functions from personal Org Babel blocks at startup**: Functions used by Emacs configuration must live in `lisp/`.
 - **Calibre rules** (field-scoped overrides, annotated copies, independent progress tracking): See `.codebuddy/skills/emacs-utils/references/emacs_config_coding_rules.org`
 
@@ -90,18 +90,3 @@ When instructions are ambiguous:
 - Validate in live runtime before editing persistent files
 - Apply **Root cause before repair** strictly
 - **Documentation target**: Unless explicitly directed, add troubleshooting notes to the relevant skill's `references/` directory. Do not write project-level docs without explicit direction.
-
-## Skill References
-
-For concrete how-to, workflows, troubleshooting, and detailed reference material, consult the `emacs-utils` skill:
-
-- **Skill location**: `~/.codebuddy/skills/emacs-utils/`
-- **Repository structure & module layout**: `references/emacs_config_coding_rules.org`
-- **Coding rules checklist**: `references/emacs_config_review_checklist.org`
-- **Doom/keymap/meow specifics**: `references/emacs_keymap_common_sense.org`, `references/emacs_keymap_leader.org`, `references/emacs_keymap_prefix_overview.org`
-- **Troubleshooting & incidents**: `references/emacs_troubleshooting.org`
-- **Elisp core concepts**: `references/elisp_concepts_guide.org`
-- **Workflow templates & snippets**: `references/project_templates_and_snippets.org`
-- **Edebug**: `references/emacs_edebug.org`
-- **GDB C-level debugging**: `references/emacs_gdb_debug.org`
-- **Open files via emacsclient**: `SKILL.md` Section 1
