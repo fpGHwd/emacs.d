@@ -1,10 +1,5 @@
 ;;; init-fonts.el --- Fonts and CJK fontset -*- lexical-binding: t; -*-
 
-(defconst +wd/code-font "Sarasa Fixed SC")
-(defconst +wd/cjk-font "Sarasa Gothic SC")
-(defconst +wd/fixed-cjk-font "Sarasa Fixed SC")
-(defconst +wd/font-size (if *is-work* 18 16))
-
 (unless *is-home*
   (dolist (family (list +wd/code-font +wd/cjk-font +wd/fixed-cjk-font))
     (unless (find-font (font-spec :family family))

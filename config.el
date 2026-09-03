@@ -18,6 +18,11 @@
 (defconst *is-home* (string= (system-name) "nixos-nuc"))
 (defconst *is-work* (string= (system-name) "ubuntu2204"))
 (defconst *golden-ratio* (/ (- (sqrt 5) 1) 2))
+;; fonts
+(defconst +wd/code-font "Sarasa Fixed SC")
+(defconst +wd/cjk-font "Sarasa Gothic SC")
+(defconst +wd/fixed-cjk-font "Sarasa Fixed SC")
+(defconst +wd/font-size (if *is-work* 18 16))
 
 ;; Bootstrap project-local setup directives before using them.
 (load (expand-file-name "lisp/init-setup" doom-user-dir))
