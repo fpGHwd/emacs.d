@@ -16,6 +16,20 @@
             (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)))
   (:setopt initial-major-mode 'lisp-interaction-mode))
 
+;; Doom Themes reverses these faces, which forms a cycle when Gnus is loaded
+;; after the theme on Emacs 31.
+(setup gnus
+  (custom-set-faces
+   '(gnus-group-news-low-empty
+     ((t (:inherit gnus-group-mail-1-empty :weight normal)))))
+  (:when-loaded
+    (face-spec-set 'gnus-group-news-low
+                   '((t (:inherit gnus-group-mail-1 :weight bold)))
+                   'face-defface-spec)
+    (face-spec-set 'gnus-group-news-low-empty
+                   '((t (:inherit gnus-group-mail-1-empty :weight normal)))
+                   'face-defface-spec)))
+
 (setup frame
   (:setopt (prepend default-frame-alist) '(fullscreen . fullboth))
   (when *is-mac*
