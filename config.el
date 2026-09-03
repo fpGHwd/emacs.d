@@ -47,7 +47,6 @@
 
 ;; reading
 (require 'init-calibre)
-(require 'init-ebooks)
 (require 'init-pdf)
 (require 'init-org-noter)
 
