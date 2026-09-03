@@ -55,6 +55,9 @@
       (:setopt blink-cursor-interval 0.618))
     (meow-normal-define-key
      '("RET" . +wd/meow-normal-return)
+     '("TAB" menu-item "" org-cycle
+       :filter (lambda (command)
+                 (and (derived-mode-p 'org-mode) command)))
      '("DEL" . ignore)
      '("C-o" . better-jumper-jump-backward)
      '("=" . indent-region)
