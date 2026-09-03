@@ -1,11 +1,7 @@
 ;;; init-mail.el --- Email (mu4e) -*- lexical-binding: t; -*-
 
-(defvar +wd/mu4e-index-timer nil "Timer for auto-updating mu4e index.")
-
 (setup mu4e
-  (:setopt (prepend load-path)
-           (expand-file-name
-            "~/.nix-profile/share/emacs/site-lisp/elpa/mu4e-1.12.13"))
+  (defvar +wd/mu4e-index-timer nil "Timer for auto-updating mu4e index.")
   (:with-function (mu4e mu4e-compose-new)
     (:autoload-this "mu4e" nil t))
   (:hooks mu4e-main-mode-hook
