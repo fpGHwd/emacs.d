@@ -138,7 +138,7 @@
        telega-temp-dir (file-truename "~/.config/telega/temp")
        telega-database-dir (file-truename "~/.config/telega/")
        telega-server-libs-prefix (file-truename "~/.nix-profile/"))
-      (:setopt +wd/telegram-cmb-chat-id
+      (setq +wd/telegram-cmb-chat-id
                (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
       (:hooks telega-chat-update-hook +wd/telega-chat-update-function
               telega-chat-mode-hook (lambda () (company-mode -1)))
