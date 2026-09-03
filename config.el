@@ -42,7 +42,6 @@
 (require 'init-org-agenda)
 (require 'init-org-capture)
 (require 'init-org-publish)
-(require 'init-biblio)
 (require 'init-roam)
 
 ;; reading

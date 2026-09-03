@@ -251,5 +251,14 @@
   (:when-loaded
     (+wd/calibredb-configure-opds)))
 
+;; /home/wd/.config/emacs/sources/doom+/modules/tools/biblio/README.org
+(setup citar
+  (:setopt
+   citar-bibliography '("~/org/refs/zotero.bib"
+                        "~/org/refs/calibredb.bib"
+                        "~/org/refs/user.bib")
+   citar-library-paths '("~/.cache/calibre/downloads/")
+   citar-notes-paths '("~/org/roam/notes/")))
+
 (provide 'init-org-noter)
 ;;; init-org-noter.el ends here
