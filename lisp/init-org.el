@@ -136,11 +136,14 @@
      org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
   (:with-feature org-download
+    (:when-loaded ;; use keyword `:when-loaded` to override doom's config
+      (:only-if
+       *is-work*
+       (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s")))) 
+
+  (:with-feature dired
     (:when-loaded
-      ;; use keyword `:when-loaded` to override doom's config
-      (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s"))) 
-  
-  (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
+      (:bind "C-c C-x a" #'org-attach-dired-to-subtree)))
 
   (:face org-block ((t (:inherit fixed-pitch))))
   (:face org-code ((t (:inherit (shadow fixed-pitch)))))
