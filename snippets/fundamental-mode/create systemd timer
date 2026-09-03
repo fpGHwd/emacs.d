@@ -1,4 +1,5 @@
 # -*- mode: snippet -*-
+# uuid: 46ade308-427c-494d-84dd-cd5ec356462d
 # name: create systemd timer
 # key: cst
 # --
