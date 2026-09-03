@@ -135,6 +135,10 @@
      org-latex-impatient-border-color "#666699"
      org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
+  (:with-feature org-download
+    (:only-if *is-work*
+              (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s")))
+  
   (:bind-into dired "C-c C-x a" #'org-attach-dired-to-subtree)
 
   (:face org-block ((t (:inherit fixed-pitch))))
