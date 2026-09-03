@@ -24,143 +24,144 @@
     (message (concat "Copied URL: " url))))
 
 (setup org
-  (:hooks
-   org-mode-hook mixed-pitch-mode
-   org-mode-hook (lambda ()
-                   (when (org-property-values "GPTEL_SYSTEM")
-                     (gptel-mode)
-                     (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))
-   org-mode-hook (lambda () (flycheck-mode -1)))
+  (:when-loaded
+    (:hooks
+     org-mode-hook mixed-pitch-mode
+     org-mode-hook (lambda ()
+                     (when (org-property-values "GPTEL_SYSTEM")
+                       (gptel-mode)
+                       (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))
+     org-mode-hook (lambda () (flycheck-mode -1)))
 
-  (when (string= (system-name) "nixos-nuc")
-    (:hooks org-mode-hook
-            (lambda ()
-              (when (and buffer-file-name
-                         (string= (file-name-extension buffer-file-name) "org"))
-                (auto-revert-mode 1)))))
+    (when (string= (system-name) "nixos-nuc")
+      (:hooks org-mode-hook
+              (lambda ()
+                (when (and buffer-file-name
+                           (string= (file-name-extension buffer-file-name) "org"))
+                  (auto-revert-mode 1)))))
 
-  (:setopt
-   org-directory "~/org/org/current"
-   org-log-done 'time
-   org-archive-location "~/org/org/current/archive.org.bak::* From %s"
-   org-image-actual-width 600
-   org-deadline-warning-days 7
-   org-format-latex-options
-   '(:foreground auto :background default :scale 1.5 :html-foreground "Black"
-     :html-background "Transparent" :html-scale 1.0 :matchers
-     ("begin" "$1" "$" "$$" "\\(" "\\["))
-   org-agenda-files (let ((year-number (string-to-number (format-time-string "%Y")))
-                          (files '("~/org/beorg/")))
-                      (dotimes (offset (1+ +wd/seven-year-life))
-                        (let ((year-str (number-to-string (- year-number offset))))
-                          (push (concat "~/org/org/" year-str) files)
-                          (push (concat "~/org/noter/" year-str) files)))
-                      files))
+    (:setopt
+     org-directory "~/org/org/current"
+     org-log-done 'time
+     org-archive-location "~/org/org/current/archive.org.bak::* From %s"
+     org-image-actual-width 600
+     org-deadline-warning-days 7
+     org-format-latex-options
+     '(:foreground auto :background default :scale 1.5 :html-foreground "Black"
+       :html-background "Transparent" :html-scale 1.0 :matchers
+       ("begin" "$1" "$" "$$" "\\(" "\\["))
+     org-agenda-files (let ((year-number (string-to-number (format-time-string "%Y")))
+                            (files '("~/org/beorg/")))
+                        (dotimes (offset (1+ +wd/seven-year-life))
+                          (let ((year-str (number-to-string (- year-number offset))))
+                            (push (concat "~/org/org/" year-str) files)
+                            (push (concat "~/org/noter/" year-str) files)))
+                        files))
 
-  (:with-feature org-id
-    (:setopt org-id-locations-file
-             (expand-file-name "org-id-locations" doom-cache-dir)))
+    (:with-feature org-id
+      (:setopt org-id-locations-file
+               (expand-file-name "org-id-locations" doom-cache-dir)))
 
-  (:with-feature org-crypt
-    (:setopt org-crypt-key "ggwdwhu@gmail.com"))
+    (:with-feature org-crypt
+      (:setopt org-crypt-key "ggwdwhu@gmail.com"))
 
-  (:with-feature org-journal
-    (:setopt org-journal-dir "~/org/journal"
-             org-journal-enable-agenda-integration t))
+    (:with-feature org-journal
+      (:setopt org-journal-dir "~/org/journal"
+               org-journal-enable-agenda-integration t))
 
-  (:with-feature elfeed-org
-    (:setopt rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")))
+    (:with-feature elfeed-org
+      (:setopt rmh-elfeed-org-files '("~/org/elfeed/elfeed.org")))
 
-  (:with-feature org-agenda
-    (:when-loaded
-      (when *is-home*
+    (:with-feature org-agenda
+      (:when-loaded
+        (when *is-home*
+          (:setopt
+           org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
+           org-agenda-include-diary t))
         (:setopt
-         org-agenda-diary-file (expand-file-name "etc/diary" doom-user-dir)
-         org-agenda-include-diary t))
+         org-agenda-show-inherited-tags 'always
+         org-agenda-sorting-strategy
+         '((agenda habit-down time-up urgency-down category-keep)
+           (todo urgency-down category-keep)
+           (tags urgency-down timestamp-down category-keep)
+           (search alpha-up)))))
+
+    (:with-map org-mode-map
+      (:bind
+       (kbd (concat doom-localleader-alt-key " i"))
+       (cons "Insert a item" #'org-insert-item)
+       (kbd (concat doom-localleader-alt-key " y"))
+       (cons "Copy org link" #'+wd/org-link-copy)
+       (kbd (concat doom-localleader-alt-key " N"))
+       (cons "Toggle narrow to subtree"
+             #'org-toggle-narrow-to-subtree)))
+
+    (:with-feature org-refile
+      (:setopt org-refile-targets
+               '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1))))
+
+    (:with-feature org-timer
+      (:setopt org-timer-default-timer "25"))
+
+    (:with-feature org-attach
       (:setopt
-       org-agenda-show-inherited-tags 'always
-       org-agenda-sorting-strategy
-       '((agenda habit-down time-up urgency-down category-keep)
-         (todo urgency-down category-keep)
-         (tags urgency-down timestamp-down category-keep)
-         (search alpha-up)))))
-
-  (:with-map org-mode-map
-    (:bind
-     (kbd (concat doom-localleader-alt-key " i"))
-     (cons "Insert a item" #'org-insert-item)
-     (kbd (concat doom-localleader-alt-key " y"))
-     (cons "Copy org link" #'+wd/org-link-copy)
-     (kbd (concat doom-localleader-alt-key " N"))
-     (cons "Toggle narrow to subtree"
-           #'org-toggle-narrow-to-subtree)))
-
-  (:with-feature org-refile
-    (:setopt org-refile-targets
-             '((nil :maxlevel . 1) (org-agenda-files :maxlevel . 1))))
-
-  (:with-feature org-timer
-    (:setopt org-timer-default-timer "25"))
-
-  (:with-feature org-attach
-    (:setopt
-     org-attach-id-dir (file-truename "~/.local/org-attach")
-     org-attach-sync-delete-empty-dir t))
+       org-attach-id-dir (file-truename "~/.local/org-attach")
+       org-attach-sync-delete-empty-dir t))
   
-  (:with-feature calendar
-    (:when-loaded
+    (:with-feature calendar
+      (:when-loaded
+        (:setopt
+         ;; https://emacs-china.org/t/topic/1551/15
+         system-time-locale "C"
+         diary-file (expand-file-name "etc/diary" doom-user-dir)
+         calendar-mark-diary-entries-flag t
+         calendar-week-start-day 1
+         calendar-latitude 31.108024
+         calendar-longitude 121.372327)))
+
+    (:with-feature cal-china-x
+      (:when-loaded
+        (:setopt
+         mark-holidays-in-calendar t
+         cal-china-x-important-holidays cal-china-x-chinese-holidays
+         cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节"))
+         calendar-holidays (append cal-china-x-important-holidays
+                                   cal-china-x-general-holidays))))
+
+    (:with-feature so-long
+      (:setopt (prepend doom-file-lines-threshold-alist)
+               '("\\.org\\'" . 50000)))
+
+    (:with-feature ob-haskell
+      (:setopt org-babel-haskell-command "ghci"))
+
+    (:with-feature org-latex-impatient
+      (:hooks org-mode-hook org-latex-impatient-mode)
       (:setopt
-       ;; https://emacs-china.org/t/topic/1551/15
-       system-time-locale "C"
-       diary-file (expand-file-name "etc/diary" doom-user-dir)
-       calendar-mark-diary-entries-flag t
-       calendar-week-start-day 1
-       calendar-latitude 31.108024
-       calendar-longitude 121.372327)))
+       org-latex-impatient-border-color "#666699"
+       org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
-  (:with-feature cal-china-x
-    (:when-loaded
-      (:setopt
-       mark-holidays-in-calendar t
-       cal-china-x-important-holidays cal-china-x-chinese-holidays
-       cal-china-x-general-holidays '((holiday-lunar 1 15 "元宵节"))
-       calendar-holidays (append cal-china-x-important-holidays
-                                 cal-china-x-general-holidays))))
+    (:with-feature org-download
+      (when *is-work*
+        (:when-loaded ;; use keyword `:when-loaded` to override doom's config
+          (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s"))))
 
-  (:with-feature so-long
-    (:setopt (prepend doom-file-lines-threshold-alist)
-             '("\\.org\\'" . 50000)))
+    (:with-feature dired
+      (:when-loaded
+        (:bind "C-c C-x a" #'org-attach-dired-to-subtree)))
 
-  (:with-feature ob-haskell
-    (:setopt org-babel-haskell-command "ghci"))
-
-  (:with-feature org-latex-impatient
-    (:hooks org-mode-hook org-latex-impatient-mode)
-    (:setopt
-     org-latex-impatient-border-color "#666699"
-     org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
-
-  (:with-feature org-download
-    (when *is-work*
-      (:when-loaded    ;; use keyword `:when-loaded` to override doom's config
-        (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s")))) 
-
-  (:with-feature dired
-    (:when-loaded
-      (:bind "C-c C-x a" #'org-attach-dired-to-subtree)))
-
-  (:face org-block ((t (:inherit fixed-pitch))))
-  (:face org-code ((t (:inherit (shadow fixed-pitch)))))
-  (:face org-document-info ((t (:foreground "dark orange"))))
-  (:face org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
-  (:face org-indent ((t (:inherit (org-hide fixed-pitch)))))
-  (:face org-link ((t (:foreground "royal blue" :underline t))))
-  (:face org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-  (:face org-property-value ((t (:inherit fixed-pitch))))
-  (:face org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
-  (:face org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
-  (:face org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
-  (:face org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+    (:face org-block ((t (:inherit fixed-pitch))))
+    (:face org-code ((t (:inherit (shadow fixed-pitch)))))
+    (:face org-document-info ((t (:foreground "dark orange"))))
+    (:face org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+    (:face org-indent ((t (:inherit (org-hide fixed-pitch)))))
+    (:face org-link ((t (:foreground "royal blue" :underline t))))
+    (:face org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    (:face org-property-value ((t (:inherit fixed-pitch))))
+    (:face org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    (:face org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+    (:face org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+    (:face org-verbatim ((t (:inherit (shadow fixed-pitch))))))
 
   (:when-loaded
     (:setopt
