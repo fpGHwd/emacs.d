@@ -31,16 +31,13 @@
                    'face-defface-spec)))
 
 (setup frame
-  (:setopt (prepend default-frame-alist) '(fullscreen . fullboth))
-  (when *is-mac*
-    (:hooks
-     emacs-startup-hook
-     (lambda ()
-       (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen))
-     after-make-frame-functions
-     (lambda (_frame)
-       (run-at-time "0.5 sec" nil #'mac-toggle-frame-fullscreen)))
-    (:setopt mac-frame-tabbing nil)))
+  (:when-loaded
+    (:setopt (prepend default-frame-alist)
+             (if *is-mac*
+                 '(fullscreen . fullscreen)
+               '(fullscreen . fullboth)))
+    (when *is-mac*
+      (:setopt mac-frame-tabbing nil))))
 
 (setup dirvish
   (:when-loaded
