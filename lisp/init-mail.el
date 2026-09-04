@@ -12,16 +12,17 @@
   (:when-loaded
     (:setopt
      mu4e-mu-binary (executable-find "mu")
-     mu4e-get-mail-command "true")
-    (:with-feature sendmail
-      (:setopt
-       sendmail-program (executable-find "msmtp")
-       send-mail-function #'smtpmail-send-it))
-    (:with-feature message
-      (:setopt
-       message-sendmail-f-is-evil t
-       message-sendmail-extra-arguments '("--read-envelope-from")
-       message-send-mail-function #'message-send-mail-with-sendmail))))
+     mu4e-get-mail-command "true"))
+  (:with-feature smtpmail
+    (:setopt
+     smtpmail-smtp-server "smtp.gmail.com"
+     smtpmail-smtp-service 587
+     smtpmail-stream-type 'starttls
+     smtpmail-smtp-user user-mail-address
+     send-mail-function #'smtpmail-send-it))
+  (:with-feature message
+    (:setopt
+     message-send-mail-function #'smtpmail-send-it)))
 
 (provide 'init-mail)
 ;;; init-mail.el ends here
