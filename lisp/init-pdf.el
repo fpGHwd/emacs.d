@@ -5,7 +5,7 @@
 (require 'subr-x)
 (require 'init-calibre)
 
-(defvar +wd/pdf-sync-ssh-host "nixos-nuc"
+(defvar +wd/pdf-sync-ssh-host (if *is-work* "nixos-nuc-cf" "nixos-nuc")
   "SSH host that can access the Calibre library files.")
 
 (defvar +wd/pdf-sync-remote-library-root +wd/calibre-local-library-root

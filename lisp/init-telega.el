@@ -62,19 +62,18 @@
 (defun +wd/write-transactions (transaction-text)
   "Append TRANSACTION-TEXT to the ledger file unless already present."
   (with-mutex ledger-mutex
-    (when (string= (system-name) "nixos-nuc")
-      (with-temp-buffer
-        (insert-file-contents +wd/ledger-file-name)
-        (goto-char (point-max))
-        (let ((buffer-string (buffer-substring (point-min) (point-max)))
-              (dedup-keys (+wd/telega-transaction-dedup-keys transaction-text)))
-          (when (and dedup-keys
-                     (not (seq-some
-                           (lambda (key)
-                             (string-match-p (regexp-quote key) buffer-string))
-                           dedup-keys)))
-            (insert transaction-text)
-            (write-region (point-min) (point-max) +wd/ledger-file-name)))))))
+    (with-temp-buffer
+      (insert-file-contents +wd/ledger-file-name)
+      (goto-char (point-max))
+      (let ((buffer-string (buffer-substring (point-min) (point-max)))
+            (dedup-keys (+wd/telega-transaction-dedup-keys transaction-text)))
+        (when (and dedup-keys
+                   (not (seq-some
+                         (lambda (key)
+                           (string-match-p (regexp-quote key) buffer-string))
+                         dedup-keys)))
+          (insert transaction-text)
+          (write-region (point-min) (point-max) +wd/ledger-file-name))))))
 
 (defun +wd/creditcard-transaction (chat-text chat-date)
   "Return a ledger transaction parsed from Telega CHAT-TEXT and CHAT-DATE."

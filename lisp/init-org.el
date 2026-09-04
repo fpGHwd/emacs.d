@@ -33,7 +33,7 @@
                        (rename-buffer (concat "ChatGPT/GPTel:" (buffer-name)))))
      org-mode-hook (lambda () (flycheck-mode -1)))
 
-    (when (string= (system-name) "nixos-nuc")
+    (when *is-home*
       (:hooks org-mode-hook
               (lambda ()
                 (when (and buffer-file-name

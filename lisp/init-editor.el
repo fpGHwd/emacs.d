@@ -38,7 +38,7 @@
       (:setopt (prepend meow-mode-state-list)
                '(calibredb-search-mode . motion)))
     (:with-feature telega-modes
-      (when (string= (system-name) "nixos-nuc")
+      (when *is-home*
         (:setopt
          (prepend* meow-mode-state-list)
          '((telega-webpage-mode . motion)

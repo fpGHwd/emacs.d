@@ -25,7 +25,7 @@ Ordinary documentation under `docs/` and `.codebuddy/skills/emacs-utils/referenc
 - **Runtime validation before file writes**: For Elisp and other interpreted configuration, proposed behavior must be tested in the live runtime first via `emacsclient -e` or another direct temporary eval path. Confirm the behavior works before editing the persistent configuration file.
 - **Root cause before repair**: Do not write production code, install bypasses, or block the failing path before the root cause is confirmed by call stack, logs, or runtime state inspection.
 - **Prefer defaults over explicit config**: If a setting matches the package or Doom default, delete the explicit override.
-- **Host-aware configuration**: Active hosts are `nixos-nuc`, `macos-m1`, and `ubuntu2204`; `arch-nuc` and `macbook-m1-pro` are retired.
+- **Host-aware configuration**: Active hosts are `nixos-nuc`, `macos-m1`, and `ubuntu2204`.
 - **Separation of concerns**: Input methods register themselves on editing-state hooks in their own module; the editor module must not depend on input-method packages.
 - **Doom module override discipline**: Doom modules use `use-package! :config` which re-executes unconditionally on `doom/reload`. User config runs *before* the Doom `:config` block and gets overridden. To guarantee user values win, use `doom-after-modules-config-hook`.
 - **Helper placement**: Keep single-use helpers in the owning `init-*.el`. Extract a helper library only for substantial logic shared by multiple modules.
