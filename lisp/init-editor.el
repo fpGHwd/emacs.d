@@ -12,12 +12,6 @@
         (column (number-to-string (current-column))))
     (apply 'call-process "code" nil nil nil (list (concat buffer-file-name ":" line ":" column) "--goto"))))
 
-(defun +wd/meow-normal-return ()
-  (interactive)
-  (cond
-   ((derived-mode-p 'org-mode) (call-interactively #'+org/dwim-at-point))
-   (t (ignore))))
-
 (setup meow
   (:hooks doom-after-reload-hook (lambda ()
             (setq meow-cursor-type-normal 'box
@@ -54,10 +48,7 @@
     (:with-feature frame
       (:setopt blink-cursor-interval 0.618))
     (meow-normal-define-key
-     '("RET" . +wd/meow-normal-return)
-     '("TAB" menu-item "" org-cycle
-       :filter (lambda (command)
-                 (and (derived-mode-p 'org-mode) command)))
+     '("RET" . ignore)
      '("DEL" . ignore)
      '("C-o" . better-jumper-jump-backward)
      '("=" . indent-region)
