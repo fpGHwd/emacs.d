@@ -55,7 +55,6 @@
       (:hooks pdf-annot-edit-contents-minor-mode-hook
               (lambda () (meow-insert))))
     (meow-normal-define-key
-     '("RET" . ignore)
      '("DEL" . ignore)
      '("C-o" . better-jumper-jump-backward)
      '("=" . indent-region)

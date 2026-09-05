@@ -154,6 +154,17 @@
       (:when-loaded
         (:bind "C-c C-x a" #'org-attach-dired-to-subtree)))
 
+    (:when-loaded
+      (:with-feature meow
+        (:when-loaded
+          (defun +meow/org-ret nil
+            (interactive)
+            (message "call +meow/org-ret")
+            (cond ((meow-normal-mode-p) (+org/dwim-at-point))
+                  ((meow-insert-mode-p) (org-return))
+                  (t (org-return))))
+          (keymap-set org-mode-map "RET" #'+meow/org-ret))))
+
     (:face org-block ((t (:inherit fixed-pitch))))
     (:face org-code ((t (:inherit (shadow fixed-pitch)))))
     (:face org-document-info ((t (:foreground "dark orange"))))
