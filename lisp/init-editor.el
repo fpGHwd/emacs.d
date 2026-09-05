@@ -45,17 +45,21 @@
            (telega-image-mode . motion)
            (telega-chat-mode . motion)
            (telega-root-mode . motion)))))
+    (:with-feature prog-mode
+      (:hooks prog-mode-hook
+              (lambda ()
+                (meow-normal-define-key '("%" . lispy-different)))))
     (:with-feature frame
       (:setopt blink-cursor-interval 0.618))
+    (:with-feature pdf-annot
+      (:hooks pdf-annot-edit-contents-minor-mode-hook
+              (lambda () (meow-insert))))
     (meow-normal-define-key
      '("RET" . ignore)
      '("DEL" . ignore)
      '("C-o" . better-jumper-jump-backward)
      '("=" . indent-region)
-     '("q" . quit-window))
-    (:hooks prog-mode-hook
-            (lambda ()
-              (meow-normal-define-key '("%" . lispy-different))))))
+     '("q" . quit-window))))
 
 (provide 'init-editor)
 ;;; init-editor.el ends here
