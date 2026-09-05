@@ -142,9 +142,13 @@
        org-latex-impatient-tex2svg-bin (executable-find "tex2svg")))
 
     (:with-feature org-download
-      (when *is-work*
-        (:when-loaded ;; use keyword `:when-loaded` to override doom's config
-          (:setopt org-download-screenshot-method "gnome-screenshot -a -f %s"))))
+      ;; use keyword `:when-loaded` to override doom's config
+      ;; /home/wd/.config/emacs/sources/doom+/modules/lang/org/contrib/dragndrop.el
+      (:when-loaded 
+        (:setopt org-download-screenshot-method
+                 (cond (*is-work* "spectacle -r -b -n -o %s")
+                       (*is-home* "gnome-screenshot -a -f %s")
+                       (*is-mac* "screencapture -i -s %s")))))
 
     (:with-feature dired
       (:when-loaded
