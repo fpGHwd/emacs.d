@@ -31,7 +31,7 @@
   :type 'number
   :group '+wd/stock-alert)
 
-(defcustom +wd/stock-alert-poll-interval (* 5 60)
+(defcustom +wd/stock-alert-poll-interval (* 2 60)
   "Seconds between stock price checks during A-share trading hours."
   :type 'integer
   :group '+wd/stock-alert)
