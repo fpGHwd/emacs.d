@@ -1,11 +1,5 @@
 ;;; config.el --- Load wd's configuration -*- lexical-binding: t; -*-
 
-;; Cache the contents of `load-path' directories so library loading can skip
-;; directories that cannot contain the requested file (Emacs 31+).
-(when (boundp 'load-path-filter-function)
-  (setq load-path-filter-function
-        #'load-path-filter-cache-directory-files))
-
 (dolist (dir (list (expand-file-name "lisp" doom-user-dir)
                    (expand-file-name "lisp/dev" doom-user-dir)))
   (add-to-list 'load-path dir))
@@ -14,10 +8,8 @@
 ;; Produce backtraces when errors occur: can be helpful to diagnose startup issues
 ;; (setq debug-on-error t)
 (defconst *is-mac* (eq system-type 'darwin))
-(defconst *is-linux* (memq system-type '(gnu gnu/linux gnu/kfreebsd berkeley-unix)))
 (defconst *is-home* (string= (system-name) "nixos-nuc"))
 (defconst *is-work* (string= (system-name) "ubuntu2204"))
-(defconst *golden-ratio* (/ (- (sqrt 5) 1) 2))
 ;; fonts
 (defconst +wd/code-font "Sarasa Fixed SC")
 (defconst +wd/cjk-font "Sarasa Gothic SC")

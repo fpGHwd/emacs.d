@@ -145,7 +145,7 @@
     (when (file-symlink-p link)
       (delete-file link))))
 
-(defun +wd/org-read-date-default-current-time (orig &optional with-time to-time
+(defun +wd/org-read-date-default-current-time (orig &optional _with-time to-time
                                                    from-string prompt default-time
                                                    default-input &rest args)
   "Call ORIG with current time when `org-read-date' receives a date-only default."

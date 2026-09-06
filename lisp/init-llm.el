@@ -2,7 +2,6 @@
 
 (setup gptel
   (:setopt
-   gptel-use-curl t
    gptel-default-mode 'org-mode
    gptel-crowdsourced-prompts-file
    (expand-file-name "etc/gptel/gptel-crowdsourced-prompts.csv" doom-user-dir)

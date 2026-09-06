@@ -177,8 +177,7 @@
     (apply orig-fun args)))
 
 (setup pdf-tools
-  (:option
-   pdf-view-continuous t
+  (:setopt
    pdf-annot-default-annotation-properties
    '((t         (label . "Wang Ding"))
      (text       (color . "#D7BA7D") (opacity . 0.9) (icon . "Note"))

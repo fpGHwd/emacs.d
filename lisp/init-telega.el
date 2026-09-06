@@ -141,8 +141,7 @@
     (when *is-home*
       (setq +wd/telegram-cmb-chat-id
             (password-store-get "telegram/TELEGRAM_CMB_CHAT_ID"))
-      (:hooks telega-chat-update-hook +wd/telega-chat-update-function
-              telega-chat-mode-hook (lambda () (company-mode -1))))))
+      (:hooks telega-chat-update-hook +wd/telega-chat-update-function))))
 
 (provide 'init-telega)
 ;;; init-telega.el ends here

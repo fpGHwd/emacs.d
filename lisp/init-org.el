@@ -1,19 +1,12 @@
 ;;; init-org.el --- Org-mode core configuration -*- lexical-binding: t; -*-
 
+(defvar cal-china-x-chinese-holidays)
+(defvar cal-china-x-general-holidays)
+(defvar cal-china-x-important-holidays)
+
 (defconst +wd/seven-year-life 7) ;; 七年一生
 
-(defun my--diary-chinese-anniversary (lunar-month lunar-day &optional year mark)
-  (if year
-      (let* ((d-date (diary-make-date lunar-month lunar-day year))
-             (a-date (calendar-absolute-from-gregorian d-date))
-             (c-date (calendar-chinese-from-absolute a-date))
-             (cycle (car c-date))
-             (yy (cadr c-date))
-             (y (+ (* 100 cycle) yy)))
-        (diary-chinese-anniversary lunar-month lunar-day y mark))
-    (diary-chinese-anniversary lunar-month lunar-day year mark)))
-
-(defun +wd/org-link-copy (&optional arg)
+(defun +wd/org-link-copy (&optional _arg)
   "Extract URL from org-mode link and add it to kill ring."
   (interactive "P")
   (let* ((link (org-element-lineage (org-element-context) '(link) t))
@@ -157,12 +150,11 @@
     (:when-loaded
       (:with-feature meow
         (:when-loaded
-          (defun +meow/org-ret nil
+          (defun +meow/org-ret ()
             (interactive)
-            (message "call +meow/org-ret")
-            (cond ((meow-normal-mode-p) (+org/dwim-at-point))
-                  ((meow-insert-mode-p) (org-return))
-                  (t (org-return))))
+            (if (meow-normal-mode-p)
+                (+org/dwim-at-point)
+              (org-return)))
           (keymap-set org-mode-map "RET" #'+meow/org-ret))))
 
     (:face org-block ((t (:inherit fixed-pitch))))

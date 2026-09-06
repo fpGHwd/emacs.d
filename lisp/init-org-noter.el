@@ -242,9 +242,7 @@
     "z t" (cons "todo" #'+wd/org-noter-current-node-operation)
     "z x" (cons "cancel clock" #'+wd/org-noter-current-node-operation))
   (:hooks org-noter-parse-document-property-hook
-          (:hook-options +wd/org-noter-resolve-calibre-document :depth 10))
-  (:when-loaded
-    (+wd/calibredb-configure-opds)))
+          (:hook-options +wd/org-noter-resolve-calibre-document :depth 10)))
 
 (setup org
   (:hooks org-after-todo-state-change-hook +wd/org-noter-update-calibre-progress)

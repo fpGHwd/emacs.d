@@ -1,12 +1,15 @@
 ;;; init-langs.el --- Language modes without dedicated files -*- lexical-binding: t; -*-
 
+(defvar haskell-ts-mode-map)
+
 ;; flycheck's emacs-lisp checker spawns a bare emacs process without Doom macros loaded,
-;; producing false "free variable" warnings for config files. Just it out.
+;; producing false "free variable" warnings for config files. Disable it.
 (setup emacs-lisp-mode
   (:hook (lambda () (flycheck-mode -1))))
 
 (setup makefile-mode
-  (:match-file "Kbuild"))
+  (:match-file "Kbuild")
+  (:match-file "Makefile.*"))
 
 (setup eglot
   (:setopt eglot-max-file-watches 524288))
@@ -27,11 +30,8 @@
 (setup json-mode
   (:match-file "Android.bp"))
 
-(setup makefile-mode
-  (:match-file "Makefile.*"))
-
 (setup haskell-ts-mode
-  (:bind
+  (:bind-into haskell-ts-mode
    (kbd (concat doom-localleader-alt-key " b")) #'haskell-interactive-bring
    (kbd (concat doom-localleader-alt-key " B")) #'haskell-process-cabal-build
    (kbd (concat doom-localleader-alt-key " c")) #'haskell-process-cabal

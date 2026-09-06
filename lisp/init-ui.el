@@ -1,5 +1,7 @@
 ;;; init-ui.el --- Theme, frame, and visual appearance -*- lexical-binding: t; -*-
 
+(defvar dirvish-mode-map)
+
 (setup doom
   (defvar-keymap +wd/leader-map
     :doc "Personal Doom leader commands."
@@ -13,8 +15,7 @@
   (:hooks doom-load-theme-hook
           (lambda ()
             (set-face-attribute 'font-lock-comment-face nil :slant 'italic)
-            (set-face-attribute 'font-lock-keyword-face nil :slant 'italic)))
-  (:setopt initial-major-mode 'lisp-interaction-mode))
+            (set-face-attribute 'font-lock-keyword-face nil :slant 'italic))))
 
 ;; Doom Themes reverses these faces, which forms a cycle when Gnus is loaded
 ;; after the theme on Emacs 31.
@@ -41,8 +42,7 @@
 
 (setup dirvish
   (:when-loaded
-    (:with-map dirvish-mode-map
-      (:bind "TAB" dirvish-subtree-toggle))))
+    (:bind-into dirvish "TAB" dirvish-subtree-toggle)))
 
 ;; identity
 (setup emacs

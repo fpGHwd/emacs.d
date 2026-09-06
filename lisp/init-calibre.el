@@ -5,6 +5,17 @@
 (require 'seq)
 (require 'subr-x)
 
+(defvar calibredb-add-duplicate)
+(defvar calibredb-program)
+(defvar calibredb-search-mode-map)
+
+(declare-function calibredb-find-candidate-at-point "calibredb-utils" ())
+(declare-function calibredb-getattr "calibredb-core" (my-alist key))
+(declare-function calibredb-opds-auth-headers "calibredb-opds" (auth-info))
+(declare-function calibredb-opds-auth-info "calibredb-opds"
+                  (url &optional account password))
+(declare-function calibredb-opds-request-curl-options "calibredb-opds" (auth-info))
+
 (defvar +wd/calibre-local-library-root "/mnt/home/data/books/calibre-lib"
   "Local calibre library root on this machine.")
 

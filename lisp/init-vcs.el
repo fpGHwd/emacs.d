@@ -52,7 +52,7 @@ A scope may be provided to a commit's type, to provide additional contextual inf
   (if (and (buffer-file-name)
            (eq 'Git (vc-backend (buffer-file-name))))
       (if prompt
-          (magit-log-buffer-file-popup)
+          (call-interactively #'magit-log)
         (magit-log-buffer-file t))
     (vc-print-log)))
 

@@ -44,7 +44,7 @@
                  (org-element-property :deadline h)
                  (org-element-property :closed h)))))))
 
-(defun vulpea-project-update-tag (&optional arg)
+(defun vulpea-project-update-tag (&optional _arg)
   "Update PROJECT tag in the current buffer."
   (interactive "P")
   (when (and (not (active-minibuffer-window))

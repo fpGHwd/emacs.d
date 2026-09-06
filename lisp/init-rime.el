@@ -4,7 +4,7 @@
 
 (setup rime
   (:bind "M-\\" rime-force-enable)
-  (:option
+  (:setopt
    default-input-method "rime"
    rime-posframe-properties (list :background-color "#666699"
                                   :foreground-color "#dcdccc"
@@ -13,7 +13,6 @@
    rime-disable-predicates '(rime-predicate-auto-english-p
                              rime-predicate-current-uppercase-letter-p
                              +pyim-probe-telega-msg)
-   rime-inline-ascii-trigger 'shift-l
    rime-emacs-module-header-root (expand-file-name "../../../../include" data-directory)
    rime-librime-root (file-truename "~/.nix-profile/")
    rime-user-data-dir (file-truename "~/.config/rime"))

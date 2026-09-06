@@ -1,6 +1,6 @@
 ;;; init-org-publish.el --- Org publishing and blog helpers -*- lexical-binding: t; -*-
 
-(require 'f)
+(defvar org-publish-use-timestamps-flag)
 
 (defun blog-post (title)
   "Create a blog post for TITLE."
@@ -27,13 +27,13 @@
 (defun publish-project (project no-cache)
   "Publish PROJECT, ignoring cache when NO-CACHE is y."
   (interactive "sName of project: \nsNo-cache?[y/n] ")
-  (if (or (string= no-cache "y")
-          (string= no-cache "Y"))
-      (setq org-publish-use-timestamps-flag nil))
-  (org-publish-project project)
-  (setq org-publish-use-timestamps-flag t))
+  (let ((org-publish-use-timestamps-flag
+         (if (member no-cache '("y" "Y"))
+             nil
+           org-publish-use-timestamps-flag)))
+    (org-publish-project project)))
 
-(defun +wd/handle-image-in-markdown (origin-path markdown-path)
+(defun +wd/handle-image-in-markdown (_origin-path markdown-path)
   "Rewrite Org exported image links in MARKDOWN-PATH and deploy images."
   (interactive "fOrigin path: \nfMarkdown path: ")
   (let* ((hakyll-root-path "/home/wd/projects/2025/hakyll"))
@@ -42,7 +42,7 @@
       (goto-char (point-min))
       (while (re-search-forward "\\(.+?\\)(\\(.+\\.png\\))" nil t)
         (let* ((image-src-path (string-remove-prefix "file://" (match-string 2)))
-               (org-attach-path org-attach-directory)
+               (org-attach-path org-attach-id-dir)
                (image-deploy-prefix (concat hakyll-root-path "/images/org-attach"))
                (image-attach-relative-path (string-remove-prefix org-attach-path image-src-path))
                (image-ref-link (concat "/images/org-attach" image-attach-relative-path))
@@ -50,7 +50,7 @@
                (image-handle-cmd (concat (executable-find "magick") " "
                                          image-src-path " -strip -resize 50% -quality 50% "
                                          image-deploy-path)))
-          (unless (f-exists-p (file-name-directory image-deploy-path))
+          (unless (file-exists-p (file-name-directory image-deploy-path))
             (make-directory (file-name-directory image-deploy-path) t))
           (replace-match image-ref-link nil nil nil 2)
           (unless (file-exists-p image-deploy-path)
@@ -66,11 +66,11 @@
      :buffer "*hakyll-build*"
      :command '("hakyll-site-build")
      :sentinel
-     (lambda (proc event)
+     (lambda (_process event)
        (when (string= event "finished\n")
          (message "Hakyll build finished ✅"))))))
 
-(defun my/org-insert-updated-timestamp (backend)
+(defun my/org-insert-updated-timestamp (_backend)
   "Insert/update #+LAST_MODIFIED line before export."
   (save-excursion
     (goto-char (point-min))
@@ -96,7 +96,7 @@
         :headline-levels 4
         :body-only t)))
     (:hooks
-     org-export-before-processing-hook my/org-insert-updated-timestamp
+     org-export-before-processing-functions my/org-insert-updated-timestamp
      org-publish-after-publishing-hook +wd/handle-image-in-markdown)
     (:setopt (prepend file-coding-system-alist) '("\\.bib" . utf-8))))
 
