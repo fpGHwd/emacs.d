@@ -46,5 +46,5 @@
 (require 'init-ledger)
 (require 'init-llm)
 (require 'init-mail)
-(require 'init-ledger-stock-alert)
 (require 'init-telega)
+(when *is-home* (require 'init-ledger-stock-alert))
