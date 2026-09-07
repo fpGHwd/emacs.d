@@ -17,6 +17,9 @@
     (message (concat "Copied URL: " url))))
 
 (setup org
+  ;; Set before Org loads so Doom expands capture paths relative to this directory.
+  (:setopt org-directory "~/org/org/current")
+
   (:when-loaded
     (:hooks
      org-mode-hook mixed-pitch-mode
@@ -34,7 +37,6 @@
                   (auto-revert-mode 1)))))
 
     (:setopt
-     org-directory "~/org/org/current"
      org-log-done 'time
      org-archive-location "~/org/org/current/archive.org.bak::* From %s"
      org-image-actual-width 600
@@ -78,6 +80,34 @@
            (todo urgency-down category-keep)
            (tags urgency-down timestamp-down category-keep)
            (search alpha-up)))))
+
+    (:with-feature org-capture
+      (:when-loaded
+        (:after meow
+          (:hooks org-capture-mode-hook meow-insert-mode))
+        (:hooks org-capture-mode-hook (lambda () (eldoc-mode -1)))
+
+        (defvar +wd/org-capture-file-for-ios
+          (expand-file-name "notes_ios.org" org-directory))
+        (defvar +wd/scheduled-capture-args nil
+          "Plist holding :title, :scheduled, :body for the `cs' capture template.")
+
+        (:setopt
+         (prepend* org-capture-templates)
+         '(("cs" "Scheduled Capture" entry (file+headline +org-capture-todo-file "Inbox")
+            "* %u %(or (plist-get +wd/scheduled-capture-args :title) \"无标题\")\nSCHEDULED: %(plist-get +wd/scheduled-capture-args :scheduled)\n%(or (plist-get +wd/scheduled-capture-args :body) \"\")"
+            :immediate-finish t :prepend t)
+           ("cj" "Capture Journal" entry (file+olp+datetree +org-capture-journal-file)
+            "* %U %:description\n%:initial\n" :immediate-finish t :prepend t)
+           ("ct" "Capture Todo" entry (file+headline +org-capture-todo-file "Inbox")
+            "* [ ] %:description\n%:initial\n" :immediate-finish t :prepend t)
+           ("ci" "Capture Bunch of Notes from iOS" entry
+            (file+headline +wd/org-capture-file-for-ios "Inbox for iOS")
+            "* %:description\n%:initial\n" :immediate-finish t :prepend t)
+           ("cn" "Capture Notes" entry (file+headline +org-capture-notes-file "Inbox")
+            "* %u %:description\n%:initial\n" :immediate-finish t :prepend t)
+           ("c" "Capture for external app or command")))
+        (load "~/projects/2026/haskell-web/scripts/lib-org-capture.el" t)))
 
     (:with-map org-mode-map
       (:bind
