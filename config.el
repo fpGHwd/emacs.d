@@ -10,6 +10,7 @@
 (defconst *is-mac* (eq system-type 'darwin))
 (defconst *is-home* (string= (system-name) "nixos-nuc"))
 (defconst *is-work* (string= (system-name) "ubuntu2204"))
+(defconst *not-work* (not (string= (system-name) "ubuntu2204")))
 ;; fonts
 (defconst +wd/code-font "Sarasa Fixed SC")
 (defconst +wd/cjk-font "Sarasa Gothic SC")

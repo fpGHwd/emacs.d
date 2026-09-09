@@ -71,7 +71,5 @@
 (package! demangle-mode)
 (package! disaster)
 
-(package! emamux)
-
 (package! codex-ide
   :recipe (:host github :repo "dgillis/emacs-codex-ide"))
