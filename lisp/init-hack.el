@@ -1,19 +1,13 @@
 ;;; init-hack.el --- Binary analysis tools -*- lexical-binding: t; -*-
 
 (setup elf-mode
-  (:with-function elf-mode
-    (:autoload-this "elf-mode"))
-  (:match-file "\\.\\(so\\|o\\|elf\\|bin\\)$"))
+  ;; Match ELF files by magic number, not just by extension
+  ;; Note: \x7f does NOT work in Elisp strings; use octal \177 instead
+  (add-to-list 'magic-mode-alist '("\177ELF" . elf-mode)))
 
 (setup demangle-mode
-  (:with-function demangle-mode
-    (:autoload-this "demangle-mode"))
   ;; Auto-enable in compilation buffers and shell output with symbols
   (:hooks compilation-mode-hook demangle-mode))
-
-(setup disaster
-  (:with-function disaster
-    (:autoload-this "disaster")))
 
 (provide 'init-hack)
 ;;; init-hack.el ends here
