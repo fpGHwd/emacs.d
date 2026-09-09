@@ -66,6 +66,11 @@
 (package! treesit-fold
   :recipe (:host github :repo "emacs-tree-sitter/treesit-fold"))
 
+;; Binary analysis
+(package! elf-mode)
+(package! demangle-mode)
+(package! objdump-disaster)
+
 (package! emamux)
 
 (package! codex-ide
