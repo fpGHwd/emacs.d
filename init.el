@@ -14,6 +14,8 @@
 ;;   Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
 ;;   directory (for easy access to its source code).
 
+(defconst *not-work* (not (string= (system-name) "ubuntu2204")))
+
 (doom! :input
        ;;bidi              ; (tfel ot) thgir etirw uoy gnipleh
        ;;chinese
@@ -57,7 +59,7 @@
        ;;(evil +everywhere) ; come to the dark side, we have cookies
        file-templates     ; auto-snippets for empty files
        ;; fold                ; (nigh) universal code folding
-       ,(when (not *is-work*) '(format +onsave)) ; automated prettiness
+       ,(when *not-work* '(format +onsave)) ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        lispy                       ; vim for lisp, for people who don't like vim
        multiple-cursors            ; editing in many places at once
@@ -92,7 +94,7 @@
 
        :tools
        ;;ansible
-       ,(when (not *is-work*) 'biblio)  ; Writes a PhD for you (citation needed)   
+       ,(when *not-work* 'biblio)  ; Writes a PhD for you (citation needed)   
        (collab +tunnel)              ; buffers with friends
        (debugger +lsp)             ; stepping through code, to help you add bugs
        direnv
@@ -101,7 +103,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)                        ; run code, run (also, repls)
        (lookup +docsets +dictionary +offline) ; navigate your code and its documentation
-       ,(when (not *is-work*) 'llm)   
+       ,(when *not-work* 'llm)   
        (lsp +eglot)
        (magit +forge)               ; a git porcelain for Emacs
        make                         ; run make tasks from Emacs
@@ -140,7 +142,7 @@
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ,(when (not *is-work*) '(go +lsp +tree-sitter)) ; the hipster dialect
+       ,(when *not-work* '(go +lsp +tree-sitter)) ; the hipster dialect
        ;;(graphql +lsp)    ; Give queries a REST
        (haskell +lsp +tree-sitter)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
@@ -165,7 +167,7 @@
             +pandoc +noter
             +roam +pretty) ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
-       ,(when (not *is-work*) 'plantuml)   ; diagrams for confusing people more
+       ,(when *not-work* 'plantuml)   ; diagrams for confusing people more
        ;; graphviz          ; diagrams for confusing yourself even more
        ;;purescript        ; javascript, but functional
        (python +lsp +poetry +tree-sitter)
@@ -175,14 +177,14 @@
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails +tree-sitter)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       ,(when (not *is-work*) '(rust +tree-sitter)) ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
-       ,(when (not *is-work*) 'scad)              ; trust the preview, regret the render
+       ,(when *not-work* '(rust +tree-sitter)) ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ,(when *not-work* 'scad)              ; trust the preview, regret the render
        ;;scala             ; java, but good
-       ,(when (not *is-work*) '(scheme +guile)) ; a fully conniving family of lisps
+       ,(when *not-work* '(scheme +guile)) ; a fully conniving family of lisps
        (sh +tree-sitter)     ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
-       ,(when (not *is-work*) 'swift)      ; who asked for emoji variables?
+       ,(when *not-work* 'swift)      ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;(web +lsp +tree-sitter)        ; the tubes
        ;; yaml                ; JSON, but readable
@@ -196,7 +198,7 @@
        :app
        calendar
        ;;emms
-       ,(when (not *is-work*) 'everywhere) ; *leave* Emacs!? You must be joking
+       ,(when *not-work* 'everywhere) ; *leave* Emacs!? You must be joking
        irc                              ; how neckbeards socialize
        (rss +org +youtube)              ; emacs as an RSS reader
 
