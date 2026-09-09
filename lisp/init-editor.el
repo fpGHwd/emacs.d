@@ -21,8 +21,8 @@
              meow-cursor-type-insert 'bar
              blink-cursor-interval 0.618
              (prepend meow-mode-state-list) '(inferior-emacs-lisp-mode . insert))
-    (:with-feature vterm
-      (:setopt (prepend meow-mode-state-list) '(vterm-mode . insert)))
+    (:with-feature ghostel
+      (:setopt (prepend meow-mode-state-list) '(ghostel-mode . insert)))
     (:with-feature gud
       (:setopt (prepend meow-mode-state-list) '(gud-mode . insert)))
     (:with-feature haskell-interactive-mode
