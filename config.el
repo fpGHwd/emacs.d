@@ -29,6 +29,7 @@
 (require 'init-langs)
 (require 'init-vcs)
 (require 'init-remote)
+(require 'init-hack)
 
 ;; org ecosystem
 (require 'init-org)

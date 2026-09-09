@@ -69,7 +69,7 @@
 ;; Binary analysis
 (package! elf-mode)
 (package! demangle-mode)
-(package! objdump-disaster)
+(package! disaster)
 
 (package! emamux)
 
