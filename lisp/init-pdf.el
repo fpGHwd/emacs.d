@@ -179,12 +179,12 @@
 (setup pdf-tools
   (:setopt
    pdf-annot-default-annotation-properties
-   '((t         (label . "Wang Ding"))
+   '((t         (label . "Wang Ding") (opacity . 0.75))
      (text       (color . "#D7BA7D") (opacity . 0.9) (icon . "Note"))
-     (highlight  (color . "#E5C07B") (opacity . 0.35))
-     (underline  (color . "#98BE65") (opacity . 0.85))
-     (squiggly   (color . "#FF6C6B") (opacity . 0.85))
-     (strike-out (color . "#4DB5BD") (opacity . 0.75))))
+     (highlight  (color . "#E5C07B"))
+     (underline  (color . "#98BE65"))
+     (squiggly   (color . "#FF6C6B"))
+     (strike-out (color . "#4DB5BD"))))
   (:hooks
    pdf-view-mode-hook +wd/pdf-view-enable-midnight-for-dark-theme
    pdf-view-mode-hook +wd/pdf-sync-enable-query-on-kill)
