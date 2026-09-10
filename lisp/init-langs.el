@@ -8,8 +8,9 @@
   (:hook (lambda () (flycheck-mode -1))))
 
 (setup makefile-mode
+  ;; some files like Makefile.build
   (:match-file "Kbuild")
-  (:match-file "Makefile.*"))
+  (:match-file "Makefile.*")) 
 
 (setup eglot
   (:setopt eglot-max-file-watches 524288))

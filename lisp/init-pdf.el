@@ -201,5 +201,41 @@
   (:advice pdf-tools-build-server :around
            #'+wd/pdf-tools-build-server-with-nix-env))
 
+(defun +wd/pdf-decrypt-document-with-auth-source (orig-fun &rest args)
+  "Try auth-source for PDF passwords before falling back to interactive prompt.
+
+Add entries to authinfo.gpg like:
+  machine pdf-tools login /full/path/to/file.pdf password thepassword"
+  (if (not (pdf-info-encrypted-p))
+      nil
+    (let* ((fn (buffer-file-name))
+           (key (when fn (concat "/pdf-tools" fn)))
+           password)
+      ;; 1. Try cache first (same as original)
+      (when key
+        (when (setq password (password-read-from-cache key))
+          (ignore-errors (pdf-info-open nil password))
+          (when (pdf-info-encrypted-p)
+            (password-cache-remove key)
+            (setq password nil))))
+      ;; 2. Cache miss: try auth-source
+      (unless password
+        (when-let* ((entry (auth-source-search
+                            :host "pdf-tools"
+                            :user (expand-file-name fn)
+                            :require '(:secret)
+                            :max 1))
+                    (auth-pass (plist-get (car entry) :secret)))
+          (ignore-errors (pdf-info-open nil auth-pass))
+          (if (pdf-info-encrypted-p)
+              (when key (password-cache-remove key))
+            (setq password auth-pass)
+            (when key (password-cache-add key password)))))
+      ;; 3. Still encrypted → fallback to original interactive prompt
+      (when (pdf-info-encrypted-p)
+        (funcall orig-fun)))))
+
+(advice-add 'pdf-view-decrypt-document :around #'+wd/pdf-decrypt-document-with-auth-source)
+
 (provide 'init-pdf)
 ;;; init-pdf.el ends here
