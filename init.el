@@ -59,7 +59,7 @@
        ;;(evil +everywhere) ; come to the dark side, we have cookies
        file-templates     ; auto-snippets for empty files
        ;; fold                ; (nigh) universal code folding
-       ,(when *not-work* '(format +onsave)) ; automated prettiness
+       (:if *not-work* (format +onsave)) ; automated prettiness
        ;;god               ; run Emacs commands without modifier keys
        lispy                       ; vim for lisp, for people who don't like vim
        multiple-cursors            ; editing in many places at once
@@ -94,7 +94,7 @@
 
        :tools
        ;;ansible
-       ,(when *not-work* 'biblio)  ; Writes a PhD for you (citation needed)   
+       (:if *not-work* biblio)  ; Writes a PhD for you (citation needed)   
        (collab +tunnel)              ; buffers with friends
        (debugger +lsp)             ; stepping through code, to help you add bugs
        direnv
@@ -103,7 +103,7 @@
        ;;ein               ; tame Jupyter notebooks with emacs
        (eval +overlay)                        ; run code, run (also, repls)
        (lookup +docsets +dictionary +offline) ; navigate your code and its documentation
-       ,(when *not-work* 'llm)   
+       (:if *not-work* llm)   
        (lsp +eglot)
        (magit +forge)               ; a git porcelain for Emacs
        make                         ; run make tasks from Emacs
@@ -123,8 +123,8 @@
        ;;agda              ; types of types of types of types...
        ;;beancount         ; mind the GAAP
        (cc +lsp +tree-sitter)           ; C > C++ == 1
-       ;; (clojure +tree-sitter +lsp)      ; java with a lisp
-       ;; common-lisp       ; if you've seen one lisp, you've seen them all
+       (:if *not-work* (clojure +tree-sitter +lsp))      ; java with a lisp
+       (:if *not-work* common-lisp)       ; if you've seen one lisp, you've seen them all
        ;;coq               ; proofs-as-programs
        ;;crystal           ; ruby at the speed of c
        ;;csharp            ; unity, .NET, and mono shenanigans
@@ -142,7 +142,7 @@
        ;;fsharp            ; ML stands for Microsoft's Language
        ;;fstar             ; (dependent) types and (monadic) effects and Z3
        ;;gdscript          ; the language you waited for
-       ,(when *not-work* '(go +lsp +tree-sitter)) ; the hipster dialect
+       (:if *not-work* (go +lsp +tree-sitter)) ; the hipster dialect
        ;;(graphql +lsp)    ; Give queries a REST
        (haskell +lsp +tree-sitter)      ; a language that's lazier than I am
        ;;hy                ; readability of scheme w/ speed of python
@@ -153,9 +153,9 @@
        ;;(javascript +lsp +tree-sitter) ; all(hope(abandon(ye(who(enter(here))))))
        ;;julia             ; a better, faster MATLAB
        ;;kotlin            ; a better, slicker Java(Script)
-       ;; (latex +fold +lsp)  ; writing papers in Emacs has never been so fun
+       (:if *not-work* (latex +fold +lsp))  ; writing papers in Emacs has never been so fun
        ;;lean              ; for folks with too much to prove
-       ledger         ; be audit you can be
+       (:if *not-work* ledger)         ; be audit you can be
        ;;lua               ; one-based indices? one-based indices
        ;;markdown          ; writing docs for people to ignore
        ;;nim               ; python + lisp at the speed of c
@@ -167,7 +167,7 @@
             +pandoc +noter
             +roam +pretty) ; organize your plain life in plain text
        ;;php               ; perl's insecure younger brother
-       ,(when *not-work* 'plantuml)   ; diagrams for confusing people more
+       (:if *not-work* plantuml)   ; diagrams for confusing people more
        ;; graphviz          ; diagrams for confusing yourself even more
        ;;purescript        ; javascript, but functional
        (python +lsp +poetry +tree-sitter)
@@ -177,14 +177,14 @@
        ;;rest              ; Emacs as a REST client
        ;;rst               ; ReST in peace
        ;;(ruby +rails +tree-sitter)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
-       ,(when *not-work* '(rust +tree-sitter)) ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
-       ,(when *not-work* 'scad)              ; trust the preview, regret the render
+       (:if *not-work* (rust +tree-sitter)) ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       (:if *not-work* scad)              ; trust the preview, regret the render
        ;;scala             ; java, but good
-       ,(when *not-work* '(scheme +guile)) ; a fully conniving family of lisps
+       (:if *not-work* (scheme +guile)) ; a fully conniving family of lisps
        (sh +tree-sitter)     ; she sells {ba,z,fi}sh shells on the C xor
        ;;sml
        ;;solidity          ; do you need a blockchain? No.
-       ,(when *not-work* 'swift)      ; who asked for emoji variables?
+       (:if *not-work* swift)      ; who asked for emoji variables?
        ;;terra             ; Earth and Moon in alignment for performance.
        ;;(web +lsp +tree-sitter)        ; the tubes
        ;; yaml                ; JSON, but readable
@@ -198,7 +198,7 @@
        :app
        calendar
        ;;emms
-       ,(when *not-work* 'everywhere) ; *leave* Emacs!? You must be joking
+       (:if *not-work* everywhere) ; *leave* Emacs!? You must be joking
        irc                              ; how neckbeards socialize
        (rss +org +youtube)              ; emacs as an RSS reader
 
