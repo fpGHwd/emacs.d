@@ -1,8 +1,0 @@
-# -*- mode: snippet -*-
-# uuid: b9a93b70-bb50-4810-a902-f428fb1dde20
-# name: quote
-# key: q
-# --
-#+begin_quote
-$1
-#+end_quote
