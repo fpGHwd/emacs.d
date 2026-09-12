@@ -1,9 +1,5 @@
 ;;; init-langs.el --- Language modes without dedicated files -*- lexical-binding: t; -*-
 
-(defvar haskell-ts-mode-map)
-
-;; flycheck's emacs-lisp checker spawns a bare emacs process without Doom macros loaded,
-;; producing false "free variable" warnings for config files. Disable it.
 (setup emacs-lisp-mode
   (:hook (lambda () (flycheck-mode -1))))
 
@@ -11,9 +7,6 @@
   ;; some files like Makefile.build
   (:match-file "Kbuild")
   (:match-file "Makefile.*")) 
-
-(setup eglot
-  (:setopt eglot-max-file-watches 524288))
 
 (setup sql
   (:setopt sql-mysql-program "mariadb"))
