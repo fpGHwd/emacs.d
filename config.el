@@ -11,6 +11,8 @@
 (defconst *is-home* (string= (system-name) "nixos-nuc"))
 (defconst *is-work* (string= (system-name) "ubuntu2204"))
 (defconst *not-work* (not (string= (system-name) "ubuntu2204")))
+(defconst +wd/latitude 31.108024)
+(defconst +wd/longitude 121.372327)
 ;; fonts
 (defconst +wd/code-font "Sarasa Fixed SC")
 (defconst +wd/cjk-font "Sarasa Gothic SC")

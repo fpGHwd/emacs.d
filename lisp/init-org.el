@@ -139,8 +139,8 @@
          diary-file (expand-file-name "etc/diary" doom-user-dir)
          calendar-mark-diary-entries-flag t
          calendar-week-start-day 1
-         calendar-latitude 31.108024
-         calendar-longitude 121.372327)))
+         calendar-latitude +wd/latitude
+         calendar-longitude +wd/longitude)))
 
     (:with-feature cal-china-x
       (:when-loaded
