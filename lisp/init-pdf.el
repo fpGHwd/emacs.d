@@ -177,14 +177,14 @@
     (apply orig-fun args)))
 
 (setup pdf-tools
-  (:setopt
-   pdf-annot-default-annotation-properties
-   '((t         (label . "Wang Ding") (opacity . 0.75))
-     (text       (color . "#D7BA7D") (opacity . 0.9) (icon . "Note"))
-     (highlight  (color . "#E5C07B"))
-     (underline  (color . "#98BE65"))
-     (squiggly   (color . "#FF6C6B"))
-     (strike-out (color . "#4DB5BD"))))
+  ;; use :option rather than :setopt, for no warnings
+  (:option pdf-annot-default-annotation-properties
+           '((t         (label . "Wang Ding") (opacity . 0.75))
+             (text       (color . "#D7BA7D") (opacity . 0.9) (icon . "Note"))
+             (highlight  (color . "#E5C07B"))
+             (underline  (color . "#98BE65"))
+             (squiggly   (color . "#FF6C6B"))
+             (strike-out (color . "#4DB5BD"))))
   (:hooks
    pdf-view-mode-hook +wd/pdf-view-enable-midnight-for-dark-theme
    pdf-view-mode-hook +wd/pdf-sync-enable-query-on-kill)
