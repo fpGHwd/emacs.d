@@ -9,6 +9,17 @@
     (s-contains? "telega" (symbol-name (get-text-property (point)
                                                           'category))))
 
+  (defun +wd/rime-toggle-input-method (arg)
+    "Toggle the input method, enabling it only in Meow insert mode."
+    (interactive "P")
+    (if (or (meow-insert-mode-p)
+            (and current-input-method (not arg)))
+        (toggle-input-method arg t)
+      (user-error "Input methods can only be enabled in Meow insert mode")))
+
+  (:with-feature emacs
+    (:with-map global-map
+      (:bind "C-\\" +wd/rime-toggle-input-method)))
   (:bind "M-\\" rime-force-enable)
   (:option default-input-method "rime")
 
