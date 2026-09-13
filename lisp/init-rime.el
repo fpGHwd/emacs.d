@@ -10,12 +10,13 @@
                                                           'category))))
 
   (defun +wd/rime-toggle-input-method (arg)
-    "Toggle the input method, enabling it only in Meow insert mode."
+    "Toggle the input method in minibuffers or Meow insert mode."
     (interactive "P")
-    (if (or (meow-insert-mode-p)
+    (if (or (minibufferp)
+            (meow-insert-mode-p)
             (and current-input-method (not arg)))
         (toggle-input-method arg t)
-      (user-error "Input methods can only be enabled in Meow insert mode")))
+      (user-error "Input methods can only be enabled in minibuffers or Meow insert mode")))
 
   (:with-feature emacs
     (:with-map global-map
