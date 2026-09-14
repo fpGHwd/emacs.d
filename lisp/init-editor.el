@@ -15,7 +15,7 @@
 (setup meow
   (:when-loaded
     (:setopt meow-use-clipboard t
-             meow-cursor-type-insert 'bar
+             meow-cursor-type-normal 'box
              (prepend meow-mode-state-list) '(inferior-emacs-lisp-mode . insert))
     (:with-feature ghostel
       (:setopt (prepend meow-mode-state-list) '(ghostel-mode . insert)))
