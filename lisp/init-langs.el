@@ -4,9 +4,9 @@
   (:hook (lambda () (flycheck-mode -1))))
 
 (setup makefile-mode
-  ;; some files like Makefile.build
-  (:match-file "Kbuild")
-  (:match-file "Makefile.*")) 
+  (:setopt (prepend* auto-mode-alist)
+           '(("\\(?:\\`\\|/\\)Kbuild\\'" . makefile-mode)
+             ("\\(?:\\`\\|/\\)Makefile\\.[^/]*\\'" . makefile-mode))))
 
 (setup sql
   (:setopt sql-mysql-program "mariadb"))
@@ -15,21 +15,12 @@
   (:when-loaded
     (require 'nix-format)))
 
-;; (setup nxml-mode
-;;   (:also-load lib-arxml)
-;;   (:hook (lambda ()
-;;            (when (string-suffix-p ".arxml" (or buffer-file-name ""))
-;;              (arxml-breadcrumb-mode 1)))))
-
 (setup json-mode
-  (:match-file "Android.bp"))
+  (:setopt (prepend auto-mode-alist)
+           '("\\(?:\\`\\|/\\)Android\\.bp\\'" . json-mode)))
 
 (setup haskell-ts-mode
   (:setopt haskell-ts-use-indent t)
-  ;; (:hooks haskell-ts-mode-hook
-  ;;         (lambda ()
-  ;;           (eglot-ensure)
-  ;;           (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
   (:bind-into haskell-ts-mode
     (kbd (concat doom-localleader-alt-key " b")) #'haskell-interactive-bring
     (kbd (concat doom-localleader-alt-key " B")) #'haskell-process-cabal-build

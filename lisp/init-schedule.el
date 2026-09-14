@@ -31,23 +31,32 @@ Example:
 
 (defun +wd/org-autocommit--commit-one (repo msg)
   "Stage, commit, and push REPO with commit message MSG.
-Skip if no changes.  Return t if a commit was made."
+Skip if no changes.  Return t only after both commit and push succeed."
   (require 'magit)
   (let ((default-directory (expand-file-name repo)))
-    (magit-call-git "add" "-A")
-    (unless (= 0 (magit-call-git "diff" "--cached" "--quiet"))
-      (magit-call-git "commit" "-m" msg)
-      (magit-call-git "push")
-      (message "Auto-committed %s" repo)
-      t)))
+    (unless (zerop (magit-call-git "add" "-A"))
+      (error "Git add failed in %s; see Magit's process buffer" repo))
+    (pcase (magit-call-git "diff" "--cached" "--quiet")
+      (0 nil)
+      (1
+       (dolist (args (list (list "commit" "-m" msg) '("push")))
+         (unless (zerop (apply #'magit-call-git args))
+           (error "Git %s failed in %s; see Magit's process buffer"
+                  (car args) repo)))
+       (message "Auto-committed and pushed %s" repo)
+       t)
+      (status
+       (error "Git diff failed in %s (exit %s); see Magit's process buffer"
+              repo status)))))
 
 (defun +wd/org-autocommit ()
   "Auto-commit all repos in `+wd/org-autocommit-repos'.
-After committing, reschedule for the next day at 17:30."
+Reschedule for the next 17:30 even if a Git command fails."
   (interactive)
-  (dolist (spec +wd/org-autocommit-repos)
-    (+wd/org-autocommit--commit-one (car spec) (cdr spec)))
-  (+wd/org-autocommit-schedule))
+  (unwind-protect
+      (dolist (spec +wd/org-autocommit-repos)
+        (+wd/org-autocommit--commit-one (car spec) (cdr spec)))
+    (+wd/org-autocommit-schedule)))
 
 (defun +wd/org-autocommit-schedule ()
   "Schedule `+wd/org-autocommit' for the next 17:30."

@@ -83,8 +83,9 @@
 
     (:with-feature org-capture
       (:when-loaded
-        (:after meow
-          (:hooks org-capture-mode-hook meow-insert-mode))
+        (:with-feature meow
+          (:when-loaded
+            (:hooks org-capture-mode-hook meow-insert-mode)))
         (:hooks org-capture-mode-hook (lambda () (eldoc-mode -1)))
 
         (defvar +wd/org-capture-file-for-ios
@@ -207,8 +208,7 @@
      (prepend org-file-apps) '("\\.minder\\'" . "/usr/bin/minder %s"))
     (org-babel-do-load-languages
      'org-babel-load-languages
-     '((jupyter . t)
-       (gnuplot . t)
+     '((gnuplot . t)
        (plantuml . t)
        (haskell . t)
        (makefile . t)))))

@@ -104,21 +104,21 @@
           (push noter-dir files))))
     (nreverse files)))
 
-(defvar +wd/org-agenda-work-mode--saved-agenda-files nil
-  "Snapshot of `org-agenda-files' before `org-agenda-work-mode' is enabled.")
+(defvar +wd/org-agenda-work-mode--saved-agenda-files :unset
+  "Snapshot of `org-agenda-files', or :unset when no snapshot is saved.")
 
 (defun +wd/org-agenda-work-mode-update-agenda-files ()
   "Enable work agenda files and restore the previous state when disabled."
   (if org-agenda-work-mode
       (progn
-        (unless +wd/org-agenda-work-mode--saved-agenda-files
+        (when (eq +wd/org-agenda-work-mode--saved-agenda-files :unset)
           (setq +wd/org-agenda-work-mode--saved-agenda-files
                 (copy-sequence org-agenda-files)))
         (setq org-agenda-files
               (cl-union org-agenda-files (+wd/org-work-agenda-files) :test #'equal)))
-    (when +wd/org-agenda-work-mode--saved-agenda-files
+    (unless (eq +wd/org-agenda-work-mode--saved-agenda-files :unset)
       (setq org-agenda-files +wd/org-agenda-work-mode--saved-agenda-files
-            +wd/org-agenda-work-mode--saved-agenda-files nil))))
+            +wd/org-agenda-work-mode--saved-agenda-files :unset))))
 
 (defun +wd/org-agenda-work-mode-update-roam-link ()
   "Create or remove the Org Roam work symlink for `org-agenda-work-mode'."

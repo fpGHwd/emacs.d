@@ -7,7 +7,8 @@
 
 (defun +wd/telega-normalize-transaction-value (chat-text amount)
   "Return AMOUNT adjusted for special transaction text in CHAT-TEXT."
-  (if (and (stringp chat-text)
+  (if (and (numberp amount)
+           (stringp chat-text)
            (string-match-p "退货" chat-text))
       (abs amount)
     amount))
@@ -90,6 +91,8 @@
                               (replace-regexp-in-string (regexp-quote (string ?,)) "" value)))
          (pufa-p (string= card-number "6912"))
          (raw-value (and stripped-value
+                         (string-match-p "\\`[-+]?[0-9]+\\(?:\\.[0-9]+\\)?\\'"
+                                         stripped-value)
                          (if pufa-p
                              (string-to-number stripped-value)
                            (* -1 (string-to-number stripped-value)))))
@@ -101,7 +104,8 @@
                                ((string= card-number "6912")
                                 "Assets:Liquid:Bank:SPDB-6912")))
          (description (if pufa-p transaction-pattern trader-name)))
-    (when (and card-number stripped-value ledger-account description)
+    (when (and card-number (numberp real-value) ledger-account
+               (stringp description) (not (string-empty-p description)))
       (concat "\n"
               (if transaction-date-time
                   (concat transaction-date-time "[" (format-time-string "%H:%M:%S" chat-date) "]")
@@ -119,11 +123,15 @@
       (let* ((msg (plist-get chat :last_message))
              (chat-text (plist-get (plist-get (plist-get msg :content) :text) :text))
              (chat-date (plist-get msg :date))
-             (account-need-p (string-match "交易金额" chat-text)))
+             (account-need-p (and (stringp chat-text)
+                                  (string-match-p "交易金额" chat-text))))
         (when account-need-p
           (let ((transaction-text (+wd/creditcard-transaction chat-text chat-date)))
-            (when transaction-text
-              (+wd/write-transactions transaction-text))))))))
+            (if transaction-text
+                (+wd/write-transactions transaction-text)
+              (display-warning 'init-telega
+                               "Cannot parse bank transaction; ledger unchanged"
+                               :warning))))))))
 
 ;; https://github.com/zevlg/telega.el
 (setup telega

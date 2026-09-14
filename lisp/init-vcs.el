@@ -101,10 +101,10 @@ With ARG 1, prompt for a remote branch; otherwise use the current branch."
   (:setopt magit-clone-default-directory (concat (file-truename "~/projects/github/current") "/")))
 
 (setup magit
-  (:after meow
-    ;; git-commit-mode is a minor mode, meow matches on major mode (text-mode).
-    ;; Use git-commit-setup-hook to switch to insert state instead.
-    (:hooks git-commit-setup-hook meow-insert-mode))
+  (:with-feature meow
+    (:when-loaded
+      ;; git-commit-mode is a minor mode; switch state through its setup hook.
+      (:hooks git-commit-setup-hook meow-insert-mode)))
   (:when-loaded
     (transient-append-suffix 'magit-log "s" '("d" "dangling" magit-log-dangling))))
 

@@ -15,11 +15,7 @@
 (setup meow
   (:when-loaded
     (:setopt meow-use-clipboard t
-             meow-cursor-type-normal 'box
-             meow-cursor-type-motion 'box
-             meow-cursor-type-beacon 'box
              meow-cursor-type-insert 'bar
-             blink-cursor-interval 0.618
              (prepend meow-mode-state-list) '(inferior-emacs-lisp-mode . insert))
     (:with-feature ghostel
       (:setopt (prepend meow-mode-state-list) '(ghostel-mode . insert)))
