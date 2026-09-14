@@ -7,8 +7,8 @@
 (defconst *is-mac* (eq system-type 'darwin))
 (defconst *is-home* (string= (system-name) "nixos-nuc"))
 (defconst *is-work* (string= (system-name) "ubuntu2204"))
-(defconst +wd/latitude 31.108024)
-(defconst +wd/longitude 121.372327)
+(defconst +wd/latitude 31.1080)
+(defconst +wd/longitude 121.3723)
 ;; fonts
 (defconst +wd/code-font "Sarasa Fixed SC")
 (defconst +wd/cjk-font "Sarasa Gothic SC")
