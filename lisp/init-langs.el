@@ -26,10 +26,12 @@
 
 (setup haskell-ts-mode
   (:setopt haskell-ts-use-indent t)
-  ;; (:hooks haskell-ts-mode-hook
-  ;;         (lambda ()
-  ;;           (eglot-ensure)
-  ;;           (add-hook 'before-save-hook #'eglot-format-buffer nil t)))
+  (:only-if *is-work*
+    ;; work computer not enable doom +onsave
+    (:hooks haskell-ts-mode-hook
+            (lambda ()
+              (eglot-ensure)
+              (add-hook 'before-save-hook #'eglot-format-buffer nil t))))
   (:bind-into haskell-ts-mode
     (kbd (concat doom-localleader-alt-key " b")) #'haskell-interactive-bring
     (kbd (concat doom-localleader-alt-key " B")) #'haskell-process-cabal-build
