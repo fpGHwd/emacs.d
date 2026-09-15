@@ -1,27 +1,25 @@
-;;; init-ledger-stock-alert.el --- Ledger stock price alerts -*- lexical-binding: t; -*-
+;;; init-ledger-stock-alert.el --- Ledger stock price alerts via Telegram -*- lexical-binding: t; -*-
 
 (require 'subr-x)
 
 (declare-function ledger-exec-ledger "ledger-exec"
                   (input-buffer &optional output-buffer &rest args))
-(declare-function message-goto-body "message")
-(declare-function message-mail "message"
-                  (&optional to subject other-headers continue switch-function
-                             yank-action send-actions return-action &rest ignored))
-(declare-function message-send-mail "message" (&optional arg))
+(declare-function telega--sendMessage "telega-tdlib"
+                  (chat imc &optional input-reply-to options &rest args))
+(declare-function telega-chat-me "telega-chat" (&optional can-create-p))
+(declare-function telega-fmt-text "telega-util" (text &optional entity-type))
+(declare-function telega-server-live-p "telega-server" ())
 (declare-function url-retrieve "url"
                   (url callback &optional cbargs silent inhibit-cookies))
 
 (defvar url-http-end-of-headers)
 (defvar url-http-response-status)
-(defvar message-generate-new-buffers)
-(defvar message-send-mail-function)
 
 (defgroup +wd/stock-alert nil
-  "Email alerts for profitable A-share holdings."
+  "Telegram alerts for profitable A-share holdings."
   :group 'ledger)
 
-(defcustom +wd/stock-alert-ledger-file "~/org/ledger/2026/2026.ledger"
+(defcustom +wd/stock-alert-ledger-file (file-truename "~/org/ledger/current.ledger")
   "Ledger journal from which stock holdings are calculated."
   :type 'file
   :group '+wd/stock-alert)
@@ -33,6 +31,11 @@
 
 (defcustom +wd/stock-alert-poll-interval (* 2 60)
   "Seconds between stock price checks during A-share trading hours."
+  :type 'integer
+  :group '+wd/stock-alert)
+
+(defcustom +wd/stock-alert-reminder-delay 15
+  "Seconds before a scheduled stock alert reminder is delivered."
   :type 'integer
   :group '+wd/stock-alert)
 
@@ -163,8 +166,8 @@ Return a hash table keyed by Ledger stock symbol."
           (substring timestamp 6 8) (substring timestamp 8 10)
           (substring timestamp 10 12) (substring timestamp 12 14)))
 
-(defun +wd/stock-alert--mail-body (alerts)
-  "Return the summary mail body for ALERTS."
+(defun +wd/stock-alert--message-text (alerts)
+  "Return the summary message text for ALERTS."
   (concat
    "以下持仓刚刚上穿盈利提醒档位：\n\n"
    (mapconcat
@@ -181,33 +184,31 @@ Return a hash table keyed by Ledger stock symbol."
     alerts "\n\n")
    "\n"))
 
-(defun +wd/stock-alert--send-mail (alerts)
-  "Send one summary email for ALERTS."
-  (require 'message)
-  (unless (and (stringp user-mail-address)
-               (not (string-empty-p user-mail-address)))
-    (error "`user-mail-address' is not configured"))
-  (unless (functionp message-send-mail-function)
-    (error "`message-send-mail-function' is not configured"))
-  (let ((message-generate-new-buffers t)
-        mail-buffer)
-    (unwind-protect
-        (progn
-          (message-mail
-           user-mail-address
-           (format "[A股提醒] %d 只持仓上穿盈利档位" (length alerts))
-           nil nil
-           (lambda (name)
-             (setq mail-buffer (get-buffer-create name))
-             (set-buffer mail-buffer)))
-          (with-current-buffer mail-buffer
-            (message-goto-body)
-            (insert (+wd/stock-alert--mail-body alerts))
-            (message-send-mail)))
-      (when (buffer-live-p mail-buffer)
-        (with-current-buffer mail-buffer
-          (set-buffer-modified-p nil))
-        (kill-buffer mail-buffer)))))
+(defun +wd/stock-alert--send-reminder (alerts)
+  "Schedule one Saved Messages reminder for ALERTS."
+  (require 'telega)
+  (unless (telega-server-live-p)
+    (error "Cannot schedule stock alert: telega-server is not running"))
+  (let ((chat (telega-chat-me t)))
+    (unless chat
+      (error "Cannot schedule stock alert: Saved Messages chat is unavailable"))
+    (let ((result
+           (telega--sendMessage
+            chat
+            (list :@type "inputMessageText"
+                  :text (telega-fmt-text
+                         (+wd/stock-alert--message-text alerts)))
+            nil
+            (list :@type "messageSendOptions"
+                  :scheduling_state
+                  (list :@type "messageSchedulingStateSendAtDate"
+                        :send_date
+                        (+ (floor (float-time))
+                           +wd/stock-alert-reminder-delay)))
+            :sync-p t)))
+      (unless result
+        (error "Timed out scheduling Telegram stock alert reminder"))
+      result)))
 
 (defun +wd/stock-alert--forget-closed-positions (holdings)
   "Discard alert state for symbols absent from HOLDINGS."
@@ -251,7 +252,7 @@ Return a hash table keyed by Ledger stock symbol."
                   (string< (plist-get left :symbol)
                            (plist-get right :symbol)))))
     (when alerts
-      (+wd/stock-alert--send-mail alerts)
+      (+wd/stock-alert--send-reminder alerts)
       (dolist (alert alerts)
         (puthash (plist-get alert :symbol)
                  (plist-get alert :level)
@@ -280,7 +281,8 @@ Return a hash table keyed by Ledger stock symbol."
                             (format-time-string "%Y%m%d" nil 28800)))
                    (alerts (+wd/stock-alert--process-quotes holdings quotes)))
               (if alerts
-                  (message "Stock alert sent for %d holding(s)" (length alerts))
+                  (message "Stock alert reminder scheduled for %d holding(s)"
+                           (length alerts))
                 (message "Stock alert check completed; no upward transition"))))
         (error
          (display-warning '+wd/stock-alert (error-message-string err) :error)))
@@ -288,7 +290,7 @@ Return a hash table keyed by Ledger stock symbol."
     (kill-buffer (current-buffer))))
 
 (defun +wd/stock-alert-check ()
-  "Check current A-share holdings and email new profit-level crossings."
+  "Check current A-share holdings and remind new profit-level crossings."
   (interactive)
   (when +wd/stock-alert--request-in-flight
     (user-error "A stock alert request is already in progress"))
