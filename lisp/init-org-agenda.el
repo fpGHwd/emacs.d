@@ -178,6 +178,7 @@
   (+wd/org-agenda-work-mode-apply))
 
 (setup org
+  (:setopt org-log-into-drawer t)
   (:advice org-read-date :around #'+wd/org-read-date-default-current-time)
   (:hooks kill-emacs-hook +wd/org-agenda-work-mode-cleanup-roam-link)
   (when (not (string= (system-name) "ubuntu2204"))
