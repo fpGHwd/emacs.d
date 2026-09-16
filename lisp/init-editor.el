@@ -59,5 +59,10 @@
      '("=" . indent-region)
      '("q" . quit-window))))
 
+;; Disable auto-format on save for C-derived modes on work host
+(setup apheleia
+  (when *is-work*
+    (add-hook 'c++-ts-mode-hook (lambda () (apheleia-mode -1)))))
+
 (provide 'init-editor)
 ;;; init-editor.el ends here
