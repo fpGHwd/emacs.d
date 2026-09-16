@@ -18,7 +18,16 @@
              meow-cursor-type-normal 'box
              (prepend meow-mode-state-list) '(inferior-emacs-lisp-mode . insert))
     (:with-feature ghostel
-      (:setopt (prepend meow-mode-state-list) '(ghostel-mode . insert)))
+      (:setopt (prepend meow-mode-state-list) '(ghostel-mode . insert))
+      ;; Fallback ghostel native module to ~/.cache/ghostel when not found in package dir
+      (when *is-work*
+        (:advice ghostel--module-directory :filter-return
+                 (lambda (dir)
+                   (let* ((mod (concat "ghostel-module" module-file-suffix))
+                          (fallback (expand-file-name "~/.cache/ghostel")))
+                     (if (file-exists-p (expand-file-name mod dir))
+                         dir
+                       fallback))))))
     (:with-feature gud
       (:setopt (prepend meow-mode-state-list) '(gud-mode . insert)))
     (:with-feature haskell-interactive-mode
