@@ -1,9 +1,14 @@
-;;; init-ledger-stock-alert.el --- Ledger stock price alerts via Telegram -*- lexical-binding: t; -*-
+;;; init-ledger-stock-alert.el --- Ledger stock price alerts -*- lexical-binding: t; -*-
 
 (require 'subr-x)
 
 (declare-function ledger-exec-ledger "ledger-exec"
                   (input-buffer &optional output-buffer &rest args))
+(declare-function mail-mode "sendmail" ())
+(declare-function mail-send "sendmail" ())
+(declare-function mail-setup "sendmail"
+                  (to subject in-reply-to cc replybuffer actions return-action))
+(declare-function mail-text "sendmail" ())
 (declare-function telega--sendMessage "telega-tdlib"
                   (chat imc &optional input-reply-to options &rest args))
 (declare-function telega-chat-me "telega-chat" (&optional can-create-p))
@@ -16,7 +21,7 @@
 (defvar url-http-response-status)
 
 (defgroup +wd/stock-alert nil
-  "Telegram alerts for profitable A-share holdings."
+  "Telegram and email alerts for profitable A-share holdings."
   :group 'ledger)
 
 (defcustom +wd/stock-alert-ledger-file (file-truename "~/org/ledger/current.ledger")
@@ -210,6 +215,19 @@ Return a hash table keyed by Ledger stock symbol."
         (error "Timed out scheduling Telegram stock alert reminder"))
       result)))
 
+(defun +wd/stock-alert--send-email (alerts)
+  "Email one stock alert summary for ALERTS."
+  (require 'sendmail)
+  (unless (and (stringp user-mail-address)
+               (not (string-empty-p user-mail-address)))
+    (error "Cannot send stock alert email: user-mail-address is empty"))
+  (with-temp-buffer
+    (mail-mode)
+    (mail-setup user-mail-address "股票盈利提醒" nil nil nil nil nil)
+    (mail-text)
+    (insert (+wd/stock-alert--message-text alerts))
+    (mail-send)))
+
 (defun +wd/stock-alert--forget-closed-positions (holdings)
   "Discard alert state for symbols absent from HOLDINGS."
   (let ((open (make-hash-table :test #'equal)) stale)
@@ -223,7 +241,7 @@ Return a hash table keyed by Ledger stock symbol."
       (remhash symbol +wd/stock-alert--levels))))
 
 (defun +wd/stock-alert--process-quotes (holdings quotes)
-  "Update alert state and email upward transitions in HOLDINGS using QUOTES."
+  "Update alert state and notify upward transitions in HOLDINGS using QUOTES."
   (let (alerts)
     (dolist (holding holdings)
       (let* ((symbol (plist-get holding :symbol))
@@ -253,6 +271,7 @@ Return a hash table keyed by Ledger stock symbol."
                            (plist-get right :symbol)))))
     (when alerts
       (+wd/stock-alert--send-reminder alerts)
+      (+wd/stock-alert--send-email alerts)
       (dolist (alert alerts)
         (puthash (plist-get alert :symbol)
                  (plist-get alert :level)
@@ -281,7 +300,7 @@ Return a hash table keyed by Ledger stock symbol."
                             (format-time-string "%Y%m%d" nil 28800)))
                    (alerts (+wd/stock-alert--process-quotes holdings quotes)))
               (if alerts
-                  (message "Stock alert reminder scheduled for %d holding(s)"
+                  (message "Stock alerts sent for %d holding(s)"
                            (length alerts))
                 (message "Stock alert check completed; no upward transition"))))
         (error
