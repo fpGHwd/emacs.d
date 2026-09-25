@@ -1,6 +1,7 @@
 ;;; init-ledger-stock-alert.el --- Ledger stock price alerts -*- lexical-binding: t; -*-
 
 (require 'subr-x)
+(require 'seq)
 
 (declare-function ledger-exec-ledger "ledger-exec"
                   (input-buffer &optional output-buffer &rest args))
@@ -35,7 +36,7 @@
   :group '+wd/stock-alert)
 
 (defcustom +wd/stock-alert-poll-interval (* 2 60)
-  "Seconds between stock price checks during A-share trading hours."
+  "Seconds between stock price checks."
   :type 'integer
   :group '+wd/stock-alert)
 
@@ -125,8 +126,8 @@ Return plists containing :symbol, :quantity, and moving-average :cost."
   "Convert Ledger stock SYMBOL to the Tencent quote code syntax."
   (replace-regexp-in-string "\\." "" (downcase symbol)))
 
-(defun +wd/stock-alert--parse-quotes (body symbols expected-date)
-  "Parse Tencent quote BODY for SYMBOLS dated EXPECTED-DATE.
+(defun +wd/stock-alert--parse-quotes (body symbols)
+  "Parse Tencent quote BODY for SYMBOLS.
 Return a hash table keyed by Ledger stock symbol."
   (let ((quotes (make-hash-table :test #'equal)))
     (dolist (line (split-string body "\n" t))
@@ -143,9 +144,8 @@ Return a hash table keyed by Ledger stock symbol."
           (when (member symbol symbols)
             (unless (and name code price-text timestamp
                          (string= code (substring symbol 3))
-                         (string-match-p "\\`[0-9]\\{14\\}\\'" timestamp)
-                         (string-prefix-p expected-date timestamp))
-              (error "Malformed or stale Tencent quote for %s" symbol))
+                         (string-match-p "\\`[0-9]\\{14\\}\\'" timestamp))
+              (error "Malformed Tencent quote for %s" symbol))
             (let ((price (+wd/stock-alert--number price-text "quote price")))
               (unless (> price 0)
                 (error "Non-positive Tencent quote for %s" symbol))
@@ -295,14 +295,25 @@ Return a hash table keyed by Ledger stock symbol."
                    (symbols (mapcar (lambda (holding)
                                       (plist-get holding :symbol))
                                     holdings))
-                   (quotes (+wd/stock-alert--parse-quotes
-                            body symbols
-                            (format-time-string "%Y%m%d" nil 28800)))
-                   (alerts (+wd/stock-alert--process-quotes holdings quotes)))
-              (if alerts
-                  (message "Stock alerts sent for %d holding(s)"
-                           (length alerts))
-                (message "Stock alert check completed; no upward transition"))))
+                   (quotes (+wd/stock-alert--parse-quotes body symbols))
+                   (today (format-time-string "%Y%m%d" nil 28800))
+                   (current-holdings
+                    (seq-filter
+                     (lambda (holding)
+                       (string-prefix-p
+                        today (plist-get
+                               (gethash (plist-get holding :symbol) quotes)
+                               :timestamp)))
+                     holdings))
+                   (alerts (+wd/stock-alert--process-quotes
+                            current-holdings quotes)))
+              (cond
+               (alerts
+                (message "Stock alerts sent for %d holding(s)" (length alerts)))
+               ((null current-holdings)
+                (message "Stock alert check skipped; no quotes dated today"))
+               (t
+                (message "Stock alert check completed; no upward transition")))))
         (error
          (display-warning '+wd/stock-alert (error-message-string err) :error)))
     (setq +wd/stock-alert--request-in-flight nil)
@@ -334,23 +345,9 @@ Return a hash table keyed by Ledger stock symbol."
            (setq +wd/stock-alert--request-in-flight nil)
            (signal (car err) (cdr err))))))))
 
-(defun +wd/stock-alert--market-open-p (&optional time)
-  "Return non-nil when TIME is within mainland A-share trading hours."
-  (let* ((weekday (string-to-number
-                   (format-time-string "%u" time 28800)))
-         (hour (string-to-number
-                (format-time-string "%H" time 28800)))
-         (minute (string-to-number
-                  (format-time-string "%M" time 28800)))
-         (clock (+ (* hour 60) minute)))
-    (and (<= 1 weekday 5)
-         (or (<= (+ (* 9 60) 30) clock (+ (* 11 60) 30))
-             (<= (* 13 60) clock (* 15 60))))))
-
 (defun +wd/stock-alert--tick ()
-  "Run a stock check when the A-share market is open."
-  (when (and (+wd/stock-alert--market-open-p)
-             (not +wd/stock-alert--request-in-flight))
+  "Run a stock check unless a request is already in progress."
+  (unless +wd/stock-alert--request-in-flight
     (condition-case err
         (+wd/stock-alert-check)
       (error
