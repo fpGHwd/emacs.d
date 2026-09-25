@@ -4,7 +4,7 @@
 (require 'subr-x)
 
 (defun +wd/org-count-total-update ()
-  "Recompute COUNT_* stats for the current entry into its properties."
+  "Recompute COUNT_* stats, including legacy and LOGBOOK note records."
   (interactive)
   (require 'calc)
   (when (derived-mode-p 'org-mode)
@@ -12,35 +12,50 @@
       (org-back-to-heading t)
       (when (org-entry-get (point) "COUNT_TOTAL")
         (let ((total 0) (times 0) (in-src nil) (in-drawer nil) (dates nil)
+              (note-date nil) (note-indent 0) (case-fold-search t)
               (heading (point))
               (end (save-excursion (org-end-of-subtree t t) (point))))
-          (org-end-of-meta-data t)
+          (org-end-of-meta-data)
           (while (< (point) end)
             (let ((raw (buffer-substring-no-properties
                         (line-beginning-position) (line-end-position))))
               (cond
-               ((string-match-p "^[ \t]*#\\+begin_src" raw) (setq in-src t))
-               ((string-match-p "^[ \t]*#\\+end_src" raw) (setq in-src nil))
-               ((and in-drawer (string-match-p "^[ \t]*:END:[ \t]*$" raw))
-                (setq in-drawer nil))
-               ((and (not in-drawer)
-                     (string-match-p "^[ \t]*:[A-Za-z][A-Za-z0-9_@#%-]*:[ \t]*$" raw))
-                (setq in-drawer t))
-               ((and (not in-src) (not in-drawer))
+               (in-src
+                (when (string-match-p "^[ \t]*#\\+end_src\\b" raw)
+                  (setq in-src nil)))
+               (in-drawer
+                (when (string-match-p "^[ \t]*:END:[ \t]*$" raw)
+                  (setq in-drawer nil)))
+               ((string-match-p "^[ \t]*#\\+begin_src\\b" raw)
+                (setq in-src t note-date nil))
+               ((string-match "^[ \t]*:\\([A-Za-z][A-Za-z0-9_@#%-]*\\):[ \t]*$" raw)
+                (setq in-drawer (not (member (upcase (match-string 1 raw)) '("LOGBOOK" "END")))
+                      note-date nil))
+               ((or (string-match-p org-outline-regexp-bol raw)
+                    (string-match-p "^[ \t]*\\(?:CLOCK:\\|SCHEDULED:\\|DEADLINE:\\|CLOSED:\\)" raw))
+                (setq note-date nil))
+               (t
                 (let ((date (and (string-match "\\[\\([0-9]\\{4\\}-[0-9]\\{2\\}-[0-9]\\{2\\}\\)" raw)
                                  (match-string 1 raw)))
                       (line (replace-regexp-in-string
                              "[x×]" "*"
                              (replace-regexp-in-string
                               "\\[[^]]*\\]\\|<[^>]*>" " " raw))))
+                  (cond
+                   ((string-match-p "^[ \t]*- \\(?:Notes? taken on \\[\\|State \"\\)" raw)
+                    (setq note-date date note-indent (current-indentation)))
+                   ((and (not (string-blank-p raw))
+                         (<= (current-indentation) note-indent))
+                    (setq note-date nil)))
                   (when (string-match
                          "[0-9.]+\\(?:[ \t]*[-+*/][ \t]*[0-9.]+\\)*" line)
-                    (let ((v (ignore-errors (calc-eval (match-string 0 line)))))
+                    (let ((v (calc-eval (match-string 0 line)))
+                          (count-date (or date note-date)))
                       (when (stringp v)
                         (setq total (+ total (string-to-number v)))
                         (setq times (1+ times))
-                        (when (and date (not (member date dates)))
-                          (push date dates)))))))))
+                        (when (and count-date (not (member count-date dates)))
+                          (push count-date dates)))))))))
             (forward-line 1))
           (org-entry-put heading "COUNT_TOTAL" (number-to-string total))
           (org-entry-put heading "COUNT_TIMES" (number-to-string times))
