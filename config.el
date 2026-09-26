@@ -11,6 +11,7 @@
 (defconst +wd/longitude 121.3723)
 ;; fonts
 (defconst +wd/code-font "Sarasa Fixed SC")
+;; (defconst +wd/code-font "Source Code Pro")
 (defconst +wd/cjk-font "Sarasa Gothic SC")
 (defconst +wd/fixed-cjk-font "Sarasa Fixed SC")
 (defconst +wd/font-size 16)
