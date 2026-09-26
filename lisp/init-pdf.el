@@ -142,8 +142,9 @@
         (delete-file json-file)))))
 
 (defun +wd/pdf-sync-query-on-kill ()
-  "Ask whether to sync annotations before killing the current PDF buffer."
+  "Ask whether to sync annotations before killing a modified PDF buffer."
   (when (and (derived-mode-p 'pdf-view-mode)
+             (buffer-modified-p)
              (+wd/pdf-sync--calibre-id-from-file (pdf-view-buffer-file-name))
              (yes-or-no-p "Sync PDF annotations before closing? "))
     (+wd/pdf-annot-sync))
