@@ -141,7 +141,7 @@
     (make-directory notes-dir t)
     (unless (file-exists-p note)
       (with-temp-file note
-        (insert (format "* %s - %s\n:PROPERTIES:\n:NOTER_DOCUMENT:\n:CALIBRE_ID: %s\n:END:\n"
+        (insert (format "* %s - %s\n:PROPERTIES:\n:CALIBRE_ID: %s\n:END:\n"
                         (or title "Unknown") (or author "Unknown")
                         id))))
     (display-buffer-in-side-window

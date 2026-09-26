@@ -185,7 +185,17 @@
                  (total-pages (alist-get (intern "#value#") pages-meta))
                  entries intervals)
             (unless (and (integerp total-pages) (> total-pages 0))
-              (user-error "Missing positive Calibre Pages value for book %s" id))
+              (require 'pdf-info)
+              (setq total-pages
+                    (pdf-info-number-of-pages
+                     (save-excursion
+                       (+wd/org-noter-resolve-calibre-document
+                        (org-entry-get nil "NOTER_DOCUMENT" t)))))
+              (unless (and (integerp total-pages) (> total-pages 0))
+                (user-error "Missing positive PDF page count for book %s" id))
+              (+wd/calibre-http server "POST" (format "/cdb/set-fields/%s/" id)
+                                `((changes . ((,(intern "#pages") . ,total-pages)))
+                                  (loaded_book_ids . [,(string-to-number id)]))))
             (org-map-tree
              (lambda ()
                (when-let* ((page (page-number (org-entry-get nil "NOTER_PAGE"))))
