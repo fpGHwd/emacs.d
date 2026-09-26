@@ -10,7 +10,7 @@
 
        :ui
        doom                   ; what makes DOOM look the way it does
-       hl-todo                ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       ;; hl-todo                ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
        modeline               ; snazzy, Atom-inspired modeline, plus API
        (popup +defaults)      ; tame sudden yet inevitable temporary windows
        (vc-gutter +pretty)    ; vcs diff in the fringe
