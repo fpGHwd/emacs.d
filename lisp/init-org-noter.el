@@ -2,6 +2,21 @@
 
 (require 'init-calibre)
 
+(defun +wd/org-noter-make-frame (make-frame &optional parameters)
+  "Create PGTK Org-noter frames without using book names as resource keys."
+  (let ((name (alist-get 'name parameters)))
+    (if (and (eq window-system 'pgtk)
+             (stringp name)
+             (string-prefix-p "Emacs Org-noter - " name))
+        ;; PGTK resource keys are limited to 128 bytes.  Setting the full
+        ;; name after creation preserves Org-noter's naming and cleanup.
+        (let* ((parameters (cons '(name . "org-noter")
+                                 (assq-delete-all 'name (copy-alist parameters))))
+               (frame (funcall make-frame parameters)))
+          (set-frame-parameter frame 'name name)
+          frame)
+      (funcall make-frame parameters))))
+
 (defun +wd/org-noter-resolve-calibre-document (document &rest _)
   "Resolve an empty or stale org-noter DOCUMENT from CALIBRE_ID."
   (if (and document (file-readable-p document))
@@ -232,6 +247,7 @@
                          id (upcase format) percentage)))))))))
 
 (setup org-noter
+  (:advice make-frame :around #'+wd/org-noter-make-frame)
   (:setopt org-noter-doc-split-fraction '(0.7 . 0.3)
            org-noter-notes-search-path (list (file-truename "~/org/noter/current")))
   (:bind-into pdf-view
