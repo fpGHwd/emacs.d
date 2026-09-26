@@ -29,7 +29,17 @@
    ledger-schedule-file "~/org/ledger/2021/schedule.ledger"
    ledger-accounts-file "~/org/ledger/account.ledger"
    ledger-reconcile-default-commodity "CNY"
-   ledger-reconcile-default-date-format "%Y-%m-%d"))
+   ledger-reconcile-default-date-format "%Y-%m-%d")
+  (:with-feature apheleia
+    (:when-loaded
+      (:setopt (prepend apheleia-formatters)
+               (cons 'ledger
+                     (lambda (&rest args)
+                       (with-current-buffer (plist-get args :scratch)
+                         (delay-mode-hooks (ledger-mode))
+                         (indent-region (point-min) (point-max)))
+                       (funcall (plist-get args :callback))))
+               (prepend apheleia-mode-alist) '(ledger-mode . ledger)))))
 
 (provide 'init-ledger)
 ;;; init-ledger.el ends here
