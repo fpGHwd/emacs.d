@@ -311,7 +311,8 @@ Return a hash table keyed by Ledger stock symbol."
                (alerts
                 (message "Stock alerts sent for %d holding(s)" (length alerts)))
                ((null current-holdings)
-                (message "Stock alert check skipped; no quotes dated today"))
+                ;; (message "Stock alert check skipped; no quotes dated today")
+                )
                (t
                 (message "Stock alert check completed; no upward transition")))))
         (error
